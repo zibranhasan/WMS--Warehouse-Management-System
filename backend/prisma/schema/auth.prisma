@@ -3,26 +3,26 @@ model User {
   // Better Auth Fields
   // ==========================
 
-  id              String   @id
-  name            String
-  email           String   @unique
-  emailVerified   Boolean  @default(false)
-  image           String?
+  id            String  @id
+  name          String
+  email         String  @unique
+  emailVerified Boolean @default(false)
+  image         String?
 
   // ==========================
   // WMS Business Fields
   // ==========================
 
-  role                Role       @default(STAFF)
-  status              UserStatus @default(ACTIVE)
+  role   Role       @default(STAFF)
+  status UserStatus @default(ACTIVE)
 
- // warehouseId         String?
- // warehouse           Warehouse? @relation(fields: [warehouseId], references: [id])
+  warehouseId String?
+  warehouse   Warehouse? @relation(fields: [warehouseId], references: [id])
 
-  needPasswordChange  Boolean @default(false)
+  needPasswordChange Boolean @default(false)
 
-  isDeleted           Boolean @default(false)
-  deletedAt           DateTime?
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
 
   // ==========================
   // Audit
@@ -40,6 +40,7 @@ model User {
 
   @@map("users")
 }
+
 model Session {
   id        String   @id
   expiresAt DateTime
