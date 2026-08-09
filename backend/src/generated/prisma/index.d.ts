@@ -33,6 +33,11 @@ export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
  * 
  */
 export type Verification = $Result.DefaultSelection<Prisma.$VerificationPayload>
+/**
+ * Model Warehouse
+ * 
+ */
+export type Warehouse = $Result.DefaultSelection<Prisma.$WarehousePayload>
 
 /**
  * Enums
@@ -58,6 +63,14 @@ export const UserStatus: {
 
 export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
 
+
+export const WarehouseStatus: {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+};
+
+export type WarehouseStatus = (typeof WarehouseStatus)[keyof typeof WarehouseStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -67,6 +80,10 @@ export const Role: typeof $Enums.Role
 export type UserStatus = $Enums.UserStatus
 
 export const UserStatus: typeof $Enums.UserStatus
+
+export type WarehouseStatus = $Enums.WarehouseStatus
+
+export const WarehouseStatus: typeof $Enums.WarehouseStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -228,6 +245,16 @@ export class PrismaClient<
     * ```
     */
   get verification(): Prisma.VerificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.warehouse`: Exposes CRUD operations for the **Warehouse** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Warehouses
+    * const warehouses = await prisma.warehouse.findMany()
+    * ```
+    */
+  get warehouse(): Prisma.WarehouseDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -678,7 +705,8 @@ export namespace Prisma {
     User: 'User',
     Session: 'Session',
     Account: 'Account',
-    Verification: 'Verification'
+    Verification: 'Verification',
+    Warehouse: 'Warehouse'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -694,7 +722,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification"
+      modelProps: "user" | "session" | "account" | "verification" | "warehouse"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -994,6 +1022,80 @@ export namespace Prisma {
           }
         }
       }
+      Warehouse: {
+        payload: Prisma.$WarehousePayload<ExtArgs>
+        fields: Prisma.WarehouseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WarehouseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WarehouseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>
+          }
+          findFirst: {
+            args: Prisma.WarehouseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WarehouseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>
+          }
+          findMany: {
+            args: Prisma.WarehouseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>[]
+          }
+          create: {
+            args: Prisma.WarehouseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>
+          }
+          createMany: {
+            args: Prisma.WarehouseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.WarehouseCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>[]
+          }
+          delete: {
+            args: Prisma.WarehouseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>
+          }
+          update: {
+            args: Prisma.WarehouseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>
+          }
+          deleteMany: {
+            args: Prisma.WarehouseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WarehouseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.WarehouseUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>[]
+          }
+          upsert: {
+            args: Prisma.WarehouseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>
+          }
+          aggregate: {
+            args: Prisma.WarehouseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWarehouse>
+          }
+          groupBy: {
+            args: Prisma.WarehouseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WarehouseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WarehouseCountArgs<ExtArgs>
+            result: $Utils.Optional<WarehouseCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1121,6 +1223,7 @@ export namespace Prisma {
     session?: SessionOmit
     account?: AccountOmit
     verification?: VerificationOmit
+    warehouse?: WarehouseOmit
   }
 
   /* Types for Logging */
@@ -1237,6 +1340,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type WarehouseCountOutputType
+   */
+
+  export type WarehouseCountOutputType = {
+    users: number
+  }
+
+  export type WarehouseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    users?: boolean | WarehouseCountOutputTypeCountUsersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * WarehouseCountOutputType without action
+   */
+  export type WarehouseCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseCountOutputType
+     */
+    select?: WarehouseCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * WarehouseCountOutputType without action
+   */
+  export type WarehouseCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -1258,6 +1392,7 @@ export namespace Prisma {
     image: string | null
     role: $Enums.Role | null
     status: $Enums.UserStatus | null
+    warehouseId: string | null
     needPasswordChange: boolean | null
     isDeleted: boolean | null
     deletedAt: Date | null
@@ -1273,6 +1408,7 @@ export namespace Prisma {
     image: string | null
     role: $Enums.Role | null
     status: $Enums.UserStatus | null
+    warehouseId: string | null
     needPasswordChange: boolean | null
     isDeleted: boolean | null
     deletedAt: Date | null
@@ -1288,6 +1424,7 @@ export namespace Prisma {
     image: number
     role: number
     status: number
+    warehouseId: number
     needPasswordChange: number
     isDeleted: number
     deletedAt: number
@@ -1305,6 +1442,7 @@ export namespace Prisma {
     image?: true
     role?: true
     status?: true
+    warehouseId?: true
     needPasswordChange?: true
     isDeleted?: true
     deletedAt?: true
@@ -1320,6 +1458,7 @@ export namespace Prisma {
     image?: true
     role?: true
     status?: true
+    warehouseId?: true
     needPasswordChange?: true
     isDeleted?: true
     deletedAt?: true
@@ -1335,6 +1474,7 @@ export namespace Prisma {
     image?: true
     role?: true
     status?: true
+    warehouseId?: true
     needPasswordChange?: true
     isDeleted?: true
     deletedAt?: true
@@ -1423,6 +1563,7 @@ export namespace Prisma {
     image: string | null
     role: $Enums.Role
     status: $Enums.UserStatus
+    warehouseId: string | null
     needPasswordChange: boolean
     isDeleted: boolean
     deletedAt: Date | null
@@ -1455,11 +1596,13 @@ export namespace Prisma {
     image?: boolean
     role?: boolean
     status?: boolean
+    warehouseId?: boolean
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    warehouse?: boolean | User$warehouseArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1473,11 +1616,13 @@ export namespace Prisma {
     image?: boolean
     role?: boolean
     status?: boolean
+    warehouseId?: boolean
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    warehouse?: boolean | User$warehouseArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1488,11 +1633,13 @@ export namespace Prisma {
     image?: boolean
     role?: boolean
     status?: boolean
+    warehouseId?: boolean
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    warehouse?: boolean | User$warehouseArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1503,6 +1650,7 @@ export namespace Prisma {
     image?: boolean
     role?: boolean
     status?: boolean
+    warehouseId?: boolean
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: boolean
@@ -1510,18 +1658,24 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "status" | "needPasswordChange" | "isDeleted" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "status" | "warehouseId" | "needPasswordChange" | "isDeleted" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    warehouse?: boolean | User$warehouseArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    warehouse?: boolean | User$warehouseArgs<ExtArgs>
+  }
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    warehouse?: boolean | User$warehouseArgs<ExtArgs>
+  }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
+      warehouse: Prisma.$WarehousePayload<ExtArgs> | null
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       accounts: Prisma.$AccountPayload<ExtArgs>[]
     }
@@ -1533,6 +1687,7 @@ export namespace Prisma {
       image: string | null
       role: $Enums.Role
       status: $Enums.UserStatus
+      warehouseId: string | null
       needPasswordChange: boolean
       isDeleted: boolean
       deletedAt: Date | null
@@ -1932,6 +2087,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    warehouse<T extends User$warehouseArgs<ExtArgs> = {}>(args?: Subset<T, User$warehouseArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -1970,6 +2126,7 @@ export namespace Prisma {
     readonly image: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
     readonly status: FieldRef<"User", 'UserStatus'>
+    readonly warehouseId: FieldRef<"User", 'String'>
     readonly needPasswordChange: FieldRef<"User", 'Boolean'>
     readonly isDeleted: FieldRef<"User", 'Boolean'>
     readonly deletedAt: FieldRef<"User", 'DateTime'>
@@ -2229,6 +2386,10 @@ export namespace Prisma {
      */
     data: UserCreateManyInput | UserCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2299,6 +2460,10 @@ export namespace Prisma {
      * Limit how many Users to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2365,6 +2530,25 @@ export namespace Prisma {
      * Limit how many Users to delete.
      */
     limit?: number
+  }
+
+  /**
+   * User.warehouse
+   */
+  export type User$warehouseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    where?: WarehouseWhereInput
   }
 
   /**
@@ -5717,6 +5901,1146 @@ export namespace Prisma {
 
 
   /**
+   * Model Warehouse
+   */
+
+  export type AggregateWarehouse = {
+    _count: WarehouseCountAggregateOutputType | null
+    _min: WarehouseMinAggregateOutputType | null
+    _max: WarehouseMaxAggregateOutputType | null
+  }
+
+  export type WarehouseMinAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    description: string | null
+    address: string | null
+    city: string | null
+    country: string | null
+    status: $Enums.WarehouseStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type WarehouseMaxAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    description: string | null
+    address: string | null
+    city: string | null
+    country: string | null
+    status: $Enums.WarehouseStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type WarehouseCountAggregateOutputType = {
+    id: number
+    code: number
+    name: number
+    description: number
+    address: number
+    city: number
+    country: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type WarehouseMinAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    address?: true
+    city?: true
+    country?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type WarehouseMaxAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    address?: true
+    city?: true
+    country?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type WarehouseCountAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    address?: true
+    city?: true
+    country?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type WarehouseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Warehouse to aggregate.
+     */
+    where?: WarehouseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Warehouses to fetch.
+     */
+    orderBy?: WarehouseOrderByWithRelationInput | WarehouseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WarehouseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Warehouses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Warehouses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Warehouses
+    **/
+    _count?: true | WarehouseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WarehouseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WarehouseMaxAggregateInputType
+  }
+
+  export type GetWarehouseAggregateType<T extends WarehouseAggregateArgs> = {
+        [P in keyof T & keyof AggregateWarehouse]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWarehouse[P]>
+      : GetScalarType<T[P], AggregateWarehouse[P]>
+  }
+
+
+
+
+  export type WarehouseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WarehouseWhereInput
+    orderBy?: WarehouseOrderByWithAggregationInput | WarehouseOrderByWithAggregationInput[]
+    by: WarehouseScalarFieldEnum[] | WarehouseScalarFieldEnum
+    having?: WarehouseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WarehouseCountAggregateInputType | true
+    _min?: WarehouseMinAggregateInputType
+    _max?: WarehouseMaxAggregateInputType
+  }
+
+  export type WarehouseGroupByOutputType = {
+    id: string
+    code: string
+    name: string
+    description: string | null
+    address: string | null
+    city: string | null
+    country: string | null
+    status: $Enums.WarehouseStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: WarehouseCountAggregateOutputType | null
+    _min: WarehouseMinAggregateOutputType | null
+    _max: WarehouseMaxAggregateOutputType | null
+  }
+
+  type GetWarehouseGroupByPayload<T extends WarehouseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WarehouseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WarehouseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WarehouseGroupByOutputType[P]>
+            : GetScalarType<T[P], WarehouseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WarehouseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    address?: boolean
+    city?: boolean
+    country?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    users?: boolean | Warehouse$usersArgs<ExtArgs>
+    _count?: boolean | WarehouseCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["warehouse"]>
+
+  export type WarehouseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    address?: boolean
+    city?: boolean
+    country?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["warehouse"]>
+
+  export type WarehouseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    address?: boolean
+    city?: boolean
+    country?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["warehouse"]>
+
+  export type WarehouseSelectScalar = {
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    address?: boolean
+    city?: boolean
+    country?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type WarehouseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "description" | "address" | "city" | "country" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["warehouse"]>
+  export type WarehouseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    users?: boolean | Warehouse$usersArgs<ExtArgs>
+    _count?: boolean | WarehouseCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type WarehouseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type WarehouseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $WarehousePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Warehouse"
+    objects: {
+      users: Prisma.$UserPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      code: string
+      name: string
+      description: string | null
+      address: string | null
+      city: string | null
+      country: string | null
+      status: $Enums.WarehouseStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["warehouse"]>
+    composites: {}
+  }
+
+  type WarehouseGetPayload<S extends boolean | null | undefined | WarehouseDefaultArgs> = $Result.GetResult<Prisma.$WarehousePayload, S>
+
+  type WarehouseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WarehouseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WarehouseCountAggregateInputType | true
+    }
+
+  export interface WarehouseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Warehouse'], meta: { name: 'Warehouse' } }
+    /**
+     * Find zero or one Warehouse that matches the filter.
+     * @param {WarehouseFindUniqueArgs} args - Arguments to find a Warehouse
+     * @example
+     * // Get one Warehouse
+     * const warehouse = await prisma.warehouse.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WarehouseFindUniqueArgs>(args: SelectSubset<T, WarehouseFindUniqueArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Warehouse that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {WarehouseFindUniqueOrThrowArgs} args - Arguments to find a Warehouse
+     * @example
+     * // Get one Warehouse
+     * const warehouse = await prisma.warehouse.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WarehouseFindUniqueOrThrowArgs>(args: SelectSubset<T, WarehouseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Warehouse that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseFindFirstArgs} args - Arguments to find a Warehouse
+     * @example
+     * // Get one Warehouse
+     * const warehouse = await prisma.warehouse.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WarehouseFindFirstArgs>(args?: SelectSubset<T, WarehouseFindFirstArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Warehouse that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseFindFirstOrThrowArgs} args - Arguments to find a Warehouse
+     * @example
+     * // Get one Warehouse
+     * const warehouse = await prisma.warehouse.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WarehouseFindFirstOrThrowArgs>(args?: SelectSubset<T, WarehouseFindFirstOrThrowArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Warehouses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Warehouses
+     * const warehouses = await prisma.warehouse.findMany()
+     * 
+     * // Get first 10 Warehouses
+     * const warehouses = await prisma.warehouse.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const warehouseWithIdOnly = await prisma.warehouse.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WarehouseFindManyArgs>(args?: SelectSubset<T, WarehouseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Warehouse.
+     * @param {WarehouseCreateArgs} args - Arguments to create a Warehouse.
+     * @example
+     * // Create one Warehouse
+     * const Warehouse = await prisma.warehouse.create({
+     *   data: {
+     *     // ... data to create a Warehouse
+     *   }
+     * })
+     * 
+     */
+    create<T extends WarehouseCreateArgs>(args: SelectSubset<T, WarehouseCreateArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Warehouses.
+     * @param {WarehouseCreateManyArgs} args - Arguments to create many Warehouses.
+     * @example
+     * // Create many Warehouses
+     * const warehouse = await prisma.warehouse.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WarehouseCreateManyArgs>(args?: SelectSubset<T, WarehouseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Warehouses and returns the data saved in the database.
+     * @param {WarehouseCreateManyAndReturnArgs} args - Arguments to create many Warehouses.
+     * @example
+     * // Create many Warehouses
+     * const warehouse = await prisma.warehouse.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Warehouses and only return the `id`
+     * const warehouseWithIdOnly = await prisma.warehouse.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends WarehouseCreateManyAndReturnArgs>(args?: SelectSubset<T, WarehouseCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Warehouse.
+     * @param {WarehouseDeleteArgs} args - Arguments to delete one Warehouse.
+     * @example
+     * // Delete one Warehouse
+     * const Warehouse = await prisma.warehouse.delete({
+     *   where: {
+     *     // ... filter to delete one Warehouse
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WarehouseDeleteArgs>(args: SelectSubset<T, WarehouseDeleteArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Warehouse.
+     * @param {WarehouseUpdateArgs} args - Arguments to update one Warehouse.
+     * @example
+     * // Update one Warehouse
+     * const warehouse = await prisma.warehouse.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WarehouseUpdateArgs>(args: SelectSubset<T, WarehouseUpdateArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Warehouses.
+     * @param {WarehouseDeleteManyArgs} args - Arguments to filter Warehouses to delete.
+     * @example
+     * // Delete a few Warehouses
+     * const { count } = await prisma.warehouse.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WarehouseDeleteManyArgs>(args?: SelectSubset<T, WarehouseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Warehouses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Warehouses
+     * const warehouse = await prisma.warehouse.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WarehouseUpdateManyArgs>(args: SelectSubset<T, WarehouseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Warehouses and returns the data updated in the database.
+     * @param {WarehouseUpdateManyAndReturnArgs} args - Arguments to update many Warehouses.
+     * @example
+     * // Update many Warehouses
+     * const warehouse = await prisma.warehouse.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Warehouses and only return the `id`
+     * const warehouseWithIdOnly = await prisma.warehouse.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends WarehouseUpdateManyAndReturnArgs>(args: SelectSubset<T, WarehouseUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Warehouse.
+     * @param {WarehouseUpsertArgs} args - Arguments to update or create a Warehouse.
+     * @example
+     * // Update or create a Warehouse
+     * const warehouse = await prisma.warehouse.upsert({
+     *   create: {
+     *     // ... data to create a Warehouse
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Warehouse we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WarehouseUpsertArgs>(args: SelectSubset<T, WarehouseUpsertArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Warehouses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseCountArgs} args - Arguments to filter Warehouses to count.
+     * @example
+     * // Count the number of Warehouses
+     * const count = await prisma.warehouse.count({
+     *   where: {
+     *     // ... the filter for the Warehouses we want to count
+     *   }
+     * })
+    **/
+    count<T extends WarehouseCountArgs>(
+      args?: Subset<T, WarehouseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WarehouseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Warehouse.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WarehouseAggregateArgs>(args: Subset<T, WarehouseAggregateArgs>): Prisma.PrismaPromise<GetWarehouseAggregateType<T>>
+
+    /**
+     * Group by Warehouse.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WarehouseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WarehouseGroupByArgs['orderBy'] }
+        : { orderBy?: WarehouseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WarehouseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWarehouseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Warehouse model
+   */
+  readonly fields: WarehouseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Warehouse.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WarehouseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    users<T extends Warehouse$usersArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Warehouse model
+   */
+  interface WarehouseFieldRefs {
+    readonly id: FieldRef<"Warehouse", 'String'>
+    readonly code: FieldRef<"Warehouse", 'String'>
+    readonly name: FieldRef<"Warehouse", 'String'>
+    readonly description: FieldRef<"Warehouse", 'String'>
+    readonly address: FieldRef<"Warehouse", 'String'>
+    readonly city: FieldRef<"Warehouse", 'String'>
+    readonly country: FieldRef<"Warehouse", 'String'>
+    readonly status: FieldRef<"Warehouse", 'WarehouseStatus'>
+    readonly createdAt: FieldRef<"Warehouse", 'DateTime'>
+    readonly updatedAt: FieldRef<"Warehouse", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Warehouse findUnique
+   */
+  export type WarehouseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * Filter, which Warehouse to fetch.
+     */
+    where: WarehouseWhereUniqueInput
+  }
+
+  /**
+   * Warehouse findUniqueOrThrow
+   */
+  export type WarehouseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * Filter, which Warehouse to fetch.
+     */
+    where: WarehouseWhereUniqueInput
+  }
+
+  /**
+   * Warehouse findFirst
+   */
+  export type WarehouseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * Filter, which Warehouse to fetch.
+     */
+    where?: WarehouseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Warehouses to fetch.
+     */
+    orderBy?: WarehouseOrderByWithRelationInput | WarehouseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Warehouses.
+     */
+    cursor?: WarehouseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Warehouses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Warehouses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Warehouses.
+     */
+    distinct?: WarehouseScalarFieldEnum | WarehouseScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse findFirstOrThrow
+   */
+  export type WarehouseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * Filter, which Warehouse to fetch.
+     */
+    where?: WarehouseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Warehouses to fetch.
+     */
+    orderBy?: WarehouseOrderByWithRelationInput | WarehouseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Warehouses.
+     */
+    cursor?: WarehouseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Warehouses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Warehouses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Warehouses.
+     */
+    distinct?: WarehouseScalarFieldEnum | WarehouseScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse findMany
+   */
+  export type WarehouseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * Filter, which Warehouses to fetch.
+     */
+    where?: WarehouseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Warehouses to fetch.
+     */
+    orderBy?: WarehouseOrderByWithRelationInput | WarehouseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Warehouses.
+     */
+    cursor?: WarehouseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Warehouses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Warehouses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Warehouses.
+     */
+    distinct?: WarehouseScalarFieldEnum | WarehouseScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse create
+   */
+  export type WarehouseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Warehouse.
+     */
+    data: XOR<WarehouseCreateInput, WarehouseUncheckedCreateInput>
+  }
+
+  /**
+   * Warehouse createMany
+   */
+  export type WarehouseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Warehouses.
+     */
+    data: WarehouseCreateManyInput | WarehouseCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Warehouse createManyAndReturn
+   */
+  export type WarehouseCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * The data used to create many Warehouses.
+     */
+    data: WarehouseCreateManyInput | WarehouseCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Warehouse update
+   */
+  export type WarehouseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Warehouse.
+     */
+    data: XOR<WarehouseUpdateInput, WarehouseUncheckedUpdateInput>
+    /**
+     * Choose, which Warehouse to update.
+     */
+    where: WarehouseWhereUniqueInput
+  }
+
+  /**
+   * Warehouse updateMany
+   */
+  export type WarehouseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Warehouses.
+     */
+    data: XOR<WarehouseUpdateManyMutationInput, WarehouseUncheckedUpdateManyInput>
+    /**
+     * Filter which Warehouses to update
+     */
+    where?: WarehouseWhereInput
+    /**
+     * Limit how many Warehouses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Warehouse updateManyAndReturn
+   */
+  export type WarehouseUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * The data used to update Warehouses.
+     */
+    data: XOR<WarehouseUpdateManyMutationInput, WarehouseUncheckedUpdateManyInput>
+    /**
+     * Filter which Warehouses to update
+     */
+    where?: WarehouseWhereInput
+    /**
+     * Limit how many Warehouses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Warehouse upsert
+   */
+  export type WarehouseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Warehouse to update in case it exists.
+     */
+    where: WarehouseWhereUniqueInput
+    /**
+     * In case the Warehouse found by the `where` argument doesn't exist, create a new Warehouse with this data.
+     */
+    create: XOR<WarehouseCreateInput, WarehouseUncheckedCreateInput>
+    /**
+     * In case the Warehouse was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WarehouseUpdateInput, WarehouseUncheckedUpdateInput>
+  }
+
+  /**
+   * Warehouse delete
+   */
+  export type WarehouseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * Filter which Warehouse to delete.
+     */
+    where: WarehouseWhereUniqueInput
+  }
+
+  /**
+   * Warehouse deleteMany
+   */
+  export type WarehouseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Warehouses to delete
+     */
+    where?: WarehouseWhereInput
+    /**
+     * Limit how many Warehouses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Warehouse.users
+   */
+  export type Warehouse$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse without action
+   */
+  export type WarehouseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -5738,6 +7062,7 @@ export namespace Prisma {
     image: 'image',
     role: 'role',
     status: 'status',
+    warehouseId: 'warehouseId',
     needPasswordChange: 'needPasswordChange',
     isDeleted: 'isDeleted',
     deletedAt: 'deletedAt',
@@ -5791,6 +7116,22 @@ export namespace Prisma {
   };
 
   export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
+
+
+  export const WarehouseScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    description: 'description',
+    address: 'address',
+    city: 'city',
+    country: 'country',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type WarehouseScalarFieldEnum = (typeof WarehouseScalarFieldEnum)[keyof typeof WarehouseScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5886,6 +7227,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'WarehouseStatus'
+   */
+  export type EnumWarehouseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WarehouseStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'WarehouseStatus[]'
+   */
+  export type ListEnumWarehouseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WarehouseStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -5913,11 +7268,13 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     status?: EnumUserStatusFilter<"User"> | $Enums.UserStatus
+    warehouseId?: StringNullableFilter<"User"> | string | null
     needPasswordChange?: BoolFilter<"User"> | boolean
     isDeleted?: BoolFilter<"User"> | boolean
     deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    warehouse?: XOR<WarehouseNullableScalarRelationFilter, WarehouseWhereInput> | null
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
   }
@@ -5930,11 +7287,13 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     role?: SortOrder
     status?: SortOrder
+    warehouseId?: SortOrderInput | SortOrder
     needPasswordChange?: SortOrder
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    warehouse?: WarehouseOrderByWithRelationInput
     sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
   }
@@ -5950,11 +7309,13 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     status?: EnumUserStatusFilter<"User"> | $Enums.UserStatus
+    warehouseId?: StringNullableFilter<"User"> | string | null
     needPasswordChange?: BoolFilter<"User"> | boolean
     isDeleted?: BoolFilter<"User"> | boolean
     deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    warehouse?: XOR<WarehouseNullableScalarRelationFilter, WarehouseWhereInput> | null
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
   }, "id" | "email">
@@ -5967,6 +7328,7 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     role?: SortOrder
     status?: SortOrder
+    warehouseId?: SortOrderInput | SortOrder
     needPasswordChange?: SortOrder
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -5988,6 +7350,7 @@ export namespace Prisma {
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     status?: EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
+    warehouseId?: StringNullableWithAggregatesFilter<"User"> | string | null
     needPasswordChange?: BoolWithAggregatesFilter<"User"> | boolean
     isDeleted?: BoolWithAggregatesFilter<"User"> | boolean
     deletedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
@@ -6217,6 +7580,86 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Verification"> | Date | string
   }
 
+  export type WarehouseWhereInput = {
+    AND?: WarehouseWhereInput | WarehouseWhereInput[]
+    OR?: WarehouseWhereInput[]
+    NOT?: WarehouseWhereInput | WarehouseWhereInput[]
+    id?: StringFilter<"Warehouse"> | string
+    code?: StringFilter<"Warehouse"> | string
+    name?: StringFilter<"Warehouse"> | string
+    description?: StringNullableFilter<"Warehouse"> | string | null
+    address?: StringNullableFilter<"Warehouse"> | string | null
+    city?: StringNullableFilter<"Warehouse"> | string | null
+    country?: StringNullableFilter<"Warehouse"> | string | null
+    status?: EnumWarehouseStatusFilter<"Warehouse"> | $Enums.WarehouseStatus
+    createdAt?: DateTimeFilter<"Warehouse"> | Date | string
+    updatedAt?: DateTimeFilter<"Warehouse"> | Date | string
+    users?: UserListRelationFilter
+  }
+
+  export type WarehouseOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    users?: UserOrderByRelationAggregateInput
+  }
+
+  export type WarehouseWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    code?: string
+    AND?: WarehouseWhereInput | WarehouseWhereInput[]
+    OR?: WarehouseWhereInput[]
+    NOT?: WarehouseWhereInput | WarehouseWhereInput[]
+    name?: StringFilter<"Warehouse"> | string
+    description?: StringNullableFilter<"Warehouse"> | string | null
+    address?: StringNullableFilter<"Warehouse"> | string | null
+    city?: StringNullableFilter<"Warehouse"> | string | null
+    country?: StringNullableFilter<"Warehouse"> | string | null
+    status?: EnumWarehouseStatusFilter<"Warehouse"> | $Enums.WarehouseStatus
+    createdAt?: DateTimeFilter<"Warehouse"> | Date | string
+    updatedAt?: DateTimeFilter<"Warehouse"> | Date | string
+    users?: UserListRelationFilter
+  }, "id" | "code">
+
+  export type WarehouseOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: WarehouseCountOrderByAggregateInput
+    _max?: WarehouseMaxOrderByAggregateInput
+    _min?: WarehouseMinOrderByAggregateInput
+  }
+
+  export type WarehouseScalarWhereWithAggregatesInput = {
+    AND?: WarehouseScalarWhereWithAggregatesInput | WarehouseScalarWhereWithAggregatesInput[]
+    OR?: WarehouseScalarWhereWithAggregatesInput[]
+    NOT?: WarehouseScalarWhereWithAggregatesInput | WarehouseScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Warehouse"> | string
+    code?: StringWithAggregatesFilter<"Warehouse"> | string
+    name?: StringWithAggregatesFilter<"Warehouse"> | string
+    description?: StringNullableWithAggregatesFilter<"Warehouse"> | string | null
+    address?: StringNullableWithAggregatesFilter<"Warehouse"> | string | null
+    city?: StringNullableWithAggregatesFilter<"Warehouse"> | string | null
+    country?: StringNullableWithAggregatesFilter<"Warehouse"> | string | null
+    status?: EnumWarehouseStatusWithAggregatesFilter<"Warehouse"> | $Enums.WarehouseStatus
+    createdAt?: DateTimeWithAggregatesFilter<"Warehouse"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Warehouse"> | Date | string
+  }
+
   export type UserCreateInput = {
     id: string
     name: string
@@ -6230,6 +7673,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    warehouse?: WarehouseCreateNestedOneWithoutUsersInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
   }
@@ -6242,6 +7686,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.Role
     status?: $Enums.UserStatus
+    warehouseId?: string | null
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
@@ -6264,6 +7709,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneWithoutUsersNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
   }
@@ -6276,6 +7722,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6293,6 +7740,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.Role
     status?: $Enums.UserStatus
+    warehouseId?: string | null
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
@@ -6323,6 +7771,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6580,6 +8029,101 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type WarehouseCreateInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    status?: $Enums.WarehouseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseUncheckedCreateInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    status?: $Enums.WarehouseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type WarehouseUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type WarehouseCreateManyInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    status?: $Enums.WarehouseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WarehouseUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WarehouseUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -6651,6 +8195,11 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type WarehouseNullableScalarRelationFilter = {
+    is?: WarehouseWhereInput | null
+    isNot?: WarehouseWhereInput | null
+  }
+
   export type SessionListRelationFilter = {
     every?: SessionWhereInput
     some?: SessionWhereInput
@@ -6684,6 +8233,7 @@ export namespace Prisma {
     image?: SortOrder
     role?: SortOrder
     status?: SortOrder
+    warehouseId?: SortOrder
     needPasswordChange?: SortOrder
     isDeleted?: SortOrder
     deletedAt?: SortOrder
@@ -6699,6 +8249,7 @@ export namespace Prisma {
     image?: SortOrder
     role?: SortOrder
     status?: SortOrder
+    warehouseId?: SortOrder
     needPasswordChange?: SortOrder
     isDeleted?: SortOrder
     deletedAt?: SortOrder
@@ -6714,6 +8265,7 @@ export namespace Prisma {
     image?: SortOrder
     role?: SortOrder
     status?: SortOrder
+    warehouseId?: SortOrder
     needPasswordChange?: SortOrder
     isDeleted?: SortOrder
     deletedAt?: SortOrder
@@ -6926,6 +8478,78 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumWarehouseStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.WarehouseStatus | EnumWarehouseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.WarehouseStatus[] | ListEnumWarehouseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WarehouseStatus[] | ListEnumWarehouseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumWarehouseStatusFilter<$PrismaModel> | $Enums.WarehouseStatus
+  }
+
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
+  }
+
+  export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WarehouseCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    country?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WarehouseMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    country?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WarehouseMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    country?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumWarehouseStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WarehouseStatus | EnumWarehouseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.WarehouseStatus[] | ListEnumWarehouseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WarehouseStatus[] | ListEnumWarehouseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumWarehouseStatusWithAggregatesFilter<$PrismaModel> | $Enums.WarehouseStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumWarehouseStatusFilter<$PrismaModel>
+    _max?: NestedEnumWarehouseStatusFilter<$PrismaModel>
+  }
+
+  export type WarehouseCreateNestedOneWithoutUsersInput = {
+    create?: XOR<WarehouseCreateWithoutUsersInput, WarehouseUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutUsersInput
+    connect?: WarehouseWhereUniqueInput
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -6980,6 +8604,16 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type WarehouseUpdateOneWithoutUsersNestedInput = {
+    create?: XOR<WarehouseCreateWithoutUsersInput, WarehouseUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutUsersInput
+    upsert?: WarehouseUpsertWithoutUsersInput
+    disconnect?: WarehouseWhereInput | boolean
+    delete?: WarehouseWhereInput | boolean
+    connect?: WarehouseWhereUniqueInput
+    update?: XOR<XOR<WarehouseUpdateToOneWithWhereWithoutUsersInput, WarehouseUpdateWithoutUsersInput>, WarehouseUncheckedUpdateWithoutUsersInput>
   }
 
   export type SessionUpdateManyWithoutUserNestedInput = {
@@ -7064,6 +8698,52 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutAccountsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
+  export type UserCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<UserCreateWithoutWarehouseInput, UserUncheckedCreateWithoutWarehouseInput> | UserCreateWithoutWarehouseInput[] | UserUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutWarehouseInput | UserCreateOrConnectWithoutWarehouseInput[]
+    createMany?: UserCreateManyWarehouseInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<UserCreateWithoutWarehouseInput, UserUncheckedCreateWithoutWarehouseInput> | UserCreateWithoutWarehouseInput[] | UserUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutWarehouseInput | UserCreateOrConnectWithoutWarehouseInput[]
+    createMany?: UserCreateManyWarehouseInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type EnumWarehouseStatusFieldUpdateOperationsInput = {
+    set?: $Enums.WarehouseStatus
+  }
+
+  export type UserUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<UserCreateWithoutWarehouseInput, UserUncheckedCreateWithoutWarehouseInput> | UserCreateWithoutWarehouseInput[] | UserUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutWarehouseInput | UserCreateOrConnectWithoutWarehouseInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutWarehouseInput | UserUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: UserCreateManyWarehouseInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutWarehouseInput | UserUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutWarehouseInput | UserUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<UserCreateWithoutWarehouseInput, UserUncheckedCreateWithoutWarehouseInput> | UserCreateWithoutWarehouseInput[] | UserUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutWarehouseInput | UserCreateOrConnectWithoutWarehouseInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutWarehouseInput | UserUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: UserCreateManyWarehouseInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutWarehouseInput | UserUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutWarehouseInput | UserUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -7247,6 +8927,54 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedEnumWarehouseStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.WarehouseStatus | EnumWarehouseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.WarehouseStatus[] | ListEnumWarehouseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WarehouseStatus[] | ListEnumWarehouseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumWarehouseStatusFilter<$PrismaModel> | $Enums.WarehouseStatus
+  }
+
+  export type NestedEnumWarehouseStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WarehouseStatus | EnumWarehouseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.WarehouseStatus[] | ListEnumWarehouseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WarehouseStatus[] | ListEnumWarehouseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumWarehouseStatusWithAggregatesFilter<$PrismaModel> | $Enums.WarehouseStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumWarehouseStatusFilter<$PrismaModel>
+    _max?: NestedEnumWarehouseStatusFilter<$PrismaModel>
+  }
+
+  export type WarehouseCreateWithoutUsersInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    status?: $Enums.WarehouseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WarehouseUncheckedCreateWithoutUsersInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    status?: $Enums.WarehouseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WarehouseCreateOrConnectWithoutUsersInput = {
+    where: WarehouseWhereUniqueInput
+    create: XOR<WarehouseCreateWithoutUsersInput, WarehouseUncheckedCreateWithoutUsersInput>
+  }
+
   export type SessionCreateWithoutUserInput = {
     id: string
     expiresAt: Date | string
@@ -7315,6 +9043,43 @@ export namespace Prisma {
   export type AccountCreateManyUserInputEnvelope = {
     data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
     skipDuplicates?: boolean
+  }
+
+  export type WarehouseUpsertWithoutUsersInput = {
+    update: XOR<WarehouseUpdateWithoutUsersInput, WarehouseUncheckedUpdateWithoutUsersInput>
+    create: XOR<WarehouseCreateWithoutUsersInput, WarehouseUncheckedCreateWithoutUsersInput>
+    where?: WarehouseWhereInput
+  }
+
+  export type WarehouseUpdateToOneWithWhereWithoutUsersInput = {
+    where?: WarehouseWhereInput
+    data: XOR<WarehouseUpdateWithoutUsersInput, WarehouseUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type WarehouseUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WarehouseUncheckedUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
@@ -7395,6 +9160,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    warehouse?: WarehouseCreateNestedOneWithoutUsersInput
     accounts?: AccountCreateNestedManyWithoutUserInput
   }
 
@@ -7406,6 +9172,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.Role
     status?: $Enums.UserStatus
+    warehouseId?: string | null
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
@@ -7443,6 +9210,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneWithoutUsersNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
   }
 
@@ -7454,6 +9222,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -7475,6 +9244,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    warehouse?: WarehouseCreateNestedOneWithoutUsersInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
@@ -7486,6 +9256,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.Role
     status?: $Enums.UserStatus
+    warehouseId?: string | null
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
@@ -7523,6 +9294,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneWithoutUsersNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
@@ -7534,12 +9306,92 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutWarehouseInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    needPasswordChange?: boolean
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutWarehouseInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    needPasswordChange?: boolean
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutWarehouseInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutWarehouseInput, UserUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type UserCreateManyWarehouseInputEnvelope = {
+    data: UserCreateManyWarehouseInput | UserCreateManyWarehouseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutWarehouseInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutWarehouseInput, UserUncheckedUpdateWithoutWarehouseInput>
+    create: XOR<UserCreateWithoutWarehouseInput, UserUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutWarehouseInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutWarehouseInput, UserUncheckedUpdateWithoutWarehouseInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutWarehouseInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutWarehouseInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    id?: StringFilter<"User"> | string
+    name?: StringFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    emailVerified?: BoolFilter<"User"> | boolean
+    image?: StringNullableFilter<"User"> | string | null
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    status?: EnumUserStatusFilter<"User"> | $Enums.UserStatus
+    warehouseId?: StringNullableFilter<"User"> | string | null
+    needPasswordChange?: BoolFilter<"User"> | boolean
+    isDeleted?: BoolFilter<"User"> | boolean
+    deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
   }
 
   export type SessionCreateManyUserInput = {
@@ -7638,6 +9490,70 @@ export namespace Prisma {
     refreshTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     scope?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCreateManyWarehouseInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    needPasswordChange?: boolean
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserUpdateWithoutWarehouseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutWarehouseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutWarehouseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

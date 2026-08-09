@@ -16,8 +16,8 @@ model User {
   role   Role       @default(STAFF)
   status UserStatus @default(ACTIVE)
 
-  // warehouseId         String?
-  // warehouse           Warehouse? @relation(fields: [warehouseId], references: [id])
+  warehouseId String?
+  warehouse   Warehouse? @relation(fields: [warehouseId], references: [id])
 
   needPasswordChange Boolean @default(false)
 
@@ -102,6 +102,29 @@ enum UserStatus {
   ACTIVE
   BLOCKED
   DELETED
+}
+
+enum WarehouseStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model Warehouse {
+  id          String          @id @default(cuid())
+  code        String          @unique
+  name        String
+  description String?
+  address     String?
+  city        String?
+  country     String?
+  status      WarehouseStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users User[]
+
+  @@map("warehouses")
 }
 
 // This is your Prisma schema file,

@@ -128,6 +128,7 @@ exports.Prisma.UserScalarFieldEnum = {
   image: 'image',
   role: 'role',
   status: 'status',
+  warehouseId: 'warehouseId',
   needPasswordChange: 'needPasswordChange',
   isDeleted: 'isDeleted',
   deletedAt: 'deletedAt',
@@ -171,6 +172,19 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.WarehouseScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  address: 'address',
+  city: 'city',
+  country: 'country',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -200,11 +214,17 @@ exports.UserStatus = exports.$Enums.UserStatus = {
   DELETED: 'DELETED'
 };
 
+exports.WarehouseStatus = exports.$Enums.WarehouseStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification'
+  Verification: 'Verification',
+  Warehouse: 'Warehouse'
 };
 
 /**
