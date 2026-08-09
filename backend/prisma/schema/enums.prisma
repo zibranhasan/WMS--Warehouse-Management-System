@@ -1,0 +1,14 @@
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  WAREHOUSE_MANAGER
+  PROCUREMENT
+  STAFF
+  FINANCE
+}
+
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+  DELETED
+}
