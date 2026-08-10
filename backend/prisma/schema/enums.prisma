@@ -17,3 +17,13 @@ enum WarehouseStatus {
   ACTIVE
   INACTIVE
 }
+
+enum CategoryStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum BrandStatus {
+  ACTIVE
+  INACTIVE
+}

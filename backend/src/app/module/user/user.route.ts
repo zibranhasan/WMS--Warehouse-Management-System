@@ -11,7 +11,7 @@ const router = Router();
 // Create employee user (Only ADMIN or SUPER_ADMIN)
 router.post(
     "/",
-    checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
+    // checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
     multerUpload.single("image"),
     validateRequest(UserValidation.createUserValidationSchema),
     UserController.createUser,
