@@ -209,6 +209,23 @@ exports.Prisma.BrandScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ProductScalarFieldEnum = {
+  id: 'id',
+  sku: 'sku',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  categoryId: 'categoryId',
+  brandId: 'brandId',
+  unit: 'unit',
+  image: 'image',
+  status: 'status',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -253,6 +270,11 @@ exports.BrandStatus = exports.$Enums.BrandStatus = {
   INACTIVE: 'INACTIVE'
 };
 
+exports.ProductStatus = exports.$Enums.ProductStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
@@ -260,7 +282,8 @@ exports.Prisma.ModelName = {
   Verification: 'Verification',
   Warehouse: 'Warehouse',
   Category: 'Category',
-  Brand: 'Brand'
+  Brand: 'Brand',
+  Product: 'Product'
 };
 
 /**

@@ -119,6 +119,11 @@ enum BrandStatus {
   INACTIVE
 }
 
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+}
+
 model Warehouse {
   id          String          @id @default(cuid())
   code        String          @unique
@@ -150,6 +155,8 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  products Product[]
+
   @@map("categories")
 }
 
@@ -166,7 +173,33 @@ model Brand {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  products Product[]
+
   @@map("brands")
+}
+
+model Product {
+  id          String        @id @default(cuid())
+  sku         String        @unique
+  name        String
+  slug        String        @unique
+  description String?
+  categoryId  String
+  brandId     String?
+  unit        String
+  image       String?
+  status      ProductStatus @default(ACTIVE)
+
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  brand    Brand?   @relation(fields: [brandId], references: [id], onDelete: SetNull)
+
+  @@map("products")
 }
 
 // This is your Prisma schema file,
