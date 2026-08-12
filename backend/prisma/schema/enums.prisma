@@ -27,3 +27,8 @@ enum BrandStatus {
   ACTIVE
   INACTIVE
 }
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+}
