@@ -172,6 +172,29 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.InventoryStockScalarFieldEnum = {
+  id: 'id',
+  warehouseId: 'warehouseId',
+  productId: 'productId',
+  quantity: 'quantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.StockMovementScalarFieldEnum = {
+  id: 'id',
+  warehouseId: 'warehouseId',
+  productId: 'productId',
+  type: 'type',
+  quantity: 'quantity',
+  previousStock: 'previousStock',
+  newStock: 'newStock',
+  reason: 'reason',
+  reference: 'reference',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.WarehouseScalarFieldEnum = {
   id: 'id',
   code: 'code',
@@ -255,6 +278,12 @@ exports.UserStatus = exports.$Enums.UserStatus = {
   DELETED: 'DELETED'
 };
 
+exports.StockMovementType = exports.$Enums.StockMovementType = {
+  IN: 'IN',
+  OUT: 'OUT',
+  ADJUSTMENT: 'ADJUSTMENT'
+};
+
 exports.WarehouseStatus = exports.$Enums.WarehouseStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE'
@@ -280,6 +309,8 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
+  InventoryStock: 'InventoryStock',
+  StockMovement: 'StockMovement',
   Warehouse: 'Warehouse',
   Category: 'Category',
   Brand: 'Brand',

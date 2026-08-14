@@ -38,6 +38,12 @@ model User {
   sessions Session[]
   accounts Account[]
 
+  // ==========================
+  // Inventory Relations
+  // ==========================
+
+  stockMovements StockMovement[]
+
   @@map("users")
 }
 
@@ -124,6 +130,63 @@ enum ProductStatus {
   INACTIVE
 }
 
+enum StockMovementType {
+  IN
+  OUT
+  ADJUSTMENT
+}
+
+// =============================================================================
+// Inventory Models
+// =============================================================================
+
+// InventoryStock — current stock level per (warehouse, product) pair.
+// The @@unique constraint guarantees exactly one record per combination.
+model InventoryStock {
+  id          String  @id @default(cuid())
+  warehouseId String
+  productId   String
+  quantity    Decimal @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@unique([warehouseId, productId])
+  @@map("inventory_stocks")
+}
+
+// StockMovement — immutable audit log of every stock-changing operation.
+// Never updated after creation — only new records are ever inserted.
+model StockMovement {
+  id            String            @id @default(cuid())
+  warehouseId   String
+  productId     String
+  type          StockMovementType
+  quantity      Decimal
+  previousStock Decimal
+  newStock      Decimal
+  reason        String?
+  reference     String?
+  createdById   String?
+
+  createdAt DateTime @default(now())
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  createdBy User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@map("stock_movements")
+}
+
+// =============================================================================
+// WMS Master Data Models
+// These models existed only in migration SQL — declared here so Prisma can
+// generate the client and so inventory relations can reference them.
+// =============================================================================
+
 model Warehouse {
   id          String          @id @default(cuid())
   code        String          @unique
@@ -137,7 +200,13 @@ model Warehouse {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users User[]
+  // ==========================
+  // Relations
+  // ==========================
+
+  users           User[]
+  inventoryStocks InventoryStock[]
+  stockMovements  StockMovement[]
 
   @@map("warehouses")
 }
@@ -148,9 +217,8 @@ model Category {
   slug        String         @unique
   description String?
   status      CategoryStatus @default(ACTIVE)
-
-  isDeleted Boolean   @default(false)
-  deletedAt DateTime?
+  isDeleted   Boolean        @default(false)
+  deletedAt   DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -166,9 +234,8 @@ model Brand {
   slug        String      @unique
   description String?
   status      BrandStatus @default(ACTIVE)
-
-  isDeleted Boolean   @default(false)
-  deletedAt DateTime?
+  isDeleted   Boolean     @default(false)
+  deletedAt   DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -189,15 +256,21 @@ model Product {
   unit        String
   image       String?
   status      ProductStatus @default(ACTIVE)
-
-  isDeleted Boolean   @default(false)
-  deletedAt DateTime?
+  isDeleted   Boolean       @default(false)
+  deletedAt   DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // ==========================
+  // Relations
+  // ==========================
+
   category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   brand    Brand?   @relation(fields: [brandId], references: [id], onDelete: SetNull)
+
+  inventoryStocks InventoryStock[]
+  stockMovements  StockMovement[]
 
   @@map("products")
 }

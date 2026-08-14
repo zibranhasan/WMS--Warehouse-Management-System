@@ -38,6 +38,12 @@ model User {
   sessions Session[]
   accounts Account[]
 
+  // ==========================
+  // Inventory Relations
+  // ==========================
+
+  stockMovements StockMovement[]
+
   @@map("users")
 }
 

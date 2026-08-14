@@ -1,1 +1,44 @@
+// =============================================================================
+// Inventory Models
+// =============================================================================
 
+// InventoryStock — current stock level per (warehouse, product) pair.
+// The @@unique constraint guarantees exactly one record per combination.
+model InventoryStock {
+  id          String  @id @default(cuid())
+  warehouseId String
+  productId   String
+  quantity    Decimal @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@unique([warehouseId, productId])
+  @@map("inventory_stocks")
+}
+
+// StockMovement — immutable audit log of every stock-changing operation.
+// Never updated after creation — only new records are ever inserted.
+model StockMovement {
+  id            String            @id @default(cuid())
+  warehouseId   String
+  productId     String
+  type          StockMovementType
+  quantity      Decimal
+  previousStock Decimal
+  newStock      Decimal
+  reason        String?
+  reference     String?
+  createdById   String?
+
+  createdAt DateTime @default(now())
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  createdBy User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@map("stock_movements")
+}
