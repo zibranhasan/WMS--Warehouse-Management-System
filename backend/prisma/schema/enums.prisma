@@ -32,3 +32,9 @@ enum ProductStatus {
   ACTIVE
   INACTIVE
 }
+
+enum StockMovementType {
+  IN
+  OUT
+  ADJUSTMENT
+}

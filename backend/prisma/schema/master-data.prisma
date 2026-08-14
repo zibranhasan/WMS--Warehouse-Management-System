@@ -1,0 +1,93 @@
+// =============================================================================
+// WMS Master Data Models
+// These models existed only in migration SQL — declared here so Prisma can
+// generate the client and so inventory relations can reference them.
+// =============================================================================
+
+model Warehouse {
+  id          String          @id @default(cuid())
+  code        String          @unique
+  name        String
+  description String?
+  address     String?
+  city        String?
+  country     String?
+  status      WarehouseStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ==========================
+  // Relations
+  // ==========================
+
+  users           User[]
+  inventoryStocks InventoryStock[]
+  stockMovements  StockMovement[]
+
+  @@map("warehouses")
+}
+
+model Category {
+  id          String         @id @default(cuid())
+  name        String         @unique
+  slug        String         @unique
+  description String?
+  status      CategoryStatus @default(ACTIVE)
+  isDeleted   Boolean        @default(false)
+  deletedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Brand {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  slug        String      @unique
+  description String?
+  status      BrandStatus @default(ACTIVE)
+  isDeleted   Boolean     @default(false)
+  deletedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products Product[]
+
+  @@map("brands")
+}
+
+model Product {
+  id          String        @id @default(cuid())
+  sku         String        @unique
+  name        String
+  slug        String        @unique
+  description String?
+  categoryId  String
+  brandId     String?
+  unit        String
+  image       String?
+  status      ProductStatus @default(ACTIVE)
+  isDeleted   Boolean       @default(false)
+  deletedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ==========================
+  // Relations
+  // ==========================
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  brand    Brand?   @relation(fields: [brandId], references: [id], onDelete: SetNull)
+
+  inventoryStocks InventoryStock[]
+  stockMovements  StockMovement[]
+
+  @@map("products")
+}
