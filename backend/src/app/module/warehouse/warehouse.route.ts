@@ -43,6 +43,20 @@ router.get(
     WarehouseController.getWarehouseUsers,
 );
 
+// Get complete physical structure of a warehouse
+router.get(
+    "/:warehouseId/structure",
+    checkAuth(
+        Role.SUPER_ADMIN,
+        Role.ADMIN,
+        Role.WAREHOUSE_MANAGER,
+        Role.PROCUREMENT,
+        Role.FINANCE,
+        Role.STAFF,
+    ),
+    WarehouseController.getWarehouseStructure,
+);
+
 // Assign user to warehouse (SUPER_ADMIN, ADMIN)
 router.patch(
     "/:warehouseId/assign-user/:userId",

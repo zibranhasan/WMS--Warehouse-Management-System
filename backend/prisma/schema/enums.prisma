@@ -18,6 +18,11 @@ enum WarehouseStatus {
   INACTIVE
 }
 
+enum LocationStatus {
+  ACTIVE
+  INACTIVE
+}
+
 enum CategoryStatus {
   ACTIVE
   INACTIVE
@@ -37,4 +42,24 @@ enum StockMovementType {
   IN
   OUT
   ADJUSTMENT
+}
+
+enum LocationMovementType {
+  ALLOCATE
+  DEALLOCATE
+  TRANSFER
+}
+
+enum SupplierStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum PurchaseOrderStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PARTIALLY_RECEIVED
+  RECEIVED
+  CANCELLED
 }

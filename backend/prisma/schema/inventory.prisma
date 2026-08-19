@@ -42,3 +42,53 @@ model StockMovement {
 
   @@map("stock_movements")
 }
+
+// InventoryLocationStock — current stock level per (bin, product) pair in a warehouse.
+model InventoryLocationStock {
+  id          String  @id @default(cuid())
+  warehouseId String
+  binId       String
+  productId   String
+  quantity    Decimal @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  bin       Bin       @relation(fields: [binId], references: [id], onDelete: Restrict)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@unique([binId, productId])
+  @@index([warehouseId])
+  @@index([binId])
+  @@index([productId])
+  @@map("inventory_location_stocks")
+}
+
+// InventoryLocationMovement — immutable audit log of location-level stock operations (ALLOCATE, DEALLOCATE, TRANSFER).
+model InventoryLocationMovement {
+  id          String               @id @default(cuid())
+  warehouseId String
+  productId   String
+  type        LocationMovementType
+  fromBinId   String?
+  toBinId     String?
+  quantity    Decimal
+  reason      String?
+  reference   String?
+  createdById String?
+
+  createdAt DateTime @default(now())
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  fromBin   Bin?      @relation("FromBinLocationMovements", fields: [fromBinId], references: [id], onDelete: SetNull)
+  toBin     Bin?      @relation("ToBinLocationMovements", fields: [toBinId], references: [id], onDelete: SetNull)
+  createdBy User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([warehouseId])
+  @@index([productId])
+  @@index([fromBinId])
+  @@index([toBinId])
+  @@map("inventory_location_movements")
+}

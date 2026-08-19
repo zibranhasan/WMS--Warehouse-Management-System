@@ -21,9 +21,14 @@ model Warehouse {
   // Relations
   // ==========================
 
-  users           User[]
-  inventoryStocks InventoryStock[]
-  stockMovements  StockMovement[]
+  users                      User[]
+  inventoryStocks            InventoryStock[]
+  stockMovements             StockMovement[]
+  purchaseOrders             PurchaseOrder[]
+  zones                      Zone[]
+  inventoryLocationStocks    InventoryLocationStock[]
+  inventoryLocationMovements InventoryLocationMovement[]
+  goodsReceipts              GoodsReceipt[]
 
   @@map("warehouses")
 }
@@ -86,8 +91,12 @@ model Product {
   category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   brand    Brand?   @relation(fields: [brandId], references: [id], onDelete: SetNull)
 
-  inventoryStocks InventoryStock[]
-  stockMovements  StockMovement[]
+  inventoryStocks            InventoryStock[]
+  stockMovements             StockMovement[]
+  purchaseOrderItems         PurchaseOrderItem[]
+  inventoryLocationStocks    InventoryLocationStock[]
+  inventoryLocationMovements InventoryLocationMovement[]
+  goodsReceiptItems          GoodsReceiptItem[]
 
   @@map("products")
 }
