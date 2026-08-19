@@ -1,1 +1,106 @@
+// =============================================================================
+// Procurement Models
+// =============================================================================
 
+model Supplier {
+  id            String         @id @default(cuid())
+  name          String
+  code          String         @unique
+  email         String?
+  phone         String?
+  address       String?
+  city          String?
+  country       String?
+  contactPerson String?
+  status        SupplierStatus @default(ACTIVE)
+  isDeleted     Boolean        @default(false)
+  deletedAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  purchaseOrders PurchaseOrder[]
+
+  @@map("suppliers")
+}
+
+model PurchaseOrder {
+  id                 String              @id @default(cuid())
+  poNumber           String              @unique
+  supplierId         String
+  warehouseId        String
+  status             PurchaseOrderStatus @default(PENDING)
+  notes              String?
+  totalAmount        Decimal             @default(0)
+  rejectionReason    String?
+  cancellationReason String?
+
+  createdById  String
+  approvedById String?
+  approvedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  supplier   Supplier  @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  warehouse  Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  createdBy  User      @relation("POCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  approvedBy User?     @relation("POApprovedBy", fields: [approvedById], references: [id], onDelete: SetNull)
+
+  items         PurchaseOrderItem[]
+  goodsReceipts GoodsReceipt[]
+
+  @@map("purchase_orders")
+}
+
+model PurchaseOrderItem {
+  id               String  @id @default(cuid())
+  purchaseOrderId  String
+  productId        String
+  orderedQuantity  Decimal
+  receivedQuantity Decimal @default(0)
+  unitPrice        Decimal
+  totalPrice       Decimal
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  product       Product       @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@unique([purchaseOrderId, productId])
+  @@map("purchase_order_items")
+}
+
+model GoodsReceipt {
+  id              String   @id @default(cuid())
+  receiptNumber   String   @unique
+  purchaseOrderId String
+  warehouseId     String
+  receivedById    String
+  receivedAt      DateTime @default(now())
+  reason          String?
+  reference       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  purchaseOrder PurchaseOrder      @relation(fields: [purchaseOrderId], references: [id], onDelete: Restrict)
+  warehouse     Warehouse          @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  receivedBy    User               @relation("GoodsReceivedBy", fields: [receivedById], references: [id], onDelete: Restrict)
+  items         GoodsReceiptItem[]
+
+  @@map("goods_receipts")
+}
+
+model GoodsReceiptItem {
+  id             String  @id @default(cuid())
+  goodsReceiptId String
+  productId      String
+  quantity       Decimal
+
+  goodsReceipt GoodsReceipt @relation(fields: [goodsReceiptId], references: [id], onDelete: Cascade)
+  product      Product      @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@map("goods_receipt_items")
+}

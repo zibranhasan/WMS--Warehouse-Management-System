@@ -1,20 +1,32 @@
 import { Router } from "express";
 
+import { AisleRoutes } from "../module/aisle/aisle.route";
 import { AuthRoutes } from "../module/auth/auth.route";
+import { BinRoutes } from "../module/bin/bin.route";
 import { BrandRoutes } from "../module/brand/brand.route";
 import { CategoryRoutes } from "../module/category/category.route";
 import { InventoryRoutes } from "../module/inventory/inventory.route";
 import { ProductRoutes } from "../module/product/product.route";
+import { PurchaseOrderRoutes } from "../module/purchaseOrder/purchaseOrder.route";
+import { ShelfRoutes } from "../module/shelf/shelf.route";
+import { SupplierRoutes } from "../module/supplier/supplier.route";
 import { UserRoutes } from "../module/user/user.route";
 import { WarehouseRoutes } from "../module/warehouse/warehouse.route";
+import { ZoneRoutes } from "../module/zone/zone.route";
 
 const router = Router();
 router.use("/auth", AuthRoutes);
 router.use("/users", UserRoutes);
 router.use("/warehouses", WarehouseRoutes);
+router.use("/zones", ZoneRoutes);
+router.use("/aisles", AisleRoutes);
+router.use("/shelves", ShelfRoutes);
+router.use("/bins", BinRoutes);
 router.use("/categories", CategoryRoutes);
 router.use("/brands", BrandRoutes);
 router.use("/products", ProductRoutes);
 router.use("/inventory", InventoryRoutes);
+router.use("/suppliers", SupplierRoutes);
+router.use("/purchase-orders", PurchaseOrderRoutes);
 
 export const IndexRoutes = router;

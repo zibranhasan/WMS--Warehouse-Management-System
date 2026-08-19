@@ -39,10 +39,14 @@ model User {
   accounts Account[]
 
   // ==========================
-  // Inventory Relations
+  // Inventory & Procurement Relations
   // ==========================
 
-  stockMovements StockMovement[]
+  stockMovements             StockMovement[]
+  createdPurchaseOrders      PurchaseOrder[]             @relation("POCreatedBy")
+  approvedPurchaseOrders     PurchaseOrder[]             @relation("POApprovedBy")
+  inventoryLocationMovements InventoryLocationMovement[]
+  goodsReceipts              GoodsReceipt[]              @relation("GoodsReceivedBy")
 
   @@map("users")
 }
@@ -115,6 +119,11 @@ enum WarehouseStatus {
   INACTIVE
 }
 
+enum LocationStatus {
+  ACTIVE
+  INACTIVE
+}
+
 enum CategoryStatus {
   ACTIVE
   INACTIVE
@@ -134,6 +143,26 @@ enum StockMovementType {
   IN
   OUT
   ADJUSTMENT
+}
+
+enum LocationMovementType {
+  ALLOCATE
+  DEALLOCATE
+  TRANSFER
+}
+
+enum SupplierStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum PurchaseOrderStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PARTIALLY_RECEIVED
+  RECEIVED
+  CANCELLED
 }
 
 // =============================================================================
@@ -181,6 +210,56 @@ model StockMovement {
   @@map("stock_movements")
 }
 
+// InventoryLocationStock — current stock level per (bin, product) pair in a warehouse.
+model InventoryLocationStock {
+  id          String  @id @default(cuid())
+  warehouseId String
+  binId       String
+  productId   String
+  quantity    Decimal @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  bin       Bin       @relation(fields: [binId], references: [id], onDelete: Restrict)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@unique([binId, productId])
+  @@index([warehouseId])
+  @@index([binId])
+  @@index([productId])
+  @@map("inventory_location_stocks")
+}
+
+// InventoryLocationMovement — immutable audit log of location-level stock operations (ALLOCATE, DEALLOCATE, TRANSFER).
+model InventoryLocationMovement {
+  id          String               @id @default(cuid())
+  warehouseId String
+  productId   String
+  type        LocationMovementType
+  fromBinId   String?
+  toBinId     String?
+  quantity    Decimal
+  reason      String?
+  reference   String?
+  createdById String?
+
+  createdAt DateTime @default(now())
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  fromBin   Bin?      @relation("FromBinLocationMovements", fields: [fromBinId], references: [id], onDelete: SetNull)
+  toBin     Bin?      @relation("ToBinLocationMovements", fields: [toBinId], references: [id], onDelete: SetNull)
+  createdBy User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([warehouseId])
+  @@index([productId])
+  @@index([fromBinId])
+  @@index([toBinId])
+  @@map("inventory_location_movements")
+}
+
 // =============================================================================
 // WMS Master Data Models
 // These models existed only in migration SQL — declared here so Prisma can
@@ -204,9 +283,14 @@ model Warehouse {
   // Relations
   // ==========================
 
-  users           User[]
-  inventoryStocks InventoryStock[]
-  stockMovements  StockMovement[]
+  users                      User[]
+  inventoryStocks            InventoryStock[]
+  stockMovements             StockMovement[]
+  purchaseOrders             PurchaseOrder[]
+  zones                      Zone[]
+  inventoryLocationStocks    InventoryLocationStock[]
+  inventoryLocationMovements InventoryLocationMovement[]
+  goodsReceipts              GoodsReceipt[]
 
   @@map("warehouses")
 }
@@ -269,10 +353,213 @@ model Product {
   category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   brand    Brand?   @relation(fields: [brandId], references: [id], onDelete: SetNull)
 
-  inventoryStocks InventoryStock[]
-  stockMovements  StockMovement[]
+  inventoryStocks            InventoryStock[]
+  stockMovements             StockMovement[]
+  purchaseOrderItems         PurchaseOrderItem[]
+  inventoryLocationStocks    InventoryLocationStock[]
+  inventoryLocationMovements InventoryLocationMovement[]
+  goodsReceiptItems          GoodsReceiptItem[]
 
   @@map("products")
+}
+
+// =============================================================================
+// Warehouse Physical Structure Models
+// Zone -> Aisle -> Shelf -> Bin
+// =============================================================================
+
+model Zone {
+  id          String         @id @default(cuid())
+  warehouseId String
+  code        String
+  name        String
+  description String?
+  capacity    Int            @default(0)
+  status      LocationStatus @default(ACTIVE)
+  isDeleted   Boolean        @default(false)
+  deletedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  aisles    Aisle[]
+
+  @@unique([warehouseId, code])
+  @@map("zones")
+}
+
+model Aisle {
+  id          String         @id @default(cuid())
+  zoneId      String
+  code        String
+  name        String
+  description String?
+  capacity    Int            @default(0)
+  status      LocationStatus @default(ACTIVE)
+  isDeleted   Boolean        @default(false)
+  deletedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  zone    Zone    @relation(fields: [zoneId], references: [id], onDelete: Restrict)
+  shelves Shelf[]
+
+  @@unique([zoneId, code])
+  @@map("aisles")
+}
+
+model Shelf {
+  id          String         @id @default(cuid())
+  aisleId     String
+  code        String
+  name        String
+  description String?
+  capacity    Int            @default(0)
+  status      LocationStatus @default(ACTIVE)
+  isDeleted   Boolean        @default(false)
+  deletedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  aisle Aisle @relation(fields: [aisleId], references: [id], onDelete: Restrict)
+  bins  Bin[]
+
+  @@unique([aisleId, code])
+  @@map("shelves")
+}
+
+model Bin {
+  id          String         @id @default(cuid())
+  shelfId     String
+  code        String
+  name        String
+  description String?
+  capacity    Int            @default(0)
+  status      LocationStatus @default(ACTIVE)
+  isDeleted   Boolean        @default(false)
+  deletedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  shelf Shelf @relation(fields: [shelfId], references: [id], onDelete: Restrict)
+
+  inventoryLocationStocks InventoryLocationStock[]
+  fromLocationMovements   InventoryLocationMovement[] @relation("FromBinLocationMovements")
+  toLocationMovements     InventoryLocationMovement[] @relation("ToBinLocationMovements")
+
+  @@unique([shelfId, code])
+  @@map("bins")
+}
+
+// =============================================================================
+// Procurement Models
+// =============================================================================
+
+model Supplier {
+  id            String         @id @default(cuid())
+  name          String
+  code          String         @unique
+  email         String?
+  phone         String?
+  address       String?
+  city          String?
+  country       String?
+  contactPerson String?
+  status        SupplierStatus @default(ACTIVE)
+  isDeleted     Boolean        @default(false)
+  deletedAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  purchaseOrders PurchaseOrder[]
+
+  @@map("suppliers")
+}
+
+model PurchaseOrder {
+  id                 String              @id @default(cuid())
+  poNumber           String              @unique
+  supplierId         String
+  warehouseId        String
+  status             PurchaseOrderStatus @default(PENDING)
+  notes              String?
+  totalAmount        Decimal             @default(0)
+  rejectionReason    String?
+  cancellationReason String?
+
+  createdById  String
+  approvedById String?
+  approvedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  supplier   Supplier  @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  warehouse  Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  createdBy  User      @relation("POCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  approvedBy User?     @relation("POApprovedBy", fields: [approvedById], references: [id], onDelete: SetNull)
+
+  items         PurchaseOrderItem[]
+  goodsReceipts GoodsReceipt[]
+
+  @@map("purchase_orders")
+}
+
+model PurchaseOrderItem {
+  id               String  @id @default(cuid())
+  purchaseOrderId  String
+  productId        String
+  orderedQuantity  Decimal
+  receivedQuantity Decimal @default(0)
+  unitPrice        Decimal
+  totalPrice       Decimal
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  product       Product       @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@unique([purchaseOrderId, productId])
+  @@map("purchase_order_items")
+}
+
+model GoodsReceipt {
+  id              String   @id @default(cuid())
+  receiptNumber   String   @unique
+  purchaseOrderId String
+  warehouseId     String
+  receivedById    String
+  receivedAt      DateTime @default(now())
+  reason          String?
+  reference       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  purchaseOrder PurchaseOrder      @relation(fields: [purchaseOrderId], references: [id], onDelete: Restrict)
+  warehouse     Warehouse          @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  receivedBy    User               @relation("GoodsReceivedBy", fields: [receivedById], references: [id], onDelete: Restrict)
+  items         GoodsReceiptItem[]
+
+  @@map("goods_receipts")
+}
+
+model GoodsReceiptItem {
+  id             String  @id @default(cuid())
+  goodsReceiptId String
+  productId      String
+  quantity       Decimal
+
+  goodsReceipt GoodsReceipt @relation(fields: [goodsReceiptId], references: [id], onDelete: Cascade)
+  product      Product      @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@map("goods_receipt_items")
 }
 
 // This is your Prisma schema file,

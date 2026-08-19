@@ -109,6 +109,20 @@ const getWarehouseUsers = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getWarehouseStructure = catchAsync(async (req: Request, res: Response) => {
+    const { warehouseId } = req.params;
+    const result = await WarehouseService.getWarehouseStructure(
+        warehouseId as string,
+    );
+
+    sendResponse(res, {
+        httpStatusCode: httpStatus.OK,
+        success: true,
+        message: "Warehouse structure retrieved successfully.",
+        data: result,
+    });
+});
+
 export const WarehouseController = {
     createWarehouse,
     getAllWarehouses,
@@ -118,4 +132,5 @@ export const WarehouseController = {
     assignUser,
     unassignUser,
     getWarehouseUsers,
+    getWarehouseStructure,
 };

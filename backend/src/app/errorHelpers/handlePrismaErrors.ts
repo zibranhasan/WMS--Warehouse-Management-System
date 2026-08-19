@@ -29,8 +29,8 @@ const getStatusCodeFromPrismaError = (errorCode: string): number => {
         return status.PAYMENT_REQUIRED;
     }
 
-    // P1008, 2004, 6004 : Timeout errors = 504 Gateway Timeout
-    if (["P1008", "P2004", "P6004"].includes(errorCode)) {
+    // P1008, P2004, P2028, P6004 : Timeout errors = 504 Gateway Timeout
+    if (["P1008", "P2004", "P2028", "P6004"].includes(errorCode)) {
         return status.GATEWAY_TIMEOUT;
     }
 

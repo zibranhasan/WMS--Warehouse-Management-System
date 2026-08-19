@@ -234,6 +234,38 @@ const getWarehouseUsers = async (
     return result;
 };
 
+const getWarehouseStructure = async (warehouseId: string) => {
+    const warehouse = await prisma.warehouse.findUnique({
+        where: { id: warehouseId },
+        include: {
+            zones: {
+                where: { isDeleted: false },
+                include: {
+                    aisles: {
+                        where: { isDeleted: false },
+                        include: {
+                            shelves: {
+                                where: { isDeleted: false },
+                                include: {
+                                    bins: {
+                                        where: { isDeleted: false },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    if (!warehouse) {
+        throw new AppError(httpStatus.NOT_FOUND, "Warehouse not found.");
+    }
+
+    return warehouse;
+};
+
 export const WarehouseService = {
     createWarehouse,
     getAllWarehouses,
@@ -243,4 +275,5 @@ export const WarehouseService = {
     assignUserToWarehouse,
     unassignUserFromWarehouse,
     getWarehouseUsers,
+    getWarehouseStructure,
 };

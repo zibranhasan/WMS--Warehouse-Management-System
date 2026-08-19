@@ -39,10 +39,14 @@ model User {
   accounts Account[]
 
   // ==========================
-  // Inventory Relations
+  // Inventory & Procurement Relations
   // ==========================
 
-  stockMovements StockMovement[]
+  stockMovements             StockMovement[]
+  createdPurchaseOrders      PurchaseOrder[]             @relation("POCreatedBy")
+  approvedPurchaseOrders     PurchaseOrder[]             @relation("POApprovedBy")
+  inventoryLocationMovements InventoryLocationMovement[]
+  goodsReceipts              GoodsReceipt[]              @relation("GoodsReceivedBy")
 
   @@map("users")
 }
