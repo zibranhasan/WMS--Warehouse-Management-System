@@ -63,3 +63,15 @@ enum PurchaseOrderStatus {
   RECEIVED
   CANCELLED
 }
+
+enum SalesOrderStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum ReservationStatus {
+  ACTIVE
+  RELEASED
+  CONSUMED
+}

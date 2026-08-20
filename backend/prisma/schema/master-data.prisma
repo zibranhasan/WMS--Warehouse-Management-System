@@ -29,6 +29,8 @@ model Warehouse {
   inventoryLocationStocks    InventoryLocationStock[]
   inventoryLocationMovements InventoryLocationMovement[]
   goodsReceipts              GoodsReceipt[]
+  salesOrders                SalesOrder[]
+  stockReservations          StockReservation[]
 
   @@map("warehouses")
 }
@@ -97,6 +99,8 @@ model Product {
   inventoryLocationStocks    InventoryLocationStock[]
   inventoryLocationMovements InventoryLocationMovement[]
   goodsReceiptItems          GoodsReceiptItem[]
+  salesOrderItems            SalesOrderItem[]
+  stockReservations          StockReservation[]
 
   @@map("products")
 }
