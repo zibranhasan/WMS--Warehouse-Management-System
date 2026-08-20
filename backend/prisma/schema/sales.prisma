@@ -1,1 +1,67 @@
+// =============================================================================
+// Sales Order & Reservation Models
+// =============================================================================
 
+model SalesOrder {
+  id                 String           @id @default(cuid())
+  orderNumber        String           @unique
+  createdById        String
+  warehouseId        String
+  status             SalesOrderStatus @default(PENDING)
+  totalAmount        Decimal          @default(0)
+  notes              String?
+  cancellationReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy User      @relation("SOCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+
+  items        SalesOrderItem[]
+  reservations StockReservation[]
+
+  @@map("sales_orders")
+}
+
+model SalesOrderItem {
+  id               String  @id @default(cuid())
+  salesOrderId     String
+  productId        String
+  quantity         Decimal
+  unitPrice        Decimal
+  totalPrice       Decimal
+  reservedQuantity Decimal @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  salesOrder SalesOrder @relation(fields: [salesOrderId], references: [id], onDelete: Cascade)
+  product    Product    @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  reservations StockReservation[]
+
+  @@unique([salesOrderId, productId])
+  @@map("sales_order_items")
+}
+
+model StockReservation {
+  id               String            @id @default(cuid())
+  salesOrderId     String
+  salesOrderItemId String
+  warehouseId      String
+  productId        String
+  quantity         Decimal
+  status           ReservationStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  salesOrder     SalesOrder     @relation(fields: [salesOrderId], references: [id], onDelete: Cascade)
+  salesOrderItem SalesOrderItem @relation(fields: [salesOrderItemId], references: [id], onDelete: Cascade)
+  warehouse      Warehouse      @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  product        Product        @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([warehouseId, productId, status])
+  @@map("stock_reservations")
+}

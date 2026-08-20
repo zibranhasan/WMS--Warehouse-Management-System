@@ -47,6 +47,7 @@ model User {
   approvedPurchaseOrders     PurchaseOrder[]             @relation("POApprovedBy")
   inventoryLocationMovements InventoryLocationMovement[]
   goodsReceipts              GoodsReceipt[]              @relation("GoodsReceivedBy")
+  createdSalesOrders         SalesOrder[]                @relation("SOCreatedBy")
 
   @@map("users")
 }

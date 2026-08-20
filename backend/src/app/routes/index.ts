@@ -8,6 +8,7 @@ import { CategoryRoutes } from "../module/category/category.route";
 import { InventoryRoutes } from "../module/inventory/inventory.route";
 import { ProductRoutes } from "../module/product/product.route";
 import { PurchaseOrderRoutes } from "../module/purchaseOrder/purchaseOrder.route";
+import { SalesOrderRoutes } from "../module/salesOrder/salesOrder.route";
 import { ShelfRoutes } from "../module/shelf/shelf.route";
 import { SupplierRoutes } from "../module/supplier/supplier.route";
 import { UserRoutes } from "../module/user/user.route";
@@ -28,5 +29,6 @@ router.use("/products", ProductRoutes);
 router.use("/inventory", InventoryRoutes);
 router.use("/suppliers", SupplierRoutes);
 router.use("/purchase-orders", PurchaseOrderRoutes);
+router.use("/sales-orders", SalesOrderRoutes);
 
 export const IndexRoutes = router;

@@ -395,6 +395,43 @@ exports.Prisma.GoodsReceiptItemScalarFieldEnum = {
   quantity: 'quantity'
 };
 
+exports.Prisma.SalesOrderScalarFieldEnum = {
+  id: 'id',
+  orderNumber: 'orderNumber',
+  createdById: 'createdById',
+  warehouseId: 'warehouseId',
+  status: 'status',
+  totalAmount: 'totalAmount',
+  notes: 'notes',
+  cancellationReason: 'cancellationReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SalesOrderItemScalarFieldEnum = {
+  id: 'id',
+  salesOrderId: 'salesOrderId',
+  productId: 'productId',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  totalPrice: 'totalPrice',
+  reservedQuantity: 'reservedQuantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.StockReservationScalarFieldEnum = {
+  id: 'id',
+  salesOrderId: 'salesOrderId',
+  salesOrderItemId: 'salesOrderItemId',
+  warehouseId: 'warehouseId',
+  productId: 'productId',
+  quantity: 'quantity',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -475,6 +512,18 @@ exports.PurchaseOrderStatus = exports.$Enums.PurchaseOrderStatus = {
   CANCELLED: 'CANCELLED'
 };
 
+exports.SalesOrderStatus = exports.$Enums.SalesOrderStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.ReservationStatus = exports.$Enums.ReservationStatus = {
+  ACTIVE: 'ACTIVE',
+  RELEASED: 'RELEASED',
+  CONSUMED: 'CONSUMED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
@@ -496,7 +545,10 @@ exports.Prisma.ModelName = {
   PurchaseOrder: 'PurchaseOrder',
   PurchaseOrderItem: 'PurchaseOrderItem',
   GoodsReceipt: 'GoodsReceipt',
-  GoodsReceiptItem: 'GoodsReceiptItem'
+  GoodsReceiptItem: 'GoodsReceiptItem',
+  SalesOrder: 'SalesOrder',
+  SalesOrderItem: 'SalesOrderItem',
+  StockReservation: 'StockReservation'
 };
 
 /**

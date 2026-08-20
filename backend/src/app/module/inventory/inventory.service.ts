@@ -343,7 +343,63 @@ const getProductMovements = async (
 };
 
 // ---------------------------------------------------------------------------
-// getInventorySummary — Get full inventory summary (total stock, allocated, unallocated, bin locations)
+// getAvailableStockTx — Reusable transaction-safe available stock calculation
+// Available Stock = InventoryStock - ACTIVE Reserved Stock
+// ---------------------------------------------------------------------------
+const getAvailableStockTx = async (
+    tx: Prisma.TransactionClient,
+    warehouseId: string,
+    productId: string,
+) => {
+    // 1. Fetch physical warehouse-level stock
+    const stock = await tx.inventoryStock.findUnique({
+        where: {
+            warehouseId_productId: { warehouseId, productId },
+        },
+    });
+    const inventoryStock = stock ? Number(stock.quantity) : 0;
+
+    // 2. Fetch sum of physical location allocations (bin stock)
+    const locAgg = await tx.inventoryLocationStock.aggregate({
+        where: {
+            warehouseId,
+            productId,
+            quantity: { gt: 0 },
+        },
+        _sum: {
+            quantity: true,
+        },
+    });
+    const allocatedStock = locAgg._sum.quantity ? Number(locAgg._sum.quantity) : 0;
+
+    // 3. Fetch sum of ACTIVE stock reservations
+    const resAgg = await tx.stockReservation.aggregate({
+        where: {
+            warehouseId,
+            productId,
+            status: "ACTIVE",
+        },
+        _sum: {
+            quantity: true,
+        },
+    });
+    const reservedStock = resAgg._sum.quantity ? Number(resAgg._sum.quantity) : 0;
+
+    // 4. Calculate available stock and unallocated stock
+    const availableStock = Math.max(0, inventoryStock - reservedStock);
+    const unallocatedStock = Math.max(0, inventoryStock - allocatedStock);
+
+    return {
+        inventoryStock,
+        allocatedStock,
+        reservedStock,
+        availableStock,
+        unallocatedStock,
+    };
+};
+
+// ---------------------------------------------------------------------------
+// getInventorySummary — Get full inventory summary (total stock, allocated, reserved, available, unallocated, bin locations)
 // ---------------------------------------------------------------------------
 
 const getInventorySummary = async (warehouseId: string, productId: string) => {
@@ -438,7 +494,20 @@ const getInventorySummary = async (warehouseId: string, productId: string) => {
         return bA.localeCompare(bB);
     });
 
-    // 6. Data Integrity Check: allocatedStock > inventoryStock
+    // 6. Fetch ACTIVE stock reservations
+    const resAgg = await prisma.stockReservation.aggregate({
+        where: {
+            warehouseId,
+            productId,
+            status: "ACTIVE",
+        },
+        _sum: {
+            quantity: true,
+        },
+    });
+    const reservedStock = resAgg._sum.quantity ? Number(resAgg._sum.quantity) : 0;
+
+    // 7. Data Integrity Check: allocatedStock > inventoryStock
     if (allocatedStock > inventoryStock) {
         throw new AppError(
             httpStatus.INTERNAL_SERVER_ERROR,
@@ -446,8 +515,9 @@ const getInventorySummary = async (warehouseId: string, productId: string) => {
         );
     }
 
-    // 7. Calculate unallocatedStock with negative stock protection
+    // 8. Calculate unallocatedStock & availableStock
     const unallocatedStock = Math.max(0, inventoryStock - allocatedStock);
+    const availableStock = Math.max(0, inventoryStock - reservedStock);
 
     return {
         product: {
@@ -463,6 +533,8 @@ const getInventorySummary = async (warehouseId: string, productId: string) => {
         },
         inventoryStock,
         allocatedStock,
+        reservedStock,
+        availableStock,
         unallocatedStock,
         locations,
     };
@@ -472,6 +544,7 @@ export const InventoryService = {
     getStockByWarehouse,
     getProductStock,
     getInventorySummary,
+    getAvailableStockTx,
     adjustStock,
     adjustStockTx,
     getStockMovements,
