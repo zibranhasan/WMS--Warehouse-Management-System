@@ -75,3 +75,19 @@ enum ReservationStatus {
   RELEASED
   CONSUMED
 }
+
+enum PickingStatus {
+  PENDING
+  ASSIGNED
+  IN_PROGRESS
+  PARTIALLY_PICKED
+  PICKED
+  CANCELLED
+}
+
+enum PickingItemStatus {
+  PENDING
+  PARTIALLY_PICKED
+  PICKED
+}
+

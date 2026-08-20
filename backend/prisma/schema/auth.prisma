@@ -48,6 +48,8 @@ model User {
   inventoryLocationMovements InventoryLocationMovement[]
   goodsReceipts              GoodsReceipt[]              @relation("GoodsReceivedBy")
   createdSalesOrders         SalesOrder[]                @relation("SOCreatedBy")
+  assignedPickingTasks       PickingTask[]               @relation("PickingTaskAssignedTo")
+  pickingAllocations         PickingAllocation[]
 
   @@map("users")
 }

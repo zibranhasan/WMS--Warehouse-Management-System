@@ -48,6 +48,8 @@ model User {
   inventoryLocationMovements InventoryLocationMovement[]
   goodsReceipts              GoodsReceipt[]              @relation("GoodsReceivedBy")
   createdSalesOrders         SalesOrder[]                @relation("SOCreatedBy")
+  assignedPickingTasks       PickingTask[]               @relation("PickingTaskAssignedTo")
+  pickingAllocations         PickingAllocation[]
 
   @@map("users")
 }
@@ -178,6 +180,21 @@ enum ReservationStatus {
   CONSUMED
 }
 
+enum PickingStatus {
+  PENDING
+  ASSIGNED
+  IN_PROGRESS
+  PARTIALLY_PICKED
+  PICKED
+  CANCELLED
+}
+
+enum PickingItemStatus {
+  PENDING
+  PARTIALLY_PICKED
+  PICKED
+}
+
 // =============================================================================
 // Inventory Models
 // =============================================================================
@@ -237,6 +254,8 @@ model InventoryLocationStock {
   warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
   bin       Bin       @relation(fields: [binId], references: [id], onDelete: Restrict)
   product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  pickingAllocations PickingAllocation[]
 
   @@unique([binId, productId])
   @@index([warehouseId])
@@ -306,6 +325,7 @@ model Warehouse {
   goodsReceipts              GoodsReceipt[]
   salesOrders                SalesOrder[]
   stockReservations          StockReservation[]
+  pickingTasks               PickingTask[]
 
   @@map("warehouses")
 }
@@ -376,6 +396,7 @@ model Product {
   goodsReceiptItems          GoodsReceiptItem[]
   salesOrderItems            SalesOrderItem[]
   stockReservations          StockReservation[]
+  pickingTaskItems           PickingTaskItem[]
 
   @@map("products")
 }
@@ -470,6 +491,72 @@ model Bin {
 
   @@unique([shelfId, code])
   @@map("bins")
+}
+
+// =============================================================================
+// Picking Task Models
+// =============================================================================
+
+model PickingTask {
+  id            String        @id @default(cuid())
+  pickingNumber String        @unique
+  salesOrderId  String        @unique
+  warehouseId   String
+  assignedToId  String?
+  status        PickingStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  salesOrder SalesOrder @relation(fields: [salesOrderId], references: [id], onDelete: Restrict)
+  warehouse  Warehouse  @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  assignedTo User?      @relation("PickingTaskAssignedTo", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  items PickingTaskItem[]
+
+  @@index([warehouseId, status])
+  @@map("picking_tasks")
+}
+
+model PickingTaskItem {
+  id               String            @id @default(cuid())
+  pickingTaskId    String
+  salesOrderItemId String
+  productId        String
+  requiredQuantity Decimal
+  pickedQuantity   Decimal           @default(0)
+  status           PickingItemStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pickingTask    PickingTask    @relation(fields: [pickingTaskId], references: [id], onDelete: Cascade)
+  salesOrderItem SalesOrderItem @relation(fields: [salesOrderItemId], references: [id], onDelete: Restrict)
+  product        Product        @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  allocations PickingAllocation[]
+
+  @@unique([pickingTaskId, salesOrderItemId])
+  @@index([pickingTaskId])
+  @@index([productId])
+  @@map("picking_task_items")
+}
+
+model PickingAllocation {
+  id                String   @id @default(cuid())
+  pickingTaskItemId String
+  locationStockId   String
+  quantity          Decimal
+  pickedById        String
+  pickedAt          DateTime @default(now())
+
+  pickingTaskItem PickingTaskItem        @relation(fields: [pickingTaskItemId], references: [id], onDelete: Cascade)
+  locationStock   InventoryLocationStock @relation(fields: [locationStockId], references: [id], onDelete: Restrict)
+  pickedBy        User                   @relation(fields: [pickedById], references: [id], onDelete: Restrict)
+
+  @@index([pickingTaskItemId])
+  @@index([locationStockId])
+  @@map("picking_allocations")
 }
 
 // =============================================================================
@@ -601,6 +688,7 @@ model SalesOrder {
 
   items        SalesOrderItem[]
   reservations StockReservation[]
+  pickingTask  PickingTask?
 
   @@map("sales_orders")
 }
@@ -620,7 +708,8 @@ model SalesOrderItem {
   salesOrder SalesOrder @relation(fields: [salesOrderId], references: [id], onDelete: Cascade)
   product    Product    @relation(fields: [productId], references: [id], onDelete: Restrict)
 
-  reservations StockReservation[]
+  reservations     StockReservation[]
+  pickingTaskItems PickingTaskItem[]
 
   @@unique([salesOrderId, productId])
   @@map("sales_order_items")

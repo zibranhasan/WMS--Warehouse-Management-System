@@ -58,6 +58,8 @@ model InventoryLocationStock {
   bin       Bin       @relation(fields: [binId], references: [id], onDelete: Restrict)
   product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
 
+  pickingAllocations PickingAllocation[]
+
   @@unique([binId, productId])
   @@index([warehouseId])
   @@index([binId])

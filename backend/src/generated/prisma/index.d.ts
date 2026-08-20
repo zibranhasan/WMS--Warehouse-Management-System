@@ -94,6 +94,21 @@ export type Shelf = $Result.DefaultSelection<Prisma.$ShelfPayload>
  */
 export type Bin = $Result.DefaultSelection<Prisma.$BinPayload>
 /**
+ * Model PickingTask
+ * 
+ */
+export type PickingTask = $Result.DefaultSelection<Prisma.$PickingTaskPayload>
+/**
+ * Model PickingTaskItem
+ * 
+ */
+export type PickingTaskItem = $Result.DefaultSelection<Prisma.$PickingTaskItemPayload>
+/**
+ * Model PickingAllocation
+ * 
+ */
+export type PickingAllocation = $Result.DefaultSelection<Prisma.$PickingAllocationPayload>
+/**
  * Model Supplier
  * 
  */
@@ -254,6 +269,27 @@ export const ReservationStatus: {
 
 export type ReservationStatus = (typeof ReservationStatus)[keyof typeof ReservationStatus]
 
+
+export const PickingStatus: {
+  PENDING: 'PENDING',
+  ASSIGNED: 'ASSIGNED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  PARTIALLY_PICKED: 'PARTIALLY_PICKED',
+  PICKED: 'PICKED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type PickingStatus = (typeof PickingStatus)[keyof typeof PickingStatus]
+
+
+export const PickingItemStatus: {
+  PENDING: 'PENDING',
+  PARTIALLY_PICKED: 'PARTIALLY_PICKED',
+  PICKED: 'PICKED'
+};
+
+export type PickingItemStatus = (typeof PickingItemStatus)[keyof typeof PickingItemStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -307,6 +343,14 @@ export const SalesOrderStatus: typeof $Enums.SalesOrderStatus
 export type ReservationStatus = $Enums.ReservationStatus
 
 export const ReservationStatus: typeof $Enums.ReservationStatus
+
+export type PickingStatus = $Enums.PickingStatus
+
+export const PickingStatus: typeof $Enums.PickingStatus
+
+export type PickingItemStatus = $Enums.PickingItemStatus
+
+export const PickingItemStatus: typeof $Enums.PickingItemStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -588,6 +632,36 @@ export class PrismaClient<
     * ```
     */
   get bin(): Prisma.BinDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pickingTask`: Exposes CRUD operations for the **PickingTask** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PickingTasks
+    * const pickingTasks = await prisma.pickingTask.findMany()
+    * ```
+    */
+  get pickingTask(): Prisma.PickingTaskDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pickingTaskItem`: Exposes CRUD operations for the **PickingTaskItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PickingTaskItems
+    * const pickingTaskItems = await prisma.pickingTaskItem.findMany()
+    * ```
+    */
+  get pickingTaskItem(): Prisma.PickingTaskItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pickingAllocation`: Exposes CRUD operations for the **PickingAllocation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PickingAllocations
+    * const pickingAllocations = await prisma.pickingAllocation.findMany()
+    * ```
+    */
+  get pickingAllocation(): Prisma.PickingAllocationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.supplier`: Exposes CRUD operations for the **Supplier** model.
@@ -1131,6 +1205,9 @@ export namespace Prisma {
     Aisle: 'Aisle',
     Shelf: 'Shelf',
     Bin: 'Bin',
+    PickingTask: 'PickingTask',
+    PickingTaskItem: 'PickingTaskItem',
+    PickingAllocation: 'PickingAllocation',
     Supplier: 'Supplier',
     PurchaseOrder: 'PurchaseOrder',
     PurchaseOrderItem: 'PurchaseOrderItem',
@@ -1154,7 +1231,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "inventoryStock" | "stockMovement" | "inventoryLocationStock" | "inventoryLocationMovement" | "warehouse" | "category" | "brand" | "product" | "zone" | "aisle" | "shelf" | "bin" | "supplier" | "purchaseOrder" | "purchaseOrderItem" | "goodsReceipt" | "goodsReceiptItem" | "salesOrder" | "salesOrderItem" | "stockReservation"
+      modelProps: "user" | "session" | "account" | "verification" | "inventoryStock" | "stockMovement" | "inventoryLocationStock" | "inventoryLocationMovement" | "warehouse" | "category" | "brand" | "product" | "zone" | "aisle" | "shelf" | "bin" | "pickingTask" | "pickingTaskItem" | "pickingAllocation" | "supplier" | "purchaseOrder" | "purchaseOrderItem" | "goodsReceipt" | "goodsReceiptItem" | "salesOrder" | "salesOrderItem" | "stockReservation"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2342,6 +2419,228 @@ export namespace Prisma {
           }
         }
       }
+      PickingTask: {
+        payload: Prisma.$PickingTaskPayload<ExtArgs>
+        fields: Prisma.PickingTaskFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PickingTaskFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PickingTaskFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskPayload>
+          }
+          findFirst: {
+            args: Prisma.PickingTaskFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PickingTaskFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskPayload>
+          }
+          findMany: {
+            args: Prisma.PickingTaskFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskPayload>[]
+          }
+          create: {
+            args: Prisma.PickingTaskCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskPayload>
+          }
+          createMany: {
+            args: Prisma.PickingTaskCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PickingTaskCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskPayload>[]
+          }
+          delete: {
+            args: Prisma.PickingTaskDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskPayload>
+          }
+          update: {
+            args: Prisma.PickingTaskUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskPayload>
+          }
+          deleteMany: {
+            args: Prisma.PickingTaskDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PickingTaskUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PickingTaskUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskPayload>[]
+          }
+          upsert: {
+            args: Prisma.PickingTaskUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskPayload>
+          }
+          aggregate: {
+            args: Prisma.PickingTaskAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePickingTask>
+          }
+          groupBy: {
+            args: Prisma.PickingTaskGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PickingTaskGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PickingTaskCountArgs<ExtArgs>
+            result: $Utils.Optional<PickingTaskCountAggregateOutputType> | number
+          }
+        }
+      }
+      PickingTaskItem: {
+        payload: Prisma.$PickingTaskItemPayload<ExtArgs>
+        fields: Prisma.PickingTaskItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PickingTaskItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PickingTaskItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskItemPayload>
+          }
+          findFirst: {
+            args: Prisma.PickingTaskItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PickingTaskItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskItemPayload>
+          }
+          findMany: {
+            args: Prisma.PickingTaskItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskItemPayload>[]
+          }
+          create: {
+            args: Prisma.PickingTaskItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskItemPayload>
+          }
+          createMany: {
+            args: Prisma.PickingTaskItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PickingTaskItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskItemPayload>[]
+          }
+          delete: {
+            args: Prisma.PickingTaskItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskItemPayload>
+          }
+          update: {
+            args: Prisma.PickingTaskItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.PickingTaskItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PickingTaskItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PickingTaskItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.PickingTaskItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingTaskItemPayload>
+          }
+          aggregate: {
+            args: Prisma.PickingTaskItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePickingTaskItem>
+          }
+          groupBy: {
+            args: Prisma.PickingTaskItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PickingTaskItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PickingTaskItemCountArgs<ExtArgs>
+            result: $Utils.Optional<PickingTaskItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      PickingAllocation: {
+        payload: Prisma.$PickingAllocationPayload<ExtArgs>
+        fields: Prisma.PickingAllocationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PickingAllocationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingAllocationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PickingAllocationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingAllocationPayload>
+          }
+          findFirst: {
+            args: Prisma.PickingAllocationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingAllocationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PickingAllocationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingAllocationPayload>
+          }
+          findMany: {
+            args: Prisma.PickingAllocationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingAllocationPayload>[]
+          }
+          create: {
+            args: Prisma.PickingAllocationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingAllocationPayload>
+          }
+          createMany: {
+            args: Prisma.PickingAllocationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PickingAllocationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingAllocationPayload>[]
+          }
+          delete: {
+            args: Prisma.PickingAllocationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingAllocationPayload>
+          }
+          update: {
+            args: Prisma.PickingAllocationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingAllocationPayload>
+          }
+          deleteMany: {
+            args: Prisma.PickingAllocationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PickingAllocationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PickingAllocationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingAllocationPayload>[]
+          }
+          upsert: {
+            args: Prisma.PickingAllocationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PickingAllocationPayload>
+          }
+          aggregate: {
+            args: Prisma.PickingAllocationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePickingAllocation>
+          }
+          groupBy: {
+            args: Prisma.PickingAllocationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PickingAllocationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PickingAllocationCountArgs<ExtArgs>
+            result: $Utils.Optional<PickingAllocationCountAggregateOutputType> | number
+          }
+        }
+      }
       Supplier: {
         payload: Prisma.$SupplierPayload<ExtArgs>
         fields: Prisma.SupplierFieldRefs
@@ -3073,6 +3372,9 @@ export namespace Prisma {
     aisle?: AisleOmit
     shelf?: ShelfOmit
     bin?: BinOmit
+    pickingTask?: PickingTaskOmit
+    pickingTaskItem?: PickingTaskItemOmit
+    pickingAllocation?: PickingAllocationOmit
     supplier?: SupplierOmit
     purchaseOrder?: PurchaseOrderOmit
     purchaseOrderItem?: PurchaseOrderItemOmit
@@ -3169,6 +3471,8 @@ export namespace Prisma {
     inventoryLocationMovements: number
     goodsReceipts: number
     createdSalesOrders: number
+    assignedPickingTasks: number
+    pickingAllocations: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3180,6 +3484,8 @@ export namespace Prisma {
     inventoryLocationMovements?: boolean | UserCountOutputTypeCountInventoryLocationMovementsArgs
     goodsReceipts?: boolean | UserCountOutputTypeCountGoodsReceiptsArgs
     createdSalesOrders?: boolean | UserCountOutputTypeCountCreatedSalesOrdersArgs
+    assignedPickingTasks?: boolean | UserCountOutputTypeCountAssignedPickingTasksArgs
+    pickingAllocations?: boolean | UserCountOutputTypeCountPickingAllocationsArgs
   }
 
   // Custom InputTypes
@@ -3249,6 +3555,51 @@ export namespace Prisma {
     where?: SalesOrderWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAssignedPickingTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PickingTaskWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPickingAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PickingAllocationWhereInput
+  }
+
+
+  /**
+   * Count Type InventoryLocationStockCountOutputType
+   */
+
+  export type InventoryLocationStockCountOutputType = {
+    pickingAllocations: number
+  }
+
+  export type InventoryLocationStockCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    pickingAllocations?: boolean | InventoryLocationStockCountOutputTypeCountPickingAllocationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * InventoryLocationStockCountOutputType without action
+   */
+  export type InventoryLocationStockCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryLocationStockCountOutputType
+     */
+    select?: InventoryLocationStockCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * InventoryLocationStockCountOutputType without action
+   */
+  export type InventoryLocationStockCountOutputTypeCountPickingAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PickingAllocationWhereInput
+  }
+
 
   /**
    * Count Type WarehouseCountOutputType
@@ -3265,6 +3616,7 @@ export namespace Prisma {
     goodsReceipts: number
     salesOrders: number
     stockReservations: number
+    pickingTasks: number
   }
 
   export type WarehouseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3278,6 +3630,7 @@ export namespace Prisma {
     goodsReceipts?: boolean | WarehouseCountOutputTypeCountGoodsReceiptsArgs
     salesOrders?: boolean | WarehouseCountOutputTypeCountSalesOrdersArgs
     stockReservations?: boolean | WarehouseCountOutputTypeCountStockReservationsArgs
+    pickingTasks?: boolean | WarehouseCountOutputTypeCountPickingTasksArgs
   }
 
   // Custom InputTypes
@@ -3361,6 +3714,13 @@ export namespace Prisma {
     where?: StockReservationWhereInput
   }
 
+  /**
+   * WarehouseCountOutputType without action
+   */
+  export type WarehouseCountOutputTypeCountPickingTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PickingTaskWhereInput
+  }
+
 
   /**
    * Count Type CategoryCountOutputType
@@ -3437,6 +3797,7 @@ export namespace Prisma {
     goodsReceiptItems: number
     salesOrderItems: number
     stockReservations: number
+    pickingTaskItems: number
   }
 
   export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3448,6 +3809,7 @@ export namespace Prisma {
     goodsReceiptItems?: boolean | ProductCountOutputTypeCountGoodsReceiptItemsArgs
     salesOrderItems?: boolean | ProductCountOutputTypeCountSalesOrderItemsArgs
     stockReservations?: boolean | ProductCountOutputTypeCountStockReservationsArgs
+    pickingTaskItems?: boolean | ProductCountOutputTypeCountPickingTaskItemsArgs
   }
 
   // Custom InputTypes
@@ -3515,6 +3877,13 @@ export namespace Prisma {
    */
   export type ProductCountOutputTypeCountStockReservationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: StockReservationWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountPickingTaskItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PickingTaskItemWhereInput
   }
 
 
@@ -3657,6 +4026,68 @@ export namespace Prisma {
    */
   export type BinCountOutputTypeCountToLocationMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InventoryLocationMovementWhereInput
+  }
+
+
+  /**
+   * Count Type PickingTaskCountOutputType
+   */
+
+  export type PickingTaskCountOutputType = {
+    items: number
+  }
+
+  export type PickingTaskCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | PickingTaskCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PickingTaskCountOutputType without action
+   */
+  export type PickingTaskCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskCountOutputType
+     */
+    select?: PickingTaskCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PickingTaskCountOutputType without action
+   */
+  export type PickingTaskCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PickingTaskItemWhereInput
+  }
+
+
+  /**
+   * Count Type PickingTaskItemCountOutputType
+   */
+
+  export type PickingTaskItemCountOutputType = {
+    allocations: number
+  }
+
+  export type PickingTaskItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    allocations?: boolean | PickingTaskItemCountOutputTypeCountAllocationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PickingTaskItemCountOutputType without action
+   */
+  export type PickingTaskItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItemCountOutputType
+     */
+    select?: PickingTaskItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PickingTaskItemCountOutputType without action
+   */
+  export type PickingTaskItemCountOutputTypeCountAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PickingAllocationWhereInput
   }
 
 
@@ -3808,10 +4239,12 @@ export namespace Prisma {
 
   export type SalesOrderItemCountOutputType = {
     reservations: number
+    pickingTaskItems: number
   }
 
   export type SalesOrderItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     reservations?: boolean | SalesOrderItemCountOutputTypeCountReservationsArgs
+    pickingTaskItems?: boolean | SalesOrderItemCountOutputTypeCountPickingTaskItemsArgs
   }
 
   // Custom InputTypes
@@ -3830,6 +4263,13 @@ export namespace Prisma {
    */
   export type SalesOrderItemCountOutputTypeCountReservationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: StockReservationWhereInput
+  }
+
+  /**
+   * SalesOrderItemCountOutputType without action
+   */
+  export type SalesOrderItemCountOutputTypeCountPickingTaskItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PickingTaskItemWhereInput
   }
 
 
@@ -4074,6 +4514,8 @@ export namespace Prisma {
     inventoryLocationMovements?: boolean | User$inventoryLocationMovementsArgs<ExtArgs>
     goodsReceipts?: boolean | User$goodsReceiptsArgs<ExtArgs>
     createdSalesOrders?: boolean | User$createdSalesOrdersArgs<ExtArgs>
+    assignedPickingTasks?: boolean | User$assignedPickingTasksArgs<ExtArgs>
+    pickingAllocations?: boolean | User$pickingAllocationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4138,6 +4580,8 @@ export namespace Prisma {
     inventoryLocationMovements?: boolean | User$inventoryLocationMovementsArgs<ExtArgs>
     goodsReceipts?: boolean | User$goodsReceiptsArgs<ExtArgs>
     createdSalesOrders?: boolean | User$createdSalesOrdersArgs<ExtArgs>
+    assignedPickingTasks?: boolean | User$assignedPickingTasksArgs<ExtArgs>
+    pickingAllocations?: boolean | User$pickingAllocationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4159,6 +4603,8 @@ export namespace Prisma {
       inventoryLocationMovements: Prisma.$InventoryLocationMovementPayload<ExtArgs>[]
       goodsReceipts: Prisma.$GoodsReceiptPayload<ExtArgs>[]
       createdSalesOrders: Prisma.$SalesOrderPayload<ExtArgs>[]
+      assignedPickingTasks: Prisma.$PickingTaskPayload<ExtArgs>[]
+      pickingAllocations: Prisma.$PickingAllocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4577,6 +5023,8 @@ export namespace Prisma {
     inventoryLocationMovements<T extends User$inventoryLocationMovementsArgs<ExtArgs> = {}>(args?: Subset<T, User$inventoryLocationMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryLocationMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     goodsReceipts<T extends User$goodsReceiptsArgs<ExtArgs> = {}>(args?: Subset<T, User$goodsReceiptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoodsReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdSalesOrders<T extends User$createdSalesOrdersArgs<ExtArgs> = {}>(args?: Subset<T, User$createdSalesOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    assignedPickingTasks<T extends User$assignedPickingTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedPickingTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pickingAllocations<T extends User$pickingAllocationsArgs<ExtArgs> = {}>(args?: Subset<T, User$pickingAllocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5228,6 +5676,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SalesOrderScalarFieldEnum | SalesOrderScalarFieldEnum[]
+  }
+
+  /**
+   * User.assignedPickingTasks
+   */
+  export type User$assignedPickingTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+    where?: PickingTaskWhereInput
+    orderBy?: PickingTaskOrderByWithRelationInput | PickingTaskOrderByWithRelationInput[]
+    cursor?: PickingTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PickingTaskScalarFieldEnum | PickingTaskScalarFieldEnum[]
+  }
+
+  /**
+   * User.pickingAllocations
+   */
+  export type User$pickingAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
+    where?: PickingAllocationWhereInput
+    orderBy?: PickingAllocationOrderByWithRelationInput | PickingAllocationOrderByWithRelationInput[]
+    cursor?: PickingAllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PickingAllocationScalarFieldEnum | PickingAllocationScalarFieldEnum[]
   }
 
   /**
@@ -11084,6 +11580,8 @@ export namespace Prisma {
     warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
     bin?: boolean | BinDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    pickingAllocations?: boolean | InventoryLocationStock$pickingAllocationsArgs<ExtArgs>
+    _count?: boolean | InventoryLocationStockCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["inventoryLocationStock"]>
 
   export type InventoryLocationStockSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11127,6 +11625,8 @@ export namespace Prisma {
     warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
     bin?: boolean | BinDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    pickingAllocations?: boolean | InventoryLocationStock$pickingAllocationsArgs<ExtArgs>
+    _count?: boolean | InventoryLocationStockCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type InventoryLocationStockIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
@@ -11145,6 +11645,7 @@ export namespace Prisma {
       warehouse: Prisma.$WarehousePayload<ExtArgs>
       bin: Prisma.$BinPayload<ExtArgs>
       product: Prisma.$ProductPayload<ExtArgs>
+      pickingAllocations: Prisma.$PickingAllocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11551,6 +12052,7 @@ export namespace Prisma {
     warehouse<T extends WarehouseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WarehouseDefaultArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     bin<T extends BinDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BinDefaultArgs<ExtArgs>>): Prisma__BinClient<$Result.GetResult<Prisma.$BinPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    pickingAllocations<T extends InventoryLocationStock$pickingAllocationsArgs<ExtArgs> = {}>(args?: Subset<T, InventoryLocationStock$pickingAllocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11985,6 +12487,30 @@ export namespace Prisma {
      * Limit how many InventoryLocationStocks to delete.
      */
     limit?: number
+  }
+
+  /**
+   * InventoryLocationStock.pickingAllocations
+   */
+  export type InventoryLocationStock$pickingAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
+    where?: PickingAllocationWhereInput
+    orderBy?: PickingAllocationOrderByWithRelationInput | PickingAllocationOrderByWithRelationInput[]
+    cursor?: PickingAllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PickingAllocationScalarFieldEnum | PickingAllocationScalarFieldEnum[]
   }
 
   /**
@@ -13484,6 +14010,7 @@ export namespace Prisma {
     goodsReceipts?: boolean | Warehouse$goodsReceiptsArgs<ExtArgs>
     salesOrders?: boolean | Warehouse$salesOrdersArgs<ExtArgs>
     stockReservations?: boolean | Warehouse$stockReservationsArgs<ExtArgs>
+    pickingTasks?: boolean | Warehouse$pickingTasksArgs<ExtArgs>
     _count?: boolean | WarehouseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["warehouse"]>
 
@@ -13538,6 +14065,7 @@ export namespace Prisma {
     goodsReceipts?: boolean | Warehouse$goodsReceiptsArgs<ExtArgs>
     salesOrders?: boolean | Warehouse$salesOrdersArgs<ExtArgs>
     stockReservations?: boolean | Warehouse$stockReservationsArgs<ExtArgs>
+    pickingTasks?: boolean | Warehouse$pickingTasksArgs<ExtArgs>
     _count?: boolean | WarehouseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WarehouseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -13556,6 +14084,7 @@ export namespace Prisma {
       goodsReceipts: Prisma.$GoodsReceiptPayload<ExtArgs>[]
       salesOrders: Prisma.$SalesOrderPayload<ExtArgs>[]
       stockReservations: Prisma.$StockReservationPayload<ExtArgs>[]
+      pickingTasks: Prisma.$PickingTaskPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13972,6 +14501,7 @@ export namespace Prisma {
     goodsReceipts<T extends Warehouse$goodsReceiptsArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$goodsReceiptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoodsReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesOrders<T extends Warehouse$salesOrdersArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$salesOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     stockReservations<T extends Warehouse$stockReservationsArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$stockReservationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockReservationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pickingTasks<T extends Warehouse$pickingTasksArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$pickingTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14641,6 +15171,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: StockReservationScalarFieldEnum | StockReservationScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse.pickingTasks
+   */
+  export type Warehouse$pickingTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+    where?: PickingTaskWhereInput
+    orderBy?: PickingTaskOrderByWithRelationInput | PickingTaskOrderByWithRelationInput[]
+    cursor?: PickingTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PickingTaskScalarFieldEnum | PickingTaskScalarFieldEnum[]
   }
 
   /**
@@ -17162,6 +17716,7 @@ export namespace Prisma {
     goodsReceiptItems?: boolean | Product$goodsReceiptItemsArgs<ExtArgs>
     salesOrderItems?: boolean | Product$salesOrderItemsArgs<ExtArgs>
     stockReservations?: boolean | Product$stockReservationsArgs<ExtArgs>
+    pickingTaskItems?: boolean | Product$pickingTaskItemsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -17232,6 +17787,7 @@ export namespace Prisma {
     goodsReceiptItems?: boolean | Product$goodsReceiptItemsArgs<ExtArgs>
     salesOrderItems?: boolean | Product$salesOrderItemsArgs<ExtArgs>
     stockReservations?: boolean | Product$stockReservationsArgs<ExtArgs>
+    pickingTaskItems?: boolean | Product$pickingTaskItemsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17256,6 +17812,7 @@ export namespace Prisma {
       goodsReceiptItems: Prisma.$GoodsReceiptItemPayload<ExtArgs>[]
       salesOrderItems: Prisma.$SalesOrderItemPayload<ExtArgs>[]
       stockReservations: Prisma.$StockReservationPayload<ExtArgs>[]
+      pickingTaskItems: Prisma.$PickingTaskItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17676,6 +18233,7 @@ export namespace Prisma {
     goodsReceiptItems<T extends Product$goodsReceiptItemsArgs<ExtArgs> = {}>(args?: Subset<T, Product$goodsReceiptItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoodsReceiptItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesOrderItems<T extends Product$salesOrderItemsArgs<ExtArgs> = {}>(args?: Subset<T, Product$salesOrderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesOrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     stockReservations<T extends Product$stockReservationsArgs<ExtArgs> = {}>(args?: Subset<T, Product$stockReservationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockReservationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pickingTaskItems<T extends Product$pickingTaskItemsArgs<ExtArgs> = {}>(args?: Subset<T, Product$pickingTaskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18328,6 +18886,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: StockReservationScalarFieldEnum | StockReservationScalarFieldEnum[]
+  }
+
+  /**
+   * Product.pickingTaskItems
+   */
+  export type Product$pickingTaskItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+    where?: PickingTaskItemWhereInput
+    orderBy?: PickingTaskItemOrderByWithRelationInput | PickingTaskItemOrderByWithRelationInput[]
+    cursor?: PickingTaskItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PickingTaskItemScalarFieldEnum | PickingTaskItemScalarFieldEnum[]
   }
 
   /**
@@ -23222,6 +23804,3498 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: BinInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PickingTask
+   */
+
+  export type AggregatePickingTask = {
+    _count: PickingTaskCountAggregateOutputType | null
+    _min: PickingTaskMinAggregateOutputType | null
+    _max: PickingTaskMaxAggregateOutputType | null
+  }
+
+  export type PickingTaskMinAggregateOutputType = {
+    id: string | null
+    pickingNumber: string | null
+    salesOrderId: string | null
+    warehouseId: string | null
+    assignedToId: string | null
+    status: $Enums.PickingStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PickingTaskMaxAggregateOutputType = {
+    id: string | null
+    pickingNumber: string | null
+    salesOrderId: string | null
+    warehouseId: string | null
+    assignedToId: string | null
+    status: $Enums.PickingStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PickingTaskCountAggregateOutputType = {
+    id: number
+    pickingNumber: number
+    salesOrderId: number
+    warehouseId: number
+    assignedToId: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PickingTaskMinAggregateInputType = {
+    id?: true
+    pickingNumber?: true
+    salesOrderId?: true
+    warehouseId?: true
+    assignedToId?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PickingTaskMaxAggregateInputType = {
+    id?: true
+    pickingNumber?: true
+    salesOrderId?: true
+    warehouseId?: true
+    assignedToId?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PickingTaskCountAggregateInputType = {
+    id?: true
+    pickingNumber?: true
+    salesOrderId?: true
+    warehouseId?: true
+    assignedToId?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PickingTaskAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PickingTask to aggregate.
+     */
+    where?: PickingTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PickingTasks to fetch.
+     */
+    orderBy?: PickingTaskOrderByWithRelationInput | PickingTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PickingTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PickingTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PickingTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PickingTasks
+    **/
+    _count?: true | PickingTaskCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PickingTaskMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PickingTaskMaxAggregateInputType
+  }
+
+  export type GetPickingTaskAggregateType<T extends PickingTaskAggregateArgs> = {
+        [P in keyof T & keyof AggregatePickingTask]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePickingTask[P]>
+      : GetScalarType<T[P], AggregatePickingTask[P]>
+  }
+
+
+
+
+  export type PickingTaskGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PickingTaskWhereInput
+    orderBy?: PickingTaskOrderByWithAggregationInput | PickingTaskOrderByWithAggregationInput[]
+    by: PickingTaskScalarFieldEnum[] | PickingTaskScalarFieldEnum
+    having?: PickingTaskScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PickingTaskCountAggregateInputType | true
+    _min?: PickingTaskMinAggregateInputType
+    _max?: PickingTaskMaxAggregateInputType
+  }
+
+  export type PickingTaskGroupByOutputType = {
+    id: string
+    pickingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    assignedToId: string | null
+    status: $Enums.PickingStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: PickingTaskCountAggregateOutputType | null
+    _min: PickingTaskMinAggregateOutputType | null
+    _max: PickingTaskMaxAggregateOutputType | null
+  }
+
+  type GetPickingTaskGroupByPayload<T extends PickingTaskGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PickingTaskGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PickingTaskGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PickingTaskGroupByOutputType[P]>
+            : GetScalarType<T[P], PickingTaskGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PickingTaskSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pickingNumber?: boolean
+    salesOrderId?: boolean
+    warehouseId?: boolean
+    assignedToId?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    assignedTo?: boolean | PickingTask$assignedToArgs<ExtArgs>
+    items?: boolean | PickingTask$itemsArgs<ExtArgs>
+    _count?: boolean | PickingTaskCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pickingTask"]>
+
+  export type PickingTaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pickingNumber?: boolean
+    salesOrderId?: boolean
+    warehouseId?: boolean
+    assignedToId?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    assignedTo?: boolean | PickingTask$assignedToArgs<ExtArgs>
+  }, ExtArgs["result"]["pickingTask"]>
+
+  export type PickingTaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pickingNumber?: boolean
+    salesOrderId?: boolean
+    warehouseId?: boolean
+    assignedToId?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    assignedTo?: boolean | PickingTask$assignedToArgs<ExtArgs>
+  }, ExtArgs["result"]["pickingTask"]>
+
+  export type PickingTaskSelectScalar = {
+    id?: boolean
+    pickingNumber?: boolean
+    salesOrderId?: boolean
+    warehouseId?: boolean
+    assignedToId?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PickingTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pickingNumber" | "salesOrderId" | "warehouseId" | "assignedToId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["pickingTask"]>
+  export type PickingTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    assignedTo?: boolean | PickingTask$assignedToArgs<ExtArgs>
+    items?: boolean | PickingTask$itemsArgs<ExtArgs>
+    _count?: boolean | PickingTaskCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PickingTaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    assignedTo?: boolean | PickingTask$assignedToArgs<ExtArgs>
+  }
+  export type PickingTaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    assignedTo?: boolean | PickingTask$assignedToArgs<ExtArgs>
+  }
+
+  export type $PickingTaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PickingTask"
+    objects: {
+      salesOrder: Prisma.$SalesOrderPayload<ExtArgs>
+      warehouse: Prisma.$WarehousePayload<ExtArgs>
+      assignedTo: Prisma.$UserPayload<ExtArgs> | null
+      items: Prisma.$PickingTaskItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      pickingNumber: string
+      salesOrderId: string
+      warehouseId: string
+      assignedToId: string | null
+      status: $Enums.PickingStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["pickingTask"]>
+    composites: {}
+  }
+
+  type PickingTaskGetPayload<S extends boolean | null | undefined | PickingTaskDefaultArgs> = $Result.GetResult<Prisma.$PickingTaskPayload, S>
+
+  type PickingTaskCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PickingTaskFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PickingTaskCountAggregateInputType | true
+    }
+
+  export interface PickingTaskDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PickingTask'], meta: { name: 'PickingTask' } }
+    /**
+     * Find zero or one PickingTask that matches the filter.
+     * @param {PickingTaskFindUniqueArgs} args - Arguments to find a PickingTask
+     * @example
+     * // Get one PickingTask
+     * const pickingTask = await prisma.pickingTask.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PickingTaskFindUniqueArgs>(args: SelectSubset<T, PickingTaskFindUniqueArgs<ExtArgs>>): Prisma__PickingTaskClient<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PickingTask that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PickingTaskFindUniqueOrThrowArgs} args - Arguments to find a PickingTask
+     * @example
+     * // Get one PickingTask
+     * const pickingTask = await prisma.pickingTask.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PickingTaskFindUniqueOrThrowArgs>(args: SelectSubset<T, PickingTaskFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PickingTaskClient<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PickingTask that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskFindFirstArgs} args - Arguments to find a PickingTask
+     * @example
+     * // Get one PickingTask
+     * const pickingTask = await prisma.pickingTask.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PickingTaskFindFirstArgs>(args?: SelectSubset<T, PickingTaskFindFirstArgs<ExtArgs>>): Prisma__PickingTaskClient<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PickingTask that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskFindFirstOrThrowArgs} args - Arguments to find a PickingTask
+     * @example
+     * // Get one PickingTask
+     * const pickingTask = await prisma.pickingTask.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PickingTaskFindFirstOrThrowArgs>(args?: SelectSubset<T, PickingTaskFindFirstOrThrowArgs<ExtArgs>>): Prisma__PickingTaskClient<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PickingTasks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PickingTasks
+     * const pickingTasks = await prisma.pickingTask.findMany()
+     * 
+     * // Get first 10 PickingTasks
+     * const pickingTasks = await prisma.pickingTask.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pickingTaskWithIdOnly = await prisma.pickingTask.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PickingTaskFindManyArgs>(args?: SelectSubset<T, PickingTaskFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PickingTask.
+     * @param {PickingTaskCreateArgs} args - Arguments to create a PickingTask.
+     * @example
+     * // Create one PickingTask
+     * const PickingTask = await prisma.pickingTask.create({
+     *   data: {
+     *     // ... data to create a PickingTask
+     *   }
+     * })
+     * 
+     */
+    create<T extends PickingTaskCreateArgs>(args: SelectSubset<T, PickingTaskCreateArgs<ExtArgs>>): Prisma__PickingTaskClient<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PickingTasks.
+     * @param {PickingTaskCreateManyArgs} args - Arguments to create many PickingTasks.
+     * @example
+     * // Create many PickingTasks
+     * const pickingTask = await prisma.pickingTask.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PickingTaskCreateManyArgs>(args?: SelectSubset<T, PickingTaskCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PickingTasks and returns the data saved in the database.
+     * @param {PickingTaskCreateManyAndReturnArgs} args - Arguments to create many PickingTasks.
+     * @example
+     * // Create many PickingTasks
+     * const pickingTask = await prisma.pickingTask.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PickingTasks and only return the `id`
+     * const pickingTaskWithIdOnly = await prisma.pickingTask.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PickingTaskCreateManyAndReturnArgs>(args?: SelectSubset<T, PickingTaskCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PickingTask.
+     * @param {PickingTaskDeleteArgs} args - Arguments to delete one PickingTask.
+     * @example
+     * // Delete one PickingTask
+     * const PickingTask = await prisma.pickingTask.delete({
+     *   where: {
+     *     // ... filter to delete one PickingTask
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PickingTaskDeleteArgs>(args: SelectSubset<T, PickingTaskDeleteArgs<ExtArgs>>): Prisma__PickingTaskClient<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PickingTask.
+     * @param {PickingTaskUpdateArgs} args - Arguments to update one PickingTask.
+     * @example
+     * // Update one PickingTask
+     * const pickingTask = await prisma.pickingTask.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PickingTaskUpdateArgs>(args: SelectSubset<T, PickingTaskUpdateArgs<ExtArgs>>): Prisma__PickingTaskClient<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PickingTasks.
+     * @param {PickingTaskDeleteManyArgs} args - Arguments to filter PickingTasks to delete.
+     * @example
+     * // Delete a few PickingTasks
+     * const { count } = await prisma.pickingTask.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PickingTaskDeleteManyArgs>(args?: SelectSubset<T, PickingTaskDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PickingTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PickingTasks
+     * const pickingTask = await prisma.pickingTask.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PickingTaskUpdateManyArgs>(args: SelectSubset<T, PickingTaskUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PickingTasks and returns the data updated in the database.
+     * @param {PickingTaskUpdateManyAndReturnArgs} args - Arguments to update many PickingTasks.
+     * @example
+     * // Update many PickingTasks
+     * const pickingTask = await prisma.pickingTask.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PickingTasks and only return the `id`
+     * const pickingTaskWithIdOnly = await prisma.pickingTask.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PickingTaskUpdateManyAndReturnArgs>(args: SelectSubset<T, PickingTaskUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PickingTask.
+     * @param {PickingTaskUpsertArgs} args - Arguments to update or create a PickingTask.
+     * @example
+     * // Update or create a PickingTask
+     * const pickingTask = await prisma.pickingTask.upsert({
+     *   create: {
+     *     // ... data to create a PickingTask
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PickingTask we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PickingTaskUpsertArgs>(args: SelectSubset<T, PickingTaskUpsertArgs<ExtArgs>>): Prisma__PickingTaskClient<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PickingTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskCountArgs} args - Arguments to filter PickingTasks to count.
+     * @example
+     * // Count the number of PickingTasks
+     * const count = await prisma.pickingTask.count({
+     *   where: {
+     *     // ... the filter for the PickingTasks we want to count
+     *   }
+     * })
+    **/
+    count<T extends PickingTaskCountArgs>(
+      args?: Subset<T, PickingTaskCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PickingTaskCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PickingTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PickingTaskAggregateArgs>(args: Subset<T, PickingTaskAggregateArgs>): Prisma.PrismaPromise<GetPickingTaskAggregateType<T>>
+
+    /**
+     * Group by PickingTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PickingTaskGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PickingTaskGroupByArgs['orderBy'] }
+        : { orderBy?: PickingTaskGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PickingTaskGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPickingTaskGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PickingTask model
+   */
+  readonly fields: PickingTaskFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PickingTask.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PickingTaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    salesOrder<T extends SalesOrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrderDefaultArgs<ExtArgs>>): Prisma__SalesOrderClient<$Result.GetResult<Prisma.$SalesOrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    warehouse<T extends WarehouseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WarehouseDefaultArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    assignedTo<T extends PickingTask$assignedToArgs<ExtArgs> = {}>(args?: Subset<T, PickingTask$assignedToArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    items<T extends PickingTask$itemsArgs<ExtArgs> = {}>(args?: Subset<T, PickingTask$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PickingTask model
+   */
+  interface PickingTaskFieldRefs {
+    readonly id: FieldRef<"PickingTask", 'String'>
+    readonly pickingNumber: FieldRef<"PickingTask", 'String'>
+    readonly salesOrderId: FieldRef<"PickingTask", 'String'>
+    readonly warehouseId: FieldRef<"PickingTask", 'String'>
+    readonly assignedToId: FieldRef<"PickingTask", 'String'>
+    readonly status: FieldRef<"PickingTask", 'PickingStatus'>
+    readonly createdAt: FieldRef<"PickingTask", 'DateTime'>
+    readonly updatedAt: FieldRef<"PickingTask", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PickingTask findUnique
+   */
+  export type PickingTaskFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingTask to fetch.
+     */
+    where: PickingTaskWhereUniqueInput
+  }
+
+  /**
+   * PickingTask findUniqueOrThrow
+   */
+  export type PickingTaskFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingTask to fetch.
+     */
+    where: PickingTaskWhereUniqueInput
+  }
+
+  /**
+   * PickingTask findFirst
+   */
+  export type PickingTaskFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingTask to fetch.
+     */
+    where?: PickingTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PickingTasks to fetch.
+     */
+    orderBy?: PickingTaskOrderByWithRelationInput | PickingTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PickingTasks.
+     */
+    cursor?: PickingTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PickingTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PickingTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PickingTasks.
+     */
+    distinct?: PickingTaskScalarFieldEnum | PickingTaskScalarFieldEnum[]
+  }
+
+  /**
+   * PickingTask findFirstOrThrow
+   */
+  export type PickingTaskFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingTask to fetch.
+     */
+    where?: PickingTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PickingTasks to fetch.
+     */
+    orderBy?: PickingTaskOrderByWithRelationInput | PickingTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PickingTasks.
+     */
+    cursor?: PickingTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PickingTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PickingTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PickingTasks.
+     */
+    distinct?: PickingTaskScalarFieldEnum | PickingTaskScalarFieldEnum[]
+  }
+
+  /**
+   * PickingTask findMany
+   */
+  export type PickingTaskFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingTasks to fetch.
+     */
+    where?: PickingTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PickingTasks to fetch.
+     */
+    orderBy?: PickingTaskOrderByWithRelationInput | PickingTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PickingTasks.
+     */
+    cursor?: PickingTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PickingTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PickingTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PickingTasks.
+     */
+    distinct?: PickingTaskScalarFieldEnum | PickingTaskScalarFieldEnum[]
+  }
+
+  /**
+   * PickingTask create
+   */
+  export type PickingTaskCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PickingTask.
+     */
+    data: XOR<PickingTaskCreateInput, PickingTaskUncheckedCreateInput>
+  }
+
+  /**
+   * PickingTask createMany
+   */
+  export type PickingTaskCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PickingTasks.
+     */
+    data: PickingTaskCreateManyInput | PickingTaskCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PickingTask createManyAndReturn
+   */
+  export type PickingTaskCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * The data used to create many PickingTasks.
+     */
+    data: PickingTaskCreateManyInput | PickingTaskCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PickingTask update
+   */
+  export type PickingTaskUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PickingTask.
+     */
+    data: XOR<PickingTaskUpdateInput, PickingTaskUncheckedUpdateInput>
+    /**
+     * Choose, which PickingTask to update.
+     */
+    where: PickingTaskWhereUniqueInput
+  }
+
+  /**
+   * PickingTask updateMany
+   */
+  export type PickingTaskUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PickingTasks.
+     */
+    data: XOR<PickingTaskUpdateManyMutationInput, PickingTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which PickingTasks to update
+     */
+    where?: PickingTaskWhereInput
+    /**
+     * Limit how many PickingTasks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PickingTask updateManyAndReturn
+   */
+  export type PickingTaskUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * The data used to update PickingTasks.
+     */
+    data: XOR<PickingTaskUpdateManyMutationInput, PickingTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which PickingTasks to update
+     */
+    where?: PickingTaskWhereInput
+    /**
+     * Limit how many PickingTasks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PickingTask upsert
+   */
+  export type PickingTaskUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PickingTask to update in case it exists.
+     */
+    where: PickingTaskWhereUniqueInput
+    /**
+     * In case the PickingTask found by the `where` argument doesn't exist, create a new PickingTask with this data.
+     */
+    create: XOR<PickingTaskCreateInput, PickingTaskUncheckedCreateInput>
+    /**
+     * In case the PickingTask was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PickingTaskUpdateInput, PickingTaskUncheckedUpdateInput>
+  }
+
+  /**
+   * PickingTask delete
+   */
+  export type PickingTaskDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+    /**
+     * Filter which PickingTask to delete.
+     */
+    where: PickingTaskWhereUniqueInput
+  }
+
+  /**
+   * PickingTask deleteMany
+   */
+  export type PickingTaskDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PickingTasks to delete
+     */
+    where?: PickingTaskWhereInput
+    /**
+     * Limit how many PickingTasks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PickingTask.assignedTo
+   */
+  export type PickingTask$assignedToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * PickingTask.items
+   */
+  export type PickingTask$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+    where?: PickingTaskItemWhereInput
+    orderBy?: PickingTaskItemOrderByWithRelationInput | PickingTaskItemOrderByWithRelationInput[]
+    cursor?: PickingTaskItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PickingTaskItemScalarFieldEnum | PickingTaskItemScalarFieldEnum[]
+  }
+
+  /**
+   * PickingTask without action
+   */
+  export type PickingTaskDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PickingTaskItem
+   */
+
+  export type AggregatePickingTaskItem = {
+    _count: PickingTaskItemCountAggregateOutputType | null
+    _avg: PickingTaskItemAvgAggregateOutputType | null
+    _sum: PickingTaskItemSumAggregateOutputType | null
+    _min: PickingTaskItemMinAggregateOutputType | null
+    _max: PickingTaskItemMaxAggregateOutputType | null
+  }
+
+  export type PickingTaskItemAvgAggregateOutputType = {
+    requiredQuantity: Decimal | null
+    pickedQuantity: Decimal | null
+  }
+
+  export type PickingTaskItemSumAggregateOutputType = {
+    requiredQuantity: Decimal | null
+    pickedQuantity: Decimal | null
+  }
+
+  export type PickingTaskItemMinAggregateOutputType = {
+    id: string | null
+    pickingTaskId: string | null
+    salesOrderItemId: string | null
+    productId: string | null
+    requiredQuantity: Decimal | null
+    pickedQuantity: Decimal | null
+    status: $Enums.PickingItemStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PickingTaskItemMaxAggregateOutputType = {
+    id: string | null
+    pickingTaskId: string | null
+    salesOrderItemId: string | null
+    productId: string | null
+    requiredQuantity: Decimal | null
+    pickedQuantity: Decimal | null
+    status: $Enums.PickingItemStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PickingTaskItemCountAggregateOutputType = {
+    id: number
+    pickingTaskId: number
+    salesOrderItemId: number
+    productId: number
+    requiredQuantity: number
+    pickedQuantity: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PickingTaskItemAvgAggregateInputType = {
+    requiredQuantity?: true
+    pickedQuantity?: true
+  }
+
+  export type PickingTaskItemSumAggregateInputType = {
+    requiredQuantity?: true
+    pickedQuantity?: true
+  }
+
+  export type PickingTaskItemMinAggregateInputType = {
+    id?: true
+    pickingTaskId?: true
+    salesOrderItemId?: true
+    productId?: true
+    requiredQuantity?: true
+    pickedQuantity?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PickingTaskItemMaxAggregateInputType = {
+    id?: true
+    pickingTaskId?: true
+    salesOrderItemId?: true
+    productId?: true
+    requiredQuantity?: true
+    pickedQuantity?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PickingTaskItemCountAggregateInputType = {
+    id?: true
+    pickingTaskId?: true
+    salesOrderItemId?: true
+    productId?: true
+    requiredQuantity?: true
+    pickedQuantity?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PickingTaskItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PickingTaskItem to aggregate.
+     */
+    where?: PickingTaskItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PickingTaskItems to fetch.
+     */
+    orderBy?: PickingTaskItemOrderByWithRelationInput | PickingTaskItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PickingTaskItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PickingTaskItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PickingTaskItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PickingTaskItems
+    **/
+    _count?: true | PickingTaskItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PickingTaskItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PickingTaskItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PickingTaskItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PickingTaskItemMaxAggregateInputType
+  }
+
+  export type GetPickingTaskItemAggregateType<T extends PickingTaskItemAggregateArgs> = {
+        [P in keyof T & keyof AggregatePickingTaskItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePickingTaskItem[P]>
+      : GetScalarType<T[P], AggregatePickingTaskItem[P]>
+  }
+
+
+
+
+  export type PickingTaskItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PickingTaskItemWhereInput
+    orderBy?: PickingTaskItemOrderByWithAggregationInput | PickingTaskItemOrderByWithAggregationInput[]
+    by: PickingTaskItemScalarFieldEnum[] | PickingTaskItemScalarFieldEnum
+    having?: PickingTaskItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PickingTaskItemCountAggregateInputType | true
+    _avg?: PickingTaskItemAvgAggregateInputType
+    _sum?: PickingTaskItemSumAggregateInputType
+    _min?: PickingTaskItemMinAggregateInputType
+    _max?: PickingTaskItemMaxAggregateInputType
+  }
+
+  export type PickingTaskItemGroupByOutputType = {
+    id: string
+    pickingTaskId: string
+    salesOrderItemId: string
+    productId: string
+    requiredQuantity: Decimal
+    pickedQuantity: Decimal
+    status: $Enums.PickingItemStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: PickingTaskItemCountAggregateOutputType | null
+    _avg: PickingTaskItemAvgAggregateOutputType | null
+    _sum: PickingTaskItemSumAggregateOutputType | null
+    _min: PickingTaskItemMinAggregateOutputType | null
+    _max: PickingTaskItemMaxAggregateOutputType | null
+  }
+
+  type GetPickingTaskItemGroupByPayload<T extends PickingTaskItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PickingTaskItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PickingTaskItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PickingTaskItemGroupByOutputType[P]>
+            : GetScalarType<T[P], PickingTaskItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PickingTaskItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pickingTaskId?: boolean
+    salesOrderItemId?: boolean
+    productId?: boolean
+    requiredQuantity?: boolean
+    pickedQuantity?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    pickingTask?: boolean | PickingTaskDefaultArgs<ExtArgs>
+    salesOrderItem?: boolean | SalesOrderItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    allocations?: boolean | PickingTaskItem$allocationsArgs<ExtArgs>
+    _count?: boolean | PickingTaskItemCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pickingTaskItem"]>
+
+  export type PickingTaskItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pickingTaskId?: boolean
+    salesOrderItemId?: boolean
+    productId?: boolean
+    requiredQuantity?: boolean
+    pickedQuantity?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    pickingTask?: boolean | PickingTaskDefaultArgs<ExtArgs>
+    salesOrderItem?: boolean | SalesOrderItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pickingTaskItem"]>
+
+  export type PickingTaskItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pickingTaskId?: boolean
+    salesOrderItemId?: boolean
+    productId?: boolean
+    requiredQuantity?: boolean
+    pickedQuantity?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    pickingTask?: boolean | PickingTaskDefaultArgs<ExtArgs>
+    salesOrderItem?: boolean | SalesOrderItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pickingTaskItem"]>
+
+  export type PickingTaskItemSelectScalar = {
+    id?: boolean
+    pickingTaskId?: boolean
+    salesOrderItemId?: boolean
+    productId?: boolean
+    requiredQuantity?: boolean
+    pickedQuantity?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PickingTaskItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pickingTaskId" | "salesOrderItemId" | "productId" | "requiredQuantity" | "pickedQuantity" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["pickingTaskItem"]>
+  export type PickingTaskItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    pickingTask?: boolean | PickingTaskDefaultArgs<ExtArgs>
+    salesOrderItem?: boolean | SalesOrderItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    allocations?: boolean | PickingTaskItem$allocationsArgs<ExtArgs>
+    _count?: boolean | PickingTaskItemCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PickingTaskItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    pickingTask?: boolean | PickingTaskDefaultArgs<ExtArgs>
+    salesOrderItem?: boolean | SalesOrderItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type PickingTaskItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    pickingTask?: boolean | PickingTaskDefaultArgs<ExtArgs>
+    salesOrderItem?: boolean | SalesOrderItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+
+  export type $PickingTaskItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PickingTaskItem"
+    objects: {
+      pickingTask: Prisma.$PickingTaskPayload<ExtArgs>
+      salesOrderItem: Prisma.$SalesOrderItemPayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs>
+      allocations: Prisma.$PickingAllocationPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      pickingTaskId: string
+      salesOrderItemId: string
+      productId: string
+      requiredQuantity: Prisma.Decimal
+      pickedQuantity: Prisma.Decimal
+      status: $Enums.PickingItemStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["pickingTaskItem"]>
+    composites: {}
+  }
+
+  type PickingTaskItemGetPayload<S extends boolean | null | undefined | PickingTaskItemDefaultArgs> = $Result.GetResult<Prisma.$PickingTaskItemPayload, S>
+
+  type PickingTaskItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PickingTaskItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PickingTaskItemCountAggregateInputType | true
+    }
+
+  export interface PickingTaskItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PickingTaskItem'], meta: { name: 'PickingTaskItem' } }
+    /**
+     * Find zero or one PickingTaskItem that matches the filter.
+     * @param {PickingTaskItemFindUniqueArgs} args - Arguments to find a PickingTaskItem
+     * @example
+     * // Get one PickingTaskItem
+     * const pickingTaskItem = await prisma.pickingTaskItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PickingTaskItemFindUniqueArgs>(args: SelectSubset<T, PickingTaskItemFindUniqueArgs<ExtArgs>>): Prisma__PickingTaskItemClient<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PickingTaskItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PickingTaskItemFindUniqueOrThrowArgs} args - Arguments to find a PickingTaskItem
+     * @example
+     * // Get one PickingTaskItem
+     * const pickingTaskItem = await prisma.pickingTaskItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PickingTaskItemFindUniqueOrThrowArgs>(args: SelectSubset<T, PickingTaskItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PickingTaskItemClient<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PickingTaskItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskItemFindFirstArgs} args - Arguments to find a PickingTaskItem
+     * @example
+     * // Get one PickingTaskItem
+     * const pickingTaskItem = await prisma.pickingTaskItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PickingTaskItemFindFirstArgs>(args?: SelectSubset<T, PickingTaskItemFindFirstArgs<ExtArgs>>): Prisma__PickingTaskItemClient<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PickingTaskItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskItemFindFirstOrThrowArgs} args - Arguments to find a PickingTaskItem
+     * @example
+     * // Get one PickingTaskItem
+     * const pickingTaskItem = await prisma.pickingTaskItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PickingTaskItemFindFirstOrThrowArgs>(args?: SelectSubset<T, PickingTaskItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__PickingTaskItemClient<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PickingTaskItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PickingTaskItems
+     * const pickingTaskItems = await prisma.pickingTaskItem.findMany()
+     * 
+     * // Get first 10 PickingTaskItems
+     * const pickingTaskItems = await prisma.pickingTaskItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pickingTaskItemWithIdOnly = await prisma.pickingTaskItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PickingTaskItemFindManyArgs>(args?: SelectSubset<T, PickingTaskItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PickingTaskItem.
+     * @param {PickingTaskItemCreateArgs} args - Arguments to create a PickingTaskItem.
+     * @example
+     * // Create one PickingTaskItem
+     * const PickingTaskItem = await prisma.pickingTaskItem.create({
+     *   data: {
+     *     // ... data to create a PickingTaskItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends PickingTaskItemCreateArgs>(args: SelectSubset<T, PickingTaskItemCreateArgs<ExtArgs>>): Prisma__PickingTaskItemClient<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PickingTaskItems.
+     * @param {PickingTaskItemCreateManyArgs} args - Arguments to create many PickingTaskItems.
+     * @example
+     * // Create many PickingTaskItems
+     * const pickingTaskItem = await prisma.pickingTaskItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PickingTaskItemCreateManyArgs>(args?: SelectSubset<T, PickingTaskItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PickingTaskItems and returns the data saved in the database.
+     * @param {PickingTaskItemCreateManyAndReturnArgs} args - Arguments to create many PickingTaskItems.
+     * @example
+     * // Create many PickingTaskItems
+     * const pickingTaskItem = await prisma.pickingTaskItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PickingTaskItems and only return the `id`
+     * const pickingTaskItemWithIdOnly = await prisma.pickingTaskItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PickingTaskItemCreateManyAndReturnArgs>(args?: SelectSubset<T, PickingTaskItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PickingTaskItem.
+     * @param {PickingTaskItemDeleteArgs} args - Arguments to delete one PickingTaskItem.
+     * @example
+     * // Delete one PickingTaskItem
+     * const PickingTaskItem = await prisma.pickingTaskItem.delete({
+     *   where: {
+     *     // ... filter to delete one PickingTaskItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PickingTaskItemDeleteArgs>(args: SelectSubset<T, PickingTaskItemDeleteArgs<ExtArgs>>): Prisma__PickingTaskItemClient<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PickingTaskItem.
+     * @param {PickingTaskItemUpdateArgs} args - Arguments to update one PickingTaskItem.
+     * @example
+     * // Update one PickingTaskItem
+     * const pickingTaskItem = await prisma.pickingTaskItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PickingTaskItemUpdateArgs>(args: SelectSubset<T, PickingTaskItemUpdateArgs<ExtArgs>>): Prisma__PickingTaskItemClient<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PickingTaskItems.
+     * @param {PickingTaskItemDeleteManyArgs} args - Arguments to filter PickingTaskItems to delete.
+     * @example
+     * // Delete a few PickingTaskItems
+     * const { count } = await prisma.pickingTaskItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PickingTaskItemDeleteManyArgs>(args?: SelectSubset<T, PickingTaskItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PickingTaskItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PickingTaskItems
+     * const pickingTaskItem = await prisma.pickingTaskItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PickingTaskItemUpdateManyArgs>(args: SelectSubset<T, PickingTaskItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PickingTaskItems and returns the data updated in the database.
+     * @param {PickingTaskItemUpdateManyAndReturnArgs} args - Arguments to update many PickingTaskItems.
+     * @example
+     * // Update many PickingTaskItems
+     * const pickingTaskItem = await prisma.pickingTaskItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PickingTaskItems and only return the `id`
+     * const pickingTaskItemWithIdOnly = await prisma.pickingTaskItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PickingTaskItemUpdateManyAndReturnArgs>(args: SelectSubset<T, PickingTaskItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PickingTaskItem.
+     * @param {PickingTaskItemUpsertArgs} args - Arguments to update or create a PickingTaskItem.
+     * @example
+     * // Update or create a PickingTaskItem
+     * const pickingTaskItem = await prisma.pickingTaskItem.upsert({
+     *   create: {
+     *     // ... data to create a PickingTaskItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PickingTaskItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PickingTaskItemUpsertArgs>(args: SelectSubset<T, PickingTaskItemUpsertArgs<ExtArgs>>): Prisma__PickingTaskItemClient<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PickingTaskItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskItemCountArgs} args - Arguments to filter PickingTaskItems to count.
+     * @example
+     * // Count the number of PickingTaskItems
+     * const count = await prisma.pickingTaskItem.count({
+     *   where: {
+     *     // ... the filter for the PickingTaskItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends PickingTaskItemCountArgs>(
+      args?: Subset<T, PickingTaskItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PickingTaskItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PickingTaskItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PickingTaskItemAggregateArgs>(args: Subset<T, PickingTaskItemAggregateArgs>): Prisma.PrismaPromise<GetPickingTaskItemAggregateType<T>>
+
+    /**
+     * Group by PickingTaskItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingTaskItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PickingTaskItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PickingTaskItemGroupByArgs['orderBy'] }
+        : { orderBy?: PickingTaskItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PickingTaskItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPickingTaskItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PickingTaskItem model
+   */
+  readonly fields: PickingTaskItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PickingTaskItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PickingTaskItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    pickingTask<T extends PickingTaskDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PickingTaskDefaultArgs<ExtArgs>>): Prisma__PickingTaskClient<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    salesOrderItem<T extends SalesOrderItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrderItemDefaultArgs<ExtArgs>>): Prisma__SalesOrderItemClient<$Result.GetResult<Prisma.$SalesOrderItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    allocations<T extends PickingTaskItem$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, PickingTaskItem$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PickingTaskItem model
+   */
+  interface PickingTaskItemFieldRefs {
+    readonly id: FieldRef<"PickingTaskItem", 'String'>
+    readonly pickingTaskId: FieldRef<"PickingTaskItem", 'String'>
+    readonly salesOrderItemId: FieldRef<"PickingTaskItem", 'String'>
+    readonly productId: FieldRef<"PickingTaskItem", 'String'>
+    readonly requiredQuantity: FieldRef<"PickingTaskItem", 'Decimal'>
+    readonly pickedQuantity: FieldRef<"PickingTaskItem", 'Decimal'>
+    readonly status: FieldRef<"PickingTaskItem", 'PickingItemStatus'>
+    readonly createdAt: FieldRef<"PickingTaskItem", 'DateTime'>
+    readonly updatedAt: FieldRef<"PickingTaskItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PickingTaskItem findUnique
+   */
+  export type PickingTaskItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingTaskItem to fetch.
+     */
+    where: PickingTaskItemWhereUniqueInput
+  }
+
+  /**
+   * PickingTaskItem findUniqueOrThrow
+   */
+  export type PickingTaskItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingTaskItem to fetch.
+     */
+    where: PickingTaskItemWhereUniqueInput
+  }
+
+  /**
+   * PickingTaskItem findFirst
+   */
+  export type PickingTaskItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingTaskItem to fetch.
+     */
+    where?: PickingTaskItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PickingTaskItems to fetch.
+     */
+    orderBy?: PickingTaskItemOrderByWithRelationInput | PickingTaskItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PickingTaskItems.
+     */
+    cursor?: PickingTaskItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PickingTaskItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PickingTaskItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PickingTaskItems.
+     */
+    distinct?: PickingTaskItemScalarFieldEnum | PickingTaskItemScalarFieldEnum[]
+  }
+
+  /**
+   * PickingTaskItem findFirstOrThrow
+   */
+  export type PickingTaskItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingTaskItem to fetch.
+     */
+    where?: PickingTaskItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PickingTaskItems to fetch.
+     */
+    orderBy?: PickingTaskItemOrderByWithRelationInput | PickingTaskItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PickingTaskItems.
+     */
+    cursor?: PickingTaskItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PickingTaskItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PickingTaskItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PickingTaskItems.
+     */
+    distinct?: PickingTaskItemScalarFieldEnum | PickingTaskItemScalarFieldEnum[]
+  }
+
+  /**
+   * PickingTaskItem findMany
+   */
+  export type PickingTaskItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingTaskItems to fetch.
+     */
+    where?: PickingTaskItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PickingTaskItems to fetch.
+     */
+    orderBy?: PickingTaskItemOrderByWithRelationInput | PickingTaskItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PickingTaskItems.
+     */
+    cursor?: PickingTaskItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PickingTaskItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PickingTaskItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PickingTaskItems.
+     */
+    distinct?: PickingTaskItemScalarFieldEnum | PickingTaskItemScalarFieldEnum[]
+  }
+
+  /**
+   * PickingTaskItem create
+   */
+  export type PickingTaskItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PickingTaskItem.
+     */
+    data: XOR<PickingTaskItemCreateInput, PickingTaskItemUncheckedCreateInput>
+  }
+
+  /**
+   * PickingTaskItem createMany
+   */
+  export type PickingTaskItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PickingTaskItems.
+     */
+    data: PickingTaskItemCreateManyInput | PickingTaskItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PickingTaskItem createManyAndReturn
+   */
+  export type PickingTaskItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many PickingTaskItems.
+     */
+    data: PickingTaskItemCreateManyInput | PickingTaskItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PickingTaskItem update
+   */
+  export type PickingTaskItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PickingTaskItem.
+     */
+    data: XOR<PickingTaskItemUpdateInput, PickingTaskItemUncheckedUpdateInput>
+    /**
+     * Choose, which PickingTaskItem to update.
+     */
+    where: PickingTaskItemWhereUniqueInput
+  }
+
+  /**
+   * PickingTaskItem updateMany
+   */
+  export type PickingTaskItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PickingTaskItems.
+     */
+    data: XOR<PickingTaskItemUpdateManyMutationInput, PickingTaskItemUncheckedUpdateManyInput>
+    /**
+     * Filter which PickingTaskItems to update
+     */
+    where?: PickingTaskItemWhereInput
+    /**
+     * Limit how many PickingTaskItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PickingTaskItem updateManyAndReturn
+   */
+  export type PickingTaskItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * The data used to update PickingTaskItems.
+     */
+    data: XOR<PickingTaskItemUpdateManyMutationInput, PickingTaskItemUncheckedUpdateManyInput>
+    /**
+     * Filter which PickingTaskItems to update
+     */
+    where?: PickingTaskItemWhereInput
+    /**
+     * Limit how many PickingTaskItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PickingTaskItem upsert
+   */
+  export type PickingTaskItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PickingTaskItem to update in case it exists.
+     */
+    where: PickingTaskItemWhereUniqueInput
+    /**
+     * In case the PickingTaskItem found by the `where` argument doesn't exist, create a new PickingTaskItem with this data.
+     */
+    create: XOR<PickingTaskItemCreateInput, PickingTaskItemUncheckedCreateInput>
+    /**
+     * In case the PickingTaskItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PickingTaskItemUpdateInput, PickingTaskItemUncheckedUpdateInput>
+  }
+
+  /**
+   * PickingTaskItem delete
+   */
+  export type PickingTaskItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+    /**
+     * Filter which PickingTaskItem to delete.
+     */
+    where: PickingTaskItemWhereUniqueInput
+  }
+
+  /**
+   * PickingTaskItem deleteMany
+   */
+  export type PickingTaskItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PickingTaskItems to delete
+     */
+    where?: PickingTaskItemWhereInput
+    /**
+     * Limit how many PickingTaskItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PickingTaskItem.allocations
+   */
+  export type PickingTaskItem$allocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
+    where?: PickingAllocationWhereInput
+    orderBy?: PickingAllocationOrderByWithRelationInput | PickingAllocationOrderByWithRelationInput[]
+    cursor?: PickingAllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PickingAllocationScalarFieldEnum | PickingAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * PickingTaskItem without action
+   */
+  export type PickingTaskItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PickingAllocation
+   */
+
+  export type AggregatePickingAllocation = {
+    _count: PickingAllocationCountAggregateOutputType | null
+    _avg: PickingAllocationAvgAggregateOutputType | null
+    _sum: PickingAllocationSumAggregateOutputType | null
+    _min: PickingAllocationMinAggregateOutputType | null
+    _max: PickingAllocationMaxAggregateOutputType | null
+  }
+
+  export type PickingAllocationAvgAggregateOutputType = {
+    quantity: Decimal | null
+  }
+
+  export type PickingAllocationSumAggregateOutputType = {
+    quantity: Decimal | null
+  }
+
+  export type PickingAllocationMinAggregateOutputType = {
+    id: string | null
+    pickingTaskItemId: string | null
+    locationStockId: string | null
+    quantity: Decimal | null
+    pickedById: string | null
+    pickedAt: Date | null
+  }
+
+  export type PickingAllocationMaxAggregateOutputType = {
+    id: string | null
+    pickingTaskItemId: string | null
+    locationStockId: string | null
+    quantity: Decimal | null
+    pickedById: string | null
+    pickedAt: Date | null
+  }
+
+  export type PickingAllocationCountAggregateOutputType = {
+    id: number
+    pickingTaskItemId: number
+    locationStockId: number
+    quantity: number
+    pickedById: number
+    pickedAt: number
+    _all: number
+  }
+
+
+  export type PickingAllocationAvgAggregateInputType = {
+    quantity?: true
+  }
+
+  export type PickingAllocationSumAggregateInputType = {
+    quantity?: true
+  }
+
+  export type PickingAllocationMinAggregateInputType = {
+    id?: true
+    pickingTaskItemId?: true
+    locationStockId?: true
+    quantity?: true
+    pickedById?: true
+    pickedAt?: true
+  }
+
+  export type PickingAllocationMaxAggregateInputType = {
+    id?: true
+    pickingTaskItemId?: true
+    locationStockId?: true
+    quantity?: true
+    pickedById?: true
+    pickedAt?: true
+  }
+
+  export type PickingAllocationCountAggregateInputType = {
+    id?: true
+    pickingTaskItemId?: true
+    locationStockId?: true
+    quantity?: true
+    pickedById?: true
+    pickedAt?: true
+    _all?: true
+  }
+
+  export type PickingAllocationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PickingAllocation to aggregate.
+     */
+    where?: PickingAllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PickingAllocations to fetch.
+     */
+    orderBy?: PickingAllocationOrderByWithRelationInput | PickingAllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PickingAllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PickingAllocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PickingAllocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PickingAllocations
+    **/
+    _count?: true | PickingAllocationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PickingAllocationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PickingAllocationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PickingAllocationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PickingAllocationMaxAggregateInputType
+  }
+
+  export type GetPickingAllocationAggregateType<T extends PickingAllocationAggregateArgs> = {
+        [P in keyof T & keyof AggregatePickingAllocation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePickingAllocation[P]>
+      : GetScalarType<T[P], AggregatePickingAllocation[P]>
+  }
+
+
+
+
+  export type PickingAllocationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PickingAllocationWhereInput
+    orderBy?: PickingAllocationOrderByWithAggregationInput | PickingAllocationOrderByWithAggregationInput[]
+    by: PickingAllocationScalarFieldEnum[] | PickingAllocationScalarFieldEnum
+    having?: PickingAllocationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PickingAllocationCountAggregateInputType | true
+    _avg?: PickingAllocationAvgAggregateInputType
+    _sum?: PickingAllocationSumAggregateInputType
+    _min?: PickingAllocationMinAggregateInputType
+    _max?: PickingAllocationMaxAggregateInputType
+  }
+
+  export type PickingAllocationGroupByOutputType = {
+    id: string
+    pickingTaskItemId: string
+    locationStockId: string
+    quantity: Decimal
+    pickedById: string
+    pickedAt: Date
+    _count: PickingAllocationCountAggregateOutputType | null
+    _avg: PickingAllocationAvgAggregateOutputType | null
+    _sum: PickingAllocationSumAggregateOutputType | null
+    _min: PickingAllocationMinAggregateOutputType | null
+    _max: PickingAllocationMaxAggregateOutputType | null
+  }
+
+  type GetPickingAllocationGroupByPayload<T extends PickingAllocationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PickingAllocationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PickingAllocationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PickingAllocationGroupByOutputType[P]>
+            : GetScalarType<T[P], PickingAllocationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PickingAllocationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pickingTaskItemId?: boolean
+    locationStockId?: boolean
+    quantity?: boolean
+    pickedById?: boolean
+    pickedAt?: boolean
+    pickingTaskItem?: boolean | PickingTaskItemDefaultArgs<ExtArgs>
+    locationStock?: boolean | InventoryLocationStockDefaultArgs<ExtArgs>
+    pickedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pickingAllocation"]>
+
+  export type PickingAllocationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pickingTaskItemId?: boolean
+    locationStockId?: boolean
+    quantity?: boolean
+    pickedById?: boolean
+    pickedAt?: boolean
+    pickingTaskItem?: boolean | PickingTaskItemDefaultArgs<ExtArgs>
+    locationStock?: boolean | InventoryLocationStockDefaultArgs<ExtArgs>
+    pickedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pickingAllocation"]>
+
+  export type PickingAllocationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pickingTaskItemId?: boolean
+    locationStockId?: boolean
+    quantity?: boolean
+    pickedById?: boolean
+    pickedAt?: boolean
+    pickingTaskItem?: boolean | PickingTaskItemDefaultArgs<ExtArgs>
+    locationStock?: boolean | InventoryLocationStockDefaultArgs<ExtArgs>
+    pickedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pickingAllocation"]>
+
+  export type PickingAllocationSelectScalar = {
+    id?: boolean
+    pickingTaskItemId?: boolean
+    locationStockId?: boolean
+    quantity?: boolean
+    pickedById?: boolean
+    pickedAt?: boolean
+  }
+
+  export type PickingAllocationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pickingTaskItemId" | "locationStockId" | "quantity" | "pickedById" | "pickedAt", ExtArgs["result"]["pickingAllocation"]>
+  export type PickingAllocationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    pickingTaskItem?: boolean | PickingTaskItemDefaultArgs<ExtArgs>
+    locationStock?: boolean | InventoryLocationStockDefaultArgs<ExtArgs>
+    pickedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PickingAllocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    pickingTaskItem?: boolean | PickingTaskItemDefaultArgs<ExtArgs>
+    locationStock?: boolean | InventoryLocationStockDefaultArgs<ExtArgs>
+    pickedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PickingAllocationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    pickingTaskItem?: boolean | PickingTaskItemDefaultArgs<ExtArgs>
+    locationStock?: boolean | InventoryLocationStockDefaultArgs<ExtArgs>
+    pickedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PickingAllocationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PickingAllocation"
+    objects: {
+      pickingTaskItem: Prisma.$PickingTaskItemPayload<ExtArgs>
+      locationStock: Prisma.$InventoryLocationStockPayload<ExtArgs>
+      pickedBy: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      pickingTaskItemId: string
+      locationStockId: string
+      quantity: Prisma.Decimal
+      pickedById: string
+      pickedAt: Date
+    }, ExtArgs["result"]["pickingAllocation"]>
+    composites: {}
+  }
+
+  type PickingAllocationGetPayload<S extends boolean | null | undefined | PickingAllocationDefaultArgs> = $Result.GetResult<Prisma.$PickingAllocationPayload, S>
+
+  type PickingAllocationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PickingAllocationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PickingAllocationCountAggregateInputType | true
+    }
+
+  export interface PickingAllocationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PickingAllocation'], meta: { name: 'PickingAllocation' } }
+    /**
+     * Find zero or one PickingAllocation that matches the filter.
+     * @param {PickingAllocationFindUniqueArgs} args - Arguments to find a PickingAllocation
+     * @example
+     * // Get one PickingAllocation
+     * const pickingAllocation = await prisma.pickingAllocation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PickingAllocationFindUniqueArgs>(args: SelectSubset<T, PickingAllocationFindUniqueArgs<ExtArgs>>): Prisma__PickingAllocationClient<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PickingAllocation that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PickingAllocationFindUniqueOrThrowArgs} args - Arguments to find a PickingAllocation
+     * @example
+     * // Get one PickingAllocation
+     * const pickingAllocation = await prisma.pickingAllocation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PickingAllocationFindUniqueOrThrowArgs>(args: SelectSubset<T, PickingAllocationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PickingAllocationClient<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PickingAllocation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingAllocationFindFirstArgs} args - Arguments to find a PickingAllocation
+     * @example
+     * // Get one PickingAllocation
+     * const pickingAllocation = await prisma.pickingAllocation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PickingAllocationFindFirstArgs>(args?: SelectSubset<T, PickingAllocationFindFirstArgs<ExtArgs>>): Prisma__PickingAllocationClient<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PickingAllocation that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingAllocationFindFirstOrThrowArgs} args - Arguments to find a PickingAllocation
+     * @example
+     * // Get one PickingAllocation
+     * const pickingAllocation = await prisma.pickingAllocation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PickingAllocationFindFirstOrThrowArgs>(args?: SelectSubset<T, PickingAllocationFindFirstOrThrowArgs<ExtArgs>>): Prisma__PickingAllocationClient<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PickingAllocations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingAllocationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PickingAllocations
+     * const pickingAllocations = await prisma.pickingAllocation.findMany()
+     * 
+     * // Get first 10 PickingAllocations
+     * const pickingAllocations = await prisma.pickingAllocation.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pickingAllocationWithIdOnly = await prisma.pickingAllocation.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PickingAllocationFindManyArgs>(args?: SelectSubset<T, PickingAllocationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PickingAllocation.
+     * @param {PickingAllocationCreateArgs} args - Arguments to create a PickingAllocation.
+     * @example
+     * // Create one PickingAllocation
+     * const PickingAllocation = await prisma.pickingAllocation.create({
+     *   data: {
+     *     // ... data to create a PickingAllocation
+     *   }
+     * })
+     * 
+     */
+    create<T extends PickingAllocationCreateArgs>(args: SelectSubset<T, PickingAllocationCreateArgs<ExtArgs>>): Prisma__PickingAllocationClient<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PickingAllocations.
+     * @param {PickingAllocationCreateManyArgs} args - Arguments to create many PickingAllocations.
+     * @example
+     * // Create many PickingAllocations
+     * const pickingAllocation = await prisma.pickingAllocation.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PickingAllocationCreateManyArgs>(args?: SelectSubset<T, PickingAllocationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PickingAllocations and returns the data saved in the database.
+     * @param {PickingAllocationCreateManyAndReturnArgs} args - Arguments to create many PickingAllocations.
+     * @example
+     * // Create many PickingAllocations
+     * const pickingAllocation = await prisma.pickingAllocation.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PickingAllocations and only return the `id`
+     * const pickingAllocationWithIdOnly = await prisma.pickingAllocation.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PickingAllocationCreateManyAndReturnArgs>(args?: SelectSubset<T, PickingAllocationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PickingAllocation.
+     * @param {PickingAllocationDeleteArgs} args - Arguments to delete one PickingAllocation.
+     * @example
+     * // Delete one PickingAllocation
+     * const PickingAllocation = await prisma.pickingAllocation.delete({
+     *   where: {
+     *     // ... filter to delete one PickingAllocation
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PickingAllocationDeleteArgs>(args: SelectSubset<T, PickingAllocationDeleteArgs<ExtArgs>>): Prisma__PickingAllocationClient<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PickingAllocation.
+     * @param {PickingAllocationUpdateArgs} args - Arguments to update one PickingAllocation.
+     * @example
+     * // Update one PickingAllocation
+     * const pickingAllocation = await prisma.pickingAllocation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PickingAllocationUpdateArgs>(args: SelectSubset<T, PickingAllocationUpdateArgs<ExtArgs>>): Prisma__PickingAllocationClient<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PickingAllocations.
+     * @param {PickingAllocationDeleteManyArgs} args - Arguments to filter PickingAllocations to delete.
+     * @example
+     * // Delete a few PickingAllocations
+     * const { count } = await prisma.pickingAllocation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PickingAllocationDeleteManyArgs>(args?: SelectSubset<T, PickingAllocationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PickingAllocations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingAllocationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PickingAllocations
+     * const pickingAllocation = await prisma.pickingAllocation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PickingAllocationUpdateManyArgs>(args: SelectSubset<T, PickingAllocationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PickingAllocations and returns the data updated in the database.
+     * @param {PickingAllocationUpdateManyAndReturnArgs} args - Arguments to update many PickingAllocations.
+     * @example
+     * // Update many PickingAllocations
+     * const pickingAllocation = await prisma.pickingAllocation.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PickingAllocations and only return the `id`
+     * const pickingAllocationWithIdOnly = await prisma.pickingAllocation.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PickingAllocationUpdateManyAndReturnArgs>(args: SelectSubset<T, PickingAllocationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PickingAllocation.
+     * @param {PickingAllocationUpsertArgs} args - Arguments to update or create a PickingAllocation.
+     * @example
+     * // Update or create a PickingAllocation
+     * const pickingAllocation = await prisma.pickingAllocation.upsert({
+     *   create: {
+     *     // ... data to create a PickingAllocation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PickingAllocation we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PickingAllocationUpsertArgs>(args: SelectSubset<T, PickingAllocationUpsertArgs<ExtArgs>>): Prisma__PickingAllocationClient<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PickingAllocations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingAllocationCountArgs} args - Arguments to filter PickingAllocations to count.
+     * @example
+     * // Count the number of PickingAllocations
+     * const count = await prisma.pickingAllocation.count({
+     *   where: {
+     *     // ... the filter for the PickingAllocations we want to count
+     *   }
+     * })
+    **/
+    count<T extends PickingAllocationCountArgs>(
+      args?: Subset<T, PickingAllocationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PickingAllocationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PickingAllocation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingAllocationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PickingAllocationAggregateArgs>(args: Subset<T, PickingAllocationAggregateArgs>): Prisma.PrismaPromise<GetPickingAllocationAggregateType<T>>
+
+    /**
+     * Group by PickingAllocation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PickingAllocationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PickingAllocationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PickingAllocationGroupByArgs['orderBy'] }
+        : { orderBy?: PickingAllocationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PickingAllocationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPickingAllocationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PickingAllocation model
+   */
+  readonly fields: PickingAllocationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PickingAllocation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PickingAllocationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    pickingTaskItem<T extends PickingTaskItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PickingTaskItemDefaultArgs<ExtArgs>>): Prisma__PickingTaskItemClient<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    locationStock<T extends InventoryLocationStockDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InventoryLocationStockDefaultArgs<ExtArgs>>): Prisma__InventoryLocationStockClient<$Result.GetResult<Prisma.$InventoryLocationStockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    pickedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PickingAllocation model
+   */
+  interface PickingAllocationFieldRefs {
+    readonly id: FieldRef<"PickingAllocation", 'String'>
+    readonly pickingTaskItemId: FieldRef<"PickingAllocation", 'String'>
+    readonly locationStockId: FieldRef<"PickingAllocation", 'String'>
+    readonly quantity: FieldRef<"PickingAllocation", 'Decimal'>
+    readonly pickedById: FieldRef<"PickingAllocation", 'String'>
+    readonly pickedAt: FieldRef<"PickingAllocation", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PickingAllocation findUnique
+   */
+  export type PickingAllocationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingAllocation to fetch.
+     */
+    where: PickingAllocationWhereUniqueInput
+  }
+
+  /**
+   * PickingAllocation findUniqueOrThrow
+   */
+  export type PickingAllocationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingAllocation to fetch.
+     */
+    where: PickingAllocationWhereUniqueInput
+  }
+
+  /**
+   * PickingAllocation findFirst
+   */
+  export type PickingAllocationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingAllocation to fetch.
+     */
+    where?: PickingAllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PickingAllocations to fetch.
+     */
+    orderBy?: PickingAllocationOrderByWithRelationInput | PickingAllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PickingAllocations.
+     */
+    cursor?: PickingAllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PickingAllocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PickingAllocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PickingAllocations.
+     */
+    distinct?: PickingAllocationScalarFieldEnum | PickingAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * PickingAllocation findFirstOrThrow
+   */
+  export type PickingAllocationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingAllocation to fetch.
+     */
+    where?: PickingAllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PickingAllocations to fetch.
+     */
+    orderBy?: PickingAllocationOrderByWithRelationInput | PickingAllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PickingAllocations.
+     */
+    cursor?: PickingAllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PickingAllocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PickingAllocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PickingAllocations.
+     */
+    distinct?: PickingAllocationScalarFieldEnum | PickingAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * PickingAllocation findMany
+   */
+  export type PickingAllocationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which PickingAllocations to fetch.
+     */
+    where?: PickingAllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PickingAllocations to fetch.
+     */
+    orderBy?: PickingAllocationOrderByWithRelationInput | PickingAllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PickingAllocations.
+     */
+    cursor?: PickingAllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PickingAllocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PickingAllocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PickingAllocations.
+     */
+    distinct?: PickingAllocationScalarFieldEnum | PickingAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * PickingAllocation create
+   */
+  export type PickingAllocationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PickingAllocation.
+     */
+    data: XOR<PickingAllocationCreateInput, PickingAllocationUncheckedCreateInput>
+  }
+
+  /**
+   * PickingAllocation createMany
+   */
+  export type PickingAllocationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PickingAllocations.
+     */
+    data: PickingAllocationCreateManyInput | PickingAllocationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PickingAllocation createManyAndReturn
+   */
+  export type PickingAllocationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * The data used to create many PickingAllocations.
+     */
+    data: PickingAllocationCreateManyInput | PickingAllocationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PickingAllocation update
+   */
+  export type PickingAllocationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PickingAllocation.
+     */
+    data: XOR<PickingAllocationUpdateInput, PickingAllocationUncheckedUpdateInput>
+    /**
+     * Choose, which PickingAllocation to update.
+     */
+    where: PickingAllocationWhereUniqueInput
+  }
+
+  /**
+   * PickingAllocation updateMany
+   */
+  export type PickingAllocationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PickingAllocations.
+     */
+    data: XOR<PickingAllocationUpdateManyMutationInput, PickingAllocationUncheckedUpdateManyInput>
+    /**
+     * Filter which PickingAllocations to update
+     */
+    where?: PickingAllocationWhereInput
+    /**
+     * Limit how many PickingAllocations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PickingAllocation updateManyAndReturn
+   */
+  export type PickingAllocationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * The data used to update PickingAllocations.
+     */
+    data: XOR<PickingAllocationUpdateManyMutationInput, PickingAllocationUncheckedUpdateManyInput>
+    /**
+     * Filter which PickingAllocations to update
+     */
+    where?: PickingAllocationWhereInput
+    /**
+     * Limit how many PickingAllocations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PickingAllocation upsert
+   */
+  export type PickingAllocationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PickingAllocation to update in case it exists.
+     */
+    where: PickingAllocationWhereUniqueInput
+    /**
+     * In case the PickingAllocation found by the `where` argument doesn't exist, create a new PickingAllocation with this data.
+     */
+    create: XOR<PickingAllocationCreateInput, PickingAllocationUncheckedCreateInput>
+    /**
+     * In case the PickingAllocation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PickingAllocationUpdateInput, PickingAllocationUncheckedUpdateInput>
+  }
+
+  /**
+   * PickingAllocation delete
+   */
+  export type PickingAllocationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
+    /**
+     * Filter which PickingAllocation to delete.
+     */
+    where: PickingAllocationWhereUniqueInput
+  }
+
+  /**
+   * PickingAllocation deleteMany
+   */
+  export type PickingAllocationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PickingAllocations to delete
+     */
+    where?: PickingAllocationWhereInput
+    /**
+     * Limit how many PickingAllocations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PickingAllocation without action
+   */
+  export type PickingAllocationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingAllocation
+     */
+    select?: PickingAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingAllocation
+     */
+    omit?: PickingAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingAllocationInclude<ExtArgs> | null
   }
 
 
@@ -29409,6 +33483,7 @@ export namespace Prisma {
     warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
     items?: boolean | SalesOrder$itemsArgs<ExtArgs>
     reservations?: boolean | SalesOrder$reservationsArgs<ExtArgs>
+    pickingTask?: boolean | SalesOrder$pickingTaskArgs<ExtArgs>
     _count?: boolean | SalesOrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["salesOrder"]>
 
@@ -29461,6 +33536,7 @@ export namespace Prisma {
     warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
     items?: boolean | SalesOrder$itemsArgs<ExtArgs>
     reservations?: boolean | SalesOrder$reservationsArgs<ExtArgs>
+    pickingTask?: boolean | SalesOrder$pickingTaskArgs<ExtArgs>
     _count?: boolean | SalesOrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SalesOrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -29479,6 +33555,7 @@ export namespace Prisma {
       warehouse: Prisma.$WarehousePayload<ExtArgs>
       items: Prisma.$SalesOrderItemPayload<ExtArgs>[]
       reservations: Prisma.$StockReservationPayload<ExtArgs>[]
+      pickingTask: Prisma.$PickingTaskPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -29889,6 +33966,7 @@ export namespace Prisma {
     warehouse<T extends WarehouseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WarehouseDefaultArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     items<T extends SalesOrder$itemsArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrder$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesOrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reservations<T extends SalesOrder$reservationsArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrder$reservationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockReservationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pickingTask<T extends SalesOrder$pickingTaskArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrder$pickingTaskArgs<ExtArgs>>): Prisma__PickingTaskClient<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -30377,6 +34455,25 @@ export namespace Prisma {
   }
 
   /**
+   * SalesOrder.pickingTask
+   */
+  export type SalesOrder$pickingTaskArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTask
+     */
+    select?: PickingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTask
+     */
+    omit?: PickingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskInclude<ExtArgs> | null
+    where?: PickingTaskWhereInput
+  }
+
+  /**
    * SalesOrder without action
    */
   export type SalesOrderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -30640,6 +34737,7 @@ export namespace Prisma {
     salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
     reservations?: boolean | SalesOrderItem$reservationsArgs<ExtArgs>
+    pickingTaskItems?: boolean | SalesOrderItem$pickingTaskItemsArgs<ExtArgs>
     _count?: boolean | SalesOrderItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["salesOrderItem"]>
 
@@ -30688,6 +34786,7 @@ export namespace Prisma {
     salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
     reservations?: boolean | SalesOrderItem$reservationsArgs<ExtArgs>
+    pickingTaskItems?: boolean | SalesOrderItem$pickingTaskItemsArgs<ExtArgs>
     _count?: boolean | SalesOrderItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SalesOrderItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -30705,6 +34804,7 @@ export namespace Prisma {
       salesOrder: Prisma.$SalesOrderPayload<ExtArgs>
       product: Prisma.$ProductPayload<ExtArgs>
       reservations: Prisma.$StockReservationPayload<ExtArgs>[]
+      pickingTaskItems: Prisma.$PickingTaskItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -31113,6 +35213,7 @@ export namespace Prisma {
     salesOrder<T extends SalesOrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrderDefaultArgs<ExtArgs>>): Prisma__SalesOrderClient<$Result.GetResult<Prisma.$SalesOrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     reservations<T extends SalesOrderItem$reservationsArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrderItem$reservationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockReservationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pickingTaskItems<T extends SalesOrderItem$pickingTaskItemsArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrderItem$pickingTaskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -31573,6 +35674,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: StockReservationScalarFieldEnum | StockReservationScalarFieldEnum[]
+  }
+
+  /**
+   * SalesOrderItem.pickingTaskItems
+   */
+  export type SalesOrderItem$pickingTaskItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PickingTaskItem
+     */
+    select?: PickingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PickingTaskItem
+     */
+    omit?: PickingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PickingTaskItemInclude<ExtArgs> | null
+    where?: PickingTaskItemWhereInput
+    orderBy?: PickingTaskItemOrderByWithRelationInput | PickingTaskItemOrderByWithRelationInput[]
+    cursor?: PickingTaskItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PickingTaskItemScalarFieldEnum | PickingTaskItemScalarFieldEnum[]
   }
 
   /**
@@ -33038,6 +37163,47 @@ export namespace Prisma {
   export type BinScalarFieldEnum = (typeof BinScalarFieldEnum)[keyof typeof BinScalarFieldEnum]
 
 
+  export const PickingTaskScalarFieldEnum: {
+    id: 'id',
+    pickingNumber: 'pickingNumber',
+    salesOrderId: 'salesOrderId',
+    warehouseId: 'warehouseId',
+    assignedToId: 'assignedToId',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PickingTaskScalarFieldEnum = (typeof PickingTaskScalarFieldEnum)[keyof typeof PickingTaskScalarFieldEnum]
+
+
+  export const PickingTaskItemScalarFieldEnum: {
+    id: 'id',
+    pickingTaskId: 'pickingTaskId',
+    salesOrderItemId: 'salesOrderItemId',
+    productId: 'productId',
+    requiredQuantity: 'requiredQuantity',
+    pickedQuantity: 'pickedQuantity',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PickingTaskItemScalarFieldEnum = (typeof PickingTaskItemScalarFieldEnum)[keyof typeof PickingTaskItemScalarFieldEnum]
+
+
+  export const PickingAllocationScalarFieldEnum: {
+    id: 'id',
+    pickingTaskItemId: 'pickingTaskItemId',
+    locationStockId: 'locationStockId',
+    quantity: 'quantity',
+    pickedById: 'pickedById',
+    pickedAt: 'pickedAt'
+  };
+
+  export type PickingAllocationScalarFieldEnum = (typeof PickingAllocationScalarFieldEnum)[keyof typeof PickingAllocationScalarFieldEnum]
+
+
   export const SupplierScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -33384,6 +37550,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'PickingStatus'
+   */
+  export type EnumPickingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PickingStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PickingStatus[]'
+   */
+  export type ListEnumPickingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PickingStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PickingItemStatus'
+   */
+  export type EnumPickingItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PickingItemStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PickingItemStatus[]'
+   */
+  export type ListEnumPickingItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PickingItemStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'SupplierStatus'
    */
   export type EnumSupplierStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SupplierStatus'>
@@ -33482,6 +37676,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementListRelationFilter
     goodsReceipts?: GoodsReceiptListRelationFilter
     createdSalesOrders?: SalesOrderListRelationFilter
+    assignedPickingTasks?: PickingTaskListRelationFilter
+    pickingAllocations?: PickingAllocationListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -33507,6 +37703,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementOrderByRelationAggregateInput
     goodsReceipts?: GoodsReceiptOrderByRelationAggregateInput
     createdSalesOrders?: SalesOrderOrderByRelationAggregateInput
+    assignedPickingTasks?: PickingTaskOrderByRelationAggregateInput
+    pickingAllocations?: PickingAllocationOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -33535,6 +37733,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementListRelationFilter
     goodsReceipts?: GoodsReceiptListRelationFilter
     createdSalesOrders?: SalesOrderListRelationFilter
+    assignedPickingTasks?: PickingTaskListRelationFilter
+    pickingAllocations?: PickingAllocationListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -33970,6 +38170,7 @@ export namespace Prisma {
     warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
     bin?: XOR<BinScalarRelationFilter, BinWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    pickingAllocations?: PickingAllocationListRelationFilter
   }
 
   export type InventoryLocationStockOrderByWithRelationInput = {
@@ -33983,6 +38184,7 @@ export namespace Prisma {
     warehouse?: WarehouseOrderByWithRelationInput
     bin?: BinOrderByWithRelationInput
     product?: ProductOrderByWithRelationInput
+    pickingAllocations?: PickingAllocationOrderByRelationAggregateInput
   }
 
   export type InventoryLocationStockWhereUniqueInput = Prisma.AtLeast<{
@@ -34000,6 +38202,7 @@ export namespace Prisma {
     warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
     bin?: XOR<BinScalarRelationFilter, BinWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    pickingAllocations?: PickingAllocationListRelationFilter
   }, "id" | "binId_productId">
 
   export type InventoryLocationStockOrderByWithAggregationInput = {
@@ -34153,6 +38356,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptListRelationFilter
     salesOrders?: SalesOrderListRelationFilter
     stockReservations?: StockReservationListRelationFilter
+    pickingTasks?: PickingTaskListRelationFilter
   }
 
   export type WarehouseOrderByWithRelationInput = {
@@ -34176,6 +38380,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptOrderByRelationAggregateInput
     salesOrders?: SalesOrderOrderByRelationAggregateInput
     stockReservations?: StockReservationOrderByRelationAggregateInput
+    pickingTasks?: PickingTaskOrderByRelationAggregateInput
   }
 
   export type WarehouseWhereUniqueInput = Prisma.AtLeast<{
@@ -34202,6 +38407,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptListRelationFilter
     salesOrders?: SalesOrderListRelationFilter
     stockReservations?: StockReservationListRelationFilter
+    pickingTasks?: PickingTaskListRelationFilter
   }, "id" | "code">
 
   export type WarehouseOrderByWithAggregationInput = {
@@ -34414,6 +38620,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemListRelationFilter
     salesOrderItems?: SalesOrderItemListRelationFilter
     stockReservations?: StockReservationListRelationFilter
+    pickingTaskItems?: PickingTaskItemListRelationFilter
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -34441,6 +38648,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemOrderByRelationAggregateInput
     salesOrderItems?: SalesOrderItemOrderByRelationAggregateInput
     stockReservations?: StockReservationOrderByRelationAggregateInput
+    pickingTaskItems?: PickingTaskItemOrderByRelationAggregateInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -34471,6 +38679,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemListRelationFilter
     salesOrderItems?: SalesOrderItemListRelationFilter
     stockReservations?: StockReservationListRelationFilter
+    pickingTaskItems?: PickingTaskItemListRelationFilter
   }, "id" | "sku" | "slug">
 
   export type ProductOrderByWithAggregationInput = {
@@ -34881,6 +39090,240 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Bin"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Bin"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Bin"> | Date | string
+  }
+
+  export type PickingTaskWhereInput = {
+    AND?: PickingTaskWhereInput | PickingTaskWhereInput[]
+    OR?: PickingTaskWhereInput[]
+    NOT?: PickingTaskWhereInput | PickingTaskWhereInput[]
+    id?: StringFilter<"PickingTask"> | string
+    pickingNumber?: StringFilter<"PickingTask"> | string
+    salesOrderId?: StringFilter<"PickingTask"> | string
+    warehouseId?: StringFilter<"PickingTask"> | string
+    assignedToId?: StringNullableFilter<"PickingTask"> | string | null
+    status?: EnumPickingStatusFilter<"PickingTask"> | $Enums.PickingStatus
+    createdAt?: DateTimeFilter<"PickingTask"> | Date | string
+    updatedAt?: DateTimeFilter<"PickingTask"> | Date | string
+    salesOrder?: XOR<SalesOrderScalarRelationFilter, SalesOrderWhereInput>
+    warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    items?: PickingTaskItemListRelationFilter
+  }
+
+  export type PickingTaskOrderByWithRelationInput = {
+    id?: SortOrder
+    pickingNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    assignedToId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    salesOrder?: SalesOrderOrderByWithRelationInput
+    warehouse?: WarehouseOrderByWithRelationInput
+    assignedTo?: UserOrderByWithRelationInput
+    items?: PickingTaskItemOrderByRelationAggregateInput
+  }
+
+  export type PickingTaskWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    pickingNumber?: string
+    salesOrderId?: string
+    AND?: PickingTaskWhereInput | PickingTaskWhereInput[]
+    OR?: PickingTaskWhereInput[]
+    NOT?: PickingTaskWhereInput | PickingTaskWhereInput[]
+    warehouseId?: StringFilter<"PickingTask"> | string
+    assignedToId?: StringNullableFilter<"PickingTask"> | string | null
+    status?: EnumPickingStatusFilter<"PickingTask"> | $Enums.PickingStatus
+    createdAt?: DateTimeFilter<"PickingTask"> | Date | string
+    updatedAt?: DateTimeFilter<"PickingTask"> | Date | string
+    salesOrder?: XOR<SalesOrderScalarRelationFilter, SalesOrderWhereInput>
+    warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    items?: PickingTaskItemListRelationFilter
+  }, "id" | "pickingNumber" | "salesOrderId">
+
+  export type PickingTaskOrderByWithAggregationInput = {
+    id?: SortOrder
+    pickingNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    assignedToId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PickingTaskCountOrderByAggregateInput
+    _max?: PickingTaskMaxOrderByAggregateInput
+    _min?: PickingTaskMinOrderByAggregateInput
+  }
+
+  export type PickingTaskScalarWhereWithAggregatesInput = {
+    AND?: PickingTaskScalarWhereWithAggregatesInput | PickingTaskScalarWhereWithAggregatesInput[]
+    OR?: PickingTaskScalarWhereWithAggregatesInput[]
+    NOT?: PickingTaskScalarWhereWithAggregatesInput | PickingTaskScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PickingTask"> | string
+    pickingNumber?: StringWithAggregatesFilter<"PickingTask"> | string
+    salesOrderId?: StringWithAggregatesFilter<"PickingTask"> | string
+    warehouseId?: StringWithAggregatesFilter<"PickingTask"> | string
+    assignedToId?: StringNullableWithAggregatesFilter<"PickingTask"> | string | null
+    status?: EnumPickingStatusWithAggregatesFilter<"PickingTask"> | $Enums.PickingStatus
+    createdAt?: DateTimeWithAggregatesFilter<"PickingTask"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PickingTask"> | Date | string
+  }
+
+  export type PickingTaskItemWhereInput = {
+    AND?: PickingTaskItemWhereInput | PickingTaskItemWhereInput[]
+    OR?: PickingTaskItemWhereInput[]
+    NOT?: PickingTaskItemWhereInput | PickingTaskItemWhereInput[]
+    id?: StringFilter<"PickingTaskItem"> | string
+    pickingTaskId?: StringFilter<"PickingTaskItem"> | string
+    salesOrderItemId?: StringFilter<"PickingTaskItem"> | string
+    productId?: StringFilter<"PickingTaskItem"> | string
+    requiredQuantity?: DecimalFilter<"PickingTaskItem"> | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFilter<"PickingTaskItem"> | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFilter<"PickingTaskItem"> | $Enums.PickingItemStatus
+    createdAt?: DateTimeFilter<"PickingTaskItem"> | Date | string
+    updatedAt?: DateTimeFilter<"PickingTaskItem"> | Date | string
+    pickingTask?: XOR<PickingTaskScalarRelationFilter, PickingTaskWhereInput>
+    salesOrderItem?: XOR<SalesOrderItemScalarRelationFilter, SalesOrderItemWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    allocations?: PickingAllocationListRelationFilter
+  }
+
+  export type PickingTaskItemOrderByWithRelationInput = {
+    id?: SortOrder
+    pickingTaskId?: SortOrder
+    salesOrderItemId?: SortOrder
+    productId?: SortOrder
+    requiredQuantity?: SortOrder
+    pickedQuantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    pickingTask?: PickingTaskOrderByWithRelationInput
+    salesOrderItem?: SalesOrderItemOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
+    allocations?: PickingAllocationOrderByRelationAggregateInput
+  }
+
+  export type PickingTaskItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    pickingTaskId_salesOrderItemId?: PickingTaskItemPickingTaskIdSalesOrderItemIdCompoundUniqueInput
+    AND?: PickingTaskItemWhereInput | PickingTaskItemWhereInput[]
+    OR?: PickingTaskItemWhereInput[]
+    NOT?: PickingTaskItemWhereInput | PickingTaskItemWhereInput[]
+    pickingTaskId?: StringFilter<"PickingTaskItem"> | string
+    salesOrderItemId?: StringFilter<"PickingTaskItem"> | string
+    productId?: StringFilter<"PickingTaskItem"> | string
+    requiredQuantity?: DecimalFilter<"PickingTaskItem"> | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFilter<"PickingTaskItem"> | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFilter<"PickingTaskItem"> | $Enums.PickingItemStatus
+    createdAt?: DateTimeFilter<"PickingTaskItem"> | Date | string
+    updatedAt?: DateTimeFilter<"PickingTaskItem"> | Date | string
+    pickingTask?: XOR<PickingTaskScalarRelationFilter, PickingTaskWhereInput>
+    salesOrderItem?: XOR<SalesOrderItemScalarRelationFilter, SalesOrderItemWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    allocations?: PickingAllocationListRelationFilter
+  }, "id" | "pickingTaskId_salesOrderItemId">
+
+  export type PickingTaskItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    pickingTaskId?: SortOrder
+    salesOrderItemId?: SortOrder
+    productId?: SortOrder
+    requiredQuantity?: SortOrder
+    pickedQuantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PickingTaskItemCountOrderByAggregateInput
+    _avg?: PickingTaskItemAvgOrderByAggregateInput
+    _max?: PickingTaskItemMaxOrderByAggregateInput
+    _min?: PickingTaskItemMinOrderByAggregateInput
+    _sum?: PickingTaskItemSumOrderByAggregateInput
+  }
+
+  export type PickingTaskItemScalarWhereWithAggregatesInput = {
+    AND?: PickingTaskItemScalarWhereWithAggregatesInput | PickingTaskItemScalarWhereWithAggregatesInput[]
+    OR?: PickingTaskItemScalarWhereWithAggregatesInput[]
+    NOT?: PickingTaskItemScalarWhereWithAggregatesInput | PickingTaskItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PickingTaskItem"> | string
+    pickingTaskId?: StringWithAggregatesFilter<"PickingTaskItem"> | string
+    salesOrderItemId?: StringWithAggregatesFilter<"PickingTaskItem"> | string
+    productId?: StringWithAggregatesFilter<"PickingTaskItem"> | string
+    requiredQuantity?: DecimalWithAggregatesFilter<"PickingTaskItem"> | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalWithAggregatesFilter<"PickingTaskItem"> | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusWithAggregatesFilter<"PickingTaskItem"> | $Enums.PickingItemStatus
+    createdAt?: DateTimeWithAggregatesFilter<"PickingTaskItem"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PickingTaskItem"> | Date | string
+  }
+
+  export type PickingAllocationWhereInput = {
+    AND?: PickingAllocationWhereInput | PickingAllocationWhereInput[]
+    OR?: PickingAllocationWhereInput[]
+    NOT?: PickingAllocationWhereInput | PickingAllocationWhereInput[]
+    id?: StringFilter<"PickingAllocation"> | string
+    pickingTaskItemId?: StringFilter<"PickingAllocation"> | string
+    locationStockId?: StringFilter<"PickingAllocation"> | string
+    quantity?: DecimalFilter<"PickingAllocation"> | Decimal | DecimalJsLike | number | string
+    pickedById?: StringFilter<"PickingAllocation"> | string
+    pickedAt?: DateTimeFilter<"PickingAllocation"> | Date | string
+    pickingTaskItem?: XOR<PickingTaskItemScalarRelationFilter, PickingTaskItemWhereInput>
+    locationStock?: XOR<InventoryLocationStockScalarRelationFilter, InventoryLocationStockWhereInput>
+    pickedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type PickingAllocationOrderByWithRelationInput = {
+    id?: SortOrder
+    pickingTaskItemId?: SortOrder
+    locationStockId?: SortOrder
+    quantity?: SortOrder
+    pickedById?: SortOrder
+    pickedAt?: SortOrder
+    pickingTaskItem?: PickingTaskItemOrderByWithRelationInput
+    locationStock?: InventoryLocationStockOrderByWithRelationInput
+    pickedBy?: UserOrderByWithRelationInput
+  }
+
+  export type PickingAllocationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PickingAllocationWhereInput | PickingAllocationWhereInput[]
+    OR?: PickingAllocationWhereInput[]
+    NOT?: PickingAllocationWhereInput | PickingAllocationWhereInput[]
+    pickingTaskItemId?: StringFilter<"PickingAllocation"> | string
+    locationStockId?: StringFilter<"PickingAllocation"> | string
+    quantity?: DecimalFilter<"PickingAllocation"> | Decimal | DecimalJsLike | number | string
+    pickedById?: StringFilter<"PickingAllocation"> | string
+    pickedAt?: DateTimeFilter<"PickingAllocation"> | Date | string
+    pickingTaskItem?: XOR<PickingTaskItemScalarRelationFilter, PickingTaskItemWhereInput>
+    locationStock?: XOR<InventoryLocationStockScalarRelationFilter, InventoryLocationStockWhereInput>
+    pickedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type PickingAllocationOrderByWithAggregationInput = {
+    id?: SortOrder
+    pickingTaskItemId?: SortOrder
+    locationStockId?: SortOrder
+    quantity?: SortOrder
+    pickedById?: SortOrder
+    pickedAt?: SortOrder
+    _count?: PickingAllocationCountOrderByAggregateInput
+    _avg?: PickingAllocationAvgOrderByAggregateInput
+    _max?: PickingAllocationMaxOrderByAggregateInput
+    _min?: PickingAllocationMinOrderByAggregateInput
+    _sum?: PickingAllocationSumOrderByAggregateInput
+  }
+
+  export type PickingAllocationScalarWhereWithAggregatesInput = {
+    AND?: PickingAllocationScalarWhereWithAggregatesInput | PickingAllocationScalarWhereWithAggregatesInput[]
+    OR?: PickingAllocationScalarWhereWithAggregatesInput[]
+    NOT?: PickingAllocationScalarWhereWithAggregatesInput | PickingAllocationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PickingAllocation"> | string
+    pickingTaskItemId?: StringWithAggregatesFilter<"PickingAllocation"> | string
+    locationStockId?: StringWithAggregatesFilter<"PickingAllocation"> | string
+    quantity?: DecimalWithAggregatesFilter<"PickingAllocation"> | Decimal | DecimalJsLike | number | string
+    pickedById?: StringWithAggregatesFilter<"PickingAllocation"> | string
+    pickedAt?: DateTimeWithAggregatesFilter<"PickingAllocation"> | Date | string
   }
 
   export type SupplierWhereInput = {
@@ -35343,6 +39786,7 @@ export namespace Prisma {
     warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
     items?: SalesOrderItemListRelationFilter
     reservations?: StockReservationListRelationFilter
+    pickingTask?: XOR<PickingTaskNullableScalarRelationFilter, PickingTaskWhereInput> | null
   }
 
   export type SalesOrderOrderByWithRelationInput = {
@@ -35360,6 +39804,7 @@ export namespace Prisma {
     warehouse?: WarehouseOrderByWithRelationInput
     items?: SalesOrderItemOrderByRelationAggregateInput
     reservations?: StockReservationOrderByRelationAggregateInput
+    pickingTask?: PickingTaskOrderByWithRelationInput
   }
 
   export type SalesOrderWhereUniqueInput = Prisma.AtLeast<{
@@ -35380,6 +39825,7 @@ export namespace Prisma {
     warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
     items?: SalesOrderItemListRelationFilter
     reservations?: StockReservationListRelationFilter
+    pickingTask?: XOR<PickingTaskNullableScalarRelationFilter, PickingTaskWhereInput> | null
   }, "id" | "orderNumber">
 
   export type SalesOrderOrderByWithAggregationInput = {
@@ -35432,6 +39878,7 @@ export namespace Prisma {
     salesOrder?: XOR<SalesOrderScalarRelationFilter, SalesOrderWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     reservations?: StockReservationListRelationFilter
+    pickingTaskItems?: PickingTaskItemListRelationFilter
   }
 
   export type SalesOrderItemOrderByWithRelationInput = {
@@ -35447,6 +39894,7 @@ export namespace Prisma {
     salesOrder?: SalesOrderOrderByWithRelationInput
     product?: ProductOrderByWithRelationInput
     reservations?: StockReservationOrderByRelationAggregateInput
+    pickingTaskItems?: PickingTaskItemOrderByRelationAggregateInput
   }
 
   export type SalesOrderItemWhereUniqueInput = Prisma.AtLeast<{
@@ -35466,6 +39914,7 @@ export namespace Prisma {
     salesOrder?: XOR<SalesOrderScalarRelationFilter, SalesOrderWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     reservations?: StockReservationListRelationFilter
+    pickingTaskItems?: PickingTaskItemListRelationFilter
   }, "id" | "salesOrderId_productId">
 
   export type SalesOrderItemOrderByWithAggregationInput = {
@@ -35608,6 +40057,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -35632,6 +40083,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
   }
 
   export type UserUpdateInput = {
@@ -35656,6 +40109,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -35680,6 +40135,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -36143,6 +40600,7 @@ export namespace Prisma {
     warehouse: WarehouseCreateNestedOneWithoutInventoryLocationStocksInput
     bin: BinCreateNestedOneWithoutInventoryLocationStocksInput
     product: ProductCreateNestedOneWithoutInventoryLocationStocksInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutLocationStockInput
   }
 
   export type InventoryLocationStockUncheckedCreateInput = {
@@ -36153,6 +40611,7 @@ export namespace Prisma {
     quantity?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutLocationStockInput
   }
 
   export type InventoryLocationStockUpdateInput = {
@@ -36163,6 +40622,7 @@ export namespace Prisma {
     warehouse?: WarehouseUpdateOneRequiredWithoutInventoryLocationStocksNestedInput
     bin?: BinUpdateOneRequiredWithoutInventoryLocationStocksNestedInput
     product?: ProductUpdateOneRequiredWithoutInventoryLocationStocksNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutLocationStockNestedInput
   }
 
   export type InventoryLocationStockUncheckedUpdateInput = {
@@ -36173,6 +40633,7 @@ export namespace Prisma {
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutLocationStockNestedInput
   }
 
   export type InventoryLocationStockCreateManyInput = {
@@ -36316,6 +40777,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateInput = {
@@ -36339,6 +40801,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUpdateInput = {
@@ -36362,6 +40825,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateInput = {
@@ -36385,6 +40849,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseCreateManyInput = {
@@ -36625,6 +41090,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -36650,6 +41116,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductUpdateInput = {
@@ -36675,6 +41142,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -36700,6 +41168,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -37161,6 +41630,229 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingTaskCreateInput = {
+    id?: string
+    pickingNumber: string
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutPickingTaskInput
+    warehouse: WarehouseCreateNestedOneWithoutPickingTasksInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedPickingTasksInput
+    items?: PickingTaskItemCreateNestedManyWithoutPickingTaskInput
+  }
+
+  export type PickingTaskUncheckedCreateInput = {
+    id?: string
+    pickingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    assignedToId?: string | null
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: PickingTaskItemUncheckedCreateNestedManyWithoutPickingTaskInput
+  }
+
+  export type PickingTaskUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutPickingTaskNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutPickingTasksNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedPickingTasksNestedInput
+    items?: PickingTaskItemUpdateManyWithoutPickingTaskNestedInput
+  }
+
+  export type PickingTaskUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: PickingTaskItemUncheckedUpdateManyWithoutPickingTaskNestedInput
+  }
+
+  export type PickingTaskCreateManyInput = {
+    id?: string
+    pickingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    assignedToId?: string | null
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PickingTaskUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingTaskUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingTaskItemCreateInput = {
+    id?: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pickingTask: PickingTaskCreateNestedOneWithoutItemsInput
+    salesOrderItem: SalesOrderItemCreateNestedOneWithoutPickingTaskItemsInput
+    product: ProductCreateNestedOneWithoutPickingTaskItemsInput
+    allocations?: PickingAllocationCreateNestedManyWithoutPickingTaskItemInput
+  }
+
+  export type PickingTaskItemUncheckedCreateInput = {
+    id?: string
+    pickingTaskId: string
+    salesOrderItemId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    allocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickingTaskItemInput
+  }
+
+  export type PickingTaskItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pickingTask?: PickingTaskUpdateOneRequiredWithoutItemsNestedInput
+    salesOrderItem?: SalesOrderItemUpdateOneRequiredWithoutPickingTaskItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutPickingTaskItemsNestedInput
+    allocations?: PickingAllocationUpdateManyWithoutPickingTaskItemNestedInput
+  }
+
+  export type PickingTaskItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskId?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocations?: PickingAllocationUncheckedUpdateManyWithoutPickingTaskItemNestedInput
+  }
+
+  export type PickingTaskItemCreateManyInput = {
+    id?: string
+    pickingTaskId: string
+    salesOrderItemId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PickingTaskItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingTaskItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskId?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingAllocationCreateInput = {
+    id?: string
+    quantity: Decimal | DecimalJsLike | number | string
+    pickedAt?: Date | string
+    pickingTaskItem: PickingTaskItemCreateNestedOneWithoutAllocationsInput
+    locationStock: InventoryLocationStockCreateNestedOneWithoutPickingAllocationsInput
+    pickedBy: UserCreateNestedOneWithoutPickingAllocationsInput
+  }
+
+  export type PickingAllocationUncheckedCreateInput = {
+    id?: string
+    pickingTaskItemId: string
+    locationStockId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    pickedById: string
+    pickedAt?: Date | string
+  }
+
+  export type PickingAllocationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pickingTaskItem?: PickingTaskItemUpdateOneRequiredWithoutAllocationsNestedInput
+    locationStock?: InventoryLocationStockUpdateOneRequiredWithoutPickingAllocationsNestedInput
+    pickedBy?: UserUpdateOneRequiredWithoutPickingAllocationsNestedInput
+  }
+
+  export type PickingAllocationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskItemId?: StringFieldUpdateOperationsInput | string
+    locationStockId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedById?: StringFieldUpdateOperationsInput | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingAllocationCreateManyInput = {
+    id?: string
+    pickingTaskItemId: string
+    locationStockId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    pickedById: string
+    pickedAt?: Date | string
+  }
+
+  export type PickingAllocationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingAllocationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskItemId?: StringFieldUpdateOperationsInput | string
+    locationStockId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedById?: StringFieldUpdateOperationsInput | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SupplierCreateInput = {
@@ -37643,6 +42335,7 @@ export namespace Prisma {
     warehouse: WarehouseCreateNestedOneWithoutSalesOrdersInput
     items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateInput = {
@@ -37658,6 +42351,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUpdateInput = {
@@ -37673,6 +42367,7 @@ export namespace Prisma {
     warehouse?: WarehouseUpdateOneRequiredWithoutSalesOrdersNestedInput
     items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateInput = {
@@ -37688,6 +42383,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderCreateManyInput = {
@@ -37738,6 +42434,7 @@ export namespace Prisma {
     salesOrder: SalesOrderCreateNestedOneWithoutItemsInput
     product: ProductCreateNestedOneWithoutSalesOrderItemsInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderItemInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemUncheckedCreateInput = {
@@ -37751,6 +42448,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderItemInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemUpdateInput = {
@@ -37764,6 +42462,7 @@ export namespace Prisma {
     salesOrder?: SalesOrderUpdateOneRequiredWithoutItemsNestedInput
     product?: ProductUpdateOneRequiredWithoutSalesOrderItemsNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderItemNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateInput = {
@@ -37777,6 +42476,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderItemNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemCreateManyInput = {
@@ -38011,6 +42711,18 @@ export namespace Prisma {
     none?: SalesOrderWhereInput
   }
 
+  export type PickingTaskListRelationFilter = {
+    every?: PickingTaskWhereInput
+    some?: PickingTaskWhereInput
+    none?: PickingTaskWhereInput
+  }
+
+  export type PickingAllocationListRelationFilter = {
+    every?: PickingAllocationWhereInput
+    some?: PickingAllocationWhereInput
+    none?: PickingAllocationWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -38041,6 +42753,14 @@ export namespace Prisma {
   }
 
   export type SalesOrderOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PickingTaskOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PickingAllocationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -38827,6 +43547,12 @@ export namespace Prisma {
     none?: SalesOrderItemWhereInput
   }
 
+  export type PickingTaskItemListRelationFilter = {
+    every?: PickingTaskItemWhereInput
+    some?: PickingTaskItemWhereInput
+    none?: PickingTaskItemWhereInput
+  }
+
   export type PurchaseOrderItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -38836,6 +43562,10 @@ export namespace Prisma {
   }
 
   export type SalesOrderItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PickingTaskItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -39209,6 +43939,184 @@ export namespace Prisma {
     capacity?: SortOrder
   }
 
+  export type EnumPickingStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PickingStatus | EnumPickingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PickingStatus[] | ListEnumPickingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PickingStatus[] | ListEnumPickingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPickingStatusFilter<$PrismaModel> | $Enums.PickingStatus
+  }
+
+  export type SalesOrderScalarRelationFilter = {
+    is?: SalesOrderWhereInput
+    isNot?: SalesOrderWhereInput
+  }
+
+  export type PickingTaskCountOrderByAggregateInput = {
+    id?: SortOrder
+    pickingNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    assignedToId?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PickingTaskMaxOrderByAggregateInput = {
+    id?: SortOrder
+    pickingNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    assignedToId?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PickingTaskMinOrderByAggregateInput = {
+    id?: SortOrder
+    pickingNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    assignedToId?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumPickingStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PickingStatus | EnumPickingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PickingStatus[] | ListEnumPickingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PickingStatus[] | ListEnumPickingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPickingStatusWithAggregatesFilter<$PrismaModel> | $Enums.PickingStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPickingStatusFilter<$PrismaModel>
+    _max?: NestedEnumPickingStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPickingItemStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PickingItemStatus | EnumPickingItemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PickingItemStatus[] | ListEnumPickingItemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PickingItemStatus[] | ListEnumPickingItemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPickingItemStatusFilter<$PrismaModel> | $Enums.PickingItemStatus
+  }
+
+  export type PickingTaskScalarRelationFilter = {
+    is?: PickingTaskWhereInput
+    isNot?: PickingTaskWhereInput
+  }
+
+  export type SalesOrderItemScalarRelationFilter = {
+    is?: SalesOrderItemWhereInput
+    isNot?: SalesOrderItemWhereInput
+  }
+
+  export type PickingTaskItemPickingTaskIdSalesOrderItemIdCompoundUniqueInput = {
+    pickingTaskId: string
+    salesOrderItemId: string
+  }
+
+  export type PickingTaskItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    pickingTaskId?: SortOrder
+    salesOrderItemId?: SortOrder
+    productId?: SortOrder
+    requiredQuantity?: SortOrder
+    pickedQuantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PickingTaskItemAvgOrderByAggregateInput = {
+    requiredQuantity?: SortOrder
+    pickedQuantity?: SortOrder
+  }
+
+  export type PickingTaskItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    pickingTaskId?: SortOrder
+    salesOrderItemId?: SortOrder
+    productId?: SortOrder
+    requiredQuantity?: SortOrder
+    pickedQuantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PickingTaskItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    pickingTaskId?: SortOrder
+    salesOrderItemId?: SortOrder
+    productId?: SortOrder
+    requiredQuantity?: SortOrder
+    pickedQuantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PickingTaskItemSumOrderByAggregateInput = {
+    requiredQuantity?: SortOrder
+    pickedQuantity?: SortOrder
+  }
+
+  export type EnumPickingItemStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PickingItemStatus | EnumPickingItemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PickingItemStatus[] | ListEnumPickingItemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PickingItemStatus[] | ListEnumPickingItemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPickingItemStatusWithAggregatesFilter<$PrismaModel> | $Enums.PickingItemStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPickingItemStatusFilter<$PrismaModel>
+    _max?: NestedEnumPickingItemStatusFilter<$PrismaModel>
+  }
+
+  export type PickingTaskItemScalarRelationFilter = {
+    is?: PickingTaskItemWhereInput
+    isNot?: PickingTaskItemWhereInput
+  }
+
+  export type InventoryLocationStockScalarRelationFilter = {
+    is?: InventoryLocationStockWhereInput
+    isNot?: InventoryLocationStockWhereInput
+  }
+
+  export type PickingAllocationCountOrderByAggregateInput = {
+    id?: SortOrder
+    pickingTaskItemId?: SortOrder
+    locationStockId?: SortOrder
+    quantity?: SortOrder
+    pickedById?: SortOrder
+    pickedAt?: SortOrder
+  }
+
+  export type PickingAllocationAvgOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
+  export type PickingAllocationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    pickingTaskItemId?: SortOrder
+    locationStockId?: SortOrder
+    quantity?: SortOrder
+    pickedById?: SortOrder
+    pickedAt?: SortOrder
+  }
+
+  export type PickingAllocationMinOrderByAggregateInput = {
+    id?: SortOrder
+    pickingTaskItemId?: SortOrder
+    locationStockId?: SortOrder
+    quantity?: SortOrder
+    pickedById?: SortOrder
+    pickedAt?: SortOrder
+  }
+
+  export type PickingAllocationSumOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
   export type EnumSupplierStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.SupplierStatus | EnumSupplierStatusFieldRefInput<$PrismaModel>
     in?: $Enums.SupplierStatus[] | ListEnumSupplierStatusFieldRefInput<$PrismaModel>
@@ -39498,6 +44406,11 @@ export namespace Prisma {
     not?: NestedEnumSalesOrderStatusFilter<$PrismaModel> | $Enums.SalesOrderStatus
   }
 
+  export type PickingTaskNullableScalarRelationFilter = {
+    is?: PickingTaskWhereInput | null
+    isNot?: PickingTaskWhereInput | null
+  }
+
   export type SalesOrderCountOrderByAggregateInput = {
     id?: SortOrder
     orderNumber?: SortOrder
@@ -39553,11 +44466,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSalesOrderStatusFilter<$PrismaModel>
     _max?: NestedEnumSalesOrderStatusFilter<$PrismaModel>
-  }
-
-  export type SalesOrderScalarRelationFilter = {
-    is?: SalesOrderWhereInput
-    isNot?: SalesOrderWhereInput
   }
 
   export type SalesOrderItemSalesOrderIdProductIdCompoundUniqueInput = {
@@ -39620,11 +44528,6 @@ export namespace Prisma {
     in?: $Enums.ReservationStatus[] | ListEnumReservationStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.ReservationStatus[] | ListEnumReservationStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumReservationStatusFilter<$PrismaModel> | $Enums.ReservationStatus
-  }
-
-  export type SalesOrderItemScalarRelationFilter = {
-    is?: SalesOrderItemWhereInput
-    isNot?: SalesOrderItemWhereInput
   }
 
   export type StockReservationCountOrderByAggregateInput = {
@@ -39743,6 +44646,20 @@ export namespace Prisma {
     connect?: SalesOrderWhereUniqueInput | SalesOrderWhereUniqueInput[]
   }
 
+  export type PickingTaskCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<PickingTaskCreateWithoutAssignedToInput, PickingTaskUncheckedCreateWithoutAssignedToInput> | PickingTaskCreateWithoutAssignedToInput[] | PickingTaskUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutAssignedToInput | PickingTaskCreateOrConnectWithoutAssignedToInput[]
+    createMany?: PickingTaskCreateManyAssignedToInputEnvelope
+    connect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+  }
+
+  export type PickingAllocationCreateNestedManyWithoutPickedByInput = {
+    create?: XOR<PickingAllocationCreateWithoutPickedByInput, PickingAllocationUncheckedCreateWithoutPickedByInput> | PickingAllocationCreateWithoutPickedByInput[] | PickingAllocationUncheckedCreateWithoutPickedByInput[]
+    connectOrCreate?: PickingAllocationCreateOrConnectWithoutPickedByInput | PickingAllocationCreateOrConnectWithoutPickedByInput[]
+    createMany?: PickingAllocationCreateManyPickedByInputEnvelope
+    connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -39797,6 +44714,20 @@ export namespace Prisma {
     connectOrCreate?: SalesOrderCreateOrConnectWithoutCreatedByInput | SalesOrderCreateOrConnectWithoutCreatedByInput[]
     createMany?: SalesOrderCreateManyCreatedByInputEnvelope
     connect?: SalesOrderWhereUniqueInput | SalesOrderWhereUniqueInput[]
+  }
+
+  export type PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<PickingTaskCreateWithoutAssignedToInput, PickingTaskUncheckedCreateWithoutAssignedToInput> | PickingTaskCreateWithoutAssignedToInput[] | PickingTaskUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutAssignedToInput | PickingTaskCreateOrConnectWithoutAssignedToInput[]
+    createMany?: PickingTaskCreateManyAssignedToInputEnvelope
+    connect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+  }
+
+  export type PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput = {
+    create?: XOR<PickingAllocationCreateWithoutPickedByInput, PickingAllocationUncheckedCreateWithoutPickedByInput> | PickingAllocationCreateWithoutPickedByInput[] | PickingAllocationUncheckedCreateWithoutPickedByInput[]
+    connectOrCreate?: PickingAllocationCreateOrConnectWithoutPickedByInput | PickingAllocationCreateOrConnectWithoutPickedByInput[]
+    createMany?: PickingAllocationCreateManyPickedByInputEnvelope
+    connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -39949,6 +44880,34 @@ export namespace Prisma {
     deleteMany?: SalesOrderScalarWhereInput | SalesOrderScalarWhereInput[]
   }
 
+  export type PickingTaskUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<PickingTaskCreateWithoutAssignedToInput, PickingTaskUncheckedCreateWithoutAssignedToInput> | PickingTaskCreateWithoutAssignedToInput[] | PickingTaskUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutAssignedToInput | PickingTaskCreateOrConnectWithoutAssignedToInput[]
+    upsert?: PickingTaskUpsertWithWhereUniqueWithoutAssignedToInput | PickingTaskUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: PickingTaskCreateManyAssignedToInputEnvelope
+    set?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    disconnect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    delete?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    connect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    update?: PickingTaskUpdateWithWhereUniqueWithoutAssignedToInput | PickingTaskUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: PickingTaskUpdateManyWithWhereWithoutAssignedToInput | PickingTaskUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: PickingTaskScalarWhereInput | PickingTaskScalarWhereInput[]
+  }
+
+  export type PickingAllocationUpdateManyWithoutPickedByNestedInput = {
+    create?: XOR<PickingAllocationCreateWithoutPickedByInput, PickingAllocationUncheckedCreateWithoutPickedByInput> | PickingAllocationCreateWithoutPickedByInput[] | PickingAllocationUncheckedCreateWithoutPickedByInput[]
+    connectOrCreate?: PickingAllocationCreateOrConnectWithoutPickedByInput | PickingAllocationCreateOrConnectWithoutPickedByInput[]
+    upsert?: PickingAllocationUpsertWithWhereUniqueWithoutPickedByInput | PickingAllocationUpsertWithWhereUniqueWithoutPickedByInput[]
+    createMany?: PickingAllocationCreateManyPickedByInputEnvelope
+    set?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    disconnect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    delete?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    update?: PickingAllocationUpdateWithWhereUniqueWithoutPickedByInput | PickingAllocationUpdateWithWhereUniqueWithoutPickedByInput[]
+    updateMany?: PickingAllocationUpdateManyWithWhereWithoutPickedByInput | PickingAllocationUpdateManyWithWhereWithoutPickedByInput[]
+    deleteMany?: PickingAllocationScalarWhereInput | PickingAllocationScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -40059,6 +45018,34 @@ export namespace Prisma {
     update?: SalesOrderUpdateWithWhereUniqueWithoutCreatedByInput | SalesOrderUpdateWithWhereUniqueWithoutCreatedByInput[]
     updateMany?: SalesOrderUpdateManyWithWhereWithoutCreatedByInput | SalesOrderUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: SalesOrderScalarWhereInput | SalesOrderScalarWhereInput[]
+  }
+
+  export type PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<PickingTaskCreateWithoutAssignedToInput, PickingTaskUncheckedCreateWithoutAssignedToInput> | PickingTaskCreateWithoutAssignedToInput[] | PickingTaskUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutAssignedToInput | PickingTaskCreateOrConnectWithoutAssignedToInput[]
+    upsert?: PickingTaskUpsertWithWhereUniqueWithoutAssignedToInput | PickingTaskUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: PickingTaskCreateManyAssignedToInputEnvelope
+    set?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    disconnect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    delete?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    connect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    update?: PickingTaskUpdateWithWhereUniqueWithoutAssignedToInput | PickingTaskUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: PickingTaskUpdateManyWithWhereWithoutAssignedToInput | PickingTaskUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: PickingTaskScalarWhereInput | PickingTaskScalarWhereInput[]
+  }
+
+  export type PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput = {
+    create?: XOR<PickingAllocationCreateWithoutPickedByInput, PickingAllocationUncheckedCreateWithoutPickedByInput> | PickingAllocationCreateWithoutPickedByInput[] | PickingAllocationUncheckedCreateWithoutPickedByInput[]
+    connectOrCreate?: PickingAllocationCreateOrConnectWithoutPickedByInput | PickingAllocationCreateOrConnectWithoutPickedByInput[]
+    upsert?: PickingAllocationUpsertWithWhereUniqueWithoutPickedByInput | PickingAllocationUpsertWithWhereUniqueWithoutPickedByInput[]
+    createMany?: PickingAllocationCreateManyPickedByInputEnvelope
+    set?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    disconnect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    delete?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    update?: PickingAllocationUpdateWithWhereUniqueWithoutPickedByInput | PickingAllocationUpdateWithWhereUniqueWithoutPickedByInput[]
+    updateMany?: PickingAllocationUpdateManyWithWhereWithoutPickedByInput | PickingAllocationUpdateManyWithWhereWithoutPickedByInput[]
+    deleteMany?: PickingAllocationScalarWhereInput | PickingAllocationScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -40191,6 +45178,20 @@ export namespace Prisma {
     connect?: ProductWhereUniqueInput
   }
 
+  export type PickingAllocationCreateNestedManyWithoutLocationStockInput = {
+    create?: XOR<PickingAllocationCreateWithoutLocationStockInput, PickingAllocationUncheckedCreateWithoutLocationStockInput> | PickingAllocationCreateWithoutLocationStockInput[] | PickingAllocationUncheckedCreateWithoutLocationStockInput[]
+    connectOrCreate?: PickingAllocationCreateOrConnectWithoutLocationStockInput | PickingAllocationCreateOrConnectWithoutLocationStockInput[]
+    createMany?: PickingAllocationCreateManyLocationStockInputEnvelope
+    connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+  }
+
+  export type PickingAllocationUncheckedCreateNestedManyWithoutLocationStockInput = {
+    create?: XOR<PickingAllocationCreateWithoutLocationStockInput, PickingAllocationUncheckedCreateWithoutLocationStockInput> | PickingAllocationCreateWithoutLocationStockInput[] | PickingAllocationUncheckedCreateWithoutLocationStockInput[]
+    connectOrCreate?: PickingAllocationCreateOrConnectWithoutLocationStockInput | PickingAllocationCreateOrConnectWithoutLocationStockInput[]
+    createMany?: PickingAllocationCreateManyLocationStockInputEnvelope
+    connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+  }
+
   export type WarehouseUpdateOneRequiredWithoutInventoryLocationStocksNestedInput = {
     create?: XOR<WarehouseCreateWithoutInventoryLocationStocksInput, WarehouseUncheckedCreateWithoutInventoryLocationStocksInput>
     connectOrCreate?: WarehouseCreateOrConnectWithoutInventoryLocationStocksInput
@@ -40213,6 +45214,34 @@ export namespace Prisma {
     upsert?: ProductUpsertWithoutInventoryLocationStocksInput
     connect?: ProductWhereUniqueInput
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutInventoryLocationStocksInput, ProductUpdateWithoutInventoryLocationStocksInput>, ProductUncheckedUpdateWithoutInventoryLocationStocksInput>
+  }
+
+  export type PickingAllocationUpdateManyWithoutLocationStockNestedInput = {
+    create?: XOR<PickingAllocationCreateWithoutLocationStockInput, PickingAllocationUncheckedCreateWithoutLocationStockInput> | PickingAllocationCreateWithoutLocationStockInput[] | PickingAllocationUncheckedCreateWithoutLocationStockInput[]
+    connectOrCreate?: PickingAllocationCreateOrConnectWithoutLocationStockInput | PickingAllocationCreateOrConnectWithoutLocationStockInput[]
+    upsert?: PickingAllocationUpsertWithWhereUniqueWithoutLocationStockInput | PickingAllocationUpsertWithWhereUniqueWithoutLocationStockInput[]
+    createMany?: PickingAllocationCreateManyLocationStockInputEnvelope
+    set?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    disconnect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    delete?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    update?: PickingAllocationUpdateWithWhereUniqueWithoutLocationStockInput | PickingAllocationUpdateWithWhereUniqueWithoutLocationStockInput[]
+    updateMany?: PickingAllocationUpdateManyWithWhereWithoutLocationStockInput | PickingAllocationUpdateManyWithWhereWithoutLocationStockInput[]
+    deleteMany?: PickingAllocationScalarWhereInput | PickingAllocationScalarWhereInput[]
+  }
+
+  export type PickingAllocationUncheckedUpdateManyWithoutLocationStockNestedInput = {
+    create?: XOR<PickingAllocationCreateWithoutLocationStockInput, PickingAllocationUncheckedCreateWithoutLocationStockInput> | PickingAllocationCreateWithoutLocationStockInput[] | PickingAllocationUncheckedCreateWithoutLocationStockInput[]
+    connectOrCreate?: PickingAllocationCreateOrConnectWithoutLocationStockInput | PickingAllocationCreateOrConnectWithoutLocationStockInput[]
+    upsert?: PickingAllocationUpsertWithWhereUniqueWithoutLocationStockInput | PickingAllocationUpsertWithWhereUniqueWithoutLocationStockInput[]
+    createMany?: PickingAllocationCreateManyLocationStockInputEnvelope
+    set?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    disconnect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    delete?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    update?: PickingAllocationUpdateWithWhereUniqueWithoutLocationStockInput | PickingAllocationUpdateWithWhereUniqueWithoutLocationStockInput[]
+    updateMany?: PickingAllocationUpdateManyWithWhereWithoutLocationStockInput | PickingAllocationUpdateManyWithWhereWithoutLocationStockInput[]
+    deleteMany?: PickingAllocationScalarWhereInput | PickingAllocationScalarWhereInput[]
   }
 
   export type WarehouseCreateNestedOneWithoutInventoryLocationMovementsInput = {
@@ -40365,6 +45394,13 @@ export namespace Prisma {
     connect?: StockReservationWhereUniqueInput | StockReservationWhereUniqueInput[]
   }
 
+  export type PickingTaskCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<PickingTaskCreateWithoutWarehouseInput, PickingTaskUncheckedCreateWithoutWarehouseInput> | PickingTaskCreateWithoutWarehouseInput[] | PickingTaskUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutWarehouseInput | PickingTaskCreateOrConnectWithoutWarehouseInput[]
+    createMany?: PickingTaskCreateManyWarehouseInputEnvelope
+    connect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutWarehouseInput = {
     create?: XOR<UserCreateWithoutWarehouseInput, UserUncheckedCreateWithoutWarehouseInput> | UserCreateWithoutWarehouseInput[] | UserUncheckedCreateWithoutWarehouseInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWarehouseInput | UserCreateOrConnectWithoutWarehouseInput[]
@@ -40433,6 +45469,13 @@ export namespace Prisma {
     connectOrCreate?: StockReservationCreateOrConnectWithoutWarehouseInput | StockReservationCreateOrConnectWithoutWarehouseInput[]
     createMany?: StockReservationCreateManyWarehouseInputEnvelope
     connect?: StockReservationWhereUniqueInput | StockReservationWhereUniqueInput[]
+  }
+
+  export type PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<PickingTaskCreateWithoutWarehouseInput, PickingTaskUncheckedCreateWithoutWarehouseInput> | PickingTaskCreateWithoutWarehouseInput[] | PickingTaskUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutWarehouseInput | PickingTaskCreateOrConnectWithoutWarehouseInput[]
+    createMany?: PickingTaskCreateManyWarehouseInputEnvelope
+    connect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
   }
 
   export type EnumWarehouseStatusFieldUpdateOperationsInput = {
@@ -40579,6 +45622,20 @@ export namespace Prisma {
     deleteMany?: StockReservationScalarWhereInput | StockReservationScalarWhereInput[]
   }
 
+  export type PickingTaskUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<PickingTaskCreateWithoutWarehouseInput, PickingTaskUncheckedCreateWithoutWarehouseInput> | PickingTaskCreateWithoutWarehouseInput[] | PickingTaskUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutWarehouseInput | PickingTaskCreateOrConnectWithoutWarehouseInput[]
+    upsert?: PickingTaskUpsertWithWhereUniqueWithoutWarehouseInput | PickingTaskUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: PickingTaskCreateManyWarehouseInputEnvelope
+    set?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    disconnect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    delete?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    connect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    update?: PickingTaskUpdateWithWhereUniqueWithoutWarehouseInput | PickingTaskUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: PickingTaskUpdateManyWithWhereWithoutWarehouseInput | PickingTaskUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: PickingTaskScalarWhereInput | PickingTaskScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutWarehouseNestedInput = {
     create?: XOR<UserCreateWithoutWarehouseInput, UserUncheckedCreateWithoutWarehouseInput> | UserCreateWithoutWarehouseInput[] | UserUncheckedCreateWithoutWarehouseInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWarehouseInput | UserCreateOrConnectWithoutWarehouseInput[]
@@ -40717,6 +45774,20 @@ export namespace Prisma {
     update?: StockReservationUpdateWithWhereUniqueWithoutWarehouseInput | StockReservationUpdateWithWhereUniqueWithoutWarehouseInput[]
     updateMany?: StockReservationUpdateManyWithWhereWithoutWarehouseInput | StockReservationUpdateManyWithWhereWithoutWarehouseInput[]
     deleteMany?: StockReservationScalarWhereInput | StockReservationScalarWhereInput[]
+  }
+
+  export type PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<PickingTaskCreateWithoutWarehouseInput, PickingTaskUncheckedCreateWithoutWarehouseInput> | PickingTaskCreateWithoutWarehouseInput[] | PickingTaskUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutWarehouseInput | PickingTaskCreateOrConnectWithoutWarehouseInput[]
+    upsert?: PickingTaskUpsertWithWhereUniqueWithoutWarehouseInput | PickingTaskUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: PickingTaskCreateManyWarehouseInputEnvelope
+    set?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    disconnect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    delete?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    connect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+    update?: PickingTaskUpdateWithWhereUniqueWithoutWarehouseInput | PickingTaskUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: PickingTaskUpdateManyWithWhereWithoutWarehouseInput | PickingTaskUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: PickingTaskScalarWhereInput | PickingTaskScalarWhereInput[]
   }
 
   export type ProductCreateNestedManyWithoutCategoryInput = {
@@ -40879,6 +45950,13 @@ export namespace Prisma {
     connect?: StockReservationWhereUniqueInput | StockReservationWhereUniqueInput[]
   }
 
+  export type PickingTaskItemCreateNestedManyWithoutProductInput = {
+    create?: XOR<PickingTaskItemCreateWithoutProductInput, PickingTaskItemUncheckedCreateWithoutProductInput> | PickingTaskItemCreateWithoutProductInput[] | PickingTaskItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutProductInput | PickingTaskItemCreateOrConnectWithoutProductInput[]
+    createMany?: PickingTaskItemCreateManyProductInputEnvelope
+    connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+  }
+
   export type InventoryStockUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<InventoryStockCreateWithoutProductInput, InventoryStockUncheckedCreateWithoutProductInput> | InventoryStockCreateWithoutProductInput[] | InventoryStockUncheckedCreateWithoutProductInput[]
     connectOrCreate?: InventoryStockCreateOrConnectWithoutProductInput | InventoryStockCreateOrConnectWithoutProductInput[]
@@ -40933,6 +46011,13 @@ export namespace Prisma {
     connectOrCreate?: StockReservationCreateOrConnectWithoutProductInput | StockReservationCreateOrConnectWithoutProductInput[]
     createMany?: StockReservationCreateManyProductInputEnvelope
     connect?: StockReservationWhereUniqueInput | StockReservationWhereUniqueInput[]
+  }
+
+  export type PickingTaskItemUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<PickingTaskItemCreateWithoutProductInput, PickingTaskItemUncheckedCreateWithoutProductInput> | PickingTaskItemCreateWithoutProductInput[] | PickingTaskItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutProductInput | PickingTaskItemCreateOrConnectWithoutProductInput[]
+    createMany?: PickingTaskItemCreateManyProductInputEnvelope
+    connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
   }
 
   export type EnumProductStatusFieldUpdateOperationsInput = {
@@ -41069,6 +46154,20 @@ export namespace Prisma {
     deleteMany?: StockReservationScalarWhereInput | StockReservationScalarWhereInput[]
   }
 
+  export type PickingTaskItemUpdateManyWithoutProductNestedInput = {
+    create?: XOR<PickingTaskItemCreateWithoutProductInput, PickingTaskItemUncheckedCreateWithoutProductInput> | PickingTaskItemCreateWithoutProductInput[] | PickingTaskItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutProductInput | PickingTaskItemCreateOrConnectWithoutProductInput[]
+    upsert?: PickingTaskItemUpsertWithWhereUniqueWithoutProductInput | PickingTaskItemUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: PickingTaskItemCreateManyProductInputEnvelope
+    set?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    disconnect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    delete?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    update?: PickingTaskItemUpdateWithWhereUniqueWithoutProductInput | PickingTaskItemUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: PickingTaskItemUpdateManyWithWhereWithoutProductInput | PickingTaskItemUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: PickingTaskItemScalarWhereInput | PickingTaskItemScalarWhereInput[]
+  }
+
   export type InventoryStockUncheckedUpdateManyWithoutProductNestedInput = {
     create?: XOR<InventoryStockCreateWithoutProductInput, InventoryStockUncheckedCreateWithoutProductInput> | InventoryStockCreateWithoutProductInput[] | InventoryStockUncheckedCreateWithoutProductInput[]
     connectOrCreate?: InventoryStockCreateOrConnectWithoutProductInput | InventoryStockCreateOrConnectWithoutProductInput[]
@@ -41179,6 +46278,20 @@ export namespace Prisma {
     update?: StockReservationUpdateWithWhereUniqueWithoutProductInput | StockReservationUpdateWithWhereUniqueWithoutProductInput[]
     updateMany?: StockReservationUpdateManyWithWhereWithoutProductInput | StockReservationUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: StockReservationScalarWhereInput | StockReservationScalarWhereInput[]
+  }
+
+  export type PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<PickingTaskItemCreateWithoutProductInput, PickingTaskItemUncheckedCreateWithoutProductInput> | PickingTaskItemCreateWithoutProductInput[] | PickingTaskItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutProductInput | PickingTaskItemCreateOrConnectWithoutProductInput[]
+    upsert?: PickingTaskItemUpsertWithWhereUniqueWithoutProductInput | PickingTaskItemUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: PickingTaskItemCreateManyProductInputEnvelope
+    set?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    disconnect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    delete?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    update?: PickingTaskItemUpdateWithWhereUniqueWithoutProductInput | PickingTaskItemUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: PickingTaskItemUpdateManyWithWhereWithoutProductInput | PickingTaskItemUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: PickingTaskItemScalarWhereInput | PickingTaskItemScalarWhereInput[]
   }
 
   export type WarehouseCreateNestedOneWithoutZonesInput = {
@@ -41499,6 +46612,226 @@ export namespace Prisma {
     update?: InventoryLocationMovementUpdateWithWhereUniqueWithoutToBinInput | InventoryLocationMovementUpdateWithWhereUniqueWithoutToBinInput[]
     updateMany?: InventoryLocationMovementUpdateManyWithWhereWithoutToBinInput | InventoryLocationMovementUpdateManyWithWhereWithoutToBinInput[]
     deleteMany?: InventoryLocationMovementScalarWhereInput | InventoryLocationMovementScalarWhereInput[]
+  }
+
+  export type SalesOrderCreateNestedOneWithoutPickingTaskInput = {
+    create?: XOR<SalesOrderCreateWithoutPickingTaskInput, SalesOrderUncheckedCreateWithoutPickingTaskInput>
+    connectOrCreate?: SalesOrderCreateOrConnectWithoutPickingTaskInput
+    connect?: SalesOrderWhereUniqueInput
+  }
+
+  export type WarehouseCreateNestedOneWithoutPickingTasksInput = {
+    create?: XOR<WarehouseCreateWithoutPickingTasksInput, WarehouseUncheckedCreateWithoutPickingTasksInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutPickingTasksInput
+    connect?: WarehouseWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAssignedPickingTasksInput = {
+    create?: XOR<UserCreateWithoutAssignedPickingTasksInput, UserUncheckedCreateWithoutAssignedPickingTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedPickingTasksInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PickingTaskItemCreateNestedManyWithoutPickingTaskInput = {
+    create?: XOR<PickingTaskItemCreateWithoutPickingTaskInput, PickingTaskItemUncheckedCreateWithoutPickingTaskInput> | PickingTaskItemCreateWithoutPickingTaskInput[] | PickingTaskItemUncheckedCreateWithoutPickingTaskInput[]
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutPickingTaskInput | PickingTaskItemCreateOrConnectWithoutPickingTaskInput[]
+    createMany?: PickingTaskItemCreateManyPickingTaskInputEnvelope
+    connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+  }
+
+  export type PickingTaskItemUncheckedCreateNestedManyWithoutPickingTaskInput = {
+    create?: XOR<PickingTaskItemCreateWithoutPickingTaskInput, PickingTaskItemUncheckedCreateWithoutPickingTaskInput> | PickingTaskItemCreateWithoutPickingTaskInput[] | PickingTaskItemUncheckedCreateWithoutPickingTaskInput[]
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutPickingTaskInput | PickingTaskItemCreateOrConnectWithoutPickingTaskInput[]
+    createMany?: PickingTaskItemCreateManyPickingTaskInputEnvelope
+    connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+  }
+
+  export type EnumPickingStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PickingStatus
+  }
+
+  export type SalesOrderUpdateOneRequiredWithoutPickingTaskNestedInput = {
+    create?: XOR<SalesOrderCreateWithoutPickingTaskInput, SalesOrderUncheckedCreateWithoutPickingTaskInput>
+    connectOrCreate?: SalesOrderCreateOrConnectWithoutPickingTaskInput
+    upsert?: SalesOrderUpsertWithoutPickingTaskInput
+    connect?: SalesOrderWhereUniqueInput
+    update?: XOR<XOR<SalesOrderUpdateToOneWithWhereWithoutPickingTaskInput, SalesOrderUpdateWithoutPickingTaskInput>, SalesOrderUncheckedUpdateWithoutPickingTaskInput>
+  }
+
+  export type WarehouseUpdateOneRequiredWithoutPickingTasksNestedInput = {
+    create?: XOR<WarehouseCreateWithoutPickingTasksInput, WarehouseUncheckedCreateWithoutPickingTasksInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutPickingTasksInput
+    upsert?: WarehouseUpsertWithoutPickingTasksInput
+    connect?: WarehouseWhereUniqueInput
+    update?: XOR<XOR<WarehouseUpdateToOneWithWhereWithoutPickingTasksInput, WarehouseUpdateWithoutPickingTasksInput>, WarehouseUncheckedUpdateWithoutPickingTasksInput>
+  }
+
+  export type UserUpdateOneWithoutAssignedPickingTasksNestedInput = {
+    create?: XOR<UserCreateWithoutAssignedPickingTasksInput, UserUncheckedCreateWithoutAssignedPickingTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedPickingTasksInput
+    upsert?: UserUpsertWithoutAssignedPickingTasksInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAssignedPickingTasksInput, UserUpdateWithoutAssignedPickingTasksInput>, UserUncheckedUpdateWithoutAssignedPickingTasksInput>
+  }
+
+  export type PickingTaskItemUpdateManyWithoutPickingTaskNestedInput = {
+    create?: XOR<PickingTaskItemCreateWithoutPickingTaskInput, PickingTaskItemUncheckedCreateWithoutPickingTaskInput> | PickingTaskItemCreateWithoutPickingTaskInput[] | PickingTaskItemUncheckedCreateWithoutPickingTaskInput[]
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutPickingTaskInput | PickingTaskItemCreateOrConnectWithoutPickingTaskInput[]
+    upsert?: PickingTaskItemUpsertWithWhereUniqueWithoutPickingTaskInput | PickingTaskItemUpsertWithWhereUniqueWithoutPickingTaskInput[]
+    createMany?: PickingTaskItemCreateManyPickingTaskInputEnvelope
+    set?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    disconnect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    delete?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    update?: PickingTaskItemUpdateWithWhereUniqueWithoutPickingTaskInput | PickingTaskItemUpdateWithWhereUniqueWithoutPickingTaskInput[]
+    updateMany?: PickingTaskItemUpdateManyWithWhereWithoutPickingTaskInput | PickingTaskItemUpdateManyWithWhereWithoutPickingTaskInput[]
+    deleteMany?: PickingTaskItemScalarWhereInput | PickingTaskItemScalarWhereInput[]
+  }
+
+  export type PickingTaskItemUncheckedUpdateManyWithoutPickingTaskNestedInput = {
+    create?: XOR<PickingTaskItemCreateWithoutPickingTaskInput, PickingTaskItemUncheckedCreateWithoutPickingTaskInput> | PickingTaskItemCreateWithoutPickingTaskInput[] | PickingTaskItemUncheckedCreateWithoutPickingTaskInput[]
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutPickingTaskInput | PickingTaskItemCreateOrConnectWithoutPickingTaskInput[]
+    upsert?: PickingTaskItemUpsertWithWhereUniqueWithoutPickingTaskInput | PickingTaskItemUpsertWithWhereUniqueWithoutPickingTaskInput[]
+    createMany?: PickingTaskItemCreateManyPickingTaskInputEnvelope
+    set?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    disconnect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    delete?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    update?: PickingTaskItemUpdateWithWhereUniqueWithoutPickingTaskInput | PickingTaskItemUpdateWithWhereUniqueWithoutPickingTaskInput[]
+    updateMany?: PickingTaskItemUpdateManyWithWhereWithoutPickingTaskInput | PickingTaskItemUpdateManyWithWhereWithoutPickingTaskInput[]
+    deleteMany?: PickingTaskItemScalarWhereInput | PickingTaskItemScalarWhereInput[]
+  }
+
+  export type PickingTaskCreateNestedOneWithoutItemsInput = {
+    create?: XOR<PickingTaskCreateWithoutItemsInput, PickingTaskUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutItemsInput
+    connect?: PickingTaskWhereUniqueInput
+  }
+
+  export type SalesOrderItemCreateNestedOneWithoutPickingTaskItemsInput = {
+    create?: XOR<SalesOrderItemCreateWithoutPickingTaskItemsInput, SalesOrderItemUncheckedCreateWithoutPickingTaskItemsInput>
+    connectOrCreate?: SalesOrderItemCreateOrConnectWithoutPickingTaskItemsInput
+    connect?: SalesOrderItemWhereUniqueInput
+  }
+
+  export type ProductCreateNestedOneWithoutPickingTaskItemsInput = {
+    create?: XOR<ProductCreateWithoutPickingTaskItemsInput, ProductUncheckedCreateWithoutPickingTaskItemsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutPickingTaskItemsInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type PickingAllocationCreateNestedManyWithoutPickingTaskItemInput = {
+    create?: XOR<PickingAllocationCreateWithoutPickingTaskItemInput, PickingAllocationUncheckedCreateWithoutPickingTaskItemInput> | PickingAllocationCreateWithoutPickingTaskItemInput[] | PickingAllocationUncheckedCreateWithoutPickingTaskItemInput[]
+    connectOrCreate?: PickingAllocationCreateOrConnectWithoutPickingTaskItemInput | PickingAllocationCreateOrConnectWithoutPickingTaskItemInput[]
+    createMany?: PickingAllocationCreateManyPickingTaskItemInputEnvelope
+    connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+  }
+
+  export type PickingAllocationUncheckedCreateNestedManyWithoutPickingTaskItemInput = {
+    create?: XOR<PickingAllocationCreateWithoutPickingTaskItemInput, PickingAllocationUncheckedCreateWithoutPickingTaskItemInput> | PickingAllocationCreateWithoutPickingTaskItemInput[] | PickingAllocationUncheckedCreateWithoutPickingTaskItemInput[]
+    connectOrCreate?: PickingAllocationCreateOrConnectWithoutPickingTaskItemInput | PickingAllocationCreateOrConnectWithoutPickingTaskItemInput[]
+    createMany?: PickingAllocationCreateManyPickingTaskItemInputEnvelope
+    connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+  }
+
+  export type EnumPickingItemStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PickingItemStatus
+  }
+
+  export type PickingTaskUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<PickingTaskCreateWithoutItemsInput, PickingTaskUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutItemsInput
+    upsert?: PickingTaskUpsertWithoutItemsInput
+    connect?: PickingTaskWhereUniqueInput
+    update?: XOR<XOR<PickingTaskUpdateToOneWithWhereWithoutItemsInput, PickingTaskUpdateWithoutItemsInput>, PickingTaskUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type SalesOrderItemUpdateOneRequiredWithoutPickingTaskItemsNestedInput = {
+    create?: XOR<SalesOrderItemCreateWithoutPickingTaskItemsInput, SalesOrderItemUncheckedCreateWithoutPickingTaskItemsInput>
+    connectOrCreate?: SalesOrderItemCreateOrConnectWithoutPickingTaskItemsInput
+    upsert?: SalesOrderItemUpsertWithoutPickingTaskItemsInput
+    connect?: SalesOrderItemWhereUniqueInput
+    update?: XOR<XOR<SalesOrderItemUpdateToOneWithWhereWithoutPickingTaskItemsInput, SalesOrderItemUpdateWithoutPickingTaskItemsInput>, SalesOrderItemUncheckedUpdateWithoutPickingTaskItemsInput>
+  }
+
+  export type ProductUpdateOneRequiredWithoutPickingTaskItemsNestedInput = {
+    create?: XOR<ProductCreateWithoutPickingTaskItemsInput, ProductUncheckedCreateWithoutPickingTaskItemsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutPickingTaskItemsInput
+    upsert?: ProductUpsertWithoutPickingTaskItemsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutPickingTaskItemsInput, ProductUpdateWithoutPickingTaskItemsInput>, ProductUncheckedUpdateWithoutPickingTaskItemsInput>
+  }
+
+  export type PickingAllocationUpdateManyWithoutPickingTaskItemNestedInput = {
+    create?: XOR<PickingAllocationCreateWithoutPickingTaskItemInput, PickingAllocationUncheckedCreateWithoutPickingTaskItemInput> | PickingAllocationCreateWithoutPickingTaskItemInput[] | PickingAllocationUncheckedCreateWithoutPickingTaskItemInput[]
+    connectOrCreate?: PickingAllocationCreateOrConnectWithoutPickingTaskItemInput | PickingAllocationCreateOrConnectWithoutPickingTaskItemInput[]
+    upsert?: PickingAllocationUpsertWithWhereUniqueWithoutPickingTaskItemInput | PickingAllocationUpsertWithWhereUniqueWithoutPickingTaskItemInput[]
+    createMany?: PickingAllocationCreateManyPickingTaskItemInputEnvelope
+    set?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    disconnect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    delete?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    update?: PickingAllocationUpdateWithWhereUniqueWithoutPickingTaskItemInput | PickingAllocationUpdateWithWhereUniqueWithoutPickingTaskItemInput[]
+    updateMany?: PickingAllocationUpdateManyWithWhereWithoutPickingTaskItemInput | PickingAllocationUpdateManyWithWhereWithoutPickingTaskItemInput[]
+    deleteMany?: PickingAllocationScalarWhereInput | PickingAllocationScalarWhereInput[]
+  }
+
+  export type PickingAllocationUncheckedUpdateManyWithoutPickingTaskItemNestedInput = {
+    create?: XOR<PickingAllocationCreateWithoutPickingTaskItemInput, PickingAllocationUncheckedCreateWithoutPickingTaskItemInput> | PickingAllocationCreateWithoutPickingTaskItemInput[] | PickingAllocationUncheckedCreateWithoutPickingTaskItemInput[]
+    connectOrCreate?: PickingAllocationCreateOrConnectWithoutPickingTaskItemInput | PickingAllocationCreateOrConnectWithoutPickingTaskItemInput[]
+    upsert?: PickingAllocationUpsertWithWhereUniqueWithoutPickingTaskItemInput | PickingAllocationUpsertWithWhereUniqueWithoutPickingTaskItemInput[]
+    createMany?: PickingAllocationCreateManyPickingTaskItemInputEnvelope
+    set?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    disconnect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    delete?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+    update?: PickingAllocationUpdateWithWhereUniqueWithoutPickingTaskItemInput | PickingAllocationUpdateWithWhereUniqueWithoutPickingTaskItemInput[]
+    updateMany?: PickingAllocationUpdateManyWithWhereWithoutPickingTaskItemInput | PickingAllocationUpdateManyWithWhereWithoutPickingTaskItemInput[]
+    deleteMany?: PickingAllocationScalarWhereInput | PickingAllocationScalarWhereInput[]
+  }
+
+  export type PickingTaskItemCreateNestedOneWithoutAllocationsInput = {
+    create?: XOR<PickingTaskItemCreateWithoutAllocationsInput, PickingTaskItemUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutAllocationsInput
+    connect?: PickingTaskItemWhereUniqueInput
+  }
+
+  export type InventoryLocationStockCreateNestedOneWithoutPickingAllocationsInput = {
+    create?: XOR<InventoryLocationStockCreateWithoutPickingAllocationsInput, InventoryLocationStockUncheckedCreateWithoutPickingAllocationsInput>
+    connectOrCreate?: InventoryLocationStockCreateOrConnectWithoutPickingAllocationsInput
+    connect?: InventoryLocationStockWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutPickingAllocationsInput = {
+    create?: XOR<UserCreateWithoutPickingAllocationsInput, UserUncheckedCreateWithoutPickingAllocationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPickingAllocationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PickingTaskItemUpdateOneRequiredWithoutAllocationsNestedInput = {
+    create?: XOR<PickingTaskItemCreateWithoutAllocationsInput, PickingTaskItemUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutAllocationsInput
+    upsert?: PickingTaskItemUpsertWithoutAllocationsInput
+    connect?: PickingTaskItemWhereUniqueInput
+    update?: XOR<XOR<PickingTaskItemUpdateToOneWithWhereWithoutAllocationsInput, PickingTaskItemUpdateWithoutAllocationsInput>, PickingTaskItemUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type InventoryLocationStockUpdateOneRequiredWithoutPickingAllocationsNestedInput = {
+    create?: XOR<InventoryLocationStockCreateWithoutPickingAllocationsInput, InventoryLocationStockUncheckedCreateWithoutPickingAllocationsInput>
+    connectOrCreate?: InventoryLocationStockCreateOrConnectWithoutPickingAllocationsInput
+    upsert?: InventoryLocationStockUpsertWithoutPickingAllocationsInput
+    connect?: InventoryLocationStockWhereUniqueInput
+    update?: XOR<XOR<InventoryLocationStockUpdateToOneWithWhereWithoutPickingAllocationsInput, InventoryLocationStockUpdateWithoutPickingAllocationsInput>, InventoryLocationStockUncheckedUpdateWithoutPickingAllocationsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutPickingAllocationsNestedInput = {
+    create?: XOR<UserCreateWithoutPickingAllocationsInput, UserUncheckedCreateWithoutPickingAllocationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPickingAllocationsInput
+    upsert?: UserUpsertWithoutPickingAllocationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPickingAllocationsInput, UserUpdateWithoutPickingAllocationsInput>, UserUncheckedUpdateWithoutPickingAllocationsInput>
   }
 
   export type PurchaseOrderCreateNestedManyWithoutSupplierInput = {
@@ -41859,6 +47192,12 @@ export namespace Prisma {
     connect?: StockReservationWhereUniqueInput | StockReservationWhereUniqueInput[]
   }
 
+  export type PickingTaskCreateNestedOneWithoutSalesOrderInput = {
+    create?: XOR<PickingTaskCreateWithoutSalesOrderInput, PickingTaskUncheckedCreateWithoutSalesOrderInput>
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutSalesOrderInput
+    connect?: PickingTaskWhereUniqueInput
+  }
+
   export type SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput = {
     create?: XOR<SalesOrderItemCreateWithoutSalesOrderInput, SalesOrderItemUncheckedCreateWithoutSalesOrderInput> | SalesOrderItemCreateWithoutSalesOrderInput[] | SalesOrderItemUncheckedCreateWithoutSalesOrderInput[]
     connectOrCreate?: SalesOrderItemCreateOrConnectWithoutSalesOrderInput | SalesOrderItemCreateOrConnectWithoutSalesOrderInput[]
@@ -41871,6 +47210,12 @@ export namespace Prisma {
     connectOrCreate?: StockReservationCreateOrConnectWithoutSalesOrderInput | StockReservationCreateOrConnectWithoutSalesOrderInput[]
     createMany?: StockReservationCreateManySalesOrderInputEnvelope
     connect?: StockReservationWhereUniqueInput | StockReservationWhereUniqueInput[]
+  }
+
+  export type PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput = {
+    create?: XOR<PickingTaskCreateWithoutSalesOrderInput, PickingTaskUncheckedCreateWithoutSalesOrderInput>
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutSalesOrderInput
+    connect?: PickingTaskWhereUniqueInput
   }
 
   export type EnumSalesOrderStatusFieldUpdateOperationsInput = {
@@ -41921,6 +47266,16 @@ export namespace Prisma {
     deleteMany?: StockReservationScalarWhereInput | StockReservationScalarWhereInput[]
   }
 
+  export type PickingTaskUpdateOneWithoutSalesOrderNestedInput = {
+    create?: XOR<PickingTaskCreateWithoutSalesOrderInput, PickingTaskUncheckedCreateWithoutSalesOrderInput>
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutSalesOrderInput
+    upsert?: PickingTaskUpsertWithoutSalesOrderInput
+    disconnect?: PickingTaskWhereInput | boolean
+    delete?: PickingTaskWhereInput | boolean
+    connect?: PickingTaskWhereUniqueInput
+    update?: XOR<XOR<PickingTaskUpdateToOneWithWhereWithoutSalesOrderInput, PickingTaskUpdateWithoutSalesOrderInput>, PickingTaskUncheckedUpdateWithoutSalesOrderInput>
+  }
+
   export type SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput = {
     create?: XOR<SalesOrderItemCreateWithoutSalesOrderInput, SalesOrderItemUncheckedCreateWithoutSalesOrderInput> | SalesOrderItemCreateWithoutSalesOrderInput[] | SalesOrderItemUncheckedCreateWithoutSalesOrderInput[]
     connectOrCreate?: SalesOrderItemCreateOrConnectWithoutSalesOrderInput | SalesOrderItemCreateOrConnectWithoutSalesOrderInput[]
@@ -41949,6 +47304,16 @@ export namespace Prisma {
     deleteMany?: StockReservationScalarWhereInput | StockReservationScalarWhereInput[]
   }
 
+  export type PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput = {
+    create?: XOR<PickingTaskCreateWithoutSalesOrderInput, PickingTaskUncheckedCreateWithoutSalesOrderInput>
+    connectOrCreate?: PickingTaskCreateOrConnectWithoutSalesOrderInput
+    upsert?: PickingTaskUpsertWithoutSalesOrderInput
+    disconnect?: PickingTaskWhereInput | boolean
+    delete?: PickingTaskWhereInput | boolean
+    connect?: PickingTaskWhereUniqueInput
+    update?: XOR<XOR<PickingTaskUpdateToOneWithWhereWithoutSalesOrderInput, PickingTaskUpdateWithoutSalesOrderInput>, PickingTaskUncheckedUpdateWithoutSalesOrderInput>
+  }
+
   export type SalesOrderCreateNestedOneWithoutItemsInput = {
     create?: XOR<SalesOrderCreateWithoutItemsInput, SalesOrderUncheckedCreateWithoutItemsInput>
     connectOrCreate?: SalesOrderCreateOrConnectWithoutItemsInput
@@ -41968,11 +47333,25 @@ export namespace Prisma {
     connect?: StockReservationWhereUniqueInput | StockReservationWhereUniqueInput[]
   }
 
+  export type PickingTaskItemCreateNestedManyWithoutSalesOrderItemInput = {
+    create?: XOR<PickingTaskItemCreateWithoutSalesOrderItemInput, PickingTaskItemUncheckedCreateWithoutSalesOrderItemInput> | PickingTaskItemCreateWithoutSalesOrderItemInput[] | PickingTaskItemUncheckedCreateWithoutSalesOrderItemInput[]
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutSalesOrderItemInput | PickingTaskItemCreateOrConnectWithoutSalesOrderItemInput[]
+    createMany?: PickingTaskItemCreateManySalesOrderItemInputEnvelope
+    connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+  }
+
   export type StockReservationUncheckedCreateNestedManyWithoutSalesOrderItemInput = {
     create?: XOR<StockReservationCreateWithoutSalesOrderItemInput, StockReservationUncheckedCreateWithoutSalesOrderItemInput> | StockReservationCreateWithoutSalesOrderItemInput[] | StockReservationUncheckedCreateWithoutSalesOrderItemInput[]
     connectOrCreate?: StockReservationCreateOrConnectWithoutSalesOrderItemInput | StockReservationCreateOrConnectWithoutSalesOrderItemInput[]
     createMany?: StockReservationCreateManySalesOrderItemInputEnvelope
     connect?: StockReservationWhereUniqueInput | StockReservationWhereUniqueInput[]
+  }
+
+  export type PickingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput = {
+    create?: XOR<PickingTaskItemCreateWithoutSalesOrderItemInput, PickingTaskItemUncheckedCreateWithoutSalesOrderItemInput> | PickingTaskItemCreateWithoutSalesOrderItemInput[] | PickingTaskItemUncheckedCreateWithoutSalesOrderItemInput[]
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutSalesOrderItemInput | PickingTaskItemCreateOrConnectWithoutSalesOrderItemInput[]
+    createMany?: PickingTaskItemCreateManySalesOrderItemInputEnvelope
+    connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
   }
 
   export type SalesOrderUpdateOneRequiredWithoutItemsNestedInput = {
@@ -42005,6 +47384,20 @@ export namespace Prisma {
     deleteMany?: StockReservationScalarWhereInput | StockReservationScalarWhereInput[]
   }
 
+  export type PickingTaskItemUpdateManyWithoutSalesOrderItemNestedInput = {
+    create?: XOR<PickingTaskItemCreateWithoutSalesOrderItemInput, PickingTaskItemUncheckedCreateWithoutSalesOrderItemInput> | PickingTaskItemCreateWithoutSalesOrderItemInput[] | PickingTaskItemUncheckedCreateWithoutSalesOrderItemInput[]
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutSalesOrderItemInput | PickingTaskItemCreateOrConnectWithoutSalesOrderItemInput[]
+    upsert?: PickingTaskItemUpsertWithWhereUniqueWithoutSalesOrderItemInput | PickingTaskItemUpsertWithWhereUniqueWithoutSalesOrderItemInput[]
+    createMany?: PickingTaskItemCreateManySalesOrderItemInputEnvelope
+    set?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    disconnect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    delete?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    update?: PickingTaskItemUpdateWithWhereUniqueWithoutSalesOrderItemInput | PickingTaskItemUpdateWithWhereUniqueWithoutSalesOrderItemInput[]
+    updateMany?: PickingTaskItemUpdateManyWithWhereWithoutSalesOrderItemInput | PickingTaskItemUpdateManyWithWhereWithoutSalesOrderItemInput[]
+    deleteMany?: PickingTaskItemScalarWhereInput | PickingTaskItemScalarWhereInput[]
+  }
+
   export type StockReservationUncheckedUpdateManyWithoutSalesOrderItemNestedInput = {
     create?: XOR<StockReservationCreateWithoutSalesOrderItemInput, StockReservationUncheckedCreateWithoutSalesOrderItemInput> | StockReservationCreateWithoutSalesOrderItemInput[] | StockReservationUncheckedCreateWithoutSalesOrderItemInput[]
     connectOrCreate?: StockReservationCreateOrConnectWithoutSalesOrderItemInput | StockReservationCreateOrConnectWithoutSalesOrderItemInput[]
@@ -42017,6 +47410,20 @@ export namespace Prisma {
     update?: StockReservationUpdateWithWhereUniqueWithoutSalesOrderItemInput | StockReservationUpdateWithWhereUniqueWithoutSalesOrderItemInput[]
     updateMany?: StockReservationUpdateManyWithWhereWithoutSalesOrderItemInput | StockReservationUpdateManyWithWhereWithoutSalesOrderItemInput[]
     deleteMany?: StockReservationScalarWhereInput | StockReservationScalarWhereInput[]
+  }
+
+  export type PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput = {
+    create?: XOR<PickingTaskItemCreateWithoutSalesOrderItemInput, PickingTaskItemUncheckedCreateWithoutSalesOrderItemInput> | PickingTaskItemCreateWithoutSalesOrderItemInput[] | PickingTaskItemUncheckedCreateWithoutSalesOrderItemInput[]
+    connectOrCreate?: PickingTaskItemCreateOrConnectWithoutSalesOrderItemInput | PickingTaskItemCreateOrConnectWithoutSalesOrderItemInput[]
+    upsert?: PickingTaskItemUpsertWithWhereUniqueWithoutSalesOrderItemInput | PickingTaskItemUpsertWithWhereUniqueWithoutSalesOrderItemInput[]
+    createMany?: PickingTaskItemCreateManySalesOrderItemInputEnvelope
+    set?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    disconnect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    delete?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+    update?: PickingTaskItemUpdateWithWhereUniqueWithoutSalesOrderItemInput | PickingTaskItemUpdateWithWhereUniqueWithoutSalesOrderItemInput[]
+    updateMany?: PickingTaskItemUpdateManyWithWhereWithoutSalesOrderItemInput | PickingTaskItemUpdateManyWithWhereWithoutSalesOrderItemInput[]
+    deleteMany?: PickingTaskItemScalarWhereInput | PickingTaskItemScalarWhereInput[]
   }
 
   export type SalesOrderCreateNestedOneWithoutReservationsInput = {
@@ -42433,6 +47840,40 @@ export namespace Prisma {
     _max?: NestedEnumLocationStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumPickingStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PickingStatus | EnumPickingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PickingStatus[] | ListEnumPickingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PickingStatus[] | ListEnumPickingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPickingStatusFilter<$PrismaModel> | $Enums.PickingStatus
+  }
+
+  export type NestedEnumPickingStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PickingStatus | EnumPickingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PickingStatus[] | ListEnumPickingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PickingStatus[] | ListEnumPickingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPickingStatusWithAggregatesFilter<$PrismaModel> | $Enums.PickingStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPickingStatusFilter<$PrismaModel>
+    _max?: NestedEnumPickingStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPickingItemStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PickingItemStatus | EnumPickingItemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PickingItemStatus[] | ListEnumPickingItemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PickingItemStatus[] | ListEnumPickingItemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPickingItemStatusFilter<$PrismaModel> | $Enums.PickingItemStatus
+  }
+
+  export type NestedEnumPickingItemStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PickingItemStatus | EnumPickingItemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PickingItemStatus[] | ListEnumPickingItemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PickingItemStatus[] | ListEnumPickingItemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPickingItemStatusWithAggregatesFilter<$PrismaModel> | $Enums.PickingItemStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPickingItemStatusFilter<$PrismaModel>
+    _max?: NestedEnumPickingItemStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumSupplierStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.SupplierStatus | EnumSupplierStatusFieldRefInput<$PrismaModel>
     in?: $Enums.SupplierStatus[] | ListEnumSupplierStatusFieldRefInput<$PrismaModel>
@@ -42521,6 +47962,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutUsersInput = {
@@ -42543,6 +47985,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutUsersInput = {
@@ -42832,6 +48275,7 @@ export namespace Prisma {
     warehouse: WarehouseCreateNestedOneWithoutSalesOrdersInput
     items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutCreatedByInput = {
@@ -42846,6 +48290,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutCreatedByInput = {
@@ -42855,6 +48300,64 @@ export namespace Prisma {
 
   export type SalesOrderCreateManyCreatedByInputEnvelope = {
     data: SalesOrderCreateManyCreatedByInput | SalesOrderCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PickingTaskCreateWithoutAssignedToInput = {
+    id?: string
+    pickingNumber: string
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutPickingTaskInput
+    warehouse: WarehouseCreateNestedOneWithoutPickingTasksInput
+    items?: PickingTaskItemCreateNestedManyWithoutPickingTaskInput
+  }
+
+  export type PickingTaskUncheckedCreateWithoutAssignedToInput = {
+    id?: string
+    pickingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: PickingTaskItemUncheckedCreateNestedManyWithoutPickingTaskInput
+  }
+
+  export type PickingTaskCreateOrConnectWithoutAssignedToInput = {
+    where: PickingTaskWhereUniqueInput
+    create: XOR<PickingTaskCreateWithoutAssignedToInput, PickingTaskUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type PickingTaskCreateManyAssignedToInputEnvelope = {
+    data: PickingTaskCreateManyAssignedToInput | PickingTaskCreateManyAssignedToInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PickingAllocationCreateWithoutPickedByInput = {
+    id?: string
+    quantity: Decimal | DecimalJsLike | number | string
+    pickedAt?: Date | string
+    pickingTaskItem: PickingTaskItemCreateNestedOneWithoutAllocationsInput
+    locationStock: InventoryLocationStockCreateNestedOneWithoutPickingAllocationsInput
+  }
+
+  export type PickingAllocationUncheckedCreateWithoutPickedByInput = {
+    id?: string
+    pickingTaskItemId: string
+    locationStockId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    pickedAt?: Date | string
+  }
+
+  export type PickingAllocationCreateOrConnectWithoutPickedByInput = {
+    where: PickingAllocationWhereUniqueInput
+    create: XOR<PickingAllocationCreateWithoutPickedByInput, PickingAllocationUncheckedCreateWithoutPickedByInput>
+  }
+
+  export type PickingAllocationCreateManyPickedByInputEnvelope = {
+    data: PickingAllocationCreateManyPickedByInput | PickingAllocationCreateManyPickedByInput[]
     skipDuplicates?: boolean
   }
 
@@ -42889,6 +48392,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutUsersInput = {
@@ -42911,6 +48415,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
@@ -43160,6 +48665,64 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"SalesOrder"> | Date | string
   }
 
+  export type PickingTaskUpsertWithWhereUniqueWithoutAssignedToInput = {
+    where: PickingTaskWhereUniqueInput
+    update: XOR<PickingTaskUpdateWithoutAssignedToInput, PickingTaskUncheckedUpdateWithoutAssignedToInput>
+    create: XOR<PickingTaskCreateWithoutAssignedToInput, PickingTaskUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type PickingTaskUpdateWithWhereUniqueWithoutAssignedToInput = {
+    where: PickingTaskWhereUniqueInput
+    data: XOR<PickingTaskUpdateWithoutAssignedToInput, PickingTaskUncheckedUpdateWithoutAssignedToInput>
+  }
+
+  export type PickingTaskUpdateManyWithWhereWithoutAssignedToInput = {
+    where: PickingTaskScalarWhereInput
+    data: XOR<PickingTaskUpdateManyMutationInput, PickingTaskUncheckedUpdateManyWithoutAssignedToInput>
+  }
+
+  export type PickingTaskScalarWhereInput = {
+    AND?: PickingTaskScalarWhereInput | PickingTaskScalarWhereInput[]
+    OR?: PickingTaskScalarWhereInput[]
+    NOT?: PickingTaskScalarWhereInput | PickingTaskScalarWhereInput[]
+    id?: StringFilter<"PickingTask"> | string
+    pickingNumber?: StringFilter<"PickingTask"> | string
+    salesOrderId?: StringFilter<"PickingTask"> | string
+    warehouseId?: StringFilter<"PickingTask"> | string
+    assignedToId?: StringNullableFilter<"PickingTask"> | string | null
+    status?: EnumPickingStatusFilter<"PickingTask"> | $Enums.PickingStatus
+    createdAt?: DateTimeFilter<"PickingTask"> | Date | string
+    updatedAt?: DateTimeFilter<"PickingTask"> | Date | string
+  }
+
+  export type PickingAllocationUpsertWithWhereUniqueWithoutPickedByInput = {
+    where: PickingAllocationWhereUniqueInput
+    update: XOR<PickingAllocationUpdateWithoutPickedByInput, PickingAllocationUncheckedUpdateWithoutPickedByInput>
+    create: XOR<PickingAllocationCreateWithoutPickedByInput, PickingAllocationUncheckedCreateWithoutPickedByInput>
+  }
+
+  export type PickingAllocationUpdateWithWhereUniqueWithoutPickedByInput = {
+    where: PickingAllocationWhereUniqueInput
+    data: XOR<PickingAllocationUpdateWithoutPickedByInput, PickingAllocationUncheckedUpdateWithoutPickedByInput>
+  }
+
+  export type PickingAllocationUpdateManyWithWhereWithoutPickedByInput = {
+    where: PickingAllocationScalarWhereInput
+    data: XOR<PickingAllocationUpdateManyMutationInput, PickingAllocationUncheckedUpdateManyWithoutPickedByInput>
+  }
+
+  export type PickingAllocationScalarWhereInput = {
+    AND?: PickingAllocationScalarWhereInput | PickingAllocationScalarWhereInput[]
+    OR?: PickingAllocationScalarWhereInput[]
+    NOT?: PickingAllocationScalarWhereInput | PickingAllocationScalarWhereInput[]
+    id?: StringFilter<"PickingAllocation"> | string
+    pickingTaskItemId?: StringFilter<"PickingAllocation"> | string
+    locationStockId?: StringFilter<"PickingAllocation"> | string
+    quantity?: DecimalFilter<"PickingAllocation"> | Decimal | DecimalJsLike | number | string
+    pickedById?: StringFilter<"PickingAllocation"> | string
+    pickedAt?: DateTimeFilter<"PickingAllocation"> | Date | string
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id: string
     name: string
@@ -43181,6 +48744,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -43204,6 +48769,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -43243,6 +48810,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -43266,6 +48835,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -43289,6 +48860,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -43312,6 +48885,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -43351,6 +48926,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -43374,6 +48951,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
   }
 
   export type WarehouseCreateWithoutInventoryStocksInput = {
@@ -43396,6 +48975,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutInventoryStocksInput = {
@@ -43418,6 +48998,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutInventoryStocksInput = {
@@ -43447,6 +49028,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutInventoryStocksInput = {
@@ -43471,6 +49053,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutInventoryStocksInput = {
@@ -43509,6 +49092,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutInventoryStocksInput = {
@@ -43531,6 +49115,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type ProductUpsertWithoutInventoryStocksInput = {
@@ -43566,6 +49151,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutInventoryStocksInput = {
@@ -43590,6 +49176,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type WarehouseCreateWithoutStockMovementsInput = {
@@ -43612,6 +49199,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutStockMovementsInput = {
@@ -43634,6 +49222,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutStockMovementsInput = {
@@ -43663,6 +49252,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutStockMovementsInput = {
@@ -43687,6 +49277,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutStockMovementsInput = {
@@ -43715,6 +49306,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
   }
 
   export type UserUncheckedCreateWithoutStockMovementsInput = {
@@ -43738,6 +49331,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
   }
 
   export type UserCreateOrConnectWithoutStockMovementsInput = {
@@ -43776,6 +49371,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutStockMovementsInput = {
@@ -43798,6 +49394,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type ProductUpsertWithoutStockMovementsInput = {
@@ -43833,6 +49430,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutStockMovementsInput = {
@@ -43857,6 +49455,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserUpsertWithoutStockMovementsInput = {
@@ -43891,6 +49490,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStockMovementsInput = {
@@ -43914,6 +49515,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
   }
 
   export type WarehouseCreateWithoutInventoryLocationStocksInput = {
@@ -43936,6 +49539,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutInventoryLocationStocksInput = {
@@ -43958,6 +49562,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutInventoryLocationStocksInput = {
@@ -44024,6 +49629,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutInventoryLocationStocksInput = {
@@ -44048,11 +49654,38 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutInventoryLocationStocksInput = {
     where: ProductWhereUniqueInput
     create: XOR<ProductCreateWithoutInventoryLocationStocksInput, ProductUncheckedCreateWithoutInventoryLocationStocksInput>
+  }
+
+  export type PickingAllocationCreateWithoutLocationStockInput = {
+    id?: string
+    quantity: Decimal | DecimalJsLike | number | string
+    pickedAt?: Date | string
+    pickingTaskItem: PickingTaskItemCreateNestedOneWithoutAllocationsInput
+    pickedBy: UserCreateNestedOneWithoutPickingAllocationsInput
+  }
+
+  export type PickingAllocationUncheckedCreateWithoutLocationStockInput = {
+    id?: string
+    pickingTaskItemId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    pickedById: string
+    pickedAt?: Date | string
+  }
+
+  export type PickingAllocationCreateOrConnectWithoutLocationStockInput = {
+    where: PickingAllocationWhereUniqueInput
+    create: XOR<PickingAllocationCreateWithoutLocationStockInput, PickingAllocationUncheckedCreateWithoutLocationStockInput>
+  }
+
+  export type PickingAllocationCreateManyLocationStockInputEnvelope = {
+    data: PickingAllocationCreateManyLocationStockInput | PickingAllocationCreateManyLocationStockInput[]
+    skipDuplicates?: boolean
   }
 
   export type WarehouseUpsertWithoutInventoryLocationStocksInput = {
@@ -44086,6 +49719,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutInventoryLocationStocksInput = {
@@ -44108,6 +49742,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type BinUpsertWithoutInventoryLocationStocksInput = {
@@ -44186,6 +49821,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutInventoryLocationStocksInput = {
@@ -44210,6 +49846,23 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type PickingAllocationUpsertWithWhereUniqueWithoutLocationStockInput = {
+    where: PickingAllocationWhereUniqueInput
+    update: XOR<PickingAllocationUpdateWithoutLocationStockInput, PickingAllocationUncheckedUpdateWithoutLocationStockInput>
+    create: XOR<PickingAllocationCreateWithoutLocationStockInput, PickingAllocationUncheckedCreateWithoutLocationStockInput>
+  }
+
+  export type PickingAllocationUpdateWithWhereUniqueWithoutLocationStockInput = {
+    where: PickingAllocationWhereUniqueInput
+    data: XOR<PickingAllocationUpdateWithoutLocationStockInput, PickingAllocationUncheckedUpdateWithoutLocationStockInput>
+  }
+
+  export type PickingAllocationUpdateManyWithWhereWithoutLocationStockInput = {
+    where: PickingAllocationScalarWhereInput
+    data: XOR<PickingAllocationUpdateManyMutationInput, PickingAllocationUncheckedUpdateManyWithoutLocationStockInput>
   }
 
   export type WarehouseCreateWithoutInventoryLocationMovementsInput = {
@@ -44232,6 +49885,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutInventoryLocationMovementsInput = {
@@ -44254,6 +49908,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutInventoryLocationMovementsInput = {
@@ -44283,6 +49938,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutInventoryLocationMovementsInput = {
@@ -44307,6 +49963,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutInventoryLocationMovementsInput = {
@@ -44409,6 +50066,8 @@ export namespace Prisma {
     approvedPurchaseOrders?: PurchaseOrderCreateNestedManyWithoutApprovedByInput
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
   }
 
   export type UserUncheckedCreateWithoutInventoryLocationMovementsInput = {
@@ -44432,6 +50091,8 @@ export namespace Prisma {
     approvedPurchaseOrders?: PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
   }
 
   export type UserCreateOrConnectWithoutInventoryLocationMovementsInput = {
@@ -44470,6 +50131,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutInventoryLocationMovementsInput = {
@@ -44492,6 +50154,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type ProductUpsertWithoutInventoryLocationMovementsInput = {
@@ -44527,6 +50190,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutInventoryLocationMovementsInput = {
@@ -44551,6 +50215,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type BinUpsertWithoutFromLocationMovementsInput = {
@@ -44671,6 +50336,8 @@ export namespace Prisma {
     approvedPurchaseOrders?: PurchaseOrderUpdateManyWithoutApprovedByNestedInput
     goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInventoryLocationMovementsInput = {
@@ -44694,6 +50361,8 @@ export namespace Prisma {
     approvedPurchaseOrders?: PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserCreateWithoutWarehouseInput = {
@@ -44717,6 +50386,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
   }
 
   export type UserUncheckedCreateWithoutWarehouseInput = {
@@ -44740,6 +50411,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
   }
 
   export type UserCreateOrConnectWithoutWarehouseInput = {
@@ -44905,6 +50578,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     bin: BinCreateNestedOneWithoutInventoryLocationStocksInput
     product: ProductCreateNestedOneWithoutInventoryLocationStocksInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutLocationStockInput
   }
 
   export type InventoryLocationStockUncheckedCreateWithoutWarehouseInput = {
@@ -44914,6 +50588,7 @@ export namespace Prisma {
     quantity?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutLocationStockInput
   }
 
   export type InventoryLocationStockCreateOrConnectWithoutWarehouseInput = {
@@ -45010,6 +50685,7 @@ export namespace Prisma {
     createdBy: UserCreateNestedOneWithoutCreatedSalesOrdersInput
     items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutWarehouseInput = {
@@ -45024,6 +50700,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutWarehouseInput = {
@@ -45065,6 +50742,38 @@ export namespace Prisma {
 
   export type StockReservationCreateManyWarehouseInputEnvelope = {
     data: StockReservationCreateManyWarehouseInput | StockReservationCreateManyWarehouseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PickingTaskCreateWithoutWarehouseInput = {
+    id?: string
+    pickingNumber: string
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutPickingTaskInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedPickingTasksInput
+    items?: PickingTaskItemCreateNestedManyWithoutPickingTaskInput
+  }
+
+  export type PickingTaskUncheckedCreateWithoutWarehouseInput = {
+    id?: string
+    pickingNumber: string
+    salesOrderId: string
+    assignedToId?: string | null
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: PickingTaskItemUncheckedCreateNestedManyWithoutPickingTaskInput
+  }
+
+  export type PickingTaskCreateOrConnectWithoutWarehouseInput = {
+    where: PickingTaskWhereUniqueInput
+    create: XOR<PickingTaskCreateWithoutWarehouseInput, PickingTaskUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type PickingTaskCreateManyWarehouseInputEnvelope = {
+    data: PickingTaskCreateManyWarehouseInput | PickingTaskCreateManyWarehouseInput[]
     skipDuplicates?: boolean
   }
 
@@ -45304,6 +51013,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"StockReservation"> | Date | string
   }
 
+  export type PickingTaskUpsertWithWhereUniqueWithoutWarehouseInput = {
+    where: PickingTaskWhereUniqueInput
+    update: XOR<PickingTaskUpdateWithoutWarehouseInput, PickingTaskUncheckedUpdateWithoutWarehouseInput>
+    create: XOR<PickingTaskCreateWithoutWarehouseInput, PickingTaskUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type PickingTaskUpdateWithWhereUniqueWithoutWarehouseInput = {
+    where: PickingTaskWhereUniqueInput
+    data: XOR<PickingTaskUpdateWithoutWarehouseInput, PickingTaskUncheckedUpdateWithoutWarehouseInput>
+  }
+
+  export type PickingTaskUpdateManyWithWhereWithoutWarehouseInput = {
+    where: PickingTaskScalarWhereInput
+    data: XOR<PickingTaskUpdateManyMutationInput, PickingTaskUncheckedUpdateManyWithoutWarehouseInput>
+  }
+
   export type ProductCreateWithoutCategoryInput = {
     id?: string
     sku: string
@@ -45326,6 +51051,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCategoryInput = {
@@ -45350,6 +51076,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCategoryInput = {
@@ -45420,6 +51147,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutBrandInput = {
@@ -45444,6 +51172,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutBrandInput = {
@@ -45631,6 +51360,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     warehouse: WarehouseCreateNestedOneWithoutInventoryLocationStocksInput
     bin: BinCreateNestedOneWithoutInventoryLocationStocksInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutLocationStockInput
   }
 
   export type InventoryLocationStockUncheckedCreateWithoutProductInput = {
@@ -45640,6 +51370,7 @@ export namespace Prisma {
     quantity?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutLocationStockInput
   }
 
   export type InventoryLocationStockCreateOrConnectWithoutProductInput = {
@@ -45720,6 +51451,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     salesOrder: SalesOrderCreateNestedOneWithoutItemsInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderItemInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemUncheckedCreateWithoutProductInput = {
@@ -45732,6 +51464,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderItemInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemCreateOrConnectWithoutProductInput = {
@@ -45773,6 +51506,40 @@ export namespace Prisma {
 
   export type StockReservationCreateManyProductInputEnvelope = {
     data: StockReservationCreateManyProductInput | StockReservationCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PickingTaskItemCreateWithoutProductInput = {
+    id?: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pickingTask: PickingTaskCreateNestedOneWithoutItemsInput
+    salesOrderItem: SalesOrderItemCreateNestedOneWithoutPickingTaskItemsInput
+    allocations?: PickingAllocationCreateNestedManyWithoutPickingTaskItemInput
+  }
+
+  export type PickingTaskItemUncheckedCreateWithoutProductInput = {
+    id?: string
+    pickingTaskId: string
+    salesOrderItemId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    allocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickingTaskItemInput
+  }
+
+  export type PickingTaskItemCreateOrConnectWithoutProductInput = {
+    where: PickingTaskItemWhereUniqueInput
+    create: XOR<PickingTaskItemCreateWithoutProductInput, PickingTaskItemUncheckedCreateWithoutProductInput>
+  }
+
+  export type PickingTaskItemCreateManyProductInputEnvelope = {
+    data: PickingTaskItemCreateManyProductInput | PickingTaskItemCreateManyProductInput[]
     skipDuplicates?: boolean
   }
 
@@ -46014,6 +51781,37 @@ export namespace Prisma {
     data: XOR<StockReservationUpdateManyMutationInput, StockReservationUncheckedUpdateManyWithoutProductInput>
   }
 
+  export type PickingTaskItemUpsertWithWhereUniqueWithoutProductInput = {
+    where: PickingTaskItemWhereUniqueInput
+    update: XOR<PickingTaskItemUpdateWithoutProductInput, PickingTaskItemUncheckedUpdateWithoutProductInput>
+    create: XOR<PickingTaskItemCreateWithoutProductInput, PickingTaskItemUncheckedCreateWithoutProductInput>
+  }
+
+  export type PickingTaskItemUpdateWithWhereUniqueWithoutProductInput = {
+    where: PickingTaskItemWhereUniqueInput
+    data: XOR<PickingTaskItemUpdateWithoutProductInput, PickingTaskItemUncheckedUpdateWithoutProductInput>
+  }
+
+  export type PickingTaskItemUpdateManyWithWhereWithoutProductInput = {
+    where: PickingTaskItemScalarWhereInput
+    data: XOR<PickingTaskItemUpdateManyMutationInput, PickingTaskItemUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type PickingTaskItemScalarWhereInput = {
+    AND?: PickingTaskItemScalarWhereInput | PickingTaskItemScalarWhereInput[]
+    OR?: PickingTaskItemScalarWhereInput[]
+    NOT?: PickingTaskItemScalarWhereInput | PickingTaskItemScalarWhereInput[]
+    id?: StringFilter<"PickingTaskItem"> | string
+    pickingTaskId?: StringFilter<"PickingTaskItem"> | string
+    salesOrderItemId?: StringFilter<"PickingTaskItem"> | string
+    productId?: StringFilter<"PickingTaskItem"> | string
+    requiredQuantity?: DecimalFilter<"PickingTaskItem"> | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFilter<"PickingTaskItem"> | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFilter<"PickingTaskItem"> | $Enums.PickingItemStatus
+    createdAt?: DateTimeFilter<"PickingTaskItem"> | Date | string
+    updatedAt?: DateTimeFilter<"PickingTaskItem"> | Date | string
+  }
+
   export type WarehouseCreateWithoutZonesInput = {
     id?: string
     code: string
@@ -46034,6 +51832,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutZonesInput = {
@@ -46056,6 +51855,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutZonesInput = {
@@ -46132,6 +51932,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutZonesInput = {
@@ -46154,6 +51955,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type AisleUpsertWithWhereUniqueWithoutZoneInput = {
@@ -46519,6 +52321,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     warehouse: WarehouseCreateNestedOneWithoutInventoryLocationStocksInput
     product: ProductCreateNestedOneWithoutInventoryLocationStocksInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutLocationStockInput
   }
 
   export type InventoryLocationStockUncheckedCreateWithoutBinInput = {
@@ -46528,6 +52331,7 @@ export namespace Prisma {
     quantity?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutLocationStockInput
   }
 
   export type InventoryLocationStockCreateOrConnectWithoutBinInput = {
@@ -46699,6 +52503,878 @@ export namespace Prisma {
     data: XOR<InventoryLocationMovementUpdateManyMutationInput, InventoryLocationMovementUncheckedUpdateManyWithoutToBinInput>
   }
 
+  export type SalesOrderCreateWithoutPickingTaskInput = {
+    id?: string
+    orderNumber: string
+    status?: $Enums.SalesOrderStatus
+    totalAmount?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    cancellationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutCreatedSalesOrdersInput
+    warehouse: WarehouseCreateNestedOneWithoutSalesOrdersInput
+    items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
+    reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
+  }
+
+  export type SalesOrderUncheckedCreateWithoutPickingTaskInput = {
+    id?: string
+    orderNumber: string
+    createdById: string
+    warehouseId: string
+    status?: $Enums.SalesOrderStatus
+    totalAmount?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    cancellationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
+    reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
+  }
+
+  export type SalesOrderCreateOrConnectWithoutPickingTaskInput = {
+    where: SalesOrderWhereUniqueInput
+    create: XOR<SalesOrderCreateWithoutPickingTaskInput, SalesOrderUncheckedCreateWithoutPickingTaskInput>
+  }
+
+  export type WarehouseCreateWithoutPickingTasksInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    status?: $Enums.WarehouseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutWarehouseInput
+    inventoryStocks?: InventoryStockCreateNestedManyWithoutWarehouseInput
+    stockMovements?: StockMovementCreateNestedManyWithoutWarehouseInput
+    purchaseOrders?: PurchaseOrderCreateNestedManyWithoutWarehouseInput
+    zones?: ZoneCreateNestedManyWithoutWarehouseInput
+    inventoryLocationStocks?: InventoryLocationStockCreateNestedManyWithoutWarehouseInput
+    inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutWarehouseInput
+    goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
+    salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
+    stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseUncheckedCreateWithoutPickingTasksInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    status?: $Enums.WarehouseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutWarehouseInput
+    inventoryStocks?: InventoryStockUncheckedCreateNestedManyWithoutWarehouseInput
+    stockMovements?: StockMovementUncheckedCreateNestedManyWithoutWarehouseInput
+    purchaseOrders?: PurchaseOrderUncheckedCreateNestedManyWithoutWarehouseInput
+    zones?: ZoneUncheckedCreateNestedManyWithoutWarehouseInput
+    inventoryLocationStocks?: InventoryLocationStockUncheckedCreateNestedManyWithoutWarehouseInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutWarehouseInput
+    goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
+    salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
+    stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseCreateOrConnectWithoutPickingTasksInput = {
+    where: WarehouseWhereUniqueInput
+    create: XOR<WarehouseCreateWithoutPickingTasksInput, WarehouseUncheckedCreateWithoutPickingTasksInput>
+  }
+
+  export type UserCreateWithoutAssignedPickingTasksInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    needPasswordChange?: boolean
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse?: WarehouseCreateNestedOneWithoutUsersInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    stockMovements?: StockMovementCreateNestedManyWithoutCreatedByInput
+    createdPurchaseOrders?: PurchaseOrderCreateNestedManyWithoutCreatedByInput
+    approvedPurchaseOrders?: PurchaseOrderCreateNestedManyWithoutApprovedByInput
+    inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutCreatedByInput
+    goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
+    createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+  }
+
+  export type UserUncheckedCreateWithoutAssignedPickingTasksInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    warehouseId?: string | null
+    needPasswordChange?: boolean
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    stockMovements?: StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+    createdPurchaseOrders?: PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    approvedPurchaseOrders?: PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutCreatedByInput
+    goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
+    createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+  }
+
+  export type UserCreateOrConnectWithoutAssignedPickingTasksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAssignedPickingTasksInput, UserUncheckedCreateWithoutAssignedPickingTasksInput>
+  }
+
+  export type PickingTaskItemCreateWithoutPickingTaskInput = {
+    id?: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrderItem: SalesOrderItemCreateNestedOneWithoutPickingTaskItemsInput
+    product: ProductCreateNestedOneWithoutPickingTaskItemsInput
+    allocations?: PickingAllocationCreateNestedManyWithoutPickingTaskItemInput
+  }
+
+  export type PickingTaskItemUncheckedCreateWithoutPickingTaskInput = {
+    id?: string
+    salesOrderItemId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    allocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickingTaskItemInput
+  }
+
+  export type PickingTaskItemCreateOrConnectWithoutPickingTaskInput = {
+    where: PickingTaskItemWhereUniqueInput
+    create: XOR<PickingTaskItemCreateWithoutPickingTaskInput, PickingTaskItemUncheckedCreateWithoutPickingTaskInput>
+  }
+
+  export type PickingTaskItemCreateManyPickingTaskInputEnvelope = {
+    data: PickingTaskItemCreateManyPickingTaskInput | PickingTaskItemCreateManyPickingTaskInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SalesOrderUpsertWithoutPickingTaskInput = {
+    update: XOR<SalesOrderUpdateWithoutPickingTaskInput, SalesOrderUncheckedUpdateWithoutPickingTaskInput>
+    create: XOR<SalesOrderCreateWithoutPickingTaskInput, SalesOrderUncheckedCreateWithoutPickingTaskInput>
+    where?: SalesOrderWhereInput
+  }
+
+  export type SalesOrderUpdateToOneWithWhereWithoutPickingTaskInput = {
+    where?: SalesOrderWhereInput
+    data: XOR<SalesOrderUpdateWithoutPickingTaskInput, SalesOrderUncheckedUpdateWithoutPickingTaskInput>
+  }
+
+  export type SalesOrderUpdateWithoutPickingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesOrderStatusFieldUpdateOperationsInput | $Enums.SalesOrderStatus
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutCreatedSalesOrdersNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutSalesOrdersNestedInput
+    items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
+    reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
+  }
+
+  export type SalesOrderUncheckedUpdateWithoutPickingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesOrderStatusFieldUpdateOperationsInput | $Enums.SalesOrderStatus
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
+    reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
+  }
+
+  export type WarehouseUpsertWithoutPickingTasksInput = {
+    update: XOR<WarehouseUpdateWithoutPickingTasksInput, WarehouseUncheckedUpdateWithoutPickingTasksInput>
+    create: XOR<WarehouseCreateWithoutPickingTasksInput, WarehouseUncheckedCreateWithoutPickingTasksInput>
+    where?: WarehouseWhereInput
+  }
+
+  export type WarehouseUpdateToOneWithWhereWithoutPickingTasksInput = {
+    where?: WarehouseWhereInput
+    data: XOR<WarehouseUpdateWithoutPickingTasksInput, WarehouseUncheckedUpdateWithoutPickingTasksInput>
+  }
+
+  export type WarehouseUpdateWithoutPickingTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutWarehouseNestedInput
+    inventoryStocks?: InventoryStockUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: StockMovementUpdateManyWithoutWarehouseNestedInput
+    purchaseOrders?: PurchaseOrderUpdateManyWithoutWarehouseNestedInput
+    zones?: ZoneUpdateManyWithoutWarehouseNestedInput
+    inventoryLocationStocks?: InventoryLocationStockUpdateManyWithoutWarehouseNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutWarehouseNestedInput
+    goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
+    salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
+    stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type WarehouseUncheckedUpdateWithoutPickingTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutWarehouseNestedInput
+    inventoryStocks?: InventoryStockUncheckedUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: StockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
+    purchaseOrders?: PurchaseOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+    zones?: ZoneUncheckedUpdateManyWithoutWarehouseNestedInput
+    inventoryLocationStocks?: InventoryLocationStockUncheckedUpdateManyWithoutWarehouseNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutWarehouseNestedInput
+    goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
+    salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+    stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type UserUpsertWithoutAssignedPickingTasksInput = {
+    update: XOR<UserUpdateWithoutAssignedPickingTasksInput, UserUncheckedUpdateWithoutAssignedPickingTasksInput>
+    create: XOR<UserCreateWithoutAssignedPickingTasksInput, UserUncheckedCreateWithoutAssignedPickingTasksInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAssignedPickingTasksInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAssignedPickingTasksInput, UserUncheckedUpdateWithoutAssignedPickingTasksInput>
+  }
+
+  export type UserUpdateWithoutAssignedPickingTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneWithoutUsersNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    stockMovements?: StockMovementUpdateManyWithoutCreatedByNestedInput
+    createdPurchaseOrders?: PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+    approvedPurchaseOrders?: PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutCreatedByNestedInput
+    goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
+    createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAssignedPickingTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
+    needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    stockMovements?: StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdPurchaseOrders?: PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    approvedPurchaseOrders?: PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+    goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
+    createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+  }
+
+  export type PickingTaskItemUpsertWithWhereUniqueWithoutPickingTaskInput = {
+    where: PickingTaskItemWhereUniqueInput
+    update: XOR<PickingTaskItemUpdateWithoutPickingTaskInput, PickingTaskItemUncheckedUpdateWithoutPickingTaskInput>
+    create: XOR<PickingTaskItemCreateWithoutPickingTaskInput, PickingTaskItemUncheckedCreateWithoutPickingTaskInput>
+  }
+
+  export type PickingTaskItemUpdateWithWhereUniqueWithoutPickingTaskInput = {
+    where: PickingTaskItemWhereUniqueInput
+    data: XOR<PickingTaskItemUpdateWithoutPickingTaskInput, PickingTaskItemUncheckedUpdateWithoutPickingTaskInput>
+  }
+
+  export type PickingTaskItemUpdateManyWithWhereWithoutPickingTaskInput = {
+    where: PickingTaskItemScalarWhereInput
+    data: XOR<PickingTaskItemUpdateManyMutationInput, PickingTaskItemUncheckedUpdateManyWithoutPickingTaskInput>
+  }
+
+  export type PickingTaskCreateWithoutItemsInput = {
+    id?: string
+    pickingNumber: string
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutPickingTaskInput
+    warehouse: WarehouseCreateNestedOneWithoutPickingTasksInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedPickingTasksInput
+  }
+
+  export type PickingTaskUncheckedCreateWithoutItemsInput = {
+    id?: string
+    pickingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    assignedToId?: string | null
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PickingTaskCreateOrConnectWithoutItemsInput = {
+    where: PickingTaskWhereUniqueInput
+    create: XOR<PickingTaskCreateWithoutItemsInput, PickingTaskUncheckedCreateWithoutItemsInput>
+  }
+
+  export type SalesOrderItemCreateWithoutPickingTaskItemsInput = {
+    id?: string
+    quantity: Decimal | DecimalJsLike | number | string
+    unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutItemsInput
+    product: ProductCreateNestedOneWithoutSalesOrderItemsInput
+    reservations?: StockReservationCreateNestedManyWithoutSalesOrderItemInput
+  }
+
+  export type SalesOrderItemUncheckedCreateWithoutPickingTaskItemsInput = {
+    id?: string
+    salesOrderId: string
+    productId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderItemInput
+  }
+
+  export type SalesOrderItemCreateOrConnectWithoutPickingTaskItemsInput = {
+    where: SalesOrderItemWhereUniqueInput
+    create: XOR<SalesOrderItemCreateWithoutPickingTaskItemsInput, SalesOrderItemUncheckedCreateWithoutPickingTaskItemsInput>
+  }
+
+  export type ProductCreateWithoutPickingTaskItemsInput = {
+    id?: string
+    sku: string
+    name: string
+    slug: string
+    description?: string | null
+    unit: string
+    image?: string | null
+    status?: $Enums.ProductStatus
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutProductsInput
+    brand?: BrandCreateNestedOneWithoutProductsInput
+    inventoryStocks?: InventoryStockCreateNestedManyWithoutProductInput
+    stockMovements?: StockMovementCreateNestedManyWithoutProductInput
+    purchaseOrderItems?: PurchaseOrderItemCreateNestedManyWithoutProductInput
+    inventoryLocationStocks?: InventoryLocationStockCreateNestedManyWithoutProductInput
+    inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutProductInput
+    goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
+    salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
+    stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutPickingTaskItemsInput = {
+    id?: string
+    sku: string
+    name: string
+    slug: string
+    description?: string | null
+    categoryId: string
+    brandId?: string | null
+    unit: string
+    image?: string | null
+    status?: $Enums.ProductStatus
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryStocks?: InventoryStockUncheckedCreateNestedManyWithoutProductInput
+    stockMovements?: StockMovementUncheckedCreateNestedManyWithoutProductInput
+    purchaseOrderItems?: PurchaseOrderItemUncheckedCreateNestedManyWithoutProductInput
+    inventoryLocationStocks?: InventoryLocationStockUncheckedCreateNestedManyWithoutProductInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutProductInput
+    goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
+    salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
+    stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutPickingTaskItemsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutPickingTaskItemsInput, ProductUncheckedCreateWithoutPickingTaskItemsInput>
+  }
+
+  export type PickingAllocationCreateWithoutPickingTaskItemInput = {
+    id?: string
+    quantity: Decimal | DecimalJsLike | number | string
+    pickedAt?: Date | string
+    locationStock: InventoryLocationStockCreateNestedOneWithoutPickingAllocationsInput
+    pickedBy: UserCreateNestedOneWithoutPickingAllocationsInput
+  }
+
+  export type PickingAllocationUncheckedCreateWithoutPickingTaskItemInput = {
+    id?: string
+    locationStockId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    pickedById: string
+    pickedAt?: Date | string
+  }
+
+  export type PickingAllocationCreateOrConnectWithoutPickingTaskItemInput = {
+    where: PickingAllocationWhereUniqueInput
+    create: XOR<PickingAllocationCreateWithoutPickingTaskItemInput, PickingAllocationUncheckedCreateWithoutPickingTaskItemInput>
+  }
+
+  export type PickingAllocationCreateManyPickingTaskItemInputEnvelope = {
+    data: PickingAllocationCreateManyPickingTaskItemInput | PickingAllocationCreateManyPickingTaskItemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PickingTaskUpsertWithoutItemsInput = {
+    update: XOR<PickingTaskUpdateWithoutItemsInput, PickingTaskUncheckedUpdateWithoutItemsInput>
+    create: XOR<PickingTaskCreateWithoutItemsInput, PickingTaskUncheckedCreateWithoutItemsInput>
+    where?: PickingTaskWhereInput
+  }
+
+  export type PickingTaskUpdateToOneWithWhereWithoutItemsInput = {
+    where?: PickingTaskWhereInput
+    data: XOR<PickingTaskUpdateWithoutItemsInput, PickingTaskUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type PickingTaskUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutPickingTaskNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutPickingTasksNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedPickingTasksNestedInput
+  }
+
+  export type PickingTaskUncheckedUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesOrderItemUpsertWithoutPickingTaskItemsInput = {
+    update: XOR<SalesOrderItemUpdateWithoutPickingTaskItemsInput, SalesOrderItemUncheckedUpdateWithoutPickingTaskItemsInput>
+    create: XOR<SalesOrderItemCreateWithoutPickingTaskItemsInput, SalesOrderItemUncheckedCreateWithoutPickingTaskItemsInput>
+    where?: SalesOrderItemWhereInput
+  }
+
+  export type SalesOrderItemUpdateToOneWithWhereWithoutPickingTaskItemsInput = {
+    where?: SalesOrderItemWhereInput
+    data: XOR<SalesOrderItemUpdateWithoutPickingTaskItemsInput, SalesOrderItemUncheckedUpdateWithoutPickingTaskItemsInput>
+  }
+
+  export type SalesOrderItemUpdateWithoutPickingTaskItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutSalesOrderItemsNestedInput
+    reservations?: StockReservationUpdateManyWithoutSalesOrderItemNestedInput
+  }
+
+  export type SalesOrderItemUncheckedUpdateWithoutPickingTaskItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderItemNestedInput
+  }
+
+  export type ProductUpsertWithoutPickingTaskItemsInput = {
+    update: XOR<ProductUpdateWithoutPickingTaskItemsInput, ProductUncheckedUpdateWithoutPickingTaskItemsInput>
+    create: XOR<ProductCreateWithoutPickingTaskItemsInput, ProductUncheckedCreateWithoutPickingTaskItemsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutPickingTaskItemsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutPickingTaskItemsInput, ProductUncheckedUpdateWithoutPickingTaskItemsInput>
+  }
+
+  export type ProductUpdateWithoutPickingTaskItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unit?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    brand?: BrandUpdateOneWithoutProductsNestedInput
+    inventoryStocks?: InventoryStockUpdateManyWithoutProductNestedInput
+    stockMovements?: StockMovementUpdateManyWithoutProductNestedInput
+    purchaseOrderItems?: PurchaseOrderItemUpdateManyWithoutProductNestedInput
+    inventoryLocationStocks?: InventoryLocationStockUpdateManyWithoutProductNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutProductNestedInput
+    goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
+    salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
+    stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutPickingTaskItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    categoryId?: StringFieldUpdateOperationsInput | string
+    brandId?: NullableStringFieldUpdateOperationsInput | string | null
+    unit?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryStocks?: InventoryStockUncheckedUpdateManyWithoutProductNestedInput
+    stockMovements?: StockMovementUncheckedUpdateManyWithoutProductNestedInput
+    purchaseOrderItems?: PurchaseOrderItemUncheckedUpdateManyWithoutProductNestedInput
+    inventoryLocationStocks?: InventoryLocationStockUncheckedUpdateManyWithoutProductNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutProductNestedInput
+    goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
+    salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
+    stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type PickingAllocationUpsertWithWhereUniqueWithoutPickingTaskItemInput = {
+    where: PickingAllocationWhereUniqueInput
+    update: XOR<PickingAllocationUpdateWithoutPickingTaskItemInput, PickingAllocationUncheckedUpdateWithoutPickingTaskItemInput>
+    create: XOR<PickingAllocationCreateWithoutPickingTaskItemInput, PickingAllocationUncheckedCreateWithoutPickingTaskItemInput>
+  }
+
+  export type PickingAllocationUpdateWithWhereUniqueWithoutPickingTaskItemInput = {
+    where: PickingAllocationWhereUniqueInput
+    data: XOR<PickingAllocationUpdateWithoutPickingTaskItemInput, PickingAllocationUncheckedUpdateWithoutPickingTaskItemInput>
+  }
+
+  export type PickingAllocationUpdateManyWithWhereWithoutPickingTaskItemInput = {
+    where: PickingAllocationScalarWhereInput
+    data: XOR<PickingAllocationUpdateManyMutationInput, PickingAllocationUncheckedUpdateManyWithoutPickingTaskItemInput>
+  }
+
+  export type PickingTaskItemCreateWithoutAllocationsInput = {
+    id?: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pickingTask: PickingTaskCreateNestedOneWithoutItemsInput
+    salesOrderItem: SalesOrderItemCreateNestedOneWithoutPickingTaskItemsInput
+    product: ProductCreateNestedOneWithoutPickingTaskItemsInput
+  }
+
+  export type PickingTaskItemUncheckedCreateWithoutAllocationsInput = {
+    id?: string
+    pickingTaskId: string
+    salesOrderItemId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PickingTaskItemCreateOrConnectWithoutAllocationsInput = {
+    where: PickingTaskItemWhereUniqueInput
+    create: XOR<PickingTaskItemCreateWithoutAllocationsInput, PickingTaskItemUncheckedCreateWithoutAllocationsInput>
+  }
+
+  export type InventoryLocationStockCreateWithoutPickingAllocationsInput = {
+    id?: string
+    quantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutInventoryLocationStocksInput
+    bin: BinCreateNestedOneWithoutInventoryLocationStocksInput
+    product: ProductCreateNestedOneWithoutInventoryLocationStocksInput
+  }
+
+  export type InventoryLocationStockUncheckedCreateWithoutPickingAllocationsInput = {
+    id?: string
+    warehouseId: string
+    binId: string
+    productId: string
+    quantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryLocationStockCreateOrConnectWithoutPickingAllocationsInput = {
+    where: InventoryLocationStockWhereUniqueInput
+    create: XOR<InventoryLocationStockCreateWithoutPickingAllocationsInput, InventoryLocationStockUncheckedCreateWithoutPickingAllocationsInput>
+  }
+
+  export type UserCreateWithoutPickingAllocationsInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    needPasswordChange?: boolean
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse?: WarehouseCreateNestedOneWithoutUsersInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    stockMovements?: StockMovementCreateNestedManyWithoutCreatedByInput
+    createdPurchaseOrders?: PurchaseOrderCreateNestedManyWithoutCreatedByInput
+    approvedPurchaseOrders?: PurchaseOrderCreateNestedManyWithoutApprovedByInput
+    inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutCreatedByInput
+    goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
+    createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+  }
+
+  export type UserUncheckedCreateWithoutPickingAllocationsInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    warehouseId?: string | null
+    needPasswordChange?: boolean
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    stockMovements?: StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+    createdPurchaseOrders?: PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    approvedPurchaseOrders?: PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutCreatedByInput
+    goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
+    createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+  }
+
+  export type UserCreateOrConnectWithoutPickingAllocationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPickingAllocationsInput, UserUncheckedCreateWithoutPickingAllocationsInput>
+  }
+
+  export type PickingTaskItemUpsertWithoutAllocationsInput = {
+    update: XOR<PickingTaskItemUpdateWithoutAllocationsInput, PickingTaskItemUncheckedUpdateWithoutAllocationsInput>
+    create: XOR<PickingTaskItemCreateWithoutAllocationsInput, PickingTaskItemUncheckedCreateWithoutAllocationsInput>
+    where?: PickingTaskItemWhereInput
+  }
+
+  export type PickingTaskItemUpdateToOneWithWhereWithoutAllocationsInput = {
+    where?: PickingTaskItemWhereInput
+    data: XOR<PickingTaskItemUpdateWithoutAllocationsInput, PickingTaskItemUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type PickingTaskItemUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pickingTask?: PickingTaskUpdateOneRequiredWithoutItemsNestedInput
+    salesOrderItem?: SalesOrderItemUpdateOneRequiredWithoutPickingTaskItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutPickingTaskItemsNestedInput
+  }
+
+  export type PickingTaskItemUncheckedUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskId?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryLocationStockUpsertWithoutPickingAllocationsInput = {
+    update: XOR<InventoryLocationStockUpdateWithoutPickingAllocationsInput, InventoryLocationStockUncheckedUpdateWithoutPickingAllocationsInput>
+    create: XOR<InventoryLocationStockCreateWithoutPickingAllocationsInput, InventoryLocationStockUncheckedCreateWithoutPickingAllocationsInput>
+    where?: InventoryLocationStockWhereInput
+  }
+
+  export type InventoryLocationStockUpdateToOneWithWhereWithoutPickingAllocationsInput = {
+    where?: InventoryLocationStockWhereInput
+    data: XOR<InventoryLocationStockUpdateWithoutPickingAllocationsInput, InventoryLocationStockUncheckedUpdateWithoutPickingAllocationsInput>
+  }
+
+  export type InventoryLocationStockUpdateWithoutPickingAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutInventoryLocationStocksNestedInput
+    bin?: BinUpdateOneRequiredWithoutInventoryLocationStocksNestedInput
+    product?: ProductUpdateOneRequiredWithoutInventoryLocationStocksNestedInput
+  }
+
+  export type InventoryLocationStockUncheckedUpdateWithoutPickingAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    binId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutPickingAllocationsInput = {
+    update: XOR<UserUpdateWithoutPickingAllocationsInput, UserUncheckedUpdateWithoutPickingAllocationsInput>
+    create: XOR<UserCreateWithoutPickingAllocationsInput, UserUncheckedCreateWithoutPickingAllocationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPickingAllocationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPickingAllocationsInput, UserUncheckedUpdateWithoutPickingAllocationsInput>
+  }
+
+  export type UserUpdateWithoutPickingAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneWithoutUsersNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    stockMovements?: StockMovementUpdateManyWithoutCreatedByNestedInput
+    createdPurchaseOrders?: PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+    approvedPurchaseOrders?: PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutCreatedByNestedInput
+    goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
+    createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPickingAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
+    needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    stockMovements?: StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdPurchaseOrders?: PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    approvedPurchaseOrders?: PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+    goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
+    createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+  }
+
   export type PurchaseOrderCreateWithoutSupplierInput = {
     id?: string
     poNumber: string
@@ -46820,6 +53496,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutPurchaseOrdersInput = {
@@ -46842,6 +53519,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutPurchaseOrdersInput = {
@@ -46870,6 +53548,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
   }
 
   export type UserUncheckedCreateWithoutCreatedPurchaseOrdersInput = {
@@ -46893,6 +53573,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
   }
 
   export type UserCreateOrConnectWithoutCreatedPurchaseOrdersInput = {
@@ -46921,6 +53603,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
   }
 
   export type UserUncheckedCreateWithoutApprovedPurchaseOrdersInput = {
@@ -46944,6 +53628,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
   }
 
   export type UserCreateOrConnectWithoutApprovedPurchaseOrdersInput = {
@@ -47095,6 +53781,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutPurchaseOrdersInput = {
@@ -47117,6 +53804,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type UserUpsertWithoutCreatedPurchaseOrdersInput = {
@@ -47151,6 +53839,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedPurchaseOrdersInput = {
@@ -47174,6 +53864,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserUpsertWithoutApprovedPurchaseOrdersInput = {
@@ -47208,6 +53900,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApprovedPurchaseOrdersInput = {
@@ -47231,6 +53925,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
   }
 
   export type PurchaseOrderItemUpsertWithWhereUniqueWithoutPurchaseOrderInput = {
@@ -47328,6 +54024,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutPurchaseOrderItemsInput = {
@@ -47352,6 +54049,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutPurchaseOrderItemsInput = {
@@ -47439,6 +54137,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutPurchaseOrderItemsInput = {
@@ -47463,6 +54162,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type PurchaseOrderCreateWithoutGoodsReceiptsInput = {
@@ -47526,6 +54226,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutGoodsReceiptsInput = {
@@ -47548,6 +54249,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutGoodsReceiptsInput = {
@@ -47576,6 +54278,8 @@ export namespace Prisma {
     approvedPurchaseOrders?: PurchaseOrderCreateNestedManyWithoutApprovedByInput
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutCreatedByInput
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
   }
 
   export type UserUncheckedCreateWithoutGoodsReceiptsInput = {
@@ -47599,6 +54303,8 @@ export namespace Prisma {
     approvedPurchaseOrders?: PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutCreatedByInput
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
   }
 
   export type UserCreateOrConnectWithoutGoodsReceiptsInput = {
@@ -47706,6 +54412,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutGoodsReceiptsInput = {
@@ -47728,6 +54435,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type UserUpsertWithoutGoodsReceiptsInput = {
@@ -47762,6 +54470,8 @@ export namespace Prisma {
     approvedPurchaseOrders?: PurchaseOrderUpdateManyWithoutApprovedByNestedInput
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutCreatedByNestedInput
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGoodsReceiptsInput = {
@@ -47785,6 +54495,8 @@ export namespace Prisma {
     approvedPurchaseOrders?: PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutCreatedByNestedInput
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
   }
 
   export type GoodsReceiptItemUpsertWithWhereUniqueWithoutGoodsReceiptInput = {
@@ -47856,6 +54568,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutGoodsReceiptItemsInput = {
@@ -47880,6 +54593,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutGoodsReceiptItemsInput = {
@@ -47957,6 +54671,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutGoodsReceiptItemsInput = {
@@ -47981,6 +54696,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserCreateWithoutCreatedSalesOrdersInput = {
@@ -48004,6 +54720,8 @@ export namespace Prisma {
     approvedPurchaseOrders?: PurchaseOrderCreateNestedManyWithoutApprovedByInput
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
+    assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
   }
 
   export type UserUncheckedCreateWithoutCreatedSalesOrdersInput = {
@@ -48027,6 +54745,8 @@ export namespace Prisma {
     approvedPurchaseOrders?: PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutCreatedByInput
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
+    assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
   }
 
   export type UserCreateOrConnectWithoutCreatedSalesOrdersInput = {
@@ -48054,6 +54774,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutWarehouseInput
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutSalesOrdersInput = {
@@ -48076,6 +54797,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutWarehouseInput
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutSalesOrdersInput = {
@@ -48093,6 +54815,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     product: ProductCreateNestedOneWithoutSalesOrderItemsInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderItemInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemUncheckedCreateWithoutSalesOrderInput = {
@@ -48105,6 +54828,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderItemInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemCreateOrConnectWithoutSalesOrderInput = {
@@ -48149,6 +54873,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PickingTaskCreateWithoutSalesOrderInput = {
+    id?: string
+    pickingNumber: string
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutPickingTasksInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedPickingTasksInput
+    items?: PickingTaskItemCreateNestedManyWithoutPickingTaskInput
+  }
+
+  export type PickingTaskUncheckedCreateWithoutSalesOrderInput = {
+    id?: string
+    pickingNumber: string
+    warehouseId: string
+    assignedToId?: string | null
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: PickingTaskItemUncheckedCreateNestedManyWithoutPickingTaskInput
+  }
+
+  export type PickingTaskCreateOrConnectWithoutSalesOrderInput = {
+    where: PickingTaskWhereUniqueInput
+    create: XOR<PickingTaskCreateWithoutSalesOrderInput, PickingTaskUncheckedCreateWithoutSalesOrderInput>
+  }
+
   export type UserUpsertWithoutCreatedSalesOrdersInput = {
     update: XOR<UserUpdateWithoutCreatedSalesOrdersInput, UserUncheckedUpdateWithoutCreatedSalesOrdersInput>
     create: XOR<UserCreateWithoutCreatedSalesOrdersInput, UserUncheckedCreateWithoutCreatedSalesOrdersInput>
@@ -48181,6 +54932,8 @@ export namespace Prisma {
     approvedPurchaseOrders?: PurchaseOrderUpdateManyWithoutApprovedByNestedInput
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
+    assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedSalesOrdersInput = {
@@ -48204,6 +54957,8 @@ export namespace Prisma {
     approvedPurchaseOrders?: PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
+    assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
   }
 
   export type WarehouseUpsertWithoutSalesOrdersInput = {
@@ -48237,6 +54992,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutWarehouseNestedInput
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutSalesOrdersInput = {
@@ -48259,6 +55015,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutWarehouseNestedInput
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type SalesOrderItemUpsertWithWhereUniqueWithoutSalesOrderInput = {
@@ -48293,6 +55050,39 @@ export namespace Prisma {
     data: XOR<StockReservationUpdateManyMutationInput, StockReservationUncheckedUpdateManyWithoutSalesOrderInput>
   }
 
+  export type PickingTaskUpsertWithoutSalesOrderInput = {
+    update: XOR<PickingTaskUpdateWithoutSalesOrderInput, PickingTaskUncheckedUpdateWithoutSalesOrderInput>
+    create: XOR<PickingTaskCreateWithoutSalesOrderInput, PickingTaskUncheckedCreateWithoutSalesOrderInput>
+    where?: PickingTaskWhereInput
+  }
+
+  export type PickingTaskUpdateToOneWithWhereWithoutSalesOrderInput = {
+    where?: PickingTaskWhereInput
+    data: XOR<PickingTaskUpdateWithoutSalesOrderInput, PickingTaskUncheckedUpdateWithoutSalesOrderInput>
+  }
+
+  export type PickingTaskUpdateWithoutSalesOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutPickingTasksNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedPickingTasksNestedInput
+    items?: PickingTaskItemUpdateManyWithoutPickingTaskNestedInput
+  }
+
+  export type PickingTaskUncheckedUpdateWithoutSalesOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: PickingTaskItemUncheckedUpdateManyWithoutPickingTaskNestedInput
+  }
+
   export type SalesOrderCreateWithoutItemsInput = {
     id?: string
     orderNumber: string
@@ -48305,6 +55095,7 @@ export namespace Prisma {
     createdBy: UserCreateNestedOneWithoutCreatedSalesOrdersInput
     warehouse: WarehouseCreateNestedOneWithoutSalesOrdersInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutItemsInput = {
@@ -48319,6 +55110,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutItemsInput = {
@@ -48348,6 +55140,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutProductInput
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutSalesOrderItemsInput = {
@@ -48372,6 +55165,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutProductInput
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutSalesOrderItemsInput = {
@@ -48411,6 +55205,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PickingTaskItemCreateWithoutSalesOrderItemInput = {
+    id?: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pickingTask: PickingTaskCreateNestedOneWithoutItemsInput
+    product: ProductCreateNestedOneWithoutPickingTaskItemsInput
+    allocations?: PickingAllocationCreateNestedManyWithoutPickingTaskItemInput
+  }
+
+  export type PickingTaskItemUncheckedCreateWithoutSalesOrderItemInput = {
+    id?: string
+    pickingTaskId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    allocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickingTaskItemInput
+  }
+
+  export type PickingTaskItemCreateOrConnectWithoutSalesOrderItemInput = {
+    where: PickingTaskItemWhereUniqueInput
+    create: XOR<PickingTaskItemCreateWithoutSalesOrderItemInput, PickingTaskItemUncheckedCreateWithoutSalesOrderItemInput>
+  }
+
+  export type PickingTaskItemCreateManySalesOrderItemInputEnvelope = {
+    data: PickingTaskItemCreateManySalesOrderItemInput | PickingTaskItemCreateManySalesOrderItemInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SalesOrderUpsertWithoutItemsInput = {
     update: XOR<SalesOrderUpdateWithoutItemsInput, SalesOrderUncheckedUpdateWithoutItemsInput>
     create: XOR<SalesOrderCreateWithoutItemsInput, SalesOrderUncheckedCreateWithoutItemsInput>
@@ -48434,6 +55262,7 @@ export namespace Prisma {
     createdBy?: UserUpdateOneRequiredWithoutCreatedSalesOrdersNestedInput
     warehouse?: WarehouseUpdateOneRequiredWithoutSalesOrdersNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutItemsInput = {
@@ -48448,6 +55277,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type ProductUpsertWithoutSalesOrderItemsInput = {
@@ -48483,6 +55313,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutProductNestedInput
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutSalesOrderItemsInput = {
@@ -48507,6 +55338,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutProductNestedInput
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type StockReservationUpsertWithWhereUniqueWithoutSalesOrderItemInput = {
@@ -48525,6 +55357,22 @@ export namespace Prisma {
     data: XOR<StockReservationUpdateManyMutationInput, StockReservationUncheckedUpdateManyWithoutSalesOrderItemInput>
   }
 
+  export type PickingTaskItemUpsertWithWhereUniqueWithoutSalesOrderItemInput = {
+    where: PickingTaskItemWhereUniqueInput
+    update: XOR<PickingTaskItemUpdateWithoutSalesOrderItemInput, PickingTaskItemUncheckedUpdateWithoutSalesOrderItemInput>
+    create: XOR<PickingTaskItemCreateWithoutSalesOrderItemInput, PickingTaskItemUncheckedCreateWithoutSalesOrderItemInput>
+  }
+
+  export type PickingTaskItemUpdateWithWhereUniqueWithoutSalesOrderItemInput = {
+    where: PickingTaskItemWhereUniqueInput
+    data: XOR<PickingTaskItemUpdateWithoutSalesOrderItemInput, PickingTaskItemUncheckedUpdateWithoutSalesOrderItemInput>
+  }
+
+  export type PickingTaskItemUpdateManyWithWhereWithoutSalesOrderItemInput = {
+    where: PickingTaskItemScalarWhereInput
+    data: XOR<PickingTaskItemUpdateManyMutationInput, PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemInput>
+  }
+
   export type SalesOrderCreateWithoutReservationsInput = {
     id?: string
     orderNumber: string
@@ -48537,6 +55385,7 @@ export namespace Prisma {
     createdBy: UserCreateNestedOneWithoutCreatedSalesOrdersInput
     warehouse: WarehouseCreateNestedOneWithoutSalesOrdersInput
     items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutReservationsInput = {
@@ -48551,6 +55400,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutReservationsInput = {
@@ -48568,6 +55418,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     salesOrder: SalesOrderCreateNestedOneWithoutItemsInput
     product: ProductCreateNestedOneWithoutSalesOrderItemsInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemUncheckedCreateWithoutReservationsInput = {
@@ -48580,6 +55431,7 @@ export namespace Prisma {
     reservedQuantity?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemCreateOrConnectWithoutReservationsInput = {
@@ -48607,6 +55459,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutWarehouseInput
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutStockReservationsInput = {
@@ -48629,6 +55482,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutWarehouseInput
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutStockReservationsInput = {
@@ -48658,6 +55512,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutProductInput
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutStockReservationsInput = {
@@ -48682,6 +55537,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutProductInput
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutStockReservationsInput = {
@@ -48712,6 +55568,7 @@ export namespace Prisma {
     createdBy?: UserUpdateOneRequiredWithoutCreatedSalesOrdersNestedInput
     warehouse?: WarehouseUpdateOneRequiredWithoutSalesOrdersNestedInput
     items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutReservationsInput = {
@@ -48726,6 +55583,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderItemUpsertWithoutReservationsInput = {
@@ -48749,6 +55607,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     salesOrder?: SalesOrderUpdateOneRequiredWithoutItemsNestedInput
     product?: ProductUpdateOneRequiredWithoutSalesOrderItemsNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateWithoutReservationsInput = {
@@ -48761,6 +55620,7 @@ export namespace Prisma {
     reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type WarehouseUpsertWithoutStockReservationsInput = {
@@ -48794,6 +55654,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutWarehouseNestedInput
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutStockReservationsInput = {
@@ -48816,6 +55677,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutWarehouseNestedInput
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type ProductUpsertWithoutStockReservationsInput = {
@@ -48851,6 +55713,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutProductNestedInput
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutStockReservationsInput = {
@@ -48875,6 +55738,7 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutProductNestedInput
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -48982,6 +55846,24 @@ export namespace Prisma {
     cancellationReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type PickingTaskCreateManyAssignedToInput = {
+    id?: string
+    pickingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PickingAllocationCreateManyPickedByInput = {
+    id?: string
+    pickingTaskItemId: string
+    locationStockId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    pickedAt?: Date | string
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -49291,6 +56173,7 @@ export namespace Prisma {
     warehouse?: WarehouseUpdateOneRequiredWithoutSalesOrdersNestedInput
     items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutCreatedByInput = {
@@ -49305,6 +56188,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateManyWithoutCreatedByInput = {
@@ -49317,6 +56201,94 @@ export namespace Prisma {
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingTaskUpdateWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutPickingTaskNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutPickingTasksNestedInput
+    items?: PickingTaskItemUpdateManyWithoutPickingTaskNestedInput
+  }
+
+  export type PickingTaskUncheckedUpdateWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: PickingTaskItemUncheckedUpdateManyWithoutPickingTaskNestedInput
+  }
+
+  export type PickingTaskUncheckedUpdateManyWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingAllocationUpdateWithoutPickedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pickingTaskItem?: PickingTaskItemUpdateOneRequiredWithoutAllocationsNestedInput
+    locationStock?: InventoryLocationStockUpdateOneRequiredWithoutPickingAllocationsNestedInput
+  }
+
+  export type PickingAllocationUncheckedUpdateWithoutPickedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskItemId?: StringFieldUpdateOperationsInput | string
+    locationStockId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingAllocationUncheckedUpdateManyWithoutPickedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskItemId?: StringFieldUpdateOperationsInput | string
+    locationStockId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingAllocationCreateManyLocationStockInput = {
+    id?: string
+    pickingTaskItemId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    pickedById: string
+    pickedAt?: Date | string
+  }
+
+  export type PickingAllocationUpdateWithoutLocationStockInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pickingTaskItem?: PickingTaskItemUpdateOneRequiredWithoutAllocationsNestedInput
+    pickedBy?: UserUpdateOneRequiredWithoutPickingAllocationsNestedInput
+  }
+
+  export type PickingAllocationUncheckedUpdateWithoutLocationStockInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskItemId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedById?: StringFieldUpdateOperationsInput | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingAllocationUncheckedUpdateManyWithoutLocationStockInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskItemId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedById?: StringFieldUpdateOperationsInput | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateManyWarehouseInput = {
@@ -49441,6 +56413,16 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type PickingTaskCreateManyWarehouseInput = {
+    id?: string
+    pickingNumber: string
+    salesOrderId: string
+    assignedToId?: string | null
+    status?: $Enums.PickingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserUpdateWithoutWarehouseInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -49462,6 +56444,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWarehouseInput = {
@@ -49485,6 +56469,8 @@ export namespace Prisma {
     inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutCreatedByNestedInput
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutWarehouseInput = {
@@ -49665,6 +56651,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bin?: BinUpdateOneRequiredWithoutInventoryLocationStocksNestedInput
     product?: ProductUpdateOneRequiredWithoutInventoryLocationStocksNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutLocationStockNestedInput
   }
 
   export type InventoryLocationStockUncheckedUpdateWithoutWarehouseInput = {
@@ -49674,6 +56661,7 @@ export namespace Prisma {
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutLocationStockNestedInput
   }
 
   export type InventoryLocationStockUncheckedUpdateManyWithoutWarehouseInput = {
@@ -49774,6 +56762,7 @@ export namespace Prisma {
     createdBy?: UserUpdateOneRequiredWithoutCreatedSalesOrdersNestedInput
     items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutWarehouseInput = {
@@ -49788,6 +56777,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateManyWithoutWarehouseInput = {
@@ -49835,6 +56825,38 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PickingTaskUpdateWithoutWarehouseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutPickingTaskNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedPickingTasksNestedInput
+    items?: PickingTaskItemUpdateManyWithoutPickingTaskNestedInput
+  }
+
+  export type PickingTaskUncheckedUpdateWithoutWarehouseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: PickingTaskItemUncheckedUpdateManyWithoutPickingTaskNestedInput
+  }
+
+  export type PickingTaskUncheckedUpdateManyWithoutWarehouseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPickingStatusFieldUpdateOperationsInput | $Enums.PickingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProductCreateManyCategoryInput = {
     id?: string
     sku: string
@@ -49873,6 +56895,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCategoryInput = {
@@ -49897,6 +56920,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutCategoryInput = {
@@ -49953,6 +56977,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutBrandInput = {
@@ -49977,6 +57002,7 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutBrandInput = {
@@ -50073,6 +57099,17 @@ export namespace Prisma {
     warehouseId: string
     quantity: Decimal | DecimalJsLike | number | string
     status?: $Enums.ReservationStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PickingTaskItemCreateManyProductInput = {
+    id?: string
+    pickingTaskId: string
+    salesOrderItemId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -50180,6 +57217,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     warehouse?: WarehouseUpdateOneRequiredWithoutInventoryLocationStocksNestedInput
     bin?: BinUpdateOneRequiredWithoutInventoryLocationStocksNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutLocationStockNestedInput
   }
 
   export type InventoryLocationStockUncheckedUpdateWithoutProductInput = {
@@ -50189,6 +57227,7 @@ export namespace Prisma {
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutLocationStockNestedInput
   }
 
   export type InventoryLocationStockUncheckedUpdateManyWithoutProductInput = {
@@ -50267,6 +57306,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     salesOrder?: SalesOrderUpdateOneRequiredWithoutItemsNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderItemNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateWithoutProductInput = {
@@ -50279,6 +57319,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderItemNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateManyWithoutProductInput = {
@@ -50321,6 +57362,41 @@ export namespace Prisma {
     warehouseId?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumReservationStatusFieldUpdateOperationsInput | $Enums.ReservationStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingTaskItemUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pickingTask?: PickingTaskUpdateOneRequiredWithoutItemsNestedInput
+    salesOrderItem?: SalesOrderItemUpdateOneRequiredWithoutPickingTaskItemsNestedInput
+    allocations?: PickingAllocationUpdateManyWithoutPickingTaskItemNestedInput
+  }
+
+  export type PickingTaskItemUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskId?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocations?: PickingAllocationUncheckedUpdateManyWithoutPickingTaskItemNestedInput
+  }
+
+  export type PickingTaskItemUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskId?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -50533,6 +57609,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     warehouse?: WarehouseUpdateOneRequiredWithoutInventoryLocationStocksNestedInput
     product?: ProductUpdateOneRequiredWithoutInventoryLocationStocksNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutLocationStockNestedInput
   }
 
   export type InventoryLocationStockUncheckedUpdateWithoutBinInput = {
@@ -50542,6 +57619,7 @@ export namespace Prisma {
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutLocationStockNestedInput
   }
 
   export type InventoryLocationStockUncheckedUpdateManyWithoutBinInput = {
@@ -50629,6 +57707,84 @@ export namespace Prisma {
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingTaskItemCreateManyPickingTaskInput = {
+    id?: string
+    salesOrderItemId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PickingTaskItemUpdateWithoutPickingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrderItem?: SalesOrderItemUpdateOneRequiredWithoutPickingTaskItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutPickingTaskItemsNestedInput
+    allocations?: PickingAllocationUpdateManyWithoutPickingTaskItemNestedInput
+  }
+
+  export type PickingTaskItemUncheckedUpdateWithoutPickingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocations?: PickingAllocationUncheckedUpdateManyWithoutPickingTaskItemNestedInput
+  }
+
+  export type PickingTaskItemUncheckedUpdateManyWithoutPickingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingAllocationCreateManyPickingTaskItemInput = {
+    id?: string
+    locationStockId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    pickedById: string
+    pickedAt?: Date | string
+  }
+
+  export type PickingAllocationUpdateWithoutPickingTaskItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    locationStock?: InventoryLocationStockUpdateOneRequiredWithoutPickingAllocationsNestedInput
+    pickedBy?: UserUpdateOneRequiredWithoutPickingAllocationsNestedInput
+  }
+
+  export type PickingAllocationUncheckedUpdateWithoutPickingTaskItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    locationStockId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedById?: StringFieldUpdateOperationsInput | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingAllocationUncheckedUpdateManyWithoutPickingTaskItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    locationStockId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedById?: StringFieldUpdateOperationsInput | string
+    pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PurchaseOrderCreateManySupplierInput = {
@@ -50849,6 +58005,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutSalesOrderItemsNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderItemNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateWithoutSalesOrderInput = {
@@ -50861,6 +58018,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderItemNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateManyWithoutSalesOrderInput = {
@@ -50918,6 +58076,17 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type PickingTaskItemCreateManySalesOrderItemInput = {
+    id?: string
+    pickingTaskId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    pickedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type StockReservationUpdateWithoutSalesOrderItemInput = {
     id?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -50947,6 +58116,41 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumReservationStatusFieldUpdateOperationsInput | $Enums.ReservationStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PickingTaskItemUpdateWithoutSalesOrderItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pickingTask?: PickingTaskUpdateOneRequiredWithoutItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutPickingTaskItemsNestedInput
+    allocations?: PickingAllocationUpdateManyWithoutPickingTaskItemNestedInput
+  }
+
+  export type PickingTaskItemUncheckedUpdateWithoutSalesOrderItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocations?: PickingAllocationUncheckedUpdateManyWithoutPickingTaskItemNestedInput
+  }
+
+  export type PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pickingTaskId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
