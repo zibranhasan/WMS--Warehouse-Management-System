@@ -20,6 +20,7 @@ model SalesOrder {
 
   items        SalesOrderItem[]
   reservations StockReservation[]
+  pickingTask  PickingTask?
 
   @@map("sales_orders")
 }
@@ -39,7 +40,8 @@ model SalesOrderItem {
   salesOrder SalesOrder @relation(fields: [salesOrderId], references: [id], onDelete: Cascade)
   product    Product    @relation(fields: [productId], references: [id], onDelete: Restrict)
 
-  reservations StockReservation[]
+  reservations     StockReservation[]
+  pickingTaskItems PickingTaskItem[]
 
   @@unique([salesOrderId, productId])
   @@map("sales_order_items")

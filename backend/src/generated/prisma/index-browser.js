@@ -329,6 +329,38 @@ exports.Prisma.BinScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PickingTaskScalarFieldEnum = {
+  id: 'id',
+  pickingNumber: 'pickingNumber',
+  salesOrderId: 'salesOrderId',
+  warehouseId: 'warehouseId',
+  assignedToId: 'assignedToId',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PickingTaskItemScalarFieldEnum = {
+  id: 'id',
+  pickingTaskId: 'pickingTaskId',
+  salesOrderItemId: 'salesOrderItemId',
+  productId: 'productId',
+  requiredQuantity: 'requiredQuantity',
+  pickedQuantity: 'pickedQuantity',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PickingAllocationScalarFieldEnum = {
+  id: 'id',
+  pickingTaskItemId: 'pickingTaskItemId',
+  locationStockId: 'locationStockId',
+  quantity: 'quantity',
+  pickedById: 'pickedById',
+  pickedAt: 'pickedAt'
+};
+
 exports.Prisma.SupplierScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -498,6 +530,21 @@ exports.LocationStatus = exports.$Enums.LocationStatus = {
   INACTIVE: 'INACTIVE'
 };
 
+exports.PickingStatus = exports.$Enums.PickingStatus = {
+  PENDING: 'PENDING',
+  ASSIGNED: 'ASSIGNED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  PARTIALLY_PICKED: 'PARTIALLY_PICKED',
+  PICKED: 'PICKED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.PickingItemStatus = exports.$Enums.PickingItemStatus = {
+  PENDING: 'PENDING',
+  PARTIALLY_PICKED: 'PARTIALLY_PICKED',
+  PICKED: 'PICKED'
+};
+
 exports.SupplierStatus = exports.$Enums.SupplierStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE'
@@ -541,6 +588,9 @@ exports.Prisma.ModelName = {
   Aisle: 'Aisle',
   Shelf: 'Shelf',
   Bin: 'Bin',
+  PickingTask: 'PickingTask',
+  PickingTaskItem: 'PickingTaskItem',
+  PickingAllocation: 'PickingAllocation',
   Supplier: 'Supplier',
   PurchaseOrder: 'PurchaseOrder',
   PurchaseOrderItem: 'PurchaseOrderItem',
