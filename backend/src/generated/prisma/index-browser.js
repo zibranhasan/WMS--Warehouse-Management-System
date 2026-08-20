@@ -273,6 +273,50 @@ exports.Prisma.ProductScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PackingTaskScalarFieldEnum = {
+  id: 'id',
+  packingNumber: 'packingNumber',
+  salesOrderId: 'salesOrderId',
+  warehouseId: 'warehouseId',
+  packedById: 'packedById',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PackingTaskItemScalarFieldEnum = {
+  id: 'id',
+  packingTaskId: 'packingTaskId',
+  salesOrderItemId: 'salesOrderItemId',
+  productId: 'productId',
+  requiredQuantity: 'requiredQuantity',
+  packedQuantity: 'packedQuantity',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PackageScalarFieldEnum = {
+  id: 'id',
+  packingTaskId: 'packingTaskId',
+  packageNumber: 'packageNumber',
+  status: 'status',
+  weight: 'weight',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PackageItemScalarFieldEnum = {
+  id: 'id',
+  packageId: 'packageId',
+  packingTaskItemId: 'packingTaskItemId',
+  productId: 'productId',
+  quantity: 'quantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ZoneScalarFieldEnum = {
   id: 'id',
   warehouseId: 'warehouseId',
@@ -525,6 +569,26 @@ exports.ProductStatus = exports.$Enums.ProductStatus = {
   INACTIVE: 'INACTIVE'
 };
 
+exports.PackingStatus = exports.$Enums.PackingStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  PARTIALLY_PACKED: 'PARTIALLY_PACKED',
+  PACKED: 'PACKED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.PackingItemStatus = exports.$Enums.PackingItemStatus = {
+  PENDING: 'PENDING',
+  PARTIALLY_PACKED: 'PARTIALLY_PACKED',
+  PACKED: 'PACKED'
+};
+
+exports.PackageStatus = exports.$Enums.PackageStatus = {
+  OPEN: 'OPEN',
+  PACKED: 'PACKED',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.LocationStatus = exports.$Enums.LocationStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE'
@@ -584,6 +648,10 @@ exports.Prisma.ModelName = {
   Category: 'Category',
   Brand: 'Brand',
   Product: 'Product',
+  PackingTask: 'PackingTask',
+  PackingTaskItem: 'PackingTaskItem',
+  Package: 'Package',
+  PackageItem: 'PackageItem',
   Zone: 'Zone',
   Aisle: 'Aisle',
   Shelf: 'Shelf',

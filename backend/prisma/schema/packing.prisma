@@ -1,0 +1,87 @@
+// =============================================================================
+// Packing Task & Package Models
+// =============================================================================
+
+model PackingTask {
+  id            String        @id @default(cuid())
+  packingNumber String        @unique
+  salesOrderId  String        @unique
+  warehouseId   String
+  packedById    String?
+  status        PackingStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  salesOrder SalesOrder @relation(fields: [salesOrderId], references: [id], onDelete: Restrict)
+  warehouse  Warehouse  @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  packedBy   User?      @relation("PackingTaskPackedBy", fields: [packedById], references: [id], onDelete: SetNull)
+
+  items    PackingTaskItem[]
+  packages Package[]
+
+  @@index([warehouseId, status])
+  @@map("packing_tasks")
+}
+
+model PackingTaskItem {
+  id               String            @id @default(cuid())
+  packingTaskId    String
+  salesOrderItemId String
+  productId        String
+  requiredQuantity Decimal
+  packedQuantity   Decimal           @default(0)
+  status           PackingItemStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  packingTask    PackingTask    @relation(fields: [packingTaskId], references: [id], onDelete: Cascade)
+  salesOrderItem SalesOrderItem @relation(fields: [salesOrderItemId], references: [id], onDelete: Restrict)
+  product        Product        @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  packageItems PackageItem[]
+
+  @@unique([packingTaskId, salesOrderItemId])
+  @@index([packingTaskId])
+  @@index([productId])
+  @@map("packing_task_items")
+}
+
+model Package {
+  id            String        @id @default(cuid())
+  packingTaskId String
+  packageNumber String        @unique
+  status        PackageStatus @default(OPEN)
+  weight        Decimal?
+  notes         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  packingTask PackingTask   @relation(fields: [packingTaskId], references: [id], onDelete: Cascade)
+  items       PackageItem[]
+
+  @@index([packingTaskId])
+  @@map("packages")
+}
+
+model PackageItem {
+  id                String  @id @default(cuid())
+  packageId         String
+  packingTaskItemId String
+  productId         String
+  quantity          Decimal
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  package         Package         @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  packingTaskItem PackingTaskItem @relation(fields: [packingTaskItemId], references: [id], onDelete: Cascade)
+  product         Product         @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([packageId])
+  @@index([packingTaskItemId])
+  @@index([productId])
+  @@map("package_items")
+}

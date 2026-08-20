@@ -50,6 +50,7 @@ model User {
   createdSalesOrders         SalesOrder[]                @relation("SOCreatedBy")
   assignedPickingTasks       PickingTask[]               @relation("PickingTaskAssignedTo")
   pickingAllocations         PickingAllocation[]
+  packedTasks                PackingTask[]               @relation("PackingTaskPackedBy")
 
   @@map("users")
 }
