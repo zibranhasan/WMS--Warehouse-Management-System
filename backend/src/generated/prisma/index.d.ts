@@ -74,6 +74,26 @@ export type Brand = $Result.DefaultSelection<Prisma.$BrandPayload>
  */
 export type Product = $Result.DefaultSelection<Prisma.$ProductPayload>
 /**
+ * Model PackingTask
+ * 
+ */
+export type PackingTask = $Result.DefaultSelection<Prisma.$PackingTaskPayload>
+/**
+ * Model PackingTaskItem
+ * 
+ */
+export type PackingTaskItem = $Result.DefaultSelection<Prisma.$PackingTaskItemPayload>
+/**
+ * Model Package
+ * 
+ */
+export type Package = $Result.DefaultSelection<Prisma.$PackagePayload>
+/**
+ * Model PackageItem
+ * 
+ */
+export type PackageItem = $Result.DefaultSelection<Prisma.$PackageItemPayload>
+/**
  * Model Zone
  * 
  */
@@ -290,6 +310,35 @@ export const PickingItemStatus: {
 
 export type PickingItemStatus = (typeof PickingItemStatus)[keyof typeof PickingItemStatus]
 
+
+export const PackingStatus: {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  PARTIALLY_PACKED: 'PARTIALLY_PACKED',
+  PACKED: 'PACKED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type PackingStatus = (typeof PackingStatus)[keyof typeof PackingStatus]
+
+
+export const PackingItemStatus: {
+  PENDING: 'PENDING',
+  PARTIALLY_PACKED: 'PARTIALLY_PACKED',
+  PACKED: 'PACKED'
+};
+
+export type PackingItemStatus = (typeof PackingItemStatus)[keyof typeof PackingItemStatus]
+
+
+export const PackageStatus: {
+  OPEN: 'OPEN',
+  PACKED: 'PACKED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type PackageStatus = (typeof PackageStatus)[keyof typeof PackageStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -351,6 +400,18 @@ export const PickingStatus: typeof $Enums.PickingStatus
 export type PickingItemStatus = $Enums.PickingItemStatus
 
 export const PickingItemStatus: typeof $Enums.PickingItemStatus
+
+export type PackingStatus = $Enums.PackingStatus
+
+export const PackingStatus: typeof $Enums.PackingStatus
+
+export type PackingItemStatus = $Enums.PackingItemStatus
+
+export const PackingItemStatus: typeof $Enums.PackingItemStatus
+
+export type PackageStatus = $Enums.PackageStatus
+
+export const PackageStatus: typeof $Enums.PackageStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -592,6 +653,46 @@ export class PrismaClient<
     * ```
     */
   get product(): Prisma.ProductDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.packingTask`: Exposes CRUD operations for the **PackingTask** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PackingTasks
+    * const packingTasks = await prisma.packingTask.findMany()
+    * ```
+    */
+  get packingTask(): Prisma.PackingTaskDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.packingTaskItem`: Exposes CRUD operations for the **PackingTaskItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PackingTaskItems
+    * const packingTaskItems = await prisma.packingTaskItem.findMany()
+    * ```
+    */
+  get packingTaskItem(): Prisma.PackingTaskItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.package`: Exposes CRUD operations for the **Package** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Packages
+    * const packages = await prisma.package.findMany()
+    * ```
+    */
+  get package(): Prisma.PackageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.packageItem`: Exposes CRUD operations for the **PackageItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PackageItems
+    * const packageItems = await prisma.packageItem.findMany()
+    * ```
+    */
+  get packageItem(): Prisma.PackageItemDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.zone`: Exposes CRUD operations for the **Zone** model.
@@ -1201,6 +1302,10 @@ export namespace Prisma {
     Category: 'Category',
     Brand: 'Brand',
     Product: 'Product',
+    PackingTask: 'PackingTask',
+    PackingTaskItem: 'PackingTaskItem',
+    Package: 'Package',
+    PackageItem: 'PackageItem',
     Zone: 'Zone',
     Aisle: 'Aisle',
     Shelf: 'Shelf',
@@ -1231,7 +1336,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "inventoryStock" | "stockMovement" | "inventoryLocationStock" | "inventoryLocationMovement" | "warehouse" | "category" | "brand" | "product" | "zone" | "aisle" | "shelf" | "bin" | "pickingTask" | "pickingTaskItem" | "pickingAllocation" | "supplier" | "purchaseOrder" | "purchaseOrderItem" | "goodsReceipt" | "goodsReceiptItem" | "salesOrder" | "salesOrderItem" | "stockReservation"
+      modelProps: "user" | "session" | "account" | "verification" | "inventoryStock" | "stockMovement" | "inventoryLocationStock" | "inventoryLocationMovement" | "warehouse" | "category" | "brand" | "product" | "packingTask" | "packingTaskItem" | "package" | "packageItem" | "zone" | "aisle" | "shelf" | "bin" | "pickingTask" | "pickingTaskItem" | "pickingAllocation" | "supplier" | "purchaseOrder" | "purchaseOrderItem" | "goodsReceipt" | "goodsReceiptItem" | "salesOrder" | "salesOrderItem" | "stockReservation"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2120,6 +2225,302 @@ export namespace Prisma {
           count: {
             args: Prisma.ProductCountArgs<ExtArgs>
             result: $Utils.Optional<ProductCountAggregateOutputType> | number
+          }
+        }
+      }
+      PackingTask: {
+        payload: Prisma.$PackingTaskPayload<ExtArgs>
+        fields: Prisma.PackingTaskFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PackingTaskFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PackingTaskFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskPayload>
+          }
+          findFirst: {
+            args: Prisma.PackingTaskFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PackingTaskFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskPayload>
+          }
+          findMany: {
+            args: Prisma.PackingTaskFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskPayload>[]
+          }
+          create: {
+            args: Prisma.PackingTaskCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskPayload>
+          }
+          createMany: {
+            args: Prisma.PackingTaskCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PackingTaskCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskPayload>[]
+          }
+          delete: {
+            args: Prisma.PackingTaskDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskPayload>
+          }
+          update: {
+            args: Prisma.PackingTaskUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskPayload>
+          }
+          deleteMany: {
+            args: Prisma.PackingTaskDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PackingTaskUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PackingTaskUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskPayload>[]
+          }
+          upsert: {
+            args: Prisma.PackingTaskUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskPayload>
+          }
+          aggregate: {
+            args: Prisma.PackingTaskAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePackingTask>
+          }
+          groupBy: {
+            args: Prisma.PackingTaskGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PackingTaskGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PackingTaskCountArgs<ExtArgs>
+            result: $Utils.Optional<PackingTaskCountAggregateOutputType> | number
+          }
+        }
+      }
+      PackingTaskItem: {
+        payload: Prisma.$PackingTaskItemPayload<ExtArgs>
+        fields: Prisma.PackingTaskItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PackingTaskItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PackingTaskItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskItemPayload>
+          }
+          findFirst: {
+            args: Prisma.PackingTaskItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PackingTaskItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskItemPayload>
+          }
+          findMany: {
+            args: Prisma.PackingTaskItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskItemPayload>[]
+          }
+          create: {
+            args: Prisma.PackingTaskItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskItemPayload>
+          }
+          createMany: {
+            args: Prisma.PackingTaskItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PackingTaskItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskItemPayload>[]
+          }
+          delete: {
+            args: Prisma.PackingTaskItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskItemPayload>
+          }
+          update: {
+            args: Prisma.PackingTaskItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.PackingTaskItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PackingTaskItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PackingTaskItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.PackingTaskItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingTaskItemPayload>
+          }
+          aggregate: {
+            args: Prisma.PackingTaskItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePackingTaskItem>
+          }
+          groupBy: {
+            args: Prisma.PackingTaskItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PackingTaskItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PackingTaskItemCountArgs<ExtArgs>
+            result: $Utils.Optional<PackingTaskItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      Package: {
+        payload: Prisma.$PackagePayload<ExtArgs>
+        fields: Prisma.PackageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PackageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PackageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagePayload>
+          }
+          findFirst: {
+            args: Prisma.PackageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PackageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagePayload>
+          }
+          findMany: {
+            args: Prisma.PackageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagePayload>[]
+          }
+          create: {
+            args: Prisma.PackageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagePayload>
+          }
+          createMany: {
+            args: Prisma.PackageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PackageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagePayload>[]
+          }
+          delete: {
+            args: Prisma.PackageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagePayload>
+          }
+          update: {
+            args: Prisma.PackageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagePayload>
+          }
+          deleteMany: {
+            args: Prisma.PackageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PackageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PackageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagePayload>[]
+          }
+          upsert: {
+            args: Prisma.PackageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagePayload>
+          }
+          aggregate: {
+            args: Prisma.PackageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePackage>
+          }
+          groupBy: {
+            args: Prisma.PackageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PackageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PackageCountArgs<ExtArgs>
+            result: $Utils.Optional<PackageCountAggregateOutputType> | number
+          }
+        }
+      }
+      PackageItem: {
+        payload: Prisma.$PackageItemPayload<ExtArgs>
+        fields: Prisma.PackageItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PackageItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackageItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PackageItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackageItemPayload>
+          }
+          findFirst: {
+            args: Prisma.PackageItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackageItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PackageItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackageItemPayload>
+          }
+          findMany: {
+            args: Prisma.PackageItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackageItemPayload>[]
+          }
+          create: {
+            args: Prisma.PackageItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackageItemPayload>
+          }
+          createMany: {
+            args: Prisma.PackageItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PackageItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackageItemPayload>[]
+          }
+          delete: {
+            args: Prisma.PackageItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackageItemPayload>
+          }
+          update: {
+            args: Prisma.PackageItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackageItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.PackageItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PackageItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PackageItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackageItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.PackageItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackageItemPayload>
+          }
+          aggregate: {
+            args: Prisma.PackageItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePackageItem>
+          }
+          groupBy: {
+            args: Prisma.PackageItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PackageItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PackageItemCountArgs<ExtArgs>
+            result: $Utils.Optional<PackageItemCountAggregateOutputType> | number
           }
         }
       }
@@ -3368,6 +3769,10 @@ export namespace Prisma {
     category?: CategoryOmit
     brand?: BrandOmit
     product?: ProductOmit
+    packingTask?: PackingTaskOmit
+    packingTaskItem?: PackingTaskItemOmit
+    package?: PackageOmit
+    packageItem?: PackageItemOmit
     zone?: ZoneOmit
     aisle?: AisleOmit
     shelf?: ShelfOmit
@@ -3473,6 +3878,7 @@ export namespace Prisma {
     createdSalesOrders: number
     assignedPickingTasks: number
     pickingAllocations: number
+    packedTasks: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3486,6 +3892,7 @@ export namespace Prisma {
     createdSalesOrders?: boolean | UserCountOutputTypeCountCreatedSalesOrdersArgs
     assignedPickingTasks?: boolean | UserCountOutputTypeCountAssignedPickingTasksArgs
     pickingAllocations?: boolean | UserCountOutputTypeCountPickingAllocationsArgs
+    packedTasks?: boolean | UserCountOutputTypeCountPackedTasksArgs
   }
 
   // Custom InputTypes
@@ -3569,6 +3976,13 @@ export namespace Prisma {
     where?: PickingAllocationWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPackedTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackingTaskWhereInput
+  }
+
 
   /**
    * Count Type InventoryLocationStockCountOutputType
@@ -3617,6 +4031,7 @@ export namespace Prisma {
     salesOrders: number
     stockReservations: number
     pickingTasks: number
+    packingTasks: number
   }
 
   export type WarehouseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3631,6 +4046,7 @@ export namespace Prisma {
     salesOrders?: boolean | WarehouseCountOutputTypeCountSalesOrdersArgs
     stockReservations?: boolean | WarehouseCountOutputTypeCountStockReservationsArgs
     pickingTasks?: boolean | WarehouseCountOutputTypeCountPickingTasksArgs
+    packingTasks?: boolean | WarehouseCountOutputTypeCountPackingTasksArgs
   }
 
   // Custom InputTypes
@@ -3721,6 +4137,13 @@ export namespace Prisma {
     where?: PickingTaskWhereInput
   }
 
+  /**
+   * WarehouseCountOutputType without action
+   */
+  export type WarehouseCountOutputTypeCountPackingTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackingTaskWhereInput
+  }
+
 
   /**
    * Count Type CategoryCountOutputType
@@ -3798,6 +4221,8 @@ export namespace Prisma {
     salesOrderItems: number
     stockReservations: number
     pickingTaskItems: number
+    packingTaskItems: number
+    packageItems: number
   }
 
   export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3810,6 +4235,8 @@ export namespace Prisma {
     salesOrderItems?: boolean | ProductCountOutputTypeCountSalesOrderItemsArgs
     stockReservations?: boolean | ProductCountOutputTypeCountStockReservationsArgs
     pickingTaskItems?: boolean | ProductCountOutputTypeCountPickingTaskItemsArgs
+    packingTaskItems?: boolean | ProductCountOutputTypeCountPackingTaskItemsArgs
+    packageItems?: boolean | ProductCountOutputTypeCountPackageItemsArgs
   }
 
   // Custom InputTypes
@@ -3884,6 +4311,122 @@ export namespace Prisma {
    */
   export type ProductCountOutputTypeCountPickingTaskItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PickingTaskItemWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountPackingTaskItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackingTaskItemWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountPackageItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackageItemWhereInput
+  }
+
+
+  /**
+   * Count Type PackingTaskCountOutputType
+   */
+
+  export type PackingTaskCountOutputType = {
+    items: number
+    packages: number
+  }
+
+  export type PackingTaskCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | PackingTaskCountOutputTypeCountItemsArgs
+    packages?: boolean | PackingTaskCountOutputTypeCountPackagesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PackingTaskCountOutputType without action
+   */
+  export type PackingTaskCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskCountOutputType
+     */
+    select?: PackingTaskCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PackingTaskCountOutputType without action
+   */
+  export type PackingTaskCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackingTaskItemWhereInput
+  }
+
+  /**
+   * PackingTaskCountOutputType without action
+   */
+  export type PackingTaskCountOutputTypeCountPackagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackageWhereInput
+  }
+
+
+  /**
+   * Count Type PackingTaskItemCountOutputType
+   */
+
+  export type PackingTaskItemCountOutputType = {
+    packageItems: number
+  }
+
+  export type PackingTaskItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    packageItems?: boolean | PackingTaskItemCountOutputTypeCountPackageItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PackingTaskItemCountOutputType without action
+   */
+  export type PackingTaskItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItemCountOutputType
+     */
+    select?: PackingTaskItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PackingTaskItemCountOutputType without action
+   */
+  export type PackingTaskItemCountOutputTypeCountPackageItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackageItemWhereInput
+  }
+
+
+  /**
+   * Count Type PackageCountOutputType
+   */
+
+  export type PackageCountOutputType = {
+    items: number
+  }
+
+  export type PackageCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | PackageCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PackageCountOutputType without action
+   */
+  export type PackageCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageCountOutputType
+     */
+    select?: PackageCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PackageCountOutputType without action
+   */
+  export type PackageCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackageItemWhereInput
   }
 
 
@@ -4240,11 +4783,13 @@ export namespace Prisma {
   export type SalesOrderItemCountOutputType = {
     reservations: number
     pickingTaskItems: number
+    packingTaskItems: number
   }
 
   export type SalesOrderItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     reservations?: boolean | SalesOrderItemCountOutputTypeCountReservationsArgs
     pickingTaskItems?: boolean | SalesOrderItemCountOutputTypeCountPickingTaskItemsArgs
+    packingTaskItems?: boolean | SalesOrderItemCountOutputTypeCountPackingTaskItemsArgs
   }
 
   // Custom InputTypes
@@ -4270,6 +4815,13 @@ export namespace Prisma {
    */
   export type SalesOrderItemCountOutputTypeCountPickingTaskItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PickingTaskItemWhereInput
+  }
+
+  /**
+   * SalesOrderItemCountOutputType without action
+   */
+  export type SalesOrderItemCountOutputTypeCountPackingTaskItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackingTaskItemWhereInput
   }
 
 
@@ -4516,6 +5068,7 @@ export namespace Prisma {
     createdSalesOrders?: boolean | User$createdSalesOrdersArgs<ExtArgs>
     assignedPickingTasks?: boolean | User$assignedPickingTasksArgs<ExtArgs>
     pickingAllocations?: boolean | User$pickingAllocationsArgs<ExtArgs>
+    packedTasks?: boolean | User$packedTasksArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4582,6 +5135,7 @@ export namespace Prisma {
     createdSalesOrders?: boolean | User$createdSalesOrdersArgs<ExtArgs>
     assignedPickingTasks?: boolean | User$assignedPickingTasksArgs<ExtArgs>
     pickingAllocations?: boolean | User$pickingAllocationsArgs<ExtArgs>
+    packedTasks?: boolean | User$packedTasksArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4605,6 +5159,7 @@ export namespace Prisma {
       createdSalesOrders: Prisma.$SalesOrderPayload<ExtArgs>[]
       assignedPickingTasks: Prisma.$PickingTaskPayload<ExtArgs>[]
       pickingAllocations: Prisma.$PickingAllocationPayload<ExtArgs>[]
+      packedTasks: Prisma.$PackingTaskPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5025,6 +5580,7 @@ export namespace Prisma {
     createdSalesOrders<T extends User$createdSalesOrdersArgs<ExtArgs> = {}>(args?: Subset<T, User$createdSalesOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     assignedPickingTasks<T extends User$assignedPickingTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedPickingTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pickingAllocations<T extends User$pickingAllocationsArgs<ExtArgs> = {}>(args?: Subset<T, User$pickingAllocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    packedTasks<T extends User$packedTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$packedTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5724,6 +6280,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PickingAllocationScalarFieldEnum | PickingAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * User.packedTasks
+   */
+  export type User$packedTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+    where?: PackingTaskWhereInput
+    orderBy?: PackingTaskOrderByWithRelationInput | PackingTaskOrderByWithRelationInput[]
+    cursor?: PackingTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackingTaskScalarFieldEnum | PackingTaskScalarFieldEnum[]
   }
 
   /**
@@ -14011,6 +14591,7 @@ export namespace Prisma {
     salesOrders?: boolean | Warehouse$salesOrdersArgs<ExtArgs>
     stockReservations?: boolean | Warehouse$stockReservationsArgs<ExtArgs>
     pickingTasks?: boolean | Warehouse$pickingTasksArgs<ExtArgs>
+    packingTasks?: boolean | Warehouse$packingTasksArgs<ExtArgs>
     _count?: boolean | WarehouseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["warehouse"]>
 
@@ -14066,6 +14647,7 @@ export namespace Prisma {
     salesOrders?: boolean | Warehouse$salesOrdersArgs<ExtArgs>
     stockReservations?: boolean | Warehouse$stockReservationsArgs<ExtArgs>
     pickingTasks?: boolean | Warehouse$pickingTasksArgs<ExtArgs>
+    packingTasks?: boolean | Warehouse$packingTasksArgs<ExtArgs>
     _count?: boolean | WarehouseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WarehouseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -14085,6 +14667,7 @@ export namespace Prisma {
       salesOrders: Prisma.$SalesOrderPayload<ExtArgs>[]
       stockReservations: Prisma.$StockReservationPayload<ExtArgs>[]
       pickingTasks: Prisma.$PickingTaskPayload<ExtArgs>[]
+      packingTasks: Prisma.$PackingTaskPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14502,6 +15085,7 @@ export namespace Prisma {
     salesOrders<T extends Warehouse$salesOrdersArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$salesOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     stockReservations<T extends Warehouse$stockReservationsArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$stockReservationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockReservationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pickingTasks<T extends Warehouse$pickingTasksArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$pickingTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    packingTasks<T extends Warehouse$packingTasksArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$packingTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15195,6 +15779,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PickingTaskScalarFieldEnum | PickingTaskScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse.packingTasks
+   */
+  export type Warehouse$packingTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+    where?: PackingTaskWhereInput
+    orderBy?: PackingTaskOrderByWithRelationInput | PackingTaskOrderByWithRelationInput[]
+    cursor?: PackingTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackingTaskScalarFieldEnum | PackingTaskScalarFieldEnum[]
   }
 
   /**
@@ -17717,6 +18325,8 @@ export namespace Prisma {
     salesOrderItems?: boolean | Product$salesOrderItemsArgs<ExtArgs>
     stockReservations?: boolean | Product$stockReservationsArgs<ExtArgs>
     pickingTaskItems?: boolean | Product$pickingTaskItemsArgs<ExtArgs>
+    packingTaskItems?: boolean | Product$packingTaskItemsArgs<ExtArgs>
+    packageItems?: boolean | Product$packageItemsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -17788,6 +18398,8 @@ export namespace Prisma {
     salesOrderItems?: boolean | Product$salesOrderItemsArgs<ExtArgs>
     stockReservations?: boolean | Product$stockReservationsArgs<ExtArgs>
     pickingTaskItems?: boolean | Product$pickingTaskItemsArgs<ExtArgs>
+    packingTaskItems?: boolean | Product$packingTaskItemsArgs<ExtArgs>
+    packageItems?: boolean | Product$packageItemsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17813,6 +18425,8 @@ export namespace Prisma {
       salesOrderItems: Prisma.$SalesOrderItemPayload<ExtArgs>[]
       stockReservations: Prisma.$StockReservationPayload<ExtArgs>[]
       pickingTaskItems: Prisma.$PickingTaskItemPayload<ExtArgs>[]
+      packingTaskItems: Prisma.$PackingTaskItemPayload<ExtArgs>[]
+      packageItems: Prisma.$PackageItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -18234,6 +18848,8 @@ export namespace Prisma {
     salesOrderItems<T extends Product$salesOrderItemsArgs<ExtArgs> = {}>(args?: Subset<T, Product$salesOrderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesOrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     stockReservations<T extends Product$stockReservationsArgs<ExtArgs> = {}>(args?: Subset<T, Product$stockReservationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockReservationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pickingTaskItems<T extends Product$pickingTaskItemsArgs<ExtArgs> = {}>(args?: Subset<T, Product$pickingTaskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    packingTaskItems<T extends Product$packingTaskItemsArgs<ExtArgs> = {}>(args?: Subset<T, Product$packingTaskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    packageItems<T extends Product$packageItemsArgs<ExtArgs> = {}>(args?: Subset<T, Product$packageItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18913,6 +19529,54 @@ export namespace Prisma {
   }
 
   /**
+   * Product.packingTaskItems
+   */
+  export type Product$packingTaskItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+    where?: PackingTaskItemWhereInput
+    orderBy?: PackingTaskItemOrderByWithRelationInput | PackingTaskItemOrderByWithRelationInput[]
+    cursor?: PackingTaskItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackingTaskItemScalarFieldEnum | PackingTaskItemScalarFieldEnum[]
+  }
+
+  /**
+   * Product.packageItems
+   */
+  export type Product$packageItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
+    where?: PackageItemWhereInput
+    orderBy?: PackageItemOrderByWithRelationInput | PackageItemOrderByWithRelationInput[]
+    cursor?: PackageItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackageItemScalarFieldEnum | PackageItemScalarFieldEnum[]
+  }
+
+  /**
    * Product without action
    */
   export type ProductDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18928,6 +19592,4705 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ProductInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PackingTask
+   */
+
+  export type AggregatePackingTask = {
+    _count: PackingTaskCountAggregateOutputType | null
+    _min: PackingTaskMinAggregateOutputType | null
+    _max: PackingTaskMaxAggregateOutputType | null
+  }
+
+  export type PackingTaskMinAggregateOutputType = {
+    id: string | null
+    packingNumber: string | null
+    salesOrderId: string | null
+    warehouseId: string | null
+    packedById: string | null
+    status: $Enums.PackingStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PackingTaskMaxAggregateOutputType = {
+    id: string | null
+    packingNumber: string | null
+    salesOrderId: string | null
+    warehouseId: string | null
+    packedById: string | null
+    status: $Enums.PackingStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PackingTaskCountAggregateOutputType = {
+    id: number
+    packingNumber: number
+    salesOrderId: number
+    warehouseId: number
+    packedById: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PackingTaskMinAggregateInputType = {
+    id?: true
+    packingNumber?: true
+    salesOrderId?: true
+    warehouseId?: true
+    packedById?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PackingTaskMaxAggregateInputType = {
+    id?: true
+    packingNumber?: true
+    salesOrderId?: true
+    warehouseId?: true
+    packedById?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PackingTaskCountAggregateInputType = {
+    id?: true
+    packingNumber?: true
+    salesOrderId?: true
+    warehouseId?: true
+    packedById?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PackingTaskAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PackingTask to aggregate.
+     */
+    where?: PackingTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackingTasks to fetch.
+     */
+    orderBy?: PackingTaskOrderByWithRelationInput | PackingTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PackingTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackingTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackingTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PackingTasks
+    **/
+    _count?: true | PackingTaskCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PackingTaskMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PackingTaskMaxAggregateInputType
+  }
+
+  export type GetPackingTaskAggregateType<T extends PackingTaskAggregateArgs> = {
+        [P in keyof T & keyof AggregatePackingTask]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePackingTask[P]>
+      : GetScalarType<T[P], AggregatePackingTask[P]>
+  }
+
+
+
+
+  export type PackingTaskGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackingTaskWhereInput
+    orderBy?: PackingTaskOrderByWithAggregationInput | PackingTaskOrderByWithAggregationInput[]
+    by: PackingTaskScalarFieldEnum[] | PackingTaskScalarFieldEnum
+    having?: PackingTaskScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PackingTaskCountAggregateInputType | true
+    _min?: PackingTaskMinAggregateInputType
+    _max?: PackingTaskMaxAggregateInputType
+  }
+
+  export type PackingTaskGroupByOutputType = {
+    id: string
+    packingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    packedById: string | null
+    status: $Enums.PackingStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: PackingTaskCountAggregateOutputType | null
+    _min: PackingTaskMinAggregateOutputType | null
+    _max: PackingTaskMaxAggregateOutputType | null
+  }
+
+  type GetPackingTaskGroupByPayload<T extends PackingTaskGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PackingTaskGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PackingTaskGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PackingTaskGroupByOutputType[P]>
+            : GetScalarType<T[P], PackingTaskGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PackingTaskSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packingNumber?: boolean
+    salesOrderId?: boolean
+    warehouseId?: boolean
+    packedById?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    packedBy?: boolean | PackingTask$packedByArgs<ExtArgs>
+    items?: boolean | PackingTask$itemsArgs<ExtArgs>
+    packages?: boolean | PackingTask$packagesArgs<ExtArgs>
+    _count?: boolean | PackingTaskCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packingTask"]>
+
+  export type PackingTaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packingNumber?: boolean
+    salesOrderId?: boolean
+    warehouseId?: boolean
+    packedById?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    packedBy?: boolean | PackingTask$packedByArgs<ExtArgs>
+  }, ExtArgs["result"]["packingTask"]>
+
+  export type PackingTaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packingNumber?: boolean
+    salesOrderId?: boolean
+    warehouseId?: boolean
+    packedById?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    packedBy?: boolean | PackingTask$packedByArgs<ExtArgs>
+  }, ExtArgs["result"]["packingTask"]>
+
+  export type PackingTaskSelectScalar = {
+    id?: boolean
+    packingNumber?: boolean
+    salesOrderId?: boolean
+    warehouseId?: boolean
+    packedById?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PackingTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "packingNumber" | "salesOrderId" | "warehouseId" | "packedById" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["packingTask"]>
+  export type PackingTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    packedBy?: boolean | PackingTask$packedByArgs<ExtArgs>
+    items?: boolean | PackingTask$itemsArgs<ExtArgs>
+    packages?: boolean | PackingTask$packagesArgs<ExtArgs>
+    _count?: boolean | PackingTaskCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PackingTaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    packedBy?: boolean | PackingTask$packedByArgs<ExtArgs>
+  }
+  export type PackingTaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    packedBy?: boolean | PackingTask$packedByArgs<ExtArgs>
+  }
+
+  export type $PackingTaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PackingTask"
+    objects: {
+      salesOrder: Prisma.$SalesOrderPayload<ExtArgs>
+      warehouse: Prisma.$WarehousePayload<ExtArgs>
+      packedBy: Prisma.$UserPayload<ExtArgs> | null
+      items: Prisma.$PackingTaskItemPayload<ExtArgs>[]
+      packages: Prisma.$PackagePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      packingNumber: string
+      salesOrderId: string
+      warehouseId: string
+      packedById: string | null
+      status: $Enums.PackingStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["packingTask"]>
+    composites: {}
+  }
+
+  type PackingTaskGetPayload<S extends boolean | null | undefined | PackingTaskDefaultArgs> = $Result.GetResult<Prisma.$PackingTaskPayload, S>
+
+  type PackingTaskCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PackingTaskFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PackingTaskCountAggregateInputType | true
+    }
+
+  export interface PackingTaskDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PackingTask'], meta: { name: 'PackingTask' } }
+    /**
+     * Find zero or one PackingTask that matches the filter.
+     * @param {PackingTaskFindUniqueArgs} args - Arguments to find a PackingTask
+     * @example
+     * // Get one PackingTask
+     * const packingTask = await prisma.packingTask.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PackingTaskFindUniqueArgs>(args: SelectSubset<T, PackingTaskFindUniqueArgs<ExtArgs>>): Prisma__PackingTaskClient<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PackingTask that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PackingTaskFindUniqueOrThrowArgs} args - Arguments to find a PackingTask
+     * @example
+     * // Get one PackingTask
+     * const packingTask = await prisma.packingTask.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PackingTaskFindUniqueOrThrowArgs>(args: SelectSubset<T, PackingTaskFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PackingTaskClient<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PackingTask that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskFindFirstArgs} args - Arguments to find a PackingTask
+     * @example
+     * // Get one PackingTask
+     * const packingTask = await prisma.packingTask.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PackingTaskFindFirstArgs>(args?: SelectSubset<T, PackingTaskFindFirstArgs<ExtArgs>>): Prisma__PackingTaskClient<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PackingTask that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskFindFirstOrThrowArgs} args - Arguments to find a PackingTask
+     * @example
+     * // Get one PackingTask
+     * const packingTask = await prisma.packingTask.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PackingTaskFindFirstOrThrowArgs>(args?: SelectSubset<T, PackingTaskFindFirstOrThrowArgs<ExtArgs>>): Prisma__PackingTaskClient<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PackingTasks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PackingTasks
+     * const packingTasks = await prisma.packingTask.findMany()
+     * 
+     * // Get first 10 PackingTasks
+     * const packingTasks = await prisma.packingTask.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const packingTaskWithIdOnly = await prisma.packingTask.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PackingTaskFindManyArgs>(args?: SelectSubset<T, PackingTaskFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PackingTask.
+     * @param {PackingTaskCreateArgs} args - Arguments to create a PackingTask.
+     * @example
+     * // Create one PackingTask
+     * const PackingTask = await prisma.packingTask.create({
+     *   data: {
+     *     // ... data to create a PackingTask
+     *   }
+     * })
+     * 
+     */
+    create<T extends PackingTaskCreateArgs>(args: SelectSubset<T, PackingTaskCreateArgs<ExtArgs>>): Prisma__PackingTaskClient<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PackingTasks.
+     * @param {PackingTaskCreateManyArgs} args - Arguments to create many PackingTasks.
+     * @example
+     * // Create many PackingTasks
+     * const packingTask = await prisma.packingTask.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PackingTaskCreateManyArgs>(args?: SelectSubset<T, PackingTaskCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PackingTasks and returns the data saved in the database.
+     * @param {PackingTaskCreateManyAndReturnArgs} args - Arguments to create many PackingTasks.
+     * @example
+     * // Create many PackingTasks
+     * const packingTask = await prisma.packingTask.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PackingTasks and only return the `id`
+     * const packingTaskWithIdOnly = await prisma.packingTask.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PackingTaskCreateManyAndReturnArgs>(args?: SelectSubset<T, PackingTaskCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PackingTask.
+     * @param {PackingTaskDeleteArgs} args - Arguments to delete one PackingTask.
+     * @example
+     * // Delete one PackingTask
+     * const PackingTask = await prisma.packingTask.delete({
+     *   where: {
+     *     // ... filter to delete one PackingTask
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PackingTaskDeleteArgs>(args: SelectSubset<T, PackingTaskDeleteArgs<ExtArgs>>): Prisma__PackingTaskClient<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PackingTask.
+     * @param {PackingTaskUpdateArgs} args - Arguments to update one PackingTask.
+     * @example
+     * // Update one PackingTask
+     * const packingTask = await prisma.packingTask.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PackingTaskUpdateArgs>(args: SelectSubset<T, PackingTaskUpdateArgs<ExtArgs>>): Prisma__PackingTaskClient<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PackingTasks.
+     * @param {PackingTaskDeleteManyArgs} args - Arguments to filter PackingTasks to delete.
+     * @example
+     * // Delete a few PackingTasks
+     * const { count } = await prisma.packingTask.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PackingTaskDeleteManyArgs>(args?: SelectSubset<T, PackingTaskDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PackingTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PackingTasks
+     * const packingTask = await prisma.packingTask.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PackingTaskUpdateManyArgs>(args: SelectSubset<T, PackingTaskUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PackingTasks and returns the data updated in the database.
+     * @param {PackingTaskUpdateManyAndReturnArgs} args - Arguments to update many PackingTasks.
+     * @example
+     * // Update many PackingTasks
+     * const packingTask = await prisma.packingTask.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PackingTasks and only return the `id`
+     * const packingTaskWithIdOnly = await prisma.packingTask.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PackingTaskUpdateManyAndReturnArgs>(args: SelectSubset<T, PackingTaskUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PackingTask.
+     * @param {PackingTaskUpsertArgs} args - Arguments to update or create a PackingTask.
+     * @example
+     * // Update or create a PackingTask
+     * const packingTask = await prisma.packingTask.upsert({
+     *   create: {
+     *     // ... data to create a PackingTask
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PackingTask we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PackingTaskUpsertArgs>(args: SelectSubset<T, PackingTaskUpsertArgs<ExtArgs>>): Prisma__PackingTaskClient<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PackingTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskCountArgs} args - Arguments to filter PackingTasks to count.
+     * @example
+     * // Count the number of PackingTasks
+     * const count = await prisma.packingTask.count({
+     *   where: {
+     *     // ... the filter for the PackingTasks we want to count
+     *   }
+     * })
+    **/
+    count<T extends PackingTaskCountArgs>(
+      args?: Subset<T, PackingTaskCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PackingTaskCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PackingTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PackingTaskAggregateArgs>(args: Subset<T, PackingTaskAggregateArgs>): Prisma.PrismaPromise<GetPackingTaskAggregateType<T>>
+
+    /**
+     * Group by PackingTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PackingTaskGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PackingTaskGroupByArgs['orderBy'] }
+        : { orderBy?: PackingTaskGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PackingTaskGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPackingTaskGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PackingTask model
+   */
+  readonly fields: PackingTaskFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PackingTask.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PackingTaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    salesOrder<T extends SalesOrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrderDefaultArgs<ExtArgs>>): Prisma__SalesOrderClient<$Result.GetResult<Prisma.$SalesOrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    warehouse<T extends WarehouseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WarehouseDefaultArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    packedBy<T extends PackingTask$packedByArgs<ExtArgs> = {}>(args?: Subset<T, PackingTask$packedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    items<T extends PackingTask$itemsArgs<ExtArgs> = {}>(args?: Subset<T, PackingTask$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    packages<T extends PackingTask$packagesArgs<ExtArgs> = {}>(args?: Subset<T, PackingTask$packagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PackingTask model
+   */
+  interface PackingTaskFieldRefs {
+    readonly id: FieldRef<"PackingTask", 'String'>
+    readonly packingNumber: FieldRef<"PackingTask", 'String'>
+    readonly salesOrderId: FieldRef<"PackingTask", 'String'>
+    readonly warehouseId: FieldRef<"PackingTask", 'String'>
+    readonly packedById: FieldRef<"PackingTask", 'String'>
+    readonly status: FieldRef<"PackingTask", 'PackingStatus'>
+    readonly createdAt: FieldRef<"PackingTask", 'DateTime'>
+    readonly updatedAt: FieldRef<"PackingTask", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PackingTask findUnique
+   */
+  export type PackingTaskFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingTask to fetch.
+     */
+    where: PackingTaskWhereUniqueInput
+  }
+
+  /**
+   * PackingTask findUniqueOrThrow
+   */
+  export type PackingTaskFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingTask to fetch.
+     */
+    where: PackingTaskWhereUniqueInput
+  }
+
+  /**
+   * PackingTask findFirst
+   */
+  export type PackingTaskFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingTask to fetch.
+     */
+    where?: PackingTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackingTasks to fetch.
+     */
+    orderBy?: PackingTaskOrderByWithRelationInput | PackingTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PackingTasks.
+     */
+    cursor?: PackingTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackingTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackingTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackingTasks.
+     */
+    distinct?: PackingTaskScalarFieldEnum | PackingTaskScalarFieldEnum[]
+  }
+
+  /**
+   * PackingTask findFirstOrThrow
+   */
+  export type PackingTaskFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingTask to fetch.
+     */
+    where?: PackingTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackingTasks to fetch.
+     */
+    orderBy?: PackingTaskOrderByWithRelationInput | PackingTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PackingTasks.
+     */
+    cursor?: PackingTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackingTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackingTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackingTasks.
+     */
+    distinct?: PackingTaskScalarFieldEnum | PackingTaskScalarFieldEnum[]
+  }
+
+  /**
+   * PackingTask findMany
+   */
+  export type PackingTaskFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingTasks to fetch.
+     */
+    where?: PackingTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackingTasks to fetch.
+     */
+    orderBy?: PackingTaskOrderByWithRelationInput | PackingTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PackingTasks.
+     */
+    cursor?: PackingTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackingTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackingTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackingTasks.
+     */
+    distinct?: PackingTaskScalarFieldEnum | PackingTaskScalarFieldEnum[]
+  }
+
+  /**
+   * PackingTask create
+   */
+  export type PackingTaskCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PackingTask.
+     */
+    data: XOR<PackingTaskCreateInput, PackingTaskUncheckedCreateInput>
+  }
+
+  /**
+   * PackingTask createMany
+   */
+  export type PackingTaskCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PackingTasks.
+     */
+    data: PackingTaskCreateManyInput | PackingTaskCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PackingTask createManyAndReturn
+   */
+  export type PackingTaskCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * The data used to create many PackingTasks.
+     */
+    data: PackingTaskCreateManyInput | PackingTaskCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PackingTask update
+   */
+  export type PackingTaskUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PackingTask.
+     */
+    data: XOR<PackingTaskUpdateInput, PackingTaskUncheckedUpdateInput>
+    /**
+     * Choose, which PackingTask to update.
+     */
+    where: PackingTaskWhereUniqueInput
+  }
+
+  /**
+   * PackingTask updateMany
+   */
+  export type PackingTaskUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PackingTasks.
+     */
+    data: XOR<PackingTaskUpdateManyMutationInput, PackingTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which PackingTasks to update
+     */
+    where?: PackingTaskWhereInput
+    /**
+     * Limit how many PackingTasks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PackingTask updateManyAndReturn
+   */
+  export type PackingTaskUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * The data used to update PackingTasks.
+     */
+    data: XOR<PackingTaskUpdateManyMutationInput, PackingTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which PackingTasks to update
+     */
+    where?: PackingTaskWhereInput
+    /**
+     * Limit how many PackingTasks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PackingTask upsert
+   */
+  export type PackingTaskUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PackingTask to update in case it exists.
+     */
+    where: PackingTaskWhereUniqueInput
+    /**
+     * In case the PackingTask found by the `where` argument doesn't exist, create a new PackingTask with this data.
+     */
+    create: XOR<PackingTaskCreateInput, PackingTaskUncheckedCreateInput>
+    /**
+     * In case the PackingTask was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PackingTaskUpdateInput, PackingTaskUncheckedUpdateInput>
+  }
+
+  /**
+   * PackingTask delete
+   */
+  export type PackingTaskDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+    /**
+     * Filter which PackingTask to delete.
+     */
+    where: PackingTaskWhereUniqueInput
+  }
+
+  /**
+   * PackingTask deleteMany
+   */
+  export type PackingTaskDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PackingTasks to delete
+     */
+    where?: PackingTaskWhereInput
+    /**
+     * Limit how many PackingTasks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PackingTask.packedBy
+   */
+  export type PackingTask$packedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * PackingTask.items
+   */
+  export type PackingTask$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+    where?: PackingTaskItemWhereInput
+    orderBy?: PackingTaskItemOrderByWithRelationInput | PackingTaskItemOrderByWithRelationInput[]
+    cursor?: PackingTaskItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackingTaskItemScalarFieldEnum | PackingTaskItemScalarFieldEnum[]
+  }
+
+  /**
+   * PackingTask.packages
+   */
+  export type PackingTask$packagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageInclude<ExtArgs> | null
+    where?: PackageWhereInput
+    orderBy?: PackageOrderByWithRelationInput | PackageOrderByWithRelationInput[]
+    cursor?: PackageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackageScalarFieldEnum | PackageScalarFieldEnum[]
+  }
+
+  /**
+   * PackingTask without action
+   */
+  export type PackingTaskDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PackingTaskItem
+   */
+
+  export type AggregatePackingTaskItem = {
+    _count: PackingTaskItemCountAggregateOutputType | null
+    _avg: PackingTaskItemAvgAggregateOutputType | null
+    _sum: PackingTaskItemSumAggregateOutputType | null
+    _min: PackingTaskItemMinAggregateOutputType | null
+    _max: PackingTaskItemMaxAggregateOutputType | null
+  }
+
+  export type PackingTaskItemAvgAggregateOutputType = {
+    requiredQuantity: Decimal | null
+    packedQuantity: Decimal | null
+  }
+
+  export type PackingTaskItemSumAggregateOutputType = {
+    requiredQuantity: Decimal | null
+    packedQuantity: Decimal | null
+  }
+
+  export type PackingTaskItemMinAggregateOutputType = {
+    id: string | null
+    packingTaskId: string | null
+    salesOrderItemId: string | null
+    productId: string | null
+    requiredQuantity: Decimal | null
+    packedQuantity: Decimal | null
+    status: $Enums.PackingItemStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PackingTaskItemMaxAggregateOutputType = {
+    id: string | null
+    packingTaskId: string | null
+    salesOrderItemId: string | null
+    productId: string | null
+    requiredQuantity: Decimal | null
+    packedQuantity: Decimal | null
+    status: $Enums.PackingItemStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PackingTaskItemCountAggregateOutputType = {
+    id: number
+    packingTaskId: number
+    salesOrderItemId: number
+    productId: number
+    requiredQuantity: number
+    packedQuantity: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PackingTaskItemAvgAggregateInputType = {
+    requiredQuantity?: true
+    packedQuantity?: true
+  }
+
+  export type PackingTaskItemSumAggregateInputType = {
+    requiredQuantity?: true
+    packedQuantity?: true
+  }
+
+  export type PackingTaskItemMinAggregateInputType = {
+    id?: true
+    packingTaskId?: true
+    salesOrderItemId?: true
+    productId?: true
+    requiredQuantity?: true
+    packedQuantity?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PackingTaskItemMaxAggregateInputType = {
+    id?: true
+    packingTaskId?: true
+    salesOrderItemId?: true
+    productId?: true
+    requiredQuantity?: true
+    packedQuantity?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PackingTaskItemCountAggregateInputType = {
+    id?: true
+    packingTaskId?: true
+    salesOrderItemId?: true
+    productId?: true
+    requiredQuantity?: true
+    packedQuantity?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PackingTaskItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PackingTaskItem to aggregate.
+     */
+    where?: PackingTaskItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackingTaskItems to fetch.
+     */
+    orderBy?: PackingTaskItemOrderByWithRelationInput | PackingTaskItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PackingTaskItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackingTaskItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackingTaskItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PackingTaskItems
+    **/
+    _count?: true | PackingTaskItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PackingTaskItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PackingTaskItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PackingTaskItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PackingTaskItemMaxAggregateInputType
+  }
+
+  export type GetPackingTaskItemAggregateType<T extends PackingTaskItemAggregateArgs> = {
+        [P in keyof T & keyof AggregatePackingTaskItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePackingTaskItem[P]>
+      : GetScalarType<T[P], AggregatePackingTaskItem[P]>
+  }
+
+
+
+
+  export type PackingTaskItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackingTaskItemWhereInput
+    orderBy?: PackingTaskItemOrderByWithAggregationInput | PackingTaskItemOrderByWithAggregationInput[]
+    by: PackingTaskItemScalarFieldEnum[] | PackingTaskItemScalarFieldEnum
+    having?: PackingTaskItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PackingTaskItemCountAggregateInputType | true
+    _avg?: PackingTaskItemAvgAggregateInputType
+    _sum?: PackingTaskItemSumAggregateInputType
+    _min?: PackingTaskItemMinAggregateInputType
+    _max?: PackingTaskItemMaxAggregateInputType
+  }
+
+  export type PackingTaskItemGroupByOutputType = {
+    id: string
+    packingTaskId: string
+    salesOrderItemId: string
+    productId: string
+    requiredQuantity: Decimal
+    packedQuantity: Decimal
+    status: $Enums.PackingItemStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: PackingTaskItemCountAggregateOutputType | null
+    _avg: PackingTaskItemAvgAggregateOutputType | null
+    _sum: PackingTaskItemSumAggregateOutputType | null
+    _min: PackingTaskItemMinAggregateOutputType | null
+    _max: PackingTaskItemMaxAggregateOutputType | null
+  }
+
+  type GetPackingTaskItemGroupByPayload<T extends PackingTaskItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PackingTaskItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PackingTaskItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PackingTaskItemGroupByOutputType[P]>
+            : GetScalarType<T[P], PackingTaskItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PackingTaskItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packingTaskId?: boolean
+    salesOrderItemId?: boolean
+    productId?: boolean
+    requiredQuantity?: boolean
+    packedQuantity?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    packingTask?: boolean | PackingTaskDefaultArgs<ExtArgs>
+    salesOrderItem?: boolean | SalesOrderItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    packageItems?: boolean | PackingTaskItem$packageItemsArgs<ExtArgs>
+    _count?: boolean | PackingTaskItemCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packingTaskItem"]>
+
+  export type PackingTaskItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packingTaskId?: boolean
+    salesOrderItemId?: boolean
+    productId?: boolean
+    requiredQuantity?: boolean
+    packedQuantity?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    packingTask?: boolean | PackingTaskDefaultArgs<ExtArgs>
+    salesOrderItem?: boolean | SalesOrderItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packingTaskItem"]>
+
+  export type PackingTaskItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packingTaskId?: boolean
+    salesOrderItemId?: boolean
+    productId?: boolean
+    requiredQuantity?: boolean
+    packedQuantity?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    packingTask?: boolean | PackingTaskDefaultArgs<ExtArgs>
+    salesOrderItem?: boolean | SalesOrderItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packingTaskItem"]>
+
+  export type PackingTaskItemSelectScalar = {
+    id?: boolean
+    packingTaskId?: boolean
+    salesOrderItemId?: boolean
+    productId?: boolean
+    requiredQuantity?: boolean
+    packedQuantity?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PackingTaskItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "packingTaskId" | "salesOrderItemId" | "productId" | "requiredQuantity" | "packedQuantity" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["packingTaskItem"]>
+  export type PackingTaskItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    packingTask?: boolean | PackingTaskDefaultArgs<ExtArgs>
+    salesOrderItem?: boolean | SalesOrderItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    packageItems?: boolean | PackingTaskItem$packageItemsArgs<ExtArgs>
+    _count?: boolean | PackingTaskItemCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PackingTaskItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    packingTask?: boolean | PackingTaskDefaultArgs<ExtArgs>
+    salesOrderItem?: boolean | SalesOrderItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type PackingTaskItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    packingTask?: boolean | PackingTaskDefaultArgs<ExtArgs>
+    salesOrderItem?: boolean | SalesOrderItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+
+  export type $PackingTaskItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PackingTaskItem"
+    objects: {
+      packingTask: Prisma.$PackingTaskPayload<ExtArgs>
+      salesOrderItem: Prisma.$SalesOrderItemPayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs>
+      packageItems: Prisma.$PackageItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      packingTaskId: string
+      salesOrderItemId: string
+      productId: string
+      requiredQuantity: Prisma.Decimal
+      packedQuantity: Prisma.Decimal
+      status: $Enums.PackingItemStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["packingTaskItem"]>
+    composites: {}
+  }
+
+  type PackingTaskItemGetPayload<S extends boolean | null | undefined | PackingTaskItemDefaultArgs> = $Result.GetResult<Prisma.$PackingTaskItemPayload, S>
+
+  type PackingTaskItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PackingTaskItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PackingTaskItemCountAggregateInputType | true
+    }
+
+  export interface PackingTaskItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PackingTaskItem'], meta: { name: 'PackingTaskItem' } }
+    /**
+     * Find zero or one PackingTaskItem that matches the filter.
+     * @param {PackingTaskItemFindUniqueArgs} args - Arguments to find a PackingTaskItem
+     * @example
+     * // Get one PackingTaskItem
+     * const packingTaskItem = await prisma.packingTaskItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PackingTaskItemFindUniqueArgs>(args: SelectSubset<T, PackingTaskItemFindUniqueArgs<ExtArgs>>): Prisma__PackingTaskItemClient<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PackingTaskItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PackingTaskItemFindUniqueOrThrowArgs} args - Arguments to find a PackingTaskItem
+     * @example
+     * // Get one PackingTaskItem
+     * const packingTaskItem = await prisma.packingTaskItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PackingTaskItemFindUniqueOrThrowArgs>(args: SelectSubset<T, PackingTaskItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PackingTaskItemClient<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PackingTaskItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskItemFindFirstArgs} args - Arguments to find a PackingTaskItem
+     * @example
+     * // Get one PackingTaskItem
+     * const packingTaskItem = await prisma.packingTaskItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PackingTaskItemFindFirstArgs>(args?: SelectSubset<T, PackingTaskItemFindFirstArgs<ExtArgs>>): Prisma__PackingTaskItemClient<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PackingTaskItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskItemFindFirstOrThrowArgs} args - Arguments to find a PackingTaskItem
+     * @example
+     * // Get one PackingTaskItem
+     * const packingTaskItem = await prisma.packingTaskItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PackingTaskItemFindFirstOrThrowArgs>(args?: SelectSubset<T, PackingTaskItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__PackingTaskItemClient<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PackingTaskItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PackingTaskItems
+     * const packingTaskItems = await prisma.packingTaskItem.findMany()
+     * 
+     * // Get first 10 PackingTaskItems
+     * const packingTaskItems = await prisma.packingTaskItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const packingTaskItemWithIdOnly = await prisma.packingTaskItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PackingTaskItemFindManyArgs>(args?: SelectSubset<T, PackingTaskItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PackingTaskItem.
+     * @param {PackingTaskItemCreateArgs} args - Arguments to create a PackingTaskItem.
+     * @example
+     * // Create one PackingTaskItem
+     * const PackingTaskItem = await prisma.packingTaskItem.create({
+     *   data: {
+     *     // ... data to create a PackingTaskItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends PackingTaskItemCreateArgs>(args: SelectSubset<T, PackingTaskItemCreateArgs<ExtArgs>>): Prisma__PackingTaskItemClient<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PackingTaskItems.
+     * @param {PackingTaskItemCreateManyArgs} args - Arguments to create many PackingTaskItems.
+     * @example
+     * // Create many PackingTaskItems
+     * const packingTaskItem = await prisma.packingTaskItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PackingTaskItemCreateManyArgs>(args?: SelectSubset<T, PackingTaskItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PackingTaskItems and returns the data saved in the database.
+     * @param {PackingTaskItemCreateManyAndReturnArgs} args - Arguments to create many PackingTaskItems.
+     * @example
+     * // Create many PackingTaskItems
+     * const packingTaskItem = await prisma.packingTaskItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PackingTaskItems and only return the `id`
+     * const packingTaskItemWithIdOnly = await prisma.packingTaskItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PackingTaskItemCreateManyAndReturnArgs>(args?: SelectSubset<T, PackingTaskItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PackingTaskItem.
+     * @param {PackingTaskItemDeleteArgs} args - Arguments to delete one PackingTaskItem.
+     * @example
+     * // Delete one PackingTaskItem
+     * const PackingTaskItem = await prisma.packingTaskItem.delete({
+     *   where: {
+     *     // ... filter to delete one PackingTaskItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PackingTaskItemDeleteArgs>(args: SelectSubset<T, PackingTaskItemDeleteArgs<ExtArgs>>): Prisma__PackingTaskItemClient<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PackingTaskItem.
+     * @param {PackingTaskItemUpdateArgs} args - Arguments to update one PackingTaskItem.
+     * @example
+     * // Update one PackingTaskItem
+     * const packingTaskItem = await prisma.packingTaskItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PackingTaskItemUpdateArgs>(args: SelectSubset<T, PackingTaskItemUpdateArgs<ExtArgs>>): Prisma__PackingTaskItemClient<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PackingTaskItems.
+     * @param {PackingTaskItemDeleteManyArgs} args - Arguments to filter PackingTaskItems to delete.
+     * @example
+     * // Delete a few PackingTaskItems
+     * const { count } = await prisma.packingTaskItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PackingTaskItemDeleteManyArgs>(args?: SelectSubset<T, PackingTaskItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PackingTaskItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PackingTaskItems
+     * const packingTaskItem = await prisma.packingTaskItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PackingTaskItemUpdateManyArgs>(args: SelectSubset<T, PackingTaskItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PackingTaskItems and returns the data updated in the database.
+     * @param {PackingTaskItemUpdateManyAndReturnArgs} args - Arguments to update many PackingTaskItems.
+     * @example
+     * // Update many PackingTaskItems
+     * const packingTaskItem = await prisma.packingTaskItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PackingTaskItems and only return the `id`
+     * const packingTaskItemWithIdOnly = await prisma.packingTaskItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PackingTaskItemUpdateManyAndReturnArgs>(args: SelectSubset<T, PackingTaskItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PackingTaskItem.
+     * @param {PackingTaskItemUpsertArgs} args - Arguments to update or create a PackingTaskItem.
+     * @example
+     * // Update or create a PackingTaskItem
+     * const packingTaskItem = await prisma.packingTaskItem.upsert({
+     *   create: {
+     *     // ... data to create a PackingTaskItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PackingTaskItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PackingTaskItemUpsertArgs>(args: SelectSubset<T, PackingTaskItemUpsertArgs<ExtArgs>>): Prisma__PackingTaskItemClient<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PackingTaskItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskItemCountArgs} args - Arguments to filter PackingTaskItems to count.
+     * @example
+     * // Count the number of PackingTaskItems
+     * const count = await prisma.packingTaskItem.count({
+     *   where: {
+     *     // ... the filter for the PackingTaskItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends PackingTaskItemCountArgs>(
+      args?: Subset<T, PackingTaskItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PackingTaskItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PackingTaskItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PackingTaskItemAggregateArgs>(args: Subset<T, PackingTaskItemAggregateArgs>): Prisma.PrismaPromise<GetPackingTaskItemAggregateType<T>>
+
+    /**
+     * Group by PackingTaskItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingTaskItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PackingTaskItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PackingTaskItemGroupByArgs['orderBy'] }
+        : { orderBy?: PackingTaskItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PackingTaskItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPackingTaskItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PackingTaskItem model
+   */
+  readonly fields: PackingTaskItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PackingTaskItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PackingTaskItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    packingTask<T extends PackingTaskDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PackingTaskDefaultArgs<ExtArgs>>): Prisma__PackingTaskClient<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    salesOrderItem<T extends SalesOrderItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrderItemDefaultArgs<ExtArgs>>): Prisma__SalesOrderItemClient<$Result.GetResult<Prisma.$SalesOrderItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    packageItems<T extends PackingTaskItem$packageItemsArgs<ExtArgs> = {}>(args?: Subset<T, PackingTaskItem$packageItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PackingTaskItem model
+   */
+  interface PackingTaskItemFieldRefs {
+    readonly id: FieldRef<"PackingTaskItem", 'String'>
+    readonly packingTaskId: FieldRef<"PackingTaskItem", 'String'>
+    readonly salesOrderItemId: FieldRef<"PackingTaskItem", 'String'>
+    readonly productId: FieldRef<"PackingTaskItem", 'String'>
+    readonly requiredQuantity: FieldRef<"PackingTaskItem", 'Decimal'>
+    readonly packedQuantity: FieldRef<"PackingTaskItem", 'Decimal'>
+    readonly status: FieldRef<"PackingTaskItem", 'PackingItemStatus'>
+    readonly createdAt: FieldRef<"PackingTaskItem", 'DateTime'>
+    readonly updatedAt: FieldRef<"PackingTaskItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PackingTaskItem findUnique
+   */
+  export type PackingTaskItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingTaskItem to fetch.
+     */
+    where: PackingTaskItemWhereUniqueInput
+  }
+
+  /**
+   * PackingTaskItem findUniqueOrThrow
+   */
+  export type PackingTaskItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingTaskItem to fetch.
+     */
+    where: PackingTaskItemWhereUniqueInput
+  }
+
+  /**
+   * PackingTaskItem findFirst
+   */
+  export type PackingTaskItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingTaskItem to fetch.
+     */
+    where?: PackingTaskItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackingTaskItems to fetch.
+     */
+    orderBy?: PackingTaskItemOrderByWithRelationInput | PackingTaskItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PackingTaskItems.
+     */
+    cursor?: PackingTaskItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackingTaskItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackingTaskItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackingTaskItems.
+     */
+    distinct?: PackingTaskItemScalarFieldEnum | PackingTaskItemScalarFieldEnum[]
+  }
+
+  /**
+   * PackingTaskItem findFirstOrThrow
+   */
+  export type PackingTaskItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingTaskItem to fetch.
+     */
+    where?: PackingTaskItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackingTaskItems to fetch.
+     */
+    orderBy?: PackingTaskItemOrderByWithRelationInput | PackingTaskItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PackingTaskItems.
+     */
+    cursor?: PackingTaskItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackingTaskItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackingTaskItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackingTaskItems.
+     */
+    distinct?: PackingTaskItemScalarFieldEnum | PackingTaskItemScalarFieldEnum[]
+  }
+
+  /**
+   * PackingTaskItem findMany
+   */
+  export type PackingTaskItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingTaskItems to fetch.
+     */
+    where?: PackingTaskItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackingTaskItems to fetch.
+     */
+    orderBy?: PackingTaskItemOrderByWithRelationInput | PackingTaskItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PackingTaskItems.
+     */
+    cursor?: PackingTaskItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackingTaskItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackingTaskItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackingTaskItems.
+     */
+    distinct?: PackingTaskItemScalarFieldEnum | PackingTaskItemScalarFieldEnum[]
+  }
+
+  /**
+   * PackingTaskItem create
+   */
+  export type PackingTaskItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PackingTaskItem.
+     */
+    data: XOR<PackingTaskItemCreateInput, PackingTaskItemUncheckedCreateInput>
+  }
+
+  /**
+   * PackingTaskItem createMany
+   */
+  export type PackingTaskItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PackingTaskItems.
+     */
+    data: PackingTaskItemCreateManyInput | PackingTaskItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PackingTaskItem createManyAndReturn
+   */
+  export type PackingTaskItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many PackingTaskItems.
+     */
+    data: PackingTaskItemCreateManyInput | PackingTaskItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PackingTaskItem update
+   */
+  export type PackingTaskItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PackingTaskItem.
+     */
+    data: XOR<PackingTaskItemUpdateInput, PackingTaskItemUncheckedUpdateInput>
+    /**
+     * Choose, which PackingTaskItem to update.
+     */
+    where: PackingTaskItemWhereUniqueInput
+  }
+
+  /**
+   * PackingTaskItem updateMany
+   */
+  export type PackingTaskItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PackingTaskItems.
+     */
+    data: XOR<PackingTaskItemUpdateManyMutationInput, PackingTaskItemUncheckedUpdateManyInput>
+    /**
+     * Filter which PackingTaskItems to update
+     */
+    where?: PackingTaskItemWhereInput
+    /**
+     * Limit how many PackingTaskItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PackingTaskItem updateManyAndReturn
+   */
+  export type PackingTaskItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * The data used to update PackingTaskItems.
+     */
+    data: XOR<PackingTaskItemUpdateManyMutationInput, PackingTaskItemUncheckedUpdateManyInput>
+    /**
+     * Filter which PackingTaskItems to update
+     */
+    where?: PackingTaskItemWhereInput
+    /**
+     * Limit how many PackingTaskItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PackingTaskItem upsert
+   */
+  export type PackingTaskItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PackingTaskItem to update in case it exists.
+     */
+    where: PackingTaskItemWhereUniqueInput
+    /**
+     * In case the PackingTaskItem found by the `where` argument doesn't exist, create a new PackingTaskItem with this data.
+     */
+    create: XOR<PackingTaskItemCreateInput, PackingTaskItemUncheckedCreateInput>
+    /**
+     * In case the PackingTaskItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PackingTaskItemUpdateInput, PackingTaskItemUncheckedUpdateInput>
+  }
+
+  /**
+   * PackingTaskItem delete
+   */
+  export type PackingTaskItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+    /**
+     * Filter which PackingTaskItem to delete.
+     */
+    where: PackingTaskItemWhereUniqueInput
+  }
+
+  /**
+   * PackingTaskItem deleteMany
+   */
+  export type PackingTaskItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PackingTaskItems to delete
+     */
+    where?: PackingTaskItemWhereInput
+    /**
+     * Limit how many PackingTaskItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PackingTaskItem.packageItems
+   */
+  export type PackingTaskItem$packageItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
+    where?: PackageItemWhereInput
+    orderBy?: PackageItemOrderByWithRelationInput | PackageItemOrderByWithRelationInput[]
+    cursor?: PackageItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackageItemScalarFieldEnum | PackageItemScalarFieldEnum[]
+  }
+
+  /**
+   * PackingTaskItem without action
+   */
+  export type PackingTaskItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Package
+   */
+
+  export type AggregatePackage = {
+    _count: PackageCountAggregateOutputType | null
+    _avg: PackageAvgAggregateOutputType | null
+    _sum: PackageSumAggregateOutputType | null
+    _min: PackageMinAggregateOutputType | null
+    _max: PackageMaxAggregateOutputType | null
+  }
+
+  export type PackageAvgAggregateOutputType = {
+    weight: Decimal | null
+  }
+
+  export type PackageSumAggregateOutputType = {
+    weight: Decimal | null
+  }
+
+  export type PackageMinAggregateOutputType = {
+    id: string | null
+    packingTaskId: string | null
+    packageNumber: string | null
+    status: $Enums.PackageStatus | null
+    weight: Decimal | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PackageMaxAggregateOutputType = {
+    id: string | null
+    packingTaskId: string | null
+    packageNumber: string | null
+    status: $Enums.PackageStatus | null
+    weight: Decimal | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PackageCountAggregateOutputType = {
+    id: number
+    packingTaskId: number
+    packageNumber: number
+    status: number
+    weight: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PackageAvgAggregateInputType = {
+    weight?: true
+  }
+
+  export type PackageSumAggregateInputType = {
+    weight?: true
+  }
+
+  export type PackageMinAggregateInputType = {
+    id?: true
+    packingTaskId?: true
+    packageNumber?: true
+    status?: true
+    weight?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PackageMaxAggregateInputType = {
+    id?: true
+    packingTaskId?: true
+    packageNumber?: true
+    status?: true
+    weight?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PackageCountAggregateInputType = {
+    id?: true
+    packingTaskId?: true
+    packageNumber?: true
+    status?: true
+    weight?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PackageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Package to aggregate.
+     */
+    where?: PackageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Packages to fetch.
+     */
+    orderBy?: PackageOrderByWithRelationInput | PackageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PackageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Packages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Packages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Packages
+    **/
+    _count?: true | PackageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PackageAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PackageSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PackageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PackageMaxAggregateInputType
+  }
+
+  export type GetPackageAggregateType<T extends PackageAggregateArgs> = {
+        [P in keyof T & keyof AggregatePackage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePackage[P]>
+      : GetScalarType<T[P], AggregatePackage[P]>
+  }
+
+
+
+
+  export type PackageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackageWhereInput
+    orderBy?: PackageOrderByWithAggregationInput | PackageOrderByWithAggregationInput[]
+    by: PackageScalarFieldEnum[] | PackageScalarFieldEnum
+    having?: PackageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PackageCountAggregateInputType | true
+    _avg?: PackageAvgAggregateInputType
+    _sum?: PackageSumAggregateInputType
+    _min?: PackageMinAggregateInputType
+    _max?: PackageMaxAggregateInputType
+  }
+
+  export type PackageGroupByOutputType = {
+    id: string
+    packingTaskId: string
+    packageNumber: string
+    status: $Enums.PackageStatus
+    weight: Decimal | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PackageCountAggregateOutputType | null
+    _avg: PackageAvgAggregateOutputType | null
+    _sum: PackageSumAggregateOutputType | null
+    _min: PackageMinAggregateOutputType | null
+    _max: PackageMaxAggregateOutputType | null
+  }
+
+  type GetPackageGroupByPayload<T extends PackageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PackageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PackageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PackageGroupByOutputType[P]>
+            : GetScalarType<T[P], PackageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PackageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packingTaskId?: boolean
+    packageNumber?: boolean
+    status?: boolean
+    weight?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    packingTask?: boolean | PackingTaskDefaultArgs<ExtArgs>
+    items?: boolean | Package$itemsArgs<ExtArgs>
+    _count?: boolean | PackageCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["package"]>
+
+  export type PackageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packingTaskId?: boolean
+    packageNumber?: boolean
+    status?: boolean
+    weight?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    packingTask?: boolean | PackingTaskDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["package"]>
+
+  export type PackageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packingTaskId?: boolean
+    packageNumber?: boolean
+    status?: boolean
+    weight?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    packingTask?: boolean | PackingTaskDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["package"]>
+
+  export type PackageSelectScalar = {
+    id?: boolean
+    packingTaskId?: boolean
+    packageNumber?: boolean
+    status?: boolean
+    weight?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PackageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "packingTaskId" | "packageNumber" | "status" | "weight" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["package"]>
+  export type PackageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    packingTask?: boolean | PackingTaskDefaultArgs<ExtArgs>
+    items?: boolean | Package$itemsArgs<ExtArgs>
+    _count?: boolean | PackageCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PackageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    packingTask?: boolean | PackingTaskDefaultArgs<ExtArgs>
+  }
+  export type PackageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    packingTask?: boolean | PackingTaskDefaultArgs<ExtArgs>
+  }
+
+  export type $PackagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Package"
+    objects: {
+      packingTask: Prisma.$PackingTaskPayload<ExtArgs>
+      items: Prisma.$PackageItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      packingTaskId: string
+      packageNumber: string
+      status: $Enums.PackageStatus
+      weight: Prisma.Decimal | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["package"]>
+    composites: {}
+  }
+
+  type PackageGetPayload<S extends boolean | null | undefined | PackageDefaultArgs> = $Result.GetResult<Prisma.$PackagePayload, S>
+
+  type PackageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PackageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PackageCountAggregateInputType | true
+    }
+
+  export interface PackageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Package'], meta: { name: 'Package' } }
+    /**
+     * Find zero or one Package that matches the filter.
+     * @param {PackageFindUniqueArgs} args - Arguments to find a Package
+     * @example
+     * // Get one Package
+     * const package = await prisma.package.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PackageFindUniqueArgs>(args: SelectSubset<T, PackageFindUniqueArgs<ExtArgs>>): Prisma__PackageClient<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Package that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PackageFindUniqueOrThrowArgs} args - Arguments to find a Package
+     * @example
+     * // Get one Package
+     * const package = await prisma.package.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PackageFindUniqueOrThrowArgs>(args: SelectSubset<T, PackageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PackageClient<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Package that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageFindFirstArgs} args - Arguments to find a Package
+     * @example
+     * // Get one Package
+     * const package = await prisma.package.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PackageFindFirstArgs>(args?: SelectSubset<T, PackageFindFirstArgs<ExtArgs>>): Prisma__PackageClient<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Package that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageFindFirstOrThrowArgs} args - Arguments to find a Package
+     * @example
+     * // Get one Package
+     * const package = await prisma.package.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PackageFindFirstOrThrowArgs>(args?: SelectSubset<T, PackageFindFirstOrThrowArgs<ExtArgs>>): Prisma__PackageClient<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Packages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Packages
+     * const packages = await prisma.package.findMany()
+     * 
+     * // Get first 10 Packages
+     * const packages = await prisma.package.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const packageWithIdOnly = await prisma.package.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PackageFindManyArgs>(args?: SelectSubset<T, PackageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Package.
+     * @param {PackageCreateArgs} args - Arguments to create a Package.
+     * @example
+     * // Create one Package
+     * const Package = await prisma.package.create({
+     *   data: {
+     *     // ... data to create a Package
+     *   }
+     * })
+     * 
+     */
+    create<T extends PackageCreateArgs>(args: SelectSubset<T, PackageCreateArgs<ExtArgs>>): Prisma__PackageClient<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Packages.
+     * @param {PackageCreateManyArgs} args - Arguments to create many Packages.
+     * @example
+     * // Create many Packages
+     * const package = await prisma.package.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PackageCreateManyArgs>(args?: SelectSubset<T, PackageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Packages and returns the data saved in the database.
+     * @param {PackageCreateManyAndReturnArgs} args - Arguments to create many Packages.
+     * @example
+     * // Create many Packages
+     * const package = await prisma.package.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Packages and only return the `id`
+     * const packageWithIdOnly = await prisma.package.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PackageCreateManyAndReturnArgs>(args?: SelectSubset<T, PackageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Package.
+     * @param {PackageDeleteArgs} args - Arguments to delete one Package.
+     * @example
+     * // Delete one Package
+     * const Package = await prisma.package.delete({
+     *   where: {
+     *     // ... filter to delete one Package
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PackageDeleteArgs>(args: SelectSubset<T, PackageDeleteArgs<ExtArgs>>): Prisma__PackageClient<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Package.
+     * @param {PackageUpdateArgs} args - Arguments to update one Package.
+     * @example
+     * // Update one Package
+     * const package = await prisma.package.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PackageUpdateArgs>(args: SelectSubset<T, PackageUpdateArgs<ExtArgs>>): Prisma__PackageClient<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Packages.
+     * @param {PackageDeleteManyArgs} args - Arguments to filter Packages to delete.
+     * @example
+     * // Delete a few Packages
+     * const { count } = await prisma.package.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PackageDeleteManyArgs>(args?: SelectSubset<T, PackageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Packages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Packages
+     * const package = await prisma.package.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PackageUpdateManyArgs>(args: SelectSubset<T, PackageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Packages and returns the data updated in the database.
+     * @param {PackageUpdateManyAndReturnArgs} args - Arguments to update many Packages.
+     * @example
+     * // Update many Packages
+     * const package = await prisma.package.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Packages and only return the `id`
+     * const packageWithIdOnly = await prisma.package.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PackageUpdateManyAndReturnArgs>(args: SelectSubset<T, PackageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Package.
+     * @param {PackageUpsertArgs} args - Arguments to update or create a Package.
+     * @example
+     * // Update or create a Package
+     * const package = await prisma.package.upsert({
+     *   create: {
+     *     // ... data to create a Package
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Package we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PackageUpsertArgs>(args: SelectSubset<T, PackageUpsertArgs<ExtArgs>>): Prisma__PackageClient<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Packages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageCountArgs} args - Arguments to filter Packages to count.
+     * @example
+     * // Count the number of Packages
+     * const count = await prisma.package.count({
+     *   where: {
+     *     // ... the filter for the Packages we want to count
+     *   }
+     * })
+    **/
+    count<T extends PackageCountArgs>(
+      args?: Subset<T, PackageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PackageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Package.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PackageAggregateArgs>(args: Subset<T, PackageAggregateArgs>): Prisma.PrismaPromise<GetPackageAggregateType<T>>
+
+    /**
+     * Group by Package.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PackageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PackageGroupByArgs['orderBy'] }
+        : { orderBy?: PackageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PackageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPackageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Package model
+   */
+  readonly fields: PackageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Package.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PackageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    packingTask<T extends PackingTaskDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PackingTaskDefaultArgs<ExtArgs>>): Prisma__PackingTaskClient<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    items<T extends Package$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Package$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Package model
+   */
+  interface PackageFieldRefs {
+    readonly id: FieldRef<"Package", 'String'>
+    readonly packingTaskId: FieldRef<"Package", 'String'>
+    readonly packageNumber: FieldRef<"Package", 'String'>
+    readonly status: FieldRef<"Package", 'PackageStatus'>
+    readonly weight: FieldRef<"Package", 'Decimal'>
+    readonly notes: FieldRef<"Package", 'String'>
+    readonly createdAt: FieldRef<"Package", 'DateTime'>
+    readonly updatedAt: FieldRef<"Package", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Package findUnique
+   */
+  export type PackageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageInclude<ExtArgs> | null
+    /**
+     * Filter, which Package to fetch.
+     */
+    where: PackageWhereUniqueInput
+  }
+
+  /**
+   * Package findUniqueOrThrow
+   */
+  export type PackageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageInclude<ExtArgs> | null
+    /**
+     * Filter, which Package to fetch.
+     */
+    where: PackageWhereUniqueInput
+  }
+
+  /**
+   * Package findFirst
+   */
+  export type PackageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageInclude<ExtArgs> | null
+    /**
+     * Filter, which Package to fetch.
+     */
+    where?: PackageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Packages to fetch.
+     */
+    orderBy?: PackageOrderByWithRelationInput | PackageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Packages.
+     */
+    cursor?: PackageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Packages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Packages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Packages.
+     */
+    distinct?: PackageScalarFieldEnum | PackageScalarFieldEnum[]
+  }
+
+  /**
+   * Package findFirstOrThrow
+   */
+  export type PackageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageInclude<ExtArgs> | null
+    /**
+     * Filter, which Package to fetch.
+     */
+    where?: PackageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Packages to fetch.
+     */
+    orderBy?: PackageOrderByWithRelationInput | PackageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Packages.
+     */
+    cursor?: PackageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Packages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Packages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Packages.
+     */
+    distinct?: PackageScalarFieldEnum | PackageScalarFieldEnum[]
+  }
+
+  /**
+   * Package findMany
+   */
+  export type PackageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageInclude<ExtArgs> | null
+    /**
+     * Filter, which Packages to fetch.
+     */
+    where?: PackageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Packages to fetch.
+     */
+    orderBy?: PackageOrderByWithRelationInput | PackageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Packages.
+     */
+    cursor?: PackageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Packages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Packages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Packages.
+     */
+    distinct?: PackageScalarFieldEnum | PackageScalarFieldEnum[]
+  }
+
+  /**
+   * Package create
+   */
+  export type PackageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Package.
+     */
+    data: XOR<PackageCreateInput, PackageUncheckedCreateInput>
+  }
+
+  /**
+   * Package createMany
+   */
+  export type PackageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Packages.
+     */
+    data: PackageCreateManyInput | PackageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Package createManyAndReturn
+   */
+  export type PackageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * The data used to create many Packages.
+     */
+    data: PackageCreateManyInput | PackageCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Package update
+   */
+  export type PackageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Package.
+     */
+    data: XOR<PackageUpdateInput, PackageUncheckedUpdateInput>
+    /**
+     * Choose, which Package to update.
+     */
+    where: PackageWhereUniqueInput
+  }
+
+  /**
+   * Package updateMany
+   */
+  export type PackageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Packages.
+     */
+    data: XOR<PackageUpdateManyMutationInput, PackageUncheckedUpdateManyInput>
+    /**
+     * Filter which Packages to update
+     */
+    where?: PackageWhereInput
+    /**
+     * Limit how many Packages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Package updateManyAndReturn
+   */
+  export type PackageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * The data used to update Packages.
+     */
+    data: XOR<PackageUpdateManyMutationInput, PackageUncheckedUpdateManyInput>
+    /**
+     * Filter which Packages to update
+     */
+    where?: PackageWhereInput
+    /**
+     * Limit how many Packages to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Package upsert
+   */
+  export type PackageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Package to update in case it exists.
+     */
+    where: PackageWhereUniqueInput
+    /**
+     * In case the Package found by the `where` argument doesn't exist, create a new Package with this data.
+     */
+    create: XOR<PackageCreateInput, PackageUncheckedCreateInput>
+    /**
+     * In case the Package was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PackageUpdateInput, PackageUncheckedUpdateInput>
+  }
+
+  /**
+   * Package delete
+   */
+  export type PackageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageInclude<ExtArgs> | null
+    /**
+     * Filter which Package to delete.
+     */
+    where: PackageWhereUniqueInput
+  }
+
+  /**
+   * Package deleteMany
+   */
+  export type PackageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Packages to delete
+     */
+    where?: PackageWhereInput
+    /**
+     * Limit how many Packages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Package.items
+   */
+  export type Package$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
+    where?: PackageItemWhereInput
+    orderBy?: PackageItemOrderByWithRelationInput | PackageItemOrderByWithRelationInput[]
+    cursor?: PackageItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackageItemScalarFieldEnum | PackageItemScalarFieldEnum[]
+  }
+
+  /**
+   * Package without action
+   */
+  export type PackageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Package
+     */
+    select?: PackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Package
+     */
+    omit?: PackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PackageItem
+   */
+
+  export type AggregatePackageItem = {
+    _count: PackageItemCountAggregateOutputType | null
+    _avg: PackageItemAvgAggregateOutputType | null
+    _sum: PackageItemSumAggregateOutputType | null
+    _min: PackageItemMinAggregateOutputType | null
+    _max: PackageItemMaxAggregateOutputType | null
+  }
+
+  export type PackageItemAvgAggregateOutputType = {
+    quantity: Decimal | null
+  }
+
+  export type PackageItemSumAggregateOutputType = {
+    quantity: Decimal | null
+  }
+
+  export type PackageItemMinAggregateOutputType = {
+    id: string | null
+    packageId: string | null
+    packingTaskItemId: string | null
+    productId: string | null
+    quantity: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PackageItemMaxAggregateOutputType = {
+    id: string | null
+    packageId: string | null
+    packingTaskItemId: string | null
+    productId: string | null
+    quantity: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PackageItemCountAggregateOutputType = {
+    id: number
+    packageId: number
+    packingTaskItemId: number
+    productId: number
+    quantity: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PackageItemAvgAggregateInputType = {
+    quantity?: true
+  }
+
+  export type PackageItemSumAggregateInputType = {
+    quantity?: true
+  }
+
+  export type PackageItemMinAggregateInputType = {
+    id?: true
+    packageId?: true
+    packingTaskItemId?: true
+    productId?: true
+    quantity?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PackageItemMaxAggregateInputType = {
+    id?: true
+    packageId?: true
+    packingTaskItemId?: true
+    productId?: true
+    quantity?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PackageItemCountAggregateInputType = {
+    id?: true
+    packageId?: true
+    packingTaskItemId?: true
+    productId?: true
+    quantity?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PackageItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PackageItem to aggregate.
+     */
+    where?: PackageItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackageItems to fetch.
+     */
+    orderBy?: PackageItemOrderByWithRelationInput | PackageItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PackageItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackageItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackageItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PackageItems
+    **/
+    _count?: true | PackageItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PackageItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PackageItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PackageItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PackageItemMaxAggregateInputType
+  }
+
+  export type GetPackageItemAggregateType<T extends PackageItemAggregateArgs> = {
+        [P in keyof T & keyof AggregatePackageItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePackageItem[P]>
+      : GetScalarType<T[P], AggregatePackageItem[P]>
+  }
+
+
+
+
+  export type PackageItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackageItemWhereInput
+    orderBy?: PackageItemOrderByWithAggregationInput | PackageItemOrderByWithAggregationInput[]
+    by: PackageItemScalarFieldEnum[] | PackageItemScalarFieldEnum
+    having?: PackageItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PackageItemCountAggregateInputType | true
+    _avg?: PackageItemAvgAggregateInputType
+    _sum?: PackageItemSumAggregateInputType
+    _min?: PackageItemMinAggregateInputType
+    _max?: PackageItemMaxAggregateInputType
+  }
+
+  export type PackageItemGroupByOutputType = {
+    id: string
+    packageId: string
+    packingTaskItemId: string
+    productId: string
+    quantity: Decimal
+    createdAt: Date
+    updatedAt: Date
+    _count: PackageItemCountAggregateOutputType | null
+    _avg: PackageItemAvgAggregateOutputType | null
+    _sum: PackageItemSumAggregateOutputType | null
+    _min: PackageItemMinAggregateOutputType | null
+    _max: PackageItemMaxAggregateOutputType | null
+  }
+
+  type GetPackageItemGroupByPayload<T extends PackageItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PackageItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PackageItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PackageItemGroupByOutputType[P]>
+            : GetScalarType<T[P], PackageItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PackageItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packageId?: boolean
+    packingTaskItemId?: boolean
+    productId?: boolean
+    quantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    package?: boolean | PackageDefaultArgs<ExtArgs>
+    packingTaskItem?: boolean | PackingTaskItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packageItem"]>
+
+  export type PackageItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packageId?: boolean
+    packingTaskItemId?: boolean
+    productId?: boolean
+    quantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    package?: boolean | PackageDefaultArgs<ExtArgs>
+    packingTaskItem?: boolean | PackingTaskItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packageItem"]>
+
+  export type PackageItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packageId?: boolean
+    packingTaskItemId?: boolean
+    productId?: boolean
+    quantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    package?: boolean | PackageDefaultArgs<ExtArgs>
+    packingTaskItem?: boolean | PackingTaskItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packageItem"]>
+
+  export type PackageItemSelectScalar = {
+    id?: boolean
+    packageId?: boolean
+    packingTaskItemId?: boolean
+    productId?: boolean
+    quantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PackageItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "packageId" | "packingTaskItemId" | "productId" | "quantity" | "createdAt" | "updatedAt", ExtArgs["result"]["packageItem"]>
+  export type PackageItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    package?: boolean | PackageDefaultArgs<ExtArgs>
+    packingTaskItem?: boolean | PackingTaskItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type PackageItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    package?: boolean | PackageDefaultArgs<ExtArgs>
+    packingTaskItem?: boolean | PackingTaskItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type PackageItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    package?: boolean | PackageDefaultArgs<ExtArgs>
+    packingTaskItem?: boolean | PackingTaskItemDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+
+  export type $PackageItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PackageItem"
+    objects: {
+      package: Prisma.$PackagePayload<ExtArgs>
+      packingTaskItem: Prisma.$PackingTaskItemPayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      packageId: string
+      packingTaskItemId: string
+      productId: string
+      quantity: Prisma.Decimal
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["packageItem"]>
+    composites: {}
+  }
+
+  type PackageItemGetPayload<S extends boolean | null | undefined | PackageItemDefaultArgs> = $Result.GetResult<Prisma.$PackageItemPayload, S>
+
+  type PackageItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PackageItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PackageItemCountAggregateInputType | true
+    }
+
+  export interface PackageItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PackageItem'], meta: { name: 'PackageItem' } }
+    /**
+     * Find zero or one PackageItem that matches the filter.
+     * @param {PackageItemFindUniqueArgs} args - Arguments to find a PackageItem
+     * @example
+     * // Get one PackageItem
+     * const packageItem = await prisma.packageItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PackageItemFindUniqueArgs>(args: SelectSubset<T, PackageItemFindUniqueArgs<ExtArgs>>): Prisma__PackageItemClient<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PackageItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PackageItemFindUniqueOrThrowArgs} args - Arguments to find a PackageItem
+     * @example
+     * // Get one PackageItem
+     * const packageItem = await prisma.packageItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PackageItemFindUniqueOrThrowArgs>(args: SelectSubset<T, PackageItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PackageItemClient<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PackageItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageItemFindFirstArgs} args - Arguments to find a PackageItem
+     * @example
+     * // Get one PackageItem
+     * const packageItem = await prisma.packageItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PackageItemFindFirstArgs>(args?: SelectSubset<T, PackageItemFindFirstArgs<ExtArgs>>): Prisma__PackageItemClient<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PackageItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageItemFindFirstOrThrowArgs} args - Arguments to find a PackageItem
+     * @example
+     * // Get one PackageItem
+     * const packageItem = await prisma.packageItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PackageItemFindFirstOrThrowArgs>(args?: SelectSubset<T, PackageItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__PackageItemClient<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PackageItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PackageItems
+     * const packageItems = await prisma.packageItem.findMany()
+     * 
+     * // Get first 10 PackageItems
+     * const packageItems = await prisma.packageItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const packageItemWithIdOnly = await prisma.packageItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PackageItemFindManyArgs>(args?: SelectSubset<T, PackageItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PackageItem.
+     * @param {PackageItemCreateArgs} args - Arguments to create a PackageItem.
+     * @example
+     * // Create one PackageItem
+     * const PackageItem = await prisma.packageItem.create({
+     *   data: {
+     *     // ... data to create a PackageItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends PackageItemCreateArgs>(args: SelectSubset<T, PackageItemCreateArgs<ExtArgs>>): Prisma__PackageItemClient<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PackageItems.
+     * @param {PackageItemCreateManyArgs} args - Arguments to create many PackageItems.
+     * @example
+     * // Create many PackageItems
+     * const packageItem = await prisma.packageItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PackageItemCreateManyArgs>(args?: SelectSubset<T, PackageItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PackageItems and returns the data saved in the database.
+     * @param {PackageItemCreateManyAndReturnArgs} args - Arguments to create many PackageItems.
+     * @example
+     * // Create many PackageItems
+     * const packageItem = await prisma.packageItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PackageItems and only return the `id`
+     * const packageItemWithIdOnly = await prisma.packageItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PackageItemCreateManyAndReturnArgs>(args?: SelectSubset<T, PackageItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PackageItem.
+     * @param {PackageItemDeleteArgs} args - Arguments to delete one PackageItem.
+     * @example
+     * // Delete one PackageItem
+     * const PackageItem = await prisma.packageItem.delete({
+     *   where: {
+     *     // ... filter to delete one PackageItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PackageItemDeleteArgs>(args: SelectSubset<T, PackageItemDeleteArgs<ExtArgs>>): Prisma__PackageItemClient<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PackageItem.
+     * @param {PackageItemUpdateArgs} args - Arguments to update one PackageItem.
+     * @example
+     * // Update one PackageItem
+     * const packageItem = await prisma.packageItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PackageItemUpdateArgs>(args: SelectSubset<T, PackageItemUpdateArgs<ExtArgs>>): Prisma__PackageItemClient<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PackageItems.
+     * @param {PackageItemDeleteManyArgs} args - Arguments to filter PackageItems to delete.
+     * @example
+     * // Delete a few PackageItems
+     * const { count } = await prisma.packageItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PackageItemDeleteManyArgs>(args?: SelectSubset<T, PackageItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PackageItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PackageItems
+     * const packageItem = await prisma.packageItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PackageItemUpdateManyArgs>(args: SelectSubset<T, PackageItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PackageItems and returns the data updated in the database.
+     * @param {PackageItemUpdateManyAndReturnArgs} args - Arguments to update many PackageItems.
+     * @example
+     * // Update many PackageItems
+     * const packageItem = await prisma.packageItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PackageItems and only return the `id`
+     * const packageItemWithIdOnly = await prisma.packageItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PackageItemUpdateManyAndReturnArgs>(args: SelectSubset<T, PackageItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PackageItem.
+     * @param {PackageItemUpsertArgs} args - Arguments to update or create a PackageItem.
+     * @example
+     * // Update or create a PackageItem
+     * const packageItem = await prisma.packageItem.upsert({
+     *   create: {
+     *     // ... data to create a PackageItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PackageItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PackageItemUpsertArgs>(args: SelectSubset<T, PackageItemUpsertArgs<ExtArgs>>): Prisma__PackageItemClient<$Result.GetResult<Prisma.$PackageItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PackageItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageItemCountArgs} args - Arguments to filter PackageItems to count.
+     * @example
+     * // Count the number of PackageItems
+     * const count = await prisma.packageItem.count({
+     *   where: {
+     *     // ... the filter for the PackageItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends PackageItemCountArgs>(
+      args?: Subset<T, PackageItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PackageItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PackageItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PackageItemAggregateArgs>(args: Subset<T, PackageItemAggregateArgs>): Prisma.PrismaPromise<GetPackageItemAggregateType<T>>
+
+    /**
+     * Group by PackageItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackageItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PackageItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PackageItemGroupByArgs['orderBy'] }
+        : { orderBy?: PackageItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PackageItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPackageItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PackageItem model
+   */
+  readonly fields: PackageItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PackageItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PackageItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    package<T extends PackageDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PackageDefaultArgs<ExtArgs>>): Prisma__PackageClient<$Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    packingTaskItem<T extends PackingTaskItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PackingTaskItemDefaultArgs<ExtArgs>>): Prisma__PackingTaskItemClient<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PackageItem model
+   */
+  interface PackageItemFieldRefs {
+    readonly id: FieldRef<"PackageItem", 'String'>
+    readonly packageId: FieldRef<"PackageItem", 'String'>
+    readonly packingTaskItemId: FieldRef<"PackageItem", 'String'>
+    readonly productId: FieldRef<"PackageItem", 'String'>
+    readonly quantity: FieldRef<"PackageItem", 'Decimal'>
+    readonly createdAt: FieldRef<"PackageItem", 'DateTime'>
+    readonly updatedAt: FieldRef<"PackageItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PackageItem findUnique
+   */
+  export type PackageItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PackageItem to fetch.
+     */
+    where: PackageItemWhereUniqueInput
+  }
+
+  /**
+   * PackageItem findUniqueOrThrow
+   */
+  export type PackageItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PackageItem to fetch.
+     */
+    where: PackageItemWhereUniqueInput
+  }
+
+  /**
+   * PackageItem findFirst
+   */
+  export type PackageItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PackageItem to fetch.
+     */
+    where?: PackageItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackageItems to fetch.
+     */
+    orderBy?: PackageItemOrderByWithRelationInput | PackageItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PackageItems.
+     */
+    cursor?: PackageItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackageItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackageItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackageItems.
+     */
+    distinct?: PackageItemScalarFieldEnum | PackageItemScalarFieldEnum[]
+  }
+
+  /**
+   * PackageItem findFirstOrThrow
+   */
+  export type PackageItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PackageItem to fetch.
+     */
+    where?: PackageItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackageItems to fetch.
+     */
+    orderBy?: PackageItemOrderByWithRelationInput | PackageItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PackageItems.
+     */
+    cursor?: PackageItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackageItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackageItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackageItems.
+     */
+    distinct?: PackageItemScalarFieldEnum | PackageItemScalarFieldEnum[]
+  }
+
+  /**
+   * PackageItem findMany
+   */
+  export type PackageItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
+    /**
+     * Filter, which PackageItems to fetch.
+     */
+    where?: PackageItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackageItems to fetch.
+     */
+    orderBy?: PackageItemOrderByWithRelationInput | PackageItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PackageItems.
+     */
+    cursor?: PackageItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackageItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackageItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackageItems.
+     */
+    distinct?: PackageItemScalarFieldEnum | PackageItemScalarFieldEnum[]
+  }
+
+  /**
+   * PackageItem create
+   */
+  export type PackageItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PackageItem.
+     */
+    data: XOR<PackageItemCreateInput, PackageItemUncheckedCreateInput>
+  }
+
+  /**
+   * PackageItem createMany
+   */
+  export type PackageItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PackageItems.
+     */
+    data: PackageItemCreateManyInput | PackageItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PackageItem createManyAndReturn
+   */
+  export type PackageItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many PackageItems.
+     */
+    data: PackageItemCreateManyInput | PackageItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PackageItem update
+   */
+  export type PackageItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PackageItem.
+     */
+    data: XOR<PackageItemUpdateInput, PackageItemUncheckedUpdateInput>
+    /**
+     * Choose, which PackageItem to update.
+     */
+    where: PackageItemWhereUniqueInput
+  }
+
+  /**
+   * PackageItem updateMany
+   */
+  export type PackageItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PackageItems.
+     */
+    data: XOR<PackageItemUpdateManyMutationInput, PackageItemUncheckedUpdateManyInput>
+    /**
+     * Filter which PackageItems to update
+     */
+    where?: PackageItemWhereInput
+    /**
+     * Limit how many PackageItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PackageItem updateManyAndReturn
+   */
+  export type PackageItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * The data used to update PackageItems.
+     */
+    data: XOR<PackageItemUpdateManyMutationInput, PackageItemUncheckedUpdateManyInput>
+    /**
+     * Filter which PackageItems to update
+     */
+    where?: PackageItemWhereInput
+    /**
+     * Limit how many PackageItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PackageItem upsert
+   */
+  export type PackageItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PackageItem to update in case it exists.
+     */
+    where: PackageItemWhereUniqueInput
+    /**
+     * In case the PackageItem found by the `where` argument doesn't exist, create a new PackageItem with this data.
+     */
+    create: XOR<PackageItemCreateInput, PackageItemUncheckedCreateInput>
+    /**
+     * In case the PackageItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PackageItemUpdateInput, PackageItemUncheckedUpdateInput>
+  }
+
+  /**
+   * PackageItem delete
+   */
+  export type PackageItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
+    /**
+     * Filter which PackageItem to delete.
+     */
+    where: PackageItemWhereUniqueInput
+  }
+
+  /**
+   * PackageItem deleteMany
+   */
+  export type PackageItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PackageItems to delete
+     */
+    where?: PackageItemWhereInput
+    /**
+     * Limit how many PackageItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PackageItem without action
+   */
+  export type PackageItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackageItem
+     */
+    select?: PackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackageItem
+     */
+    omit?: PackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackageItemInclude<ExtArgs> | null
   }
 
 
@@ -33484,6 +38847,7 @@ export namespace Prisma {
     items?: boolean | SalesOrder$itemsArgs<ExtArgs>
     reservations?: boolean | SalesOrder$reservationsArgs<ExtArgs>
     pickingTask?: boolean | SalesOrder$pickingTaskArgs<ExtArgs>
+    packingTask?: boolean | SalesOrder$packingTaskArgs<ExtArgs>
     _count?: boolean | SalesOrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["salesOrder"]>
 
@@ -33537,6 +38901,7 @@ export namespace Prisma {
     items?: boolean | SalesOrder$itemsArgs<ExtArgs>
     reservations?: boolean | SalesOrder$reservationsArgs<ExtArgs>
     pickingTask?: boolean | SalesOrder$pickingTaskArgs<ExtArgs>
+    packingTask?: boolean | SalesOrder$packingTaskArgs<ExtArgs>
     _count?: boolean | SalesOrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SalesOrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -33556,6 +38921,7 @@ export namespace Prisma {
       items: Prisma.$SalesOrderItemPayload<ExtArgs>[]
       reservations: Prisma.$StockReservationPayload<ExtArgs>[]
       pickingTask: Prisma.$PickingTaskPayload<ExtArgs> | null
+      packingTask: Prisma.$PackingTaskPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -33967,6 +39333,7 @@ export namespace Prisma {
     items<T extends SalesOrder$itemsArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrder$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesOrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reservations<T extends SalesOrder$reservationsArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrder$reservationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockReservationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pickingTask<T extends SalesOrder$pickingTaskArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrder$pickingTaskArgs<ExtArgs>>): Prisma__PickingTaskClient<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    packingTask<T extends SalesOrder$packingTaskArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrder$packingTaskArgs<ExtArgs>>): Prisma__PackingTaskClient<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -34474,6 +39841,25 @@ export namespace Prisma {
   }
 
   /**
+   * SalesOrder.packingTask
+   */
+  export type SalesOrder$packingTaskArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTask
+     */
+    select?: PackingTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTask
+     */
+    omit?: PackingTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskInclude<ExtArgs> | null
+    where?: PackingTaskWhereInput
+  }
+
+  /**
    * SalesOrder without action
    */
   export type SalesOrderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -34738,6 +40124,7 @@ export namespace Prisma {
     product?: boolean | ProductDefaultArgs<ExtArgs>
     reservations?: boolean | SalesOrderItem$reservationsArgs<ExtArgs>
     pickingTaskItems?: boolean | SalesOrderItem$pickingTaskItemsArgs<ExtArgs>
+    packingTaskItems?: boolean | SalesOrderItem$packingTaskItemsArgs<ExtArgs>
     _count?: boolean | SalesOrderItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["salesOrderItem"]>
 
@@ -34787,6 +40174,7 @@ export namespace Prisma {
     product?: boolean | ProductDefaultArgs<ExtArgs>
     reservations?: boolean | SalesOrderItem$reservationsArgs<ExtArgs>
     pickingTaskItems?: boolean | SalesOrderItem$pickingTaskItemsArgs<ExtArgs>
+    packingTaskItems?: boolean | SalesOrderItem$packingTaskItemsArgs<ExtArgs>
     _count?: boolean | SalesOrderItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SalesOrderItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -34805,6 +40193,7 @@ export namespace Prisma {
       product: Prisma.$ProductPayload<ExtArgs>
       reservations: Prisma.$StockReservationPayload<ExtArgs>[]
       pickingTaskItems: Prisma.$PickingTaskItemPayload<ExtArgs>[]
+      packingTaskItems: Prisma.$PackingTaskItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -35214,6 +40603,7 @@ export namespace Prisma {
     product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     reservations<T extends SalesOrderItem$reservationsArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrderItem$reservationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockReservationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pickingTaskItems<T extends SalesOrderItem$pickingTaskItemsArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrderItem$pickingTaskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    packingTaskItems<T extends SalesOrderItem$packingTaskItemsArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrderItem$packingTaskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingTaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -35698,6 +41088,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PickingTaskItemScalarFieldEnum | PickingTaskItemScalarFieldEnum[]
+  }
+
+  /**
+   * SalesOrderItem.packingTaskItems
+   */
+  export type SalesOrderItem$packingTaskItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingTaskItem
+     */
+    select?: PackingTaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingTaskItem
+     */
+    omit?: PackingTaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingTaskItemInclude<ExtArgs> | null
+    where?: PackingTaskItemWhereInput
+    orderBy?: PackingTaskItemOrderByWithRelationInput | PackingTaskItemOrderByWithRelationInput[]
+    cursor?: PackingTaskItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackingTaskItemScalarFieldEnum | PackingTaskItemScalarFieldEnum[]
   }
 
   /**
@@ -37095,6 +42509,62 @@ export namespace Prisma {
   export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
 
 
+  export const PackingTaskScalarFieldEnum: {
+    id: 'id',
+    packingNumber: 'packingNumber',
+    salesOrderId: 'salesOrderId',
+    warehouseId: 'warehouseId',
+    packedById: 'packedById',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PackingTaskScalarFieldEnum = (typeof PackingTaskScalarFieldEnum)[keyof typeof PackingTaskScalarFieldEnum]
+
+
+  export const PackingTaskItemScalarFieldEnum: {
+    id: 'id',
+    packingTaskId: 'packingTaskId',
+    salesOrderItemId: 'salesOrderItemId',
+    productId: 'productId',
+    requiredQuantity: 'requiredQuantity',
+    packedQuantity: 'packedQuantity',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PackingTaskItemScalarFieldEnum = (typeof PackingTaskItemScalarFieldEnum)[keyof typeof PackingTaskItemScalarFieldEnum]
+
+
+  export const PackageScalarFieldEnum: {
+    id: 'id',
+    packingTaskId: 'packingTaskId',
+    packageNumber: 'packageNumber',
+    status: 'status',
+    weight: 'weight',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PackageScalarFieldEnum = (typeof PackageScalarFieldEnum)[keyof typeof PackageScalarFieldEnum]
+
+
+  export const PackageItemScalarFieldEnum: {
+    id: 'id',
+    packageId: 'packageId',
+    packingTaskItemId: 'packingTaskItemId',
+    productId: 'productId',
+    quantity: 'quantity',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PackageItemScalarFieldEnum = (typeof PackageItemScalarFieldEnum)[keyof typeof PackageItemScalarFieldEnum]
+
+
   export const ZoneScalarFieldEnum: {
     id: 'id',
     warehouseId: 'warehouseId',
@@ -37522,6 +42992,48 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'PackingStatus'
+   */
+  export type EnumPackingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PackingStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PackingStatus[]'
+   */
+  export type ListEnumPackingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PackingStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PackingItemStatus'
+   */
+  export type EnumPackingItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PackingItemStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PackingItemStatus[]'
+   */
+  export type ListEnumPackingItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PackingItemStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PackageStatus'
+   */
+  export type EnumPackageStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PackageStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PackageStatus[]'
+   */
+  export type ListEnumPackageStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PackageStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -37678,6 +43190,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderListRelationFilter
     assignedPickingTasks?: PickingTaskListRelationFilter
     pickingAllocations?: PickingAllocationListRelationFilter
+    packedTasks?: PackingTaskListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -37705,6 +43218,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderOrderByRelationAggregateInput
     assignedPickingTasks?: PickingTaskOrderByRelationAggregateInput
     pickingAllocations?: PickingAllocationOrderByRelationAggregateInput
+    packedTasks?: PackingTaskOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -37735,6 +43249,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderListRelationFilter
     assignedPickingTasks?: PickingTaskListRelationFilter
     pickingAllocations?: PickingAllocationListRelationFilter
+    packedTasks?: PackingTaskListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -38357,6 +43872,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderListRelationFilter
     stockReservations?: StockReservationListRelationFilter
     pickingTasks?: PickingTaskListRelationFilter
+    packingTasks?: PackingTaskListRelationFilter
   }
 
   export type WarehouseOrderByWithRelationInput = {
@@ -38381,6 +43897,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderOrderByRelationAggregateInput
     stockReservations?: StockReservationOrderByRelationAggregateInput
     pickingTasks?: PickingTaskOrderByRelationAggregateInput
+    packingTasks?: PackingTaskOrderByRelationAggregateInput
   }
 
   export type WarehouseWhereUniqueInput = Prisma.AtLeast<{
@@ -38408,6 +43925,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderListRelationFilter
     stockReservations?: StockReservationListRelationFilter
     pickingTasks?: PickingTaskListRelationFilter
+    packingTasks?: PackingTaskListRelationFilter
   }, "id" | "code">
 
   export type WarehouseOrderByWithAggregationInput = {
@@ -38621,6 +44139,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemListRelationFilter
     stockReservations?: StockReservationListRelationFilter
     pickingTaskItems?: PickingTaskItemListRelationFilter
+    packingTaskItems?: PackingTaskItemListRelationFilter
+    packageItems?: PackageItemListRelationFilter
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -38649,6 +44169,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemOrderByRelationAggregateInput
     stockReservations?: StockReservationOrderByRelationAggregateInput
     pickingTaskItems?: PickingTaskItemOrderByRelationAggregateInput
+    packingTaskItems?: PackingTaskItemOrderByRelationAggregateInput
+    packageItems?: PackageItemOrderByRelationAggregateInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -38680,6 +44202,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemListRelationFilter
     stockReservations?: StockReservationListRelationFilter
     pickingTaskItems?: PickingTaskItemListRelationFilter
+    packingTaskItems?: PackingTaskItemListRelationFilter
+    packageItems?: PackageItemListRelationFilter
   }, "id" | "sku" | "slug">
 
   export type ProductOrderByWithAggregationInput = {
@@ -38720,6 +44244,323 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Product"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
+  }
+
+  export type PackingTaskWhereInput = {
+    AND?: PackingTaskWhereInput | PackingTaskWhereInput[]
+    OR?: PackingTaskWhereInput[]
+    NOT?: PackingTaskWhereInput | PackingTaskWhereInput[]
+    id?: StringFilter<"PackingTask"> | string
+    packingNumber?: StringFilter<"PackingTask"> | string
+    salesOrderId?: StringFilter<"PackingTask"> | string
+    warehouseId?: StringFilter<"PackingTask"> | string
+    packedById?: StringNullableFilter<"PackingTask"> | string | null
+    status?: EnumPackingStatusFilter<"PackingTask"> | $Enums.PackingStatus
+    createdAt?: DateTimeFilter<"PackingTask"> | Date | string
+    updatedAt?: DateTimeFilter<"PackingTask"> | Date | string
+    salesOrder?: XOR<SalesOrderScalarRelationFilter, SalesOrderWhereInput>
+    warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
+    packedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    items?: PackingTaskItemListRelationFilter
+    packages?: PackageListRelationFilter
+  }
+
+  export type PackingTaskOrderByWithRelationInput = {
+    id?: SortOrder
+    packingNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    packedById?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    salesOrder?: SalesOrderOrderByWithRelationInput
+    warehouse?: WarehouseOrderByWithRelationInput
+    packedBy?: UserOrderByWithRelationInput
+    items?: PackingTaskItemOrderByRelationAggregateInput
+    packages?: PackageOrderByRelationAggregateInput
+  }
+
+  export type PackingTaskWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    packingNumber?: string
+    salesOrderId?: string
+    AND?: PackingTaskWhereInput | PackingTaskWhereInput[]
+    OR?: PackingTaskWhereInput[]
+    NOT?: PackingTaskWhereInput | PackingTaskWhereInput[]
+    warehouseId?: StringFilter<"PackingTask"> | string
+    packedById?: StringNullableFilter<"PackingTask"> | string | null
+    status?: EnumPackingStatusFilter<"PackingTask"> | $Enums.PackingStatus
+    createdAt?: DateTimeFilter<"PackingTask"> | Date | string
+    updatedAt?: DateTimeFilter<"PackingTask"> | Date | string
+    salesOrder?: XOR<SalesOrderScalarRelationFilter, SalesOrderWhereInput>
+    warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
+    packedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    items?: PackingTaskItemListRelationFilter
+    packages?: PackageListRelationFilter
+  }, "id" | "packingNumber" | "salesOrderId">
+
+  export type PackingTaskOrderByWithAggregationInput = {
+    id?: SortOrder
+    packingNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    packedById?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PackingTaskCountOrderByAggregateInput
+    _max?: PackingTaskMaxOrderByAggregateInput
+    _min?: PackingTaskMinOrderByAggregateInput
+  }
+
+  export type PackingTaskScalarWhereWithAggregatesInput = {
+    AND?: PackingTaskScalarWhereWithAggregatesInput | PackingTaskScalarWhereWithAggregatesInput[]
+    OR?: PackingTaskScalarWhereWithAggregatesInput[]
+    NOT?: PackingTaskScalarWhereWithAggregatesInput | PackingTaskScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PackingTask"> | string
+    packingNumber?: StringWithAggregatesFilter<"PackingTask"> | string
+    salesOrderId?: StringWithAggregatesFilter<"PackingTask"> | string
+    warehouseId?: StringWithAggregatesFilter<"PackingTask"> | string
+    packedById?: StringNullableWithAggregatesFilter<"PackingTask"> | string | null
+    status?: EnumPackingStatusWithAggregatesFilter<"PackingTask"> | $Enums.PackingStatus
+    createdAt?: DateTimeWithAggregatesFilter<"PackingTask"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PackingTask"> | Date | string
+  }
+
+  export type PackingTaskItemWhereInput = {
+    AND?: PackingTaskItemWhereInput | PackingTaskItemWhereInput[]
+    OR?: PackingTaskItemWhereInput[]
+    NOT?: PackingTaskItemWhereInput | PackingTaskItemWhereInput[]
+    id?: StringFilter<"PackingTaskItem"> | string
+    packingTaskId?: StringFilter<"PackingTaskItem"> | string
+    salesOrderItemId?: StringFilter<"PackingTaskItem"> | string
+    productId?: StringFilter<"PackingTaskItem"> | string
+    requiredQuantity?: DecimalFilter<"PackingTaskItem"> | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFilter<"PackingTaskItem"> | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFilter<"PackingTaskItem"> | $Enums.PackingItemStatus
+    createdAt?: DateTimeFilter<"PackingTaskItem"> | Date | string
+    updatedAt?: DateTimeFilter<"PackingTaskItem"> | Date | string
+    packingTask?: XOR<PackingTaskScalarRelationFilter, PackingTaskWhereInput>
+    salesOrderItem?: XOR<SalesOrderItemScalarRelationFilter, SalesOrderItemWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    packageItems?: PackageItemListRelationFilter
+  }
+
+  export type PackingTaskItemOrderByWithRelationInput = {
+    id?: SortOrder
+    packingTaskId?: SortOrder
+    salesOrderItemId?: SortOrder
+    productId?: SortOrder
+    requiredQuantity?: SortOrder
+    packedQuantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    packingTask?: PackingTaskOrderByWithRelationInput
+    salesOrderItem?: SalesOrderItemOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
+    packageItems?: PackageItemOrderByRelationAggregateInput
+  }
+
+  export type PackingTaskItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    packingTaskId_salesOrderItemId?: PackingTaskItemPackingTaskIdSalesOrderItemIdCompoundUniqueInput
+    AND?: PackingTaskItemWhereInput | PackingTaskItemWhereInput[]
+    OR?: PackingTaskItemWhereInput[]
+    NOT?: PackingTaskItemWhereInput | PackingTaskItemWhereInput[]
+    packingTaskId?: StringFilter<"PackingTaskItem"> | string
+    salesOrderItemId?: StringFilter<"PackingTaskItem"> | string
+    productId?: StringFilter<"PackingTaskItem"> | string
+    requiredQuantity?: DecimalFilter<"PackingTaskItem"> | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFilter<"PackingTaskItem"> | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFilter<"PackingTaskItem"> | $Enums.PackingItemStatus
+    createdAt?: DateTimeFilter<"PackingTaskItem"> | Date | string
+    updatedAt?: DateTimeFilter<"PackingTaskItem"> | Date | string
+    packingTask?: XOR<PackingTaskScalarRelationFilter, PackingTaskWhereInput>
+    salesOrderItem?: XOR<SalesOrderItemScalarRelationFilter, SalesOrderItemWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    packageItems?: PackageItemListRelationFilter
+  }, "id" | "packingTaskId_salesOrderItemId">
+
+  export type PackingTaskItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    packingTaskId?: SortOrder
+    salesOrderItemId?: SortOrder
+    productId?: SortOrder
+    requiredQuantity?: SortOrder
+    packedQuantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PackingTaskItemCountOrderByAggregateInput
+    _avg?: PackingTaskItemAvgOrderByAggregateInput
+    _max?: PackingTaskItemMaxOrderByAggregateInput
+    _min?: PackingTaskItemMinOrderByAggregateInput
+    _sum?: PackingTaskItemSumOrderByAggregateInput
+  }
+
+  export type PackingTaskItemScalarWhereWithAggregatesInput = {
+    AND?: PackingTaskItemScalarWhereWithAggregatesInput | PackingTaskItemScalarWhereWithAggregatesInput[]
+    OR?: PackingTaskItemScalarWhereWithAggregatesInput[]
+    NOT?: PackingTaskItemScalarWhereWithAggregatesInput | PackingTaskItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PackingTaskItem"> | string
+    packingTaskId?: StringWithAggregatesFilter<"PackingTaskItem"> | string
+    salesOrderItemId?: StringWithAggregatesFilter<"PackingTaskItem"> | string
+    productId?: StringWithAggregatesFilter<"PackingTaskItem"> | string
+    requiredQuantity?: DecimalWithAggregatesFilter<"PackingTaskItem"> | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalWithAggregatesFilter<"PackingTaskItem"> | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusWithAggregatesFilter<"PackingTaskItem"> | $Enums.PackingItemStatus
+    createdAt?: DateTimeWithAggregatesFilter<"PackingTaskItem"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PackingTaskItem"> | Date | string
+  }
+
+  export type PackageWhereInput = {
+    AND?: PackageWhereInput | PackageWhereInput[]
+    OR?: PackageWhereInput[]
+    NOT?: PackageWhereInput | PackageWhereInput[]
+    id?: StringFilter<"Package"> | string
+    packingTaskId?: StringFilter<"Package"> | string
+    packageNumber?: StringFilter<"Package"> | string
+    status?: EnumPackageStatusFilter<"Package"> | $Enums.PackageStatus
+    weight?: DecimalNullableFilter<"Package"> | Decimal | DecimalJsLike | number | string | null
+    notes?: StringNullableFilter<"Package"> | string | null
+    createdAt?: DateTimeFilter<"Package"> | Date | string
+    updatedAt?: DateTimeFilter<"Package"> | Date | string
+    packingTask?: XOR<PackingTaskScalarRelationFilter, PackingTaskWhereInput>
+    items?: PackageItemListRelationFilter
+  }
+
+  export type PackageOrderByWithRelationInput = {
+    id?: SortOrder
+    packingTaskId?: SortOrder
+    packageNumber?: SortOrder
+    status?: SortOrder
+    weight?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    packingTask?: PackingTaskOrderByWithRelationInput
+    items?: PackageItemOrderByRelationAggregateInput
+  }
+
+  export type PackageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    packageNumber?: string
+    AND?: PackageWhereInput | PackageWhereInput[]
+    OR?: PackageWhereInput[]
+    NOT?: PackageWhereInput | PackageWhereInput[]
+    packingTaskId?: StringFilter<"Package"> | string
+    status?: EnumPackageStatusFilter<"Package"> | $Enums.PackageStatus
+    weight?: DecimalNullableFilter<"Package"> | Decimal | DecimalJsLike | number | string | null
+    notes?: StringNullableFilter<"Package"> | string | null
+    createdAt?: DateTimeFilter<"Package"> | Date | string
+    updatedAt?: DateTimeFilter<"Package"> | Date | string
+    packingTask?: XOR<PackingTaskScalarRelationFilter, PackingTaskWhereInput>
+    items?: PackageItemListRelationFilter
+  }, "id" | "packageNumber">
+
+  export type PackageOrderByWithAggregationInput = {
+    id?: SortOrder
+    packingTaskId?: SortOrder
+    packageNumber?: SortOrder
+    status?: SortOrder
+    weight?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PackageCountOrderByAggregateInput
+    _avg?: PackageAvgOrderByAggregateInput
+    _max?: PackageMaxOrderByAggregateInput
+    _min?: PackageMinOrderByAggregateInput
+    _sum?: PackageSumOrderByAggregateInput
+  }
+
+  export type PackageScalarWhereWithAggregatesInput = {
+    AND?: PackageScalarWhereWithAggregatesInput | PackageScalarWhereWithAggregatesInput[]
+    OR?: PackageScalarWhereWithAggregatesInput[]
+    NOT?: PackageScalarWhereWithAggregatesInput | PackageScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Package"> | string
+    packingTaskId?: StringWithAggregatesFilter<"Package"> | string
+    packageNumber?: StringWithAggregatesFilter<"Package"> | string
+    status?: EnumPackageStatusWithAggregatesFilter<"Package"> | $Enums.PackageStatus
+    weight?: DecimalNullableWithAggregatesFilter<"Package"> | Decimal | DecimalJsLike | number | string | null
+    notes?: StringNullableWithAggregatesFilter<"Package"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Package"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Package"> | Date | string
+  }
+
+  export type PackageItemWhereInput = {
+    AND?: PackageItemWhereInput | PackageItemWhereInput[]
+    OR?: PackageItemWhereInput[]
+    NOT?: PackageItemWhereInput | PackageItemWhereInput[]
+    id?: StringFilter<"PackageItem"> | string
+    packageId?: StringFilter<"PackageItem"> | string
+    packingTaskItemId?: StringFilter<"PackageItem"> | string
+    productId?: StringFilter<"PackageItem"> | string
+    quantity?: DecimalFilter<"PackageItem"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"PackageItem"> | Date | string
+    updatedAt?: DateTimeFilter<"PackageItem"> | Date | string
+    package?: XOR<PackageScalarRelationFilter, PackageWhereInput>
+    packingTaskItem?: XOR<PackingTaskItemScalarRelationFilter, PackingTaskItemWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }
+
+  export type PackageItemOrderByWithRelationInput = {
+    id?: SortOrder
+    packageId?: SortOrder
+    packingTaskItemId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    package?: PackageOrderByWithRelationInput
+    packingTaskItem?: PackingTaskItemOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
+  }
+
+  export type PackageItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PackageItemWhereInput | PackageItemWhereInput[]
+    OR?: PackageItemWhereInput[]
+    NOT?: PackageItemWhereInput | PackageItemWhereInput[]
+    packageId?: StringFilter<"PackageItem"> | string
+    packingTaskItemId?: StringFilter<"PackageItem"> | string
+    productId?: StringFilter<"PackageItem"> | string
+    quantity?: DecimalFilter<"PackageItem"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"PackageItem"> | Date | string
+    updatedAt?: DateTimeFilter<"PackageItem"> | Date | string
+    package?: XOR<PackageScalarRelationFilter, PackageWhereInput>
+    packingTaskItem?: XOR<PackingTaskItemScalarRelationFilter, PackingTaskItemWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }, "id">
+
+  export type PackageItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    packageId?: SortOrder
+    packingTaskItemId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PackageItemCountOrderByAggregateInput
+    _avg?: PackageItemAvgOrderByAggregateInput
+    _max?: PackageItemMaxOrderByAggregateInput
+    _min?: PackageItemMinOrderByAggregateInput
+    _sum?: PackageItemSumOrderByAggregateInput
+  }
+
+  export type PackageItemScalarWhereWithAggregatesInput = {
+    AND?: PackageItemScalarWhereWithAggregatesInput | PackageItemScalarWhereWithAggregatesInput[]
+    OR?: PackageItemScalarWhereWithAggregatesInput[]
+    NOT?: PackageItemScalarWhereWithAggregatesInput | PackageItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PackageItem"> | string
+    packageId?: StringWithAggregatesFilter<"PackageItem"> | string
+    packingTaskItemId?: StringWithAggregatesFilter<"PackageItem"> | string
+    productId?: StringWithAggregatesFilter<"PackageItem"> | string
+    quantity?: DecimalWithAggregatesFilter<"PackageItem"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeWithAggregatesFilter<"PackageItem"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PackageItem"> | Date | string
   }
 
   export type ZoneWhereInput = {
@@ -39787,6 +45628,7 @@ export namespace Prisma {
     items?: SalesOrderItemListRelationFilter
     reservations?: StockReservationListRelationFilter
     pickingTask?: XOR<PickingTaskNullableScalarRelationFilter, PickingTaskWhereInput> | null
+    packingTask?: XOR<PackingTaskNullableScalarRelationFilter, PackingTaskWhereInput> | null
   }
 
   export type SalesOrderOrderByWithRelationInput = {
@@ -39805,6 +45647,7 @@ export namespace Prisma {
     items?: SalesOrderItemOrderByRelationAggregateInput
     reservations?: StockReservationOrderByRelationAggregateInput
     pickingTask?: PickingTaskOrderByWithRelationInput
+    packingTask?: PackingTaskOrderByWithRelationInput
   }
 
   export type SalesOrderWhereUniqueInput = Prisma.AtLeast<{
@@ -39826,6 +45669,7 @@ export namespace Prisma {
     items?: SalesOrderItemListRelationFilter
     reservations?: StockReservationListRelationFilter
     pickingTask?: XOR<PickingTaskNullableScalarRelationFilter, PickingTaskWhereInput> | null
+    packingTask?: XOR<PackingTaskNullableScalarRelationFilter, PackingTaskWhereInput> | null
   }, "id" | "orderNumber">
 
   export type SalesOrderOrderByWithAggregationInput = {
@@ -39879,6 +45723,7 @@ export namespace Prisma {
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     reservations?: StockReservationListRelationFilter
     pickingTaskItems?: PickingTaskItemListRelationFilter
+    packingTaskItems?: PackingTaskItemListRelationFilter
   }
 
   export type SalesOrderItemOrderByWithRelationInput = {
@@ -39895,6 +45740,7 @@ export namespace Prisma {
     product?: ProductOrderByWithRelationInput
     reservations?: StockReservationOrderByRelationAggregateInput
     pickingTaskItems?: PickingTaskItemOrderByRelationAggregateInput
+    packingTaskItems?: PackingTaskItemOrderByRelationAggregateInput
   }
 
   export type SalesOrderItemWhereUniqueInput = Prisma.AtLeast<{
@@ -39915,6 +45761,7 @@ export namespace Prisma {
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     reservations?: StockReservationListRelationFilter
     pickingTaskItems?: PickingTaskItemListRelationFilter
+    packingTaskItems?: PackingTaskItemListRelationFilter
   }, "id" | "salesOrderId_productId">
 
   export type SalesOrderItemOrderByWithAggregationInput = {
@@ -40059,6 +45906,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -40085,6 +45933,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskUncheckedCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUpdateInput = {
@@ -40111,6 +45960,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -40137,6 +45987,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -40778,6 +46629,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateInput = {
@@ -40802,6 +46654,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUpdateInput = {
@@ -40826,6 +46679,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateInput = {
@@ -40850,6 +46704,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseCreateManyInput = {
@@ -41091,6 +46946,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -41117,6 +46974,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductUpdateInput = {
@@ -41143,6 +47002,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -41169,6 +47030,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -41216,6 +47079,320 @@ export namespace Prisma {
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingTaskCreateInput = {
+    id?: string
+    packingNumber: string
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutPackingTaskInput
+    warehouse: WarehouseCreateNestedOneWithoutPackingTasksInput
+    packedBy?: UserCreateNestedOneWithoutPackedTasksInput
+    items?: PackingTaskItemCreateNestedManyWithoutPackingTaskInput
+    packages?: PackageCreateNestedManyWithoutPackingTaskInput
+  }
+
+  export type PackingTaskUncheckedCreateInput = {
+    id?: string
+    packingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    packedById?: string | null
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: PackingTaskItemUncheckedCreateNestedManyWithoutPackingTaskInput
+    packages?: PackageUncheckedCreateNestedManyWithoutPackingTaskInput
+  }
+
+  export type PackingTaskUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutPackingTaskNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutPackingTasksNestedInput
+    packedBy?: UserUpdateOneWithoutPackedTasksNestedInput
+    items?: PackingTaskItemUpdateManyWithoutPackingTaskNestedInput
+    packages?: PackageUpdateManyWithoutPackingTaskNestedInput
+  }
+
+  export type PackingTaskUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    packedById?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: PackingTaskItemUncheckedUpdateManyWithoutPackingTaskNestedInput
+    packages?: PackageUncheckedUpdateManyWithoutPackingTaskNestedInput
+  }
+
+  export type PackingTaskCreateManyInput = {
+    id?: string
+    packingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    packedById?: string | null
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackingTaskUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingTaskUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    packedById?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingTaskItemCreateInput = {
+    id?: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    packingTask: PackingTaskCreateNestedOneWithoutItemsInput
+    salesOrderItem: SalesOrderItemCreateNestedOneWithoutPackingTaskItemsInput
+    product: ProductCreateNestedOneWithoutPackingTaskItemsInput
+    packageItems?: PackageItemCreateNestedManyWithoutPackingTaskItemInput
+  }
+
+  export type PackingTaskItemUncheckedCreateInput = {
+    id?: string
+    packingTaskId: string
+    salesOrderItemId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutPackingTaskItemInput
+  }
+
+  export type PackingTaskItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingTask?: PackingTaskUpdateOneRequiredWithoutItemsNestedInput
+    salesOrderItem?: SalesOrderItemUpdateOneRequiredWithoutPackingTaskItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutPackingTaskItemsNestedInput
+    packageItems?: PackageItemUpdateManyWithoutPackingTaskItemNestedInput
+  }
+
+  export type PackingTaskItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingTaskId?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packageItems?: PackageItemUncheckedUpdateManyWithoutPackingTaskItemNestedInput
+  }
+
+  export type PackingTaskItemCreateManyInput = {
+    id?: string
+    packingTaskId: string
+    salesOrderItemId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackingTaskItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingTaskItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingTaskId?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackageCreateInput = {
+    id?: string
+    packageNumber: string
+    status?: $Enums.PackageStatus
+    weight?: Decimal | DecimalJsLike | number | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    packingTask: PackingTaskCreateNestedOneWithoutPackagesInput
+    items?: PackageItemCreateNestedManyWithoutPackageInput
+  }
+
+  export type PackageUncheckedCreateInput = {
+    id?: string
+    packingTaskId: string
+    packageNumber: string
+    status?: $Enums.PackageStatus
+    weight?: Decimal | DecimalJsLike | number | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: PackageItemUncheckedCreateNestedManyWithoutPackageInput
+  }
+
+  export type PackageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackageStatusFieldUpdateOperationsInput | $Enums.PackageStatus
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingTask?: PackingTaskUpdateOneRequiredWithoutPackagesNestedInput
+    items?: PackageItemUpdateManyWithoutPackageNestedInput
+  }
+
+  export type PackageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingTaskId?: StringFieldUpdateOperationsInput | string
+    packageNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackageStatusFieldUpdateOperationsInput | $Enums.PackageStatus
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: PackageItemUncheckedUpdateManyWithoutPackageNestedInput
+  }
+
+  export type PackageCreateManyInput = {
+    id?: string
+    packingTaskId: string
+    packageNumber: string
+    status?: $Enums.PackageStatus
+    weight?: Decimal | DecimalJsLike | number | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackageStatusFieldUpdateOperationsInput | $Enums.PackageStatus
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingTaskId?: StringFieldUpdateOperationsInput | string
+    packageNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackageStatusFieldUpdateOperationsInput | $Enums.PackageStatus
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackageItemCreateInput = {
+    id?: string
+    quantity: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    package: PackageCreateNestedOneWithoutItemsInput
+    packingTaskItem: PackingTaskItemCreateNestedOneWithoutPackageItemsInput
+    product: ProductCreateNestedOneWithoutPackageItemsInput
+  }
+
+  export type PackageItemUncheckedCreateInput = {
+    id?: string
+    packageId: string
+    packingTaskItemId: string
+    productId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackageItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    package?: PackageUpdateOneRequiredWithoutItemsNestedInput
+    packingTaskItem?: PackingTaskItemUpdateOneRequiredWithoutPackageItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutPackageItemsNestedInput
+  }
+
+  export type PackageItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageId?: StringFieldUpdateOperationsInput | string
+    packingTaskItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackageItemCreateManyInput = {
+    id?: string
+    packageId: string
+    packingTaskItemId: string
+    productId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackageItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackageItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageId?: StringFieldUpdateOperationsInput | string
+    packingTaskItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -42336,6 +48513,7 @@ export namespace Prisma {
     items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
+    packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateInput = {
@@ -42352,6 +48530,7 @@ export namespace Prisma {
     items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUpdateInput = {
@@ -42368,6 +48547,7 @@ export namespace Prisma {
     items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateInput = {
@@ -42384,6 +48564,7 @@ export namespace Prisma {
     items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderCreateManyInput = {
@@ -42435,6 +48616,7 @@ export namespace Prisma {
     product: ProductCreateNestedOneWithoutSalesOrderItemsInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderItemInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutSalesOrderItemInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemUncheckedCreateInput = {
@@ -42449,6 +48631,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderItemInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemUpdateInput = {
@@ -42463,6 +48646,7 @@ export namespace Prisma {
     product?: ProductUpdateOneRequiredWithoutSalesOrderItemsNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderItemNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateInput = {
@@ -42477,6 +48661,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderItemNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemCreateManyInput = {
@@ -42723,6 +48908,12 @@ export namespace Prisma {
     none?: PickingAllocationWhereInput
   }
 
+  export type PackingTaskListRelationFilter = {
+    every?: PackingTaskWhereInput
+    some?: PackingTaskWhereInput
+    none?: PackingTaskWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -42761,6 +48952,10 @@ export namespace Prisma {
   }
 
   export type PickingAllocationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PackingTaskOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -43553,6 +49748,18 @@ export namespace Prisma {
     none?: PickingTaskItemWhereInput
   }
 
+  export type PackingTaskItemListRelationFilter = {
+    every?: PackingTaskItemWhereInput
+    some?: PackingTaskItemWhereInput
+    none?: PackingTaskItemWhereInput
+  }
+
+  export type PackageItemListRelationFilter = {
+    every?: PackageItemWhereInput
+    some?: PackageItemWhereInput
+    none?: PackageItemWhereInput
+  }
+
   export type PurchaseOrderItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -43566,6 +49773,14 @@ export namespace Prisma {
   }
 
   export type PickingTaskItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PackingTaskItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PackageItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -43628,6 +49843,282 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumProductStatusFilter<$PrismaModel>
     _max?: NestedEnumProductStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPackingStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PackingStatus | EnumPackingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PackingStatus[] | ListEnumPackingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PackingStatus[] | ListEnumPackingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPackingStatusFilter<$PrismaModel> | $Enums.PackingStatus
+  }
+
+  export type SalesOrderScalarRelationFilter = {
+    is?: SalesOrderWhereInput
+    isNot?: SalesOrderWhereInput
+  }
+
+  export type PackageListRelationFilter = {
+    every?: PackageWhereInput
+    some?: PackageWhereInput
+    none?: PackageWhereInput
+  }
+
+  export type PackageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PackingTaskCountOrderByAggregateInput = {
+    id?: SortOrder
+    packingNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    packedById?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PackingTaskMaxOrderByAggregateInput = {
+    id?: SortOrder
+    packingNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    packedById?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PackingTaskMinOrderByAggregateInput = {
+    id?: SortOrder
+    packingNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    packedById?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumPackingStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PackingStatus | EnumPackingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PackingStatus[] | ListEnumPackingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PackingStatus[] | ListEnumPackingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPackingStatusWithAggregatesFilter<$PrismaModel> | $Enums.PackingStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPackingStatusFilter<$PrismaModel>
+    _max?: NestedEnumPackingStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPackingItemStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PackingItemStatus | EnumPackingItemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PackingItemStatus[] | ListEnumPackingItemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PackingItemStatus[] | ListEnumPackingItemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPackingItemStatusFilter<$PrismaModel> | $Enums.PackingItemStatus
+  }
+
+  export type PackingTaskScalarRelationFilter = {
+    is?: PackingTaskWhereInput
+    isNot?: PackingTaskWhereInput
+  }
+
+  export type SalesOrderItemScalarRelationFilter = {
+    is?: SalesOrderItemWhereInput
+    isNot?: SalesOrderItemWhereInput
+  }
+
+  export type PackingTaskItemPackingTaskIdSalesOrderItemIdCompoundUniqueInput = {
+    packingTaskId: string
+    salesOrderItemId: string
+  }
+
+  export type PackingTaskItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    packingTaskId?: SortOrder
+    salesOrderItemId?: SortOrder
+    productId?: SortOrder
+    requiredQuantity?: SortOrder
+    packedQuantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PackingTaskItemAvgOrderByAggregateInput = {
+    requiredQuantity?: SortOrder
+    packedQuantity?: SortOrder
+  }
+
+  export type PackingTaskItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    packingTaskId?: SortOrder
+    salesOrderItemId?: SortOrder
+    productId?: SortOrder
+    requiredQuantity?: SortOrder
+    packedQuantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PackingTaskItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    packingTaskId?: SortOrder
+    salesOrderItemId?: SortOrder
+    productId?: SortOrder
+    requiredQuantity?: SortOrder
+    packedQuantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PackingTaskItemSumOrderByAggregateInput = {
+    requiredQuantity?: SortOrder
+    packedQuantity?: SortOrder
+  }
+
+  export type EnumPackingItemStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PackingItemStatus | EnumPackingItemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PackingItemStatus[] | ListEnumPackingItemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PackingItemStatus[] | ListEnumPackingItemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPackingItemStatusWithAggregatesFilter<$PrismaModel> | $Enums.PackingItemStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPackingItemStatusFilter<$PrismaModel>
+    _max?: NestedEnumPackingItemStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPackageStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PackageStatus | EnumPackageStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PackageStatus[] | ListEnumPackageStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PackageStatus[] | ListEnumPackageStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPackageStatusFilter<$PrismaModel> | $Enums.PackageStatus
+  }
+
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type PackageCountOrderByAggregateInput = {
+    id?: SortOrder
+    packingTaskId?: SortOrder
+    packageNumber?: SortOrder
+    status?: SortOrder
+    weight?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PackageAvgOrderByAggregateInput = {
+    weight?: SortOrder
+  }
+
+  export type PackageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    packingTaskId?: SortOrder
+    packageNumber?: SortOrder
+    status?: SortOrder
+    weight?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PackageMinOrderByAggregateInput = {
+    id?: SortOrder
+    packingTaskId?: SortOrder
+    packageNumber?: SortOrder
+    status?: SortOrder
+    weight?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PackageSumOrderByAggregateInput = {
+    weight?: SortOrder
+  }
+
+  export type EnumPackageStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PackageStatus | EnumPackageStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PackageStatus[] | ListEnumPackageStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PackageStatus[] | ListEnumPackageStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPackageStatusWithAggregatesFilter<$PrismaModel> | $Enums.PackageStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPackageStatusFilter<$PrismaModel>
+    _max?: NestedEnumPackageStatusFilter<$PrismaModel>
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type PackageScalarRelationFilter = {
+    is?: PackageWhereInput
+    isNot?: PackageWhereInput
+  }
+
+  export type PackingTaskItemScalarRelationFilter = {
+    is?: PackingTaskItemWhereInput
+    isNot?: PackingTaskItemWhereInput
+  }
+
+  export type PackageItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    packageId?: SortOrder
+    packingTaskItemId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PackageItemAvgOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
+  export type PackageItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    packageId?: SortOrder
+    packingTaskItemId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PackageItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    packageId?: SortOrder
+    packingTaskItemId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PackageItemSumOrderByAggregateInput = {
+    quantity?: SortOrder
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -43946,11 +50437,6 @@ export namespace Prisma {
     not?: NestedEnumPickingStatusFilter<$PrismaModel> | $Enums.PickingStatus
   }
 
-  export type SalesOrderScalarRelationFilter = {
-    is?: SalesOrderWhereInput
-    isNot?: SalesOrderWhereInput
-  }
-
   export type PickingTaskCountOrderByAggregateInput = {
     id?: SortOrder
     pickingNumber?: SortOrder
@@ -44004,11 +50490,6 @@ export namespace Prisma {
   export type PickingTaskScalarRelationFilter = {
     is?: PickingTaskWhereInput
     isNot?: PickingTaskWhereInput
-  }
-
-  export type SalesOrderItemScalarRelationFilter = {
-    is?: SalesOrderItemWhereInput
-    isNot?: SalesOrderItemWhereInput
   }
 
   export type PickingTaskItemPickingTaskIdSalesOrderItemIdCompoundUniqueInput = {
@@ -44411,6 +50892,11 @@ export namespace Prisma {
     isNot?: PickingTaskWhereInput | null
   }
 
+  export type PackingTaskNullableScalarRelationFilter = {
+    is?: PackingTaskWhereInput | null
+    isNot?: PackingTaskWhereInput | null
+  }
+
   export type SalesOrderCountOrderByAggregateInput = {
     id?: SortOrder
     orderNumber?: SortOrder
@@ -44660,6 +51146,13 @@ export namespace Prisma {
     connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
   }
 
+  export type PackingTaskCreateNestedManyWithoutPackedByInput = {
+    create?: XOR<PackingTaskCreateWithoutPackedByInput, PackingTaskUncheckedCreateWithoutPackedByInput> | PackingTaskCreateWithoutPackedByInput[] | PackingTaskUncheckedCreateWithoutPackedByInput[]
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutPackedByInput | PackingTaskCreateOrConnectWithoutPackedByInput[]
+    createMany?: PackingTaskCreateManyPackedByInputEnvelope
+    connect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -44728,6 +51221,13 @@ export namespace Prisma {
     connectOrCreate?: PickingAllocationCreateOrConnectWithoutPickedByInput | PickingAllocationCreateOrConnectWithoutPickedByInput[]
     createMany?: PickingAllocationCreateManyPickedByInputEnvelope
     connect?: PickingAllocationWhereUniqueInput | PickingAllocationWhereUniqueInput[]
+  }
+
+  export type PackingTaskUncheckedCreateNestedManyWithoutPackedByInput = {
+    create?: XOR<PackingTaskCreateWithoutPackedByInput, PackingTaskUncheckedCreateWithoutPackedByInput> | PackingTaskCreateWithoutPackedByInput[] | PackingTaskUncheckedCreateWithoutPackedByInput[]
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutPackedByInput | PackingTaskCreateOrConnectWithoutPackedByInput[]
+    createMany?: PackingTaskCreateManyPackedByInputEnvelope
+    connect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -44908,6 +51408,20 @@ export namespace Prisma {
     deleteMany?: PickingAllocationScalarWhereInput | PickingAllocationScalarWhereInput[]
   }
 
+  export type PackingTaskUpdateManyWithoutPackedByNestedInput = {
+    create?: XOR<PackingTaskCreateWithoutPackedByInput, PackingTaskUncheckedCreateWithoutPackedByInput> | PackingTaskCreateWithoutPackedByInput[] | PackingTaskUncheckedCreateWithoutPackedByInput[]
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutPackedByInput | PackingTaskCreateOrConnectWithoutPackedByInput[]
+    upsert?: PackingTaskUpsertWithWhereUniqueWithoutPackedByInput | PackingTaskUpsertWithWhereUniqueWithoutPackedByInput[]
+    createMany?: PackingTaskCreateManyPackedByInputEnvelope
+    set?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    disconnect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    delete?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    connect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    update?: PackingTaskUpdateWithWhereUniqueWithoutPackedByInput | PackingTaskUpdateWithWhereUniqueWithoutPackedByInput[]
+    updateMany?: PackingTaskUpdateManyWithWhereWithoutPackedByInput | PackingTaskUpdateManyWithWhereWithoutPackedByInput[]
+    deleteMany?: PackingTaskScalarWhereInput | PackingTaskScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -45046,6 +51560,20 @@ export namespace Prisma {
     update?: PickingAllocationUpdateWithWhereUniqueWithoutPickedByInput | PickingAllocationUpdateWithWhereUniqueWithoutPickedByInput[]
     updateMany?: PickingAllocationUpdateManyWithWhereWithoutPickedByInput | PickingAllocationUpdateManyWithWhereWithoutPickedByInput[]
     deleteMany?: PickingAllocationScalarWhereInput | PickingAllocationScalarWhereInput[]
+  }
+
+  export type PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput = {
+    create?: XOR<PackingTaskCreateWithoutPackedByInput, PackingTaskUncheckedCreateWithoutPackedByInput> | PackingTaskCreateWithoutPackedByInput[] | PackingTaskUncheckedCreateWithoutPackedByInput[]
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutPackedByInput | PackingTaskCreateOrConnectWithoutPackedByInput[]
+    upsert?: PackingTaskUpsertWithWhereUniqueWithoutPackedByInput | PackingTaskUpsertWithWhereUniqueWithoutPackedByInput[]
+    createMany?: PackingTaskCreateManyPackedByInputEnvelope
+    set?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    disconnect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    delete?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    connect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    update?: PackingTaskUpdateWithWhereUniqueWithoutPackedByInput | PackingTaskUpdateWithWhereUniqueWithoutPackedByInput[]
+    updateMany?: PackingTaskUpdateManyWithWhereWithoutPackedByInput | PackingTaskUpdateManyWithWhereWithoutPackedByInput[]
+    deleteMany?: PackingTaskScalarWhereInput | PackingTaskScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -45401,6 +51929,13 @@ export namespace Prisma {
     connect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
   }
 
+  export type PackingTaskCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<PackingTaskCreateWithoutWarehouseInput, PackingTaskUncheckedCreateWithoutWarehouseInput> | PackingTaskCreateWithoutWarehouseInput[] | PackingTaskUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutWarehouseInput | PackingTaskCreateOrConnectWithoutWarehouseInput[]
+    createMany?: PackingTaskCreateManyWarehouseInputEnvelope
+    connect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutWarehouseInput = {
     create?: XOR<UserCreateWithoutWarehouseInput, UserUncheckedCreateWithoutWarehouseInput> | UserCreateWithoutWarehouseInput[] | UserUncheckedCreateWithoutWarehouseInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWarehouseInput | UserCreateOrConnectWithoutWarehouseInput[]
@@ -45476,6 +52011,13 @@ export namespace Prisma {
     connectOrCreate?: PickingTaskCreateOrConnectWithoutWarehouseInput | PickingTaskCreateOrConnectWithoutWarehouseInput[]
     createMany?: PickingTaskCreateManyWarehouseInputEnvelope
     connect?: PickingTaskWhereUniqueInput | PickingTaskWhereUniqueInput[]
+  }
+
+  export type PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<PackingTaskCreateWithoutWarehouseInput, PackingTaskUncheckedCreateWithoutWarehouseInput> | PackingTaskCreateWithoutWarehouseInput[] | PackingTaskUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutWarehouseInput | PackingTaskCreateOrConnectWithoutWarehouseInput[]
+    createMany?: PackingTaskCreateManyWarehouseInputEnvelope
+    connect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
   }
 
   export type EnumWarehouseStatusFieldUpdateOperationsInput = {
@@ -45636,6 +52178,20 @@ export namespace Prisma {
     deleteMany?: PickingTaskScalarWhereInput | PickingTaskScalarWhereInput[]
   }
 
+  export type PackingTaskUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<PackingTaskCreateWithoutWarehouseInput, PackingTaskUncheckedCreateWithoutWarehouseInput> | PackingTaskCreateWithoutWarehouseInput[] | PackingTaskUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutWarehouseInput | PackingTaskCreateOrConnectWithoutWarehouseInput[]
+    upsert?: PackingTaskUpsertWithWhereUniqueWithoutWarehouseInput | PackingTaskUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: PackingTaskCreateManyWarehouseInputEnvelope
+    set?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    disconnect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    delete?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    connect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    update?: PackingTaskUpdateWithWhereUniqueWithoutWarehouseInput | PackingTaskUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: PackingTaskUpdateManyWithWhereWithoutWarehouseInput | PackingTaskUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: PackingTaskScalarWhereInput | PackingTaskScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutWarehouseNestedInput = {
     create?: XOR<UserCreateWithoutWarehouseInput, UserUncheckedCreateWithoutWarehouseInput> | UserCreateWithoutWarehouseInput[] | UserUncheckedCreateWithoutWarehouseInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWarehouseInput | UserCreateOrConnectWithoutWarehouseInput[]
@@ -45788,6 +52344,20 @@ export namespace Prisma {
     update?: PickingTaskUpdateWithWhereUniqueWithoutWarehouseInput | PickingTaskUpdateWithWhereUniqueWithoutWarehouseInput[]
     updateMany?: PickingTaskUpdateManyWithWhereWithoutWarehouseInput | PickingTaskUpdateManyWithWhereWithoutWarehouseInput[]
     deleteMany?: PickingTaskScalarWhereInput | PickingTaskScalarWhereInput[]
+  }
+
+  export type PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<PackingTaskCreateWithoutWarehouseInput, PackingTaskUncheckedCreateWithoutWarehouseInput> | PackingTaskCreateWithoutWarehouseInput[] | PackingTaskUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutWarehouseInput | PackingTaskCreateOrConnectWithoutWarehouseInput[]
+    upsert?: PackingTaskUpsertWithWhereUniqueWithoutWarehouseInput | PackingTaskUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: PackingTaskCreateManyWarehouseInputEnvelope
+    set?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    disconnect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    delete?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    connect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+    update?: PackingTaskUpdateWithWhereUniqueWithoutWarehouseInput | PackingTaskUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: PackingTaskUpdateManyWithWhereWithoutWarehouseInput | PackingTaskUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: PackingTaskScalarWhereInput | PackingTaskScalarWhereInput[]
   }
 
   export type ProductCreateNestedManyWithoutCategoryInput = {
@@ -45957,6 +52527,20 @@ export namespace Prisma {
     connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
   }
 
+  export type PackingTaskItemCreateNestedManyWithoutProductInput = {
+    create?: XOR<PackingTaskItemCreateWithoutProductInput, PackingTaskItemUncheckedCreateWithoutProductInput> | PackingTaskItemCreateWithoutProductInput[] | PackingTaskItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutProductInput | PackingTaskItemCreateOrConnectWithoutProductInput[]
+    createMany?: PackingTaskItemCreateManyProductInputEnvelope
+    connect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+  }
+
+  export type PackageItemCreateNestedManyWithoutProductInput = {
+    create?: XOR<PackageItemCreateWithoutProductInput, PackageItemUncheckedCreateWithoutProductInput> | PackageItemCreateWithoutProductInput[] | PackageItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: PackageItemCreateOrConnectWithoutProductInput | PackageItemCreateOrConnectWithoutProductInput[]
+    createMany?: PackageItemCreateManyProductInputEnvelope
+    connect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+  }
+
   export type InventoryStockUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<InventoryStockCreateWithoutProductInput, InventoryStockUncheckedCreateWithoutProductInput> | InventoryStockCreateWithoutProductInput[] | InventoryStockUncheckedCreateWithoutProductInput[]
     connectOrCreate?: InventoryStockCreateOrConnectWithoutProductInput | InventoryStockCreateOrConnectWithoutProductInput[]
@@ -46018,6 +52602,20 @@ export namespace Prisma {
     connectOrCreate?: PickingTaskItemCreateOrConnectWithoutProductInput | PickingTaskItemCreateOrConnectWithoutProductInput[]
     createMany?: PickingTaskItemCreateManyProductInputEnvelope
     connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+  }
+
+  export type PackingTaskItemUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<PackingTaskItemCreateWithoutProductInput, PackingTaskItemUncheckedCreateWithoutProductInput> | PackingTaskItemCreateWithoutProductInput[] | PackingTaskItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutProductInput | PackingTaskItemCreateOrConnectWithoutProductInput[]
+    createMany?: PackingTaskItemCreateManyProductInputEnvelope
+    connect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+  }
+
+  export type PackageItemUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<PackageItemCreateWithoutProductInput, PackageItemUncheckedCreateWithoutProductInput> | PackageItemCreateWithoutProductInput[] | PackageItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: PackageItemCreateOrConnectWithoutProductInput | PackageItemCreateOrConnectWithoutProductInput[]
+    createMany?: PackageItemCreateManyProductInputEnvelope
+    connect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
   }
 
   export type EnumProductStatusFieldUpdateOperationsInput = {
@@ -46168,6 +52766,34 @@ export namespace Prisma {
     deleteMany?: PickingTaskItemScalarWhereInput | PickingTaskItemScalarWhereInput[]
   }
 
+  export type PackingTaskItemUpdateManyWithoutProductNestedInput = {
+    create?: XOR<PackingTaskItemCreateWithoutProductInput, PackingTaskItemUncheckedCreateWithoutProductInput> | PackingTaskItemCreateWithoutProductInput[] | PackingTaskItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutProductInput | PackingTaskItemCreateOrConnectWithoutProductInput[]
+    upsert?: PackingTaskItemUpsertWithWhereUniqueWithoutProductInput | PackingTaskItemUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: PackingTaskItemCreateManyProductInputEnvelope
+    set?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    disconnect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    delete?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    connect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    update?: PackingTaskItemUpdateWithWhereUniqueWithoutProductInput | PackingTaskItemUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: PackingTaskItemUpdateManyWithWhereWithoutProductInput | PackingTaskItemUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: PackingTaskItemScalarWhereInput | PackingTaskItemScalarWhereInput[]
+  }
+
+  export type PackageItemUpdateManyWithoutProductNestedInput = {
+    create?: XOR<PackageItemCreateWithoutProductInput, PackageItemUncheckedCreateWithoutProductInput> | PackageItemCreateWithoutProductInput[] | PackageItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: PackageItemCreateOrConnectWithoutProductInput | PackageItemCreateOrConnectWithoutProductInput[]
+    upsert?: PackageItemUpsertWithWhereUniqueWithoutProductInput | PackageItemUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: PackageItemCreateManyProductInputEnvelope
+    set?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    disconnect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    delete?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    connect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    update?: PackageItemUpdateWithWhereUniqueWithoutProductInput | PackageItemUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: PackageItemUpdateManyWithWhereWithoutProductInput | PackageItemUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: PackageItemScalarWhereInput | PackageItemScalarWhereInput[]
+  }
+
   export type InventoryStockUncheckedUpdateManyWithoutProductNestedInput = {
     create?: XOR<InventoryStockCreateWithoutProductInput, InventoryStockUncheckedCreateWithoutProductInput> | InventoryStockCreateWithoutProductInput[] | InventoryStockUncheckedCreateWithoutProductInput[]
     connectOrCreate?: InventoryStockCreateOrConnectWithoutProductInput | InventoryStockCreateOrConnectWithoutProductInput[]
@@ -46292,6 +52918,364 @@ export namespace Prisma {
     update?: PickingTaskItemUpdateWithWhereUniqueWithoutProductInput | PickingTaskItemUpdateWithWhereUniqueWithoutProductInput[]
     updateMany?: PickingTaskItemUpdateManyWithWhereWithoutProductInput | PickingTaskItemUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: PickingTaskItemScalarWhereInput | PickingTaskItemScalarWhereInput[]
+  }
+
+  export type PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<PackingTaskItemCreateWithoutProductInput, PackingTaskItemUncheckedCreateWithoutProductInput> | PackingTaskItemCreateWithoutProductInput[] | PackingTaskItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutProductInput | PackingTaskItemCreateOrConnectWithoutProductInput[]
+    upsert?: PackingTaskItemUpsertWithWhereUniqueWithoutProductInput | PackingTaskItemUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: PackingTaskItemCreateManyProductInputEnvelope
+    set?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    disconnect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    delete?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    connect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    update?: PackingTaskItemUpdateWithWhereUniqueWithoutProductInput | PackingTaskItemUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: PackingTaskItemUpdateManyWithWhereWithoutProductInput | PackingTaskItemUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: PackingTaskItemScalarWhereInput | PackingTaskItemScalarWhereInput[]
+  }
+
+  export type PackageItemUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<PackageItemCreateWithoutProductInput, PackageItemUncheckedCreateWithoutProductInput> | PackageItemCreateWithoutProductInput[] | PackageItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: PackageItemCreateOrConnectWithoutProductInput | PackageItemCreateOrConnectWithoutProductInput[]
+    upsert?: PackageItemUpsertWithWhereUniqueWithoutProductInput | PackageItemUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: PackageItemCreateManyProductInputEnvelope
+    set?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    disconnect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    delete?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    connect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    update?: PackageItemUpdateWithWhereUniqueWithoutProductInput | PackageItemUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: PackageItemUpdateManyWithWhereWithoutProductInput | PackageItemUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: PackageItemScalarWhereInput | PackageItemScalarWhereInput[]
+  }
+
+  export type SalesOrderCreateNestedOneWithoutPackingTaskInput = {
+    create?: XOR<SalesOrderCreateWithoutPackingTaskInput, SalesOrderUncheckedCreateWithoutPackingTaskInput>
+    connectOrCreate?: SalesOrderCreateOrConnectWithoutPackingTaskInput
+    connect?: SalesOrderWhereUniqueInput
+  }
+
+  export type WarehouseCreateNestedOneWithoutPackingTasksInput = {
+    create?: XOR<WarehouseCreateWithoutPackingTasksInput, WarehouseUncheckedCreateWithoutPackingTasksInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutPackingTasksInput
+    connect?: WarehouseWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutPackedTasksInput = {
+    create?: XOR<UserCreateWithoutPackedTasksInput, UserUncheckedCreateWithoutPackedTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPackedTasksInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PackingTaskItemCreateNestedManyWithoutPackingTaskInput = {
+    create?: XOR<PackingTaskItemCreateWithoutPackingTaskInput, PackingTaskItemUncheckedCreateWithoutPackingTaskInput> | PackingTaskItemCreateWithoutPackingTaskInput[] | PackingTaskItemUncheckedCreateWithoutPackingTaskInput[]
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutPackingTaskInput | PackingTaskItemCreateOrConnectWithoutPackingTaskInput[]
+    createMany?: PackingTaskItemCreateManyPackingTaskInputEnvelope
+    connect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+  }
+
+  export type PackageCreateNestedManyWithoutPackingTaskInput = {
+    create?: XOR<PackageCreateWithoutPackingTaskInput, PackageUncheckedCreateWithoutPackingTaskInput> | PackageCreateWithoutPackingTaskInput[] | PackageUncheckedCreateWithoutPackingTaskInput[]
+    connectOrCreate?: PackageCreateOrConnectWithoutPackingTaskInput | PackageCreateOrConnectWithoutPackingTaskInput[]
+    createMany?: PackageCreateManyPackingTaskInputEnvelope
+    connect?: PackageWhereUniqueInput | PackageWhereUniqueInput[]
+  }
+
+  export type PackingTaskItemUncheckedCreateNestedManyWithoutPackingTaskInput = {
+    create?: XOR<PackingTaskItemCreateWithoutPackingTaskInput, PackingTaskItemUncheckedCreateWithoutPackingTaskInput> | PackingTaskItemCreateWithoutPackingTaskInput[] | PackingTaskItemUncheckedCreateWithoutPackingTaskInput[]
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutPackingTaskInput | PackingTaskItemCreateOrConnectWithoutPackingTaskInput[]
+    createMany?: PackingTaskItemCreateManyPackingTaskInputEnvelope
+    connect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+  }
+
+  export type PackageUncheckedCreateNestedManyWithoutPackingTaskInput = {
+    create?: XOR<PackageCreateWithoutPackingTaskInput, PackageUncheckedCreateWithoutPackingTaskInput> | PackageCreateWithoutPackingTaskInput[] | PackageUncheckedCreateWithoutPackingTaskInput[]
+    connectOrCreate?: PackageCreateOrConnectWithoutPackingTaskInput | PackageCreateOrConnectWithoutPackingTaskInput[]
+    createMany?: PackageCreateManyPackingTaskInputEnvelope
+    connect?: PackageWhereUniqueInput | PackageWhereUniqueInput[]
+  }
+
+  export type EnumPackingStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PackingStatus
+  }
+
+  export type SalesOrderUpdateOneRequiredWithoutPackingTaskNestedInput = {
+    create?: XOR<SalesOrderCreateWithoutPackingTaskInput, SalesOrderUncheckedCreateWithoutPackingTaskInput>
+    connectOrCreate?: SalesOrderCreateOrConnectWithoutPackingTaskInput
+    upsert?: SalesOrderUpsertWithoutPackingTaskInput
+    connect?: SalesOrderWhereUniqueInput
+    update?: XOR<XOR<SalesOrderUpdateToOneWithWhereWithoutPackingTaskInput, SalesOrderUpdateWithoutPackingTaskInput>, SalesOrderUncheckedUpdateWithoutPackingTaskInput>
+  }
+
+  export type WarehouseUpdateOneRequiredWithoutPackingTasksNestedInput = {
+    create?: XOR<WarehouseCreateWithoutPackingTasksInput, WarehouseUncheckedCreateWithoutPackingTasksInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutPackingTasksInput
+    upsert?: WarehouseUpsertWithoutPackingTasksInput
+    connect?: WarehouseWhereUniqueInput
+    update?: XOR<XOR<WarehouseUpdateToOneWithWhereWithoutPackingTasksInput, WarehouseUpdateWithoutPackingTasksInput>, WarehouseUncheckedUpdateWithoutPackingTasksInput>
+  }
+
+  export type UserUpdateOneWithoutPackedTasksNestedInput = {
+    create?: XOR<UserCreateWithoutPackedTasksInput, UserUncheckedCreateWithoutPackedTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPackedTasksInput
+    upsert?: UserUpsertWithoutPackedTasksInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPackedTasksInput, UserUpdateWithoutPackedTasksInput>, UserUncheckedUpdateWithoutPackedTasksInput>
+  }
+
+  export type PackingTaskItemUpdateManyWithoutPackingTaskNestedInput = {
+    create?: XOR<PackingTaskItemCreateWithoutPackingTaskInput, PackingTaskItemUncheckedCreateWithoutPackingTaskInput> | PackingTaskItemCreateWithoutPackingTaskInput[] | PackingTaskItemUncheckedCreateWithoutPackingTaskInput[]
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutPackingTaskInput | PackingTaskItemCreateOrConnectWithoutPackingTaskInput[]
+    upsert?: PackingTaskItemUpsertWithWhereUniqueWithoutPackingTaskInput | PackingTaskItemUpsertWithWhereUniqueWithoutPackingTaskInput[]
+    createMany?: PackingTaskItemCreateManyPackingTaskInputEnvelope
+    set?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    disconnect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    delete?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    connect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    update?: PackingTaskItemUpdateWithWhereUniqueWithoutPackingTaskInput | PackingTaskItemUpdateWithWhereUniqueWithoutPackingTaskInput[]
+    updateMany?: PackingTaskItemUpdateManyWithWhereWithoutPackingTaskInput | PackingTaskItemUpdateManyWithWhereWithoutPackingTaskInput[]
+    deleteMany?: PackingTaskItemScalarWhereInput | PackingTaskItemScalarWhereInput[]
+  }
+
+  export type PackageUpdateManyWithoutPackingTaskNestedInput = {
+    create?: XOR<PackageCreateWithoutPackingTaskInput, PackageUncheckedCreateWithoutPackingTaskInput> | PackageCreateWithoutPackingTaskInput[] | PackageUncheckedCreateWithoutPackingTaskInput[]
+    connectOrCreate?: PackageCreateOrConnectWithoutPackingTaskInput | PackageCreateOrConnectWithoutPackingTaskInput[]
+    upsert?: PackageUpsertWithWhereUniqueWithoutPackingTaskInput | PackageUpsertWithWhereUniqueWithoutPackingTaskInput[]
+    createMany?: PackageCreateManyPackingTaskInputEnvelope
+    set?: PackageWhereUniqueInput | PackageWhereUniqueInput[]
+    disconnect?: PackageWhereUniqueInput | PackageWhereUniqueInput[]
+    delete?: PackageWhereUniqueInput | PackageWhereUniqueInput[]
+    connect?: PackageWhereUniqueInput | PackageWhereUniqueInput[]
+    update?: PackageUpdateWithWhereUniqueWithoutPackingTaskInput | PackageUpdateWithWhereUniqueWithoutPackingTaskInput[]
+    updateMany?: PackageUpdateManyWithWhereWithoutPackingTaskInput | PackageUpdateManyWithWhereWithoutPackingTaskInput[]
+    deleteMany?: PackageScalarWhereInput | PackageScalarWhereInput[]
+  }
+
+  export type PackingTaskItemUncheckedUpdateManyWithoutPackingTaskNestedInput = {
+    create?: XOR<PackingTaskItemCreateWithoutPackingTaskInput, PackingTaskItemUncheckedCreateWithoutPackingTaskInput> | PackingTaskItemCreateWithoutPackingTaskInput[] | PackingTaskItemUncheckedCreateWithoutPackingTaskInput[]
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutPackingTaskInput | PackingTaskItemCreateOrConnectWithoutPackingTaskInput[]
+    upsert?: PackingTaskItemUpsertWithWhereUniqueWithoutPackingTaskInput | PackingTaskItemUpsertWithWhereUniqueWithoutPackingTaskInput[]
+    createMany?: PackingTaskItemCreateManyPackingTaskInputEnvelope
+    set?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    disconnect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    delete?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    connect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    update?: PackingTaskItemUpdateWithWhereUniqueWithoutPackingTaskInput | PackingTaskItemUpdateWithWhereUniqueWithoutPackingTaskInput[]
+    updateMany?: PackingTaskItemUpdateManyWithWhereWithoutPackingTaskInput | PackingTaskItemUpdateManyWithWhereWithoutPackingTaskInput[]
+    deleteMany?: PackingTaskItemScalarWhereInput | PackingTaskItemScalarWhereInput[]
+  }
+
+  export type PackageUncheckedUpdateManyWithoutPackingTaskNestedInput = {
+    create?: XOR<PackageCreateWithoutPackingTaskInput, PackageUncheckedCreateWithoutPackingTaskInput> | PackageCreateWithoutPackingTaskInput[] | PackageUncheckedCreateWithoutPackingTaskInput[]
+    connectOrCreate?: PackageCreateOrConnectWithoutPackingTaskInput | PackageCreateOrConnectWithoutPackingTaskInput[]
+    upsert?: PackageUpsertWithWhereUniqueWithoutPackingTaskInput | PackageUpsertWithWhereUniqueWithoutPackingTaskInput[]
+    createMany?: PackageCreateManyPackingTaskInputEnvelope
+    set?: PackageWhereUniqueInput | PackageWhereUniqueInput[]
+    disconnect?: PackageWhereUniqueInput | PackageWhereUniqueInput[]
+    delete?: PackageWhereUniqueInput | PackageWhereUniqueInput[]
+    connect?: PackageWhereUniqueInput | PackageWhereUniqueInput[]
+    update?: PackageUpdateWithWhereUniqueWithoutPackingTaskInput | PackageUpdateWithWhereUniqueWithoutPackingTaskInput[]
+    updateMany?: PackageUpdateManyWithWhereWithoutPackingTaskInput | PackageUpdateManyWithWhereWithoutPackingTaskInput[]
+    deleteMany?: PackageScalarWhereInput | PackageScalarWhereInput[]
+  }
+
+  export type PackingTaskCreateNestedOneWithoutItemsInput = {
+    create?: XOR<PackingTaskCreateWithoutItemsInput, PackingTaskUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutItemsInput
+    connect?: PackingTaskWhereUniqueInput
+  }
+
+  export type SalesOrderItemCreateNestedOneWithoutPackingTaskItemsInput = {
+    create?: XOR<SalesOrderItemCreateWithoutPackingTaskItemsInput, SalesOrderItemUncheckedCreateWithoutPackingTaskItemsInput>
+    connectOrCreate?: SalesOrderItemCreateOrConnectWithoutPackingTaskItemsInput
+    connect?: SalesOrderItemWhereUniqueInput
+  }
+
+  export type ProductCreateNestedOneWithoutPackingTaskItemsInput = {
+    create?: XOR<ProductCreateWithoutPackingTaskItemsInput, ProductUncheckedCreateWithoutPackingTaskItemsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutPackingTaskItemsInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type PackageItemCreateNestedManyWithoutPackingTaskItemInput = {
+    create?: XOR<PackageItemCreateWithoutPackingTaskItemInput, PackageItemUncheckedCreateWithoutPackingTaskItemInput> | PackageItemCreateWithoutPackingTaskItemInput[] | PackageItemUncheckedCreateWithoutPackingTaskItemInput[]
+    connectOrCreate?: PackageItemCreateOrConnectWithoutPackingTaskItemInput | PackageItemCreateOrConnectWithoutPackingTaskItemInput[]
+    createMany?: PackageItemCreateManyPackingTaskItemInputEnvelope
+    connect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+  }
+
+  export type PackageItemUncheckedCreateNestedManyWithoutPackingTaskItemInput = {
+    create?: XOR<PackageItemCreateWithoutPackingTaskItemInput, PackageItemUncheckedCreateWithoutPackingTaskItemInput> | PackageItemCreateWithoutPackingTaskItemInput[] | PackageItemUncheckedCreateWithoutPackingTaskItemInput[]
+    connectOrCreate?: PackageItemCreateOrConnectWithoutPackingTaskItemInput | PackageItemCreateOrConnectWithoutPackingTaskItemInput[]
+    createMany?: PackageItemCreateManyPackingTaskItemInputEnvelope
+    connect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+  }
+
+  export type EnumPackingItemStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PackingItemStatus
+  }
+
+  export type PackingTaskUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<PackingTaskCreateWithoutItemsInput, PackingTaskUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutItemsInput
+    upsert?: PackingTaskUpsertWithoutItemsInput
+    connect?: PackingTaskWhereUniqueInput
+    update?: XOR<XOR<PackingTaskUpdateToOneWithWhereWithoutItemsInput, PackingTaskUpdateWithoutItemsInput>, PackingTaskUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type SalesOrderItemUpdateOneRequiredWithoutPackingTaskItemsNestedInput = {
+    create?: XOR<SalesOrderItemCreateWithoutPackingTaskItemsInput, SalesOrderItemUncheckedCreateWithoutPackingTaskItemsInput>
+    connectOrCreate?: SalesOrderItemCreateOrConnectWithoutPackingTaskItemsInput
+    upsert?: SalesOrderItemUpsertWithoutPackingTaskItemsInput
+    connect?: SalesOrderItemWhereUniqueInput
+    update?: XOR<XOR<SalesOrderItemUpdateToOneWithWhereWithoutPackingTaskItemsInput, SalesOrderItemUpdateWithoutPackingTaskItemsInput>, SalesOrderItemUncheckedUpdateWithoutPackingTaskItemsInput>
+  }
+
+  export type ProductUpdateOneRequiredWithoutPackingTaskItemsNestedInput = {
+    create?: XOR<ProductCreateWithoutPackingTaskItemsInput, ProductUncheckedCreateWithoutPackingTaskItemsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutPackingTaskItemsInput
+    upsert?: ProductUpsertWithoutPackingTaskItemsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutPackingTaskItemsInput, ProductUpdateWithoutPackingTaskItemsInput>, ProductUncheckedUpdateWithoutPackingTaskItemsInput>
+  }
+
+  export type PackageItemUpdateManyWithoutPackingTaskItemNestedInput = {
+    create?: XOR<PackageItemCreateWithoutPackingTaskItemInput, PackageItemUncheckedCreateWithoutPackingTaskItemInput> | PackageItemCreateWithoutPackingTaskItemInput[] | PackageItemUncheckedCreateWithoutPackingTaskItemInput[]
+    connectOrCreate?: PackageItemCreateOrConnectWithoutPackingTaskItemInput | PackageItemCreateOrConnectWithoutPackingTaskItemInput[]
+    upsert?: PackageItemUpsertWithWhereUniqueWithoutPackingTaskItemInput | PackageItemUpsertWithWhereUniqueWithoutPackingTaskItemInput[]
+    createMany?: PackageItemCreateManyPackingTaskItemInputEnvelope
+    set?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    disconnect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    delete?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    connect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    update?: PackageItemUpdateWithWhereUniqueWithoutPackingTaskItemInput | PackageItemUpdateWithWhereUniqueWithoutPackingTaskItemInput[]
+    updateMany?: PackageItemUpdateManyWithWhereWithoutPackingTaskItemInput | PackageItemUpdateManyWithWhereWithoutPackingTaskItemInput[]
+    deleteMany?: PackageItemScalarWhereInput | PackageItemScalarWhereInput[]
+  }
+
+  export type PackageItemUncheckedUpdateManyWithoutPackingTaskItemNestedInput = {
+    create?: XOR<PackageItemCreateWithoutPackingTaskItemInput, PackageItemUncheckedCreateWithoutPackingTaskItemInput> | PackageItemCreateWithoutPackingTaskItemInput[] | PackageItemUncheckedCreateWithoutPackingTaskItemInput[]
+    connectOrCreate?: PackageItemCreateOrConnectWithoutPackingTaskItemInput | PackageItemCreateOrConnectWithoutPackingTaskItemInput[]
+    upsert?: PackageItemUpsertWithWhereUniqueWithoutPackingTaskItemInput | PackageItemUpsertWithWhereUniqueWithoutPackingTaskItemInput[]
+    createMany?: PackageItemCreateManyPackingTaskItemInputEnvelope
+    set?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    disconnect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    delete?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    connect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    update?: PackageItemUpdateWithWhereUniqueWithoutPackingTaskItemInput | PackageItemUpdateWithWhereUniqueWithoutPackingTaskItemInput[]
+    updateMany?: PackageItemUpdateManyWithWhereWithoutPackingTaskItemInput | PackageItemUpdateManyWithWhereWithoutPackingTaskItemInput[]
+    deleteMany?: PackageItemScalarWhereInput | PackageItemScalarWhereInput[]
+  }
+
+  export type PackingTaskCreateNestedOneWithoutPackagesInput = {
+    create?: XOR<PackingTaskCreateWithoutPackagesInput, PackingTaskUncheckedCreateWithoutPackagesInput>
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutPackagesInput
+    connect?: PackingTaskWhereUniqueInput
+  }
+
+  export type PackageItemCreateNestedManyWithoutPackageInput = {
+    create?: XOR<PackageItemCreateWithoutPackageInput, PackageItemUncheckedCreateWithoutPackageInput> | PackageItemCreateWithoutPackageInput[] | PackageItemUncheckedCreateWithoutPackageInput[]
+    connectOrCreate?: PackageItemCreateOrConnectWithoutPackageInput | PackageItemCreateOrConnectWithoutPackageInput[]
+    createMany?: PackageItemCreateManyPackageInputEnvelope
+    connect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+  }
+
+  export type PackageItemUncheckedCreateNestedManyWithoutPackageInput = {
+    create?: XOR<PackageItemCreateWithoutPackageInput, PackageItemUncheckedCreateWithoutPackageInput> | PackageItemCreateWithoutPackageInput[] | PackageItemUncheckedCreateWithoutPackageInput[]
+    connectOrCreate?: PackageItemCreateOrConnectWithoutPackageInput | PackageItemCreateOrConnectWithoutPackageInput[]
+    createMany?: PackageItemCreateManyPackageInputEnvelope
+    connect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+  }
+
+  export type EnumPackageStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PackageStatus
+  }
+
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type PackingTaskUpdateOneRequiredWithoutPackagesNestedInput = {
+    create?: XOR<PackingTaskCreateWithoutPackagesInput, PackingTaskUncheckedCreateWithoutPackagesInput>
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutPackagesInput
+    upsert?: PackingTaskUpsertWithoutPackagesInput
+    connect?: PackingTaskWhereUniqueInput
+    update?: XOR<XOR<PackingTaskUpdateToOneWithWhereWithoutPackagesInput, PackingTaskUpdateWithoutPackagesInput>, PackingTaskUncheckedUpdateWithoutPackagesInput>
+  }
+
+  export type PackageItemUpdateManyWithoutPackageNestedInput = {
+    create?: XOR<PackageItemCreateWithoutPackageInput, PackageItemUncheckedCreateWithoutPackageInput> | PackageItemCreateWithoutPackageInput[] | PackageItemUncheckedCreateWithoutPackageInput[]
+    connectOrCreate?: PackageItemCreateOrConnectWithoutPackageInput | PackageItemCreateOrConnectWithoutPackageInput[]
+    upsert?: PackageItemUpsertWithWhereUniqueWithoutPackageInput | PackageItemUpsertWithWhereUniqueWithoutPackageInput[]
+    createMany?: PackageItemCreateManyPackageInputEnvelope
+    set?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    disconnect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    delete?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    connect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    update?: PackageItemUpdateWithWhereUniqueWithoutPackageInput | PackageItemUpdateWithWhereUniqueWithoutPackageInput[]
+    updateMany?: PackageItemUpdateManyWithWhereWithoutPackageInput | PackageItemUpdateManyWithWhereWithoutPackageInput[]
+    deleteMany?: PackageItemScalarWhereInput | PackageItemScalarWhereInput[]
+  }
+
+  export type PackageItemUncheckedUpdateManyWithoutPackageNestedInput = {
+    create?: XOR<PackageItemCreateWithoutPackageInput, PackageItemUncheckedCreateWithoutPackageInput> | PackageItemCreateWithoutPackageInput[] | PackageItemUncheckedCreateWithoutPackageInput[]
+    connectOrCreate?: PackageItemCreateOrConnectWithoutPackageInput | PackageItemCreateOrConnectWithoutPackageInput[]
+    upsert?: PackageItemUpsertWithWhereUniqueWithoutPackageInput | PackageItemUpsertWithWhereUniqueWithoutPackageInput[]
+    createMany?: PackageItemCreateManyPackageInputEnvelope
+    set?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    disconnect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    delete?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    connect?: PackageItemWhereUniqueInput | PackageItemWhereUniqueInput[]
+    update?: PackageItemUpdateWithWhereUniqueWithoutPackageInput | PackageItemUpdateWithWhereUniqueWithoutPackageInput[]
+    updateMany?: PackageItemUpdateManyWithWhereWithoutPackageInput | PackageItemUpdateManyWithWhereWithoutPackageInput[]
+    deleteMany?: PackageItemScalarWhereInput | PackageItemScalarWhereInput[]
+  }
+
+  export type PackageCreateNestedOneWithoutItemsInput = {
+    create?: XOR<PackageCreateWithoutItemsInput, PackageUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: PackageCreateOrConnectWithoutItemsInput
+    connect?: PackageWhereUniqueInput
+  }
+
+  export type PackingTaskItemCreateNestedOneWithoutPackageItemsInput = {
+    create?: XOR<PackingTaskItemCreateWithoutPackageItemsInput, PackingTaskItemUncheckedCreateWithoutPackageItemsInput>
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutPackageItemsInput
+    connect?: PackingTaskItemWhereUniqueInput
+  }
+
+  export type ProductCreateNestedOneWithoutPackageItemsInput = {
+    create?: XOR<ProductCreateWithoutPackageItemsInput, ProductUncheckedCreateWithoutPackageItemsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutPackageItemsInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type PackageUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<PackageCreateWithoutItemsInput, PackageUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: PackageCreateOrConnectWithoutItemsInput
+    upsert?: PackageUpsertWithoutItemsInput
+    connect?: PackageWhereUniqueInput
+    update?: XOR<XOR<PackageUpdateToOneWithWhereWithoutItemsInput, PackageUpdateWithoutItemsInput>, PackageUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type PackingTaskItemUpdateOneRequiredWithoutPackageItemsNestedInput = {
+    create?: XOR<PackingTaskItemCreateWithoutPackageItemsInput, PackingTaskItemUncheckedCreateWithoutPackageItemsInput>
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutPackageItemsInput
+    upsert?: PackingTaskItemUpsertWithoutPackageItemsInput
+    connect?: PackingTaskItemWhereUniqueInput
+    update?: XOR<XOR<PackingTaskItemUpdateToOneWithWhereWithoutPackageItemsInput, PackingTaskItemUpdateWithoutPackageItemsInput>, PackingTaskItemUncheckedUpdateWithoutPackageItemsInput>
+  }
+
+  export type ProductUpdateOneRequiredWithoutPackageItemsNestedInput = {
+    create?: XOR<ProductCreateWithoutPackageItemsInput, ProductUncheckedCreateWithoutPackageItemsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutPackageItemsInput
+    upsert?: ProductUpsertWithoutPackageItemsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutPackageItemsInput, ProductUpdateWithoutPackageItemsInput>, ProductUncheckedUpdateWithoutPackageItemsInput>
   }
 
   export type WarehouseCreateNestedOneWithoutZonesInput = {
@@ -47198,6 +54182,12 @@ export namespace Prisma {
     connect?: PickingTaskWhereUniqueInput
   }
 
+  export type PackingTaskCreateNestedOneWithoutSalesOrderInput = {
+    create?: XOR<PackingTaskCreateWithoutSalesOrderInput, PackingTaskUncheckedCreateWithoutSalesOrderInput>
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutSalesOrderInput
+    connect?: PackingTaskWhereUniqueInput
+  }
+
   export type SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput = {
     create?: XOR<SalesOrderItemCreateWithoutSalesOrderInput, SalesOrderItemUncheckedCreateWithoutSalesOrderInput> | SalesOrderItemCreateWithoutSalesOrderInput[] | SalesOrderItemUncheckedCreateWithoutSalesOrderInput[]
     connectOrCreate?: SalesOrderItemCreateOrConnectWithoutSalesOrderInput | SalesOrderItemCreateOrConnectWithoutSalesOrderInput[]
@@ -47216,6 +54206,12 @@ export namespace Prisma {
     create?: XOR<PickingTaskCreateWithoutSalesOrderInput, PickingTaskUncheckedCreateWithoutSalesOrderInput>
     connectOrCreate?: PickingTaskCreateOrConnectWithoutSalesOrderInput
     connect?: PickingTaskWhereUniqueInput
+  }
+
+  export type PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput = {
+    create?: XOR<PackingTaskCreateWithoutSalesOrderInput, PackingTaskUncheckedCreateWithoutSalesOrderInput>
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutSalesOrderInput
+    connect?: PackingTaskWhereUniqueInput
   }
 
   export type EnumSalesOrderStatusFieldUpdateOperationsInput = {
@@ -47276,6 +54272,16 @@ export namespace Prisma {
     update?: XOR<XOR<PickingTaskUpdateToOneWithWhereWithoutSalesOrderInput, PickingTaskUpdateWithoutSalesOrderInput>, PickingTaskUncheckedUpdateWithoutSalesOrderInput>
   }
 
+  export type PackingTaskUpdateOneWithoutSalesOrderNestedInput = {
+    create?: XOR<PackingTaskCreateWithoutSalesOrderInput, PackingTaskUncheckedCreateWithoutSalesOrderInput>
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutSalesOrderInput
+    upsert?: PackingTaskUpsertWithoutSalesOrderInput
+    disconnect?: PackingTaskWhereInput | boolean
+    delete?: PackingTaskWhereInput | boolean
+    connect?: PackingTaskWhereUniqueInput
+    update?: XOR<XOR<PackingTaskUpdateToOneWithWhereWithoutSalesOrderInput, PackingTaskUpdateWithoutSalesOrderInput>, PackingTaskUncheckedUpdateWithoutSalesOrderInput>
+  }
+
   export type SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput = {
     create?: XOR<SalesOrderItemCreateWithoutSalesOrderInput, SalesOrderItemUncheckedCreateWithoutSalesOrderInput> | SalesOrderItemCreateWithoutSalesOrderInput[] | SalesOrderItemUncheckedCreateWithoutSalesOrderInput[]
     connectOrCreate?: SalesOrderItemCreateOrConnectWithoutSalesOrderInput | SalesOrderItemCreateOrConnectWithoutSalesOrderInput[]
@@ -47314,6 +54320,16 @@ export namespace Prisma {
     update?: XOR<XOR<PickingTaskUpdateToOneWithWhereWithoutSalesOrderInput, PickingTaskUpdateWithoutSalesOrderInput>, PickingTaskUncheckedUpdateWithoutSalesOrderInput>
   }
 
+  export type PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput = {
+    create?: XOR<PackingTaskCreateWithoutSalesOrderInput, PackingTaskUncheckedCreateWithoutSalesOrderInput>
+    connectOrCreate?: PackingTaskCreateOrConnectWithoutSalesOrderInput
+    upsert?: PackingTaskUpsertWithoutSalesOrderInput
+    disconnect?: PackingTaskWhereInput | boolean
+    delete?: PackingTaskWhereInput | boolean
+    connect?: PackingTaskWhereUniqueInput
+    update?: XOR<XOR<PackingTaskUpdateToOneWithWhereWithoutSalesOrderInput, PackingTaskUpdateWithoutSalesOrderInput>, PackingTaskUncheckedUpdateWithoutSalesOrderInput>
+  }
+
   export type SalesOrderCreateNestedOneWithoutItemsInput = {
     create?: XOR<SalesOrderCreateWithoutItemsInput, SalesOrderUncheckedCreateWithoutItemsInput>
     connectOrCreate?: SalesOrderCreateOrConnectWithoutItemsInput
@@ -47340,6 +54356,13 @@ export namespace Prisma {
     connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
   }
 
+  export type PackingTaskItemCreateNestedManyWithoutSalesOrderItemInput = {
+    create?: XOR<PackingTaskItemCreateWithoutSalesOrderItemInput, PackingTaskItemUncheckedCreateWithoutSalesOrderItemInput> | PackingTaskItemCreateWithoutSalesOrderItemInput[] | PackingTaskItemUncheckedCreateWithoutSalesOrderItemInput[]
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutSalesOrderItemInput | PackingTaskItemCreateOrConnectWithoutSalesOrderItemInput[]
+    createMany?: PackingTaskItemCreateManySalesOrderItemInputEnvelope
+    connect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+  }
+
   export type StockReservationUncheckedCreateNestedManyWithoutSalesOrderItemInput = {
     create?: XOR<StockReservationCreateWithoutSalesOrderItemInput, StockReservationUncheckedCreateWithoutSalesOrderItemInput> | StockReservationCreateWithoutSalesOrderItemInput[] | StockReservationUncheckedCreateWithoutSalesOrderItemInput[]
     connectOrCreate?: StockReservationCreateOrConnectWithoutSalesOrderItemInput | StockReservationCreateOrConnectWithoutSalesOrderItemInput[]
@@ -47352,6 +54375,13 @@ export namespace Prisma {
     connectOrCreate?: PickingTaskItemCreateOrConnectWithoutSalesOrderItemInput | PickingTaskItemCreateOrConnectWithoutSalesOrderItemInput[]
     createMany?: PickingTaskItemCreateManySalesOrderItemInputEnvelope
     connect?: PickingTaskItemWhereUniqueInput | PickingTaskItemWhereUniqueInput[]
+  }
+
+  export type PackingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput = {
+    create?: XOR<PackingTaskItemCreateWithoutSalesOrderItemInput, PackingTaskItemUncheckedCreateWithoutSalesOrderItemInput> | PackingTaskItemCreateWithoutSalesOrderItemInput[] | PackingTaskItemUncheckedCreateWithoutSalesOrderItemInput[]
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutSalesOrderItemInput | PackingTaskItemCreateOrConnectWithoutSalesOrderItemInput[]
+    createMany?: PackingTaskItemCreateManySalesOrderItemInputEnvelope
+    connect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
   }
 
   export type SalesOrderUpdateOneRequiredWithoutItemsNestedInput = {
@@ -47398,6 +54428,20 @@ export namespace Prisma {
     deleteMany?: PickingTaskItemScalarWhereInput | PickingTaskItemScalarWhereInput[]
   }
 
+  export type PackingTaskItemUpdateManyWithoutSalesOrderItemNestedInput = {
+    create?: XOR<PackingTaskItemCreateWithoutSalesOrderItemInput, PackingTaskItemUncheckedCreateWithoutSalesOrderItemInput> | PackingTaskItemCreateWithoutSalesOrderItemInput[] | PackingTaskItemUncheckedCreateWithoutSalesOrderItemInput[]
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutSalesOrderItemInput | PackingTaskItemCreateOrConnectWithoutSalesOrderItemInput[]
+    upsert?: PackingTaskItemUpsertWithWhereUniqueWithoutSalesOrderItemInput | PackingTaskItemUpsertWithWhereUniqueWithoutSalesOrderItemInput[]
+    createMany?: PackingTaskItemCreateManySalesOrderItemInputEnvelope
+    set?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    disconnect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    delete?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    connect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    update?: PackingTaskItemUpdateWithWhereUniqueWithoutSalesOrderItemInput | PackingTaskItemUpdateWithWhereUniqueWithoutSalesOrderItemInput[]
+    updateMany?: PackingTaskItemUpdateManyWithWhereWithoutSalesOrderItemInput | PackingTaskItemUpdateManyWithWhereWithoutSalesOrderItemInput[]
+    deleteMany?: PackingTaskItemScalarWhereInput | PackingTaskItemScalarWhereInput[]
+  }
+
   export type StockReservationUncheckedUpdateManyWithoutSalesOrderItemNestedInput = {
     create?: XOR<StockReservationCreateWithoutSalesOrderItemInput, StockReservationUncheckedCreateWithoutSalesOrderItemInput> | StockReservationCreateWithoutSalesOrderItemInput[] | StockReservationUncheckedCreateWithoutSalesOrderItemInput[]
     connectOrCreate?: StockReservationCreateOrConnectWithoutSalesOrderItemInput | StockReservationCreateOrConnectWithoutSalesOrderItemInput[]
@@ -47424,6 +54468,20 @@ export namespace Prisma {
     update?: PickingTaskItemUpdateWithWhereUniqueWithoutSalesOrderItemInput | PickingTaskItemUpdateWithWhereUniqueWithoutSalesOrderItemInput[]
     updateMany?: PickingTaskItemUpdateManyWithWhereWithoutSalesOrderItemInput | PickingTaskItemUpdateManyWithWhereWithoutSalesOrderItemInput[]
     deleteMany?: PickingTaskItemScalarWhereInput | PickingTaskItemScalarWhereInput[]
+  }
+
+  export type PackingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput = {
+    create?: XOR<PackingTaskItemCreateWithoutSalesOrderItemInput, PackingTaskItemUncheckedCreateWithoutSalesOrderItemInput> | PackingTaskItemCreateWithoutSalesOrderItemInput[] | PackingTaskItemUncheckedCreateWithoutSalesOrderItemInput[]
+    connectOrCreate?: PackingTaskItemCreateOrConnectWithoutSalesOrderItemInput | PackingTaskItemCreateOrConnectWithoutSalesOrderItemInput[]
+    upsert?: PackingTaskItemUpsertWithWhereUniqueWithoutSalesOrderItemInput | PackingTaskItemUpsertWithWhereUniqueWithoutSalesOrderItemInput[]
+    createMany?: PackingTaskItemCreateManySalesOrderItemInputEnvelope
+    set?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    disconnect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    delete?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    connect?: PackingTaskItemWhereUniqueInput | PackingTaskItemWhereUniqueInput[]
+    update?: PackingTaskItemUpdateWithWhereUniqueWithoutSalesOrderItemInput | PackingTaskItemUpdateWithWhereUniqueWithoutSalesOrderItemInput[]
+    updateMany?: PackingTaskItemUpdateManyWithWhereWithoutSalesOrderItemInput | PackingTaskItemUpdateManyWithWhereWithoutSalesOrderItemInput[]
+    deleteMany?: PackingTaskItemScalarWhereInput | PackingTaskItemScalarWhereInput[]
   }
 
   export type SalesOrderCreateNestedOneWithoutReservationsInput = {
@@ -47796,6 +54854,84 @@ export namespace Prisma {
     _max?: NestedEnumProductStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumPackingStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PackingStatus | EnumPackingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PackingStatus[] | ListEnumPackingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PackingStatus[] | ListEnumPackingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPackingStatusFilter<$PrismaModel> | $Enums.PackingStatus
+  }
+
+  export type NestedEnumPackingStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PackingStatus | EnumPackingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PackingStatus[] | ListEnumPackingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PackingStatus[] | ListEnumPackingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPackingStatusWithAggregatesFilter<$PrismaModel> | $Enums.PackingStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPackingStatusFilter<$PrismaModel>
+    _max?: NestedEnumPackingStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPackingItemStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PackingItemStatus | EnumPackingItemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PackingItemStatus[] | ListEnumPackingItemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PackingItemStatus[] | ListEnumPackingItemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPackingItemStatusFilter<$PrismaModel> | $Enums.PackingItemStatus
+  }
+
+  export type NestedEnumPackingItemStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PackingItemStatus | EnumPackingItemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PackingItemStatus[] | ListEnumPackingItemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PackingItemStatus[] | ListEnumPackingItemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPackingItemStatusWithAggregatesFilter<$PrismaModel> | $Enums.PackingItemStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPackingItemStatusFilter<$PrismaModel>
+    _max?: NestedEnumPackingItemStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPackageStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PackageStatus | EnumPackageStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PackageStatus[] | ListEnumPackageStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PackageStatus[] | ListEnumPackageStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPackageStatusFilter<$PrismaModel> | $Enums.PackageStatus
+  }
+
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedEnumPackageStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PackageStatus | EnumPackageStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PackageStatus[] | ListEnumPackageStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PackageStatus[] | ListEnumPackageStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPackageStatusWithAggregatesFilter<$PrismaModel> | $Enums.PackageStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPackageStatusFilter<$PrismaModel>
+    _max?: NestedEnumPackageStatusFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumLocationStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.LocationStatus | EnumLocationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.LocationStatus[] | ListEnumLocationStatusFieldRefInput<$PrismaModel>
@@ -47963,6 +55099,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutUsersInput = {
@@ -47986,6 +55123,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutUsersInput = {
@@ -48276,6 +55414,7 @@ export namespace Prisma {
     items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
+    packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutCreatedByInput = {
@@ -48291,6 +55430,7 @@ export namespace Prisma {
     items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutCreatedByInput = {
@@ -48361,6 +55501,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PackingTaskCreateWithoutPackedByInput = {
+    id?: string
+    packingNumber: string
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutPackingTaskInput
+    warehouse: WarehouseCreateNestedOneWithoutPackingTasksInput
+    items?: PackingTaskItemCreateNestedManyWithoutPackingTaskInput
+    packages?: PackageCreateNestedManyWithoutPackingTaskInput
+  }
+
+  export type PackingTaskUncheckedCreateWithoutPackedByInput = {
+    id?: string
+    packingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: PackingTaskItemUncheckedCreateNestedManyWithoutPackingTaskInput
+    packages?: PackageUncheckedCreateNestedManyWithoutPackingTaskInput
+  }
+
+  export type PackingTaskCreateOrConnectWithoutPackedByInput = {
+    where: PackingTaskWhereUniqueInput
+    create: XOR<PackingTaskCreateWithoutPackedByInput, PackingTaskUncheckedCreateWithoutPackedByInput>
+  }
+
+  export type PackingTaskCreateManyPackedByInputEnvelope = {
+    data: PackingTaskCreateManyPackedByInput | PackingTaskCreateManyPackedByInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WarehouseUpsertWithoutUsersInput = {
     update: XOR<WarehouseUpdateWithoutUsersInput, WarehouseUncheckedUpdateWithoutUsersInput>
     create: XOR<WarehouseCreateWithoutUsersInput, WarehouseUncheckedCreateWithoutUsersInput>
@@ -48393,6 +55567,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutUsersInput = {
@@ -48416,6 +55591,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
@@ -48723,6 +55899,36 @@ export namespace Prisma {
     pickedAt?: DateTimeFilter<"PickingAllocation"> | Date | string
   }
 
+  export type PackingTaskUpsertWithWhereUniqueWithoutPackedByInput = {
+    where: PackingTaskWhereUniqueInput
+    update: XOR<PackingTaskUpdateWithoutPackedByInput, PackingTaskUncheckedUpdateWithoutPackedByInput>
+    create: XOR<PackingTaskCreateWithoutPackedByInput, PackingTaskUncheckedCreateWithoutPackedByInput>
+  }
+
+  export type PackingTaskUpdateWithWhereUniqueWithoutPackedByInput = {
+    where: PackingTaskWhereUniqueInput
+    data: XOR<PackingTaskUpdateWithoutPackedByInput, PackingTaskUncheckedUpdateWithoutPackedByInput>
+  }
+
+  export type PackingTaskUpdateManyWithWhereWithoutPackedByInput = {
+    where: PackingTaskScalarWhereInput
+    data: XOR<PackingTaskUpdateManyMutationInput, PackingTaskUncheckedUpdateManyWithoutPackedByInput>
+  }
+
+  export type PackingTaskScalarWhereInput = {
+    AND?: PackingTaskScalarWhereInput | PackingTaskScalarWhereInput[]
+    OR?: PackingTaskScalarWhereInput[]
+    NOT?: PackingTaskScalarWhereInput | PackingTaskScalarWhereInput[]
+    id?: StringFilter<"PackingTask"> | string
+    packingNumber?: StringFilter<"PackingTask"> | string
+    salesOrderId?: StringFilter<"PackingTask"> | string
+    warehouseId?: StringFilter<"PackingTask"> | string
+    packedById?: StringNullableFilter<"PackingTask"> | string | null
+    status?: EnumPackingStatusFilter<"PackingTask"> | $Enums.PackingStatus
+    createdAt?: DateTimeFilter<"PackingTask"> | Date | string
+    updatedAt?: DateTimeFilter<"PackingTask"> | Date | string
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id: string
     name: string
@@ -48746,6 +55952,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -48771,6 +55978,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskUncheckedCreateNestedManyWithoutPackedByInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -48812,6 +56020,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -48837,6 +56046,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -48862,6 +56072,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -48887,6 +56098,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskUncheckedCreateNestedManyWithoutPackedByInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -48928,6 +56140,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -48953,6 +56166,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput
   }
 
   export type WarehouseCreateWithoutInventoryStocksInput = {
@@ -48976,6 +56190,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutInventoryStocksInput = {
@@ -48999,6 +56214,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutInventoryStocksInput = {
@@ -49029,6 +56245,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutInventoryStocksInput = {
@@ -49054,6 +56272,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutInventoryStocksInput = {
@@ -49093,6 +56313,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutInventoryStocksInput = {
@@ -49116,6 +56337,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type ProductUpsertWithoutInventoryStocksInput = {
@@ -49152,6 +56374,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutInventoryStocksInput = {
@@ -49177,6 +56401,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type WarehouseCreateWithoutStockMovementsInput = {
@@ -49200,6 +56426,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutStockMovementsInput = {
@@ -49223,6 +56450,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutStockMovementsInput = {
@@ -49253,6 +56481,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutStockMovementsInput = {
@@ -49278,6 +56508,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutStockMovementsInput = {
@@ -49308,6 +56540,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUncheckedCreateWithoutStockMovementsInput = {
@@ -49333,6 +56566,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskUncheckedCreateNestedManyWithoutPackedByInput
   }
 
   export type UserCreateOrConnectWithoutStockMovementsInput = {
@@ -49372,6 +56606,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutStockMovementsInput = {
@@ -49395,6 +56630,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type ProductUpsertWithoutStockMovementsInput = {
@@ -49431,6 +56667,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutStockMovementsInput = {
@@ -49456,6 +56694,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserUpsertWithoutStockMovementsInput = {
@@ -49492,6 +56732,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStockMovementsInput = {
@@ -49517,6 +56758,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput
   }
 
   export type WarehouseCreateWithoutInventoryLocationStocksInput = {
@@ -49540,6 +56782,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutInventoryLocationStocksInput = {
@@ -49563,6 +56806,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutInventoryLocationStocksInput = {
@@ -49630,6 +56874,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutInventoryLocationStocksInput = {
@@ -49655,6 +56901,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutInventoryLocationStocksInput = {
@@ -49720,6 +56968,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutInventoryLocationStocksInput = {
@@ -49743,6 +56992,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type BinUpsertWithoutInventoryLocationStocksInput = {
@@ -49822,6 +57072,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutInventoryLocationStocksInput = {
@@ -49847,6 +57099,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type PickingAllocationUpsertWithWhereUniqueWithoutLocationStockInput = {
@@ -49886,6 +57140,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutInventoryLocationMovementsInput = {
@@ -49909,6 +57164,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutInventoryLocationMovementsInput = {
@@ -49939,6 +57195,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutInventoryLocationMovementsInput = {
@@ -49964,6 +57222,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutInventoryLocationMovementsInput = {
@@ -50068,6 +57328,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUncheckedCreateWithoutInventoryLocationMovementsInput = {
@@ -50093,6 +57354,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskUncheckedCreateNestedManyWithoutPackedByInput
   }
 
   export type UserCreateOrConnectWithoutInventoryLocationMovementsInput = {
@@ -50132,6 +57394,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutInventoryLocationMovementsInput = {
@@ -50155,6 +57418,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type ProductUpsertWithoutInventoryLocationMovementsInput = {
@@ -50191,6 +57455,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutInventoryLocationMovementsInput = {
@@ -50216,6 +57482,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type BinUpsertWithoutFromLocationMovementsInput = {
@@ -50338,6 +57606,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInventoryLocationMovementsInput = {
@@ -50363,6 +57632,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserCreateWithoutWarehouseInput = {
@@ -50388,6 +57658,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUncheckedCreateWithoutWarehouseInput = {
@@ -50413,6 +57684,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskUncheckedCreateNestedManyWithoutPackedByInput
   }
 
   export type UserCreateOrConnectWithoutWarehouseInput = {
@@ -50686,6 +57958,7 @@ export namespace Prisma {
     items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
+    packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutWarehouseInput = {
@@ -50701,6 +57974,7 @@ export namespace Prisma {
     items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutWarehouseInput = {
@@ -50774,6 +58048,40 @@ export namespace Prisma {
 
   export type PickingTaskCreateManyWarehouseInputEnvelope = {
     data: PickingTaskCreateManyWarehouseInput | PickingTaskCreateManyWarehouseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PackingTaskCreateWithoutWarehouseInput = {
+    id?: string
+    packingNumber: string
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutPackingTaskInput
+    packedBy?: UserCreateNestedOneWithoutPackedTasksInput
+    items?: PackingTaskItemCreateNestedManyWithoutPackingTaskInput
+    packages?: PackageCreateNestedManyWithoutPackingTaskInput
+  }
+
+  export type PackingTaskUncheckedCreateWithoutWarehouseInput = {
+    id?: string
+    packingNumber: string
+    salesOrderId: string
+    packedById?: string | null
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: PackingTaskItemUncheckedCreateNestedManyWithoutPackingTaskInput
+    packages?: PackageUncheckedCreateNestedManyWithoutPackingTaskInput
+  }
+
+  export type PackingTaskCreateOrConnectWithoutWarehouseInput = {
+    where: PackingTaskWhereUniqueInput
+    create: XOR<PackingTaskCreateWithoutWarehouseInput, PackingTaskUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type PackingTaskCreateManyWarehouseInputEnvelope = {
+    data: PackingTaskCreateManyWarehouseInput | PackingTaskCreateManyWarehouseInput[]
     skipDuplicates?: boolean
   }
 
@@ -51029,6 +58337,22 @@ export namespace Prisma {
     data: XOR<PickingTaskUpdateManyMutationInput, PickingTaskUncheckedUpdateManyWithoutWarehouseInput>
   }
 
+  export type PackingTaskUpsertWithWhereUniqueWithoutWarehouseInput = {
+    where: PackingTaskWhereUniqueInput
+    update: XOR<PackingTaskUpdateWithoutWarehouseInput, PackingTaskUncheckedUpdateWithoutWarehouseInput>
+    create: XOR<PackingTaskCreateWithoutWarehouseInput, PackingTaskUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type PackingTaskUpdateWithWhereUniqueWithoutWarehouseInput = {
+    where: PackingTaskWhereUniqueInput
+    data: XOR<PackingTaskUpdateWithoutWarehouseInput, PackingTaskUncheckedUpdateWithoutWarehouseInput>
+  }
+
+  export type PackingTaskUpdateManyWithWhereWithoutWarehouseInput = {
+    where: PackingTaskScalarWhereInput
+    data: XOR<PackingTaskUpdateManyMutationInput, PackingTaskUncheckedUpdateManyWithoutWarehouseInput>
+  }
+
   export type ProductCreateWithoutCategoryInput = {
     id?: string
     sku: string
@@ -51052,6 +58376,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCategoryInput = {
@@ -51077,6 +58403,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCategoryInput = {
@@ -51148,6 +58476,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutBrandInput = {
@@ -51173,6 +58503,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutBrandInput = {
@@ -51452,6 +58784,7 @@ export namespace Prisma {
     salesOrder: SalesOrderCreateNestedOneWithoutItemsInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderItemInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutSalesOrderItemInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemUncheckedCreateWithoutProductInput = {
@@ -51465,6 +58798,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderItemInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemCreateOrConnectWithoutProductInput = {
@@ -51540,6 +58874,68 @@ export namespace Prisma {
 
   export type PickingTaskItemCreateManyProductInputEnvelope = {
     data: PickingTaskItemCreateManyProductInput | PickingTaskItemCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PackingTaskItemCreateWithoutProductInput = {
+    id?: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    packingTask: PackingTaskCreateNestedOneWithoutItemsInput
+    salesOrderItem: SalesOrderItemCreateNestedOneWithoutPackingTaskItemsInput
+    packageItems?: PackageItemCreateNestedManyWithoutPackingTaskItemInput
+  }
+
+  export type PackingTaskItemUncheckedCreateWithoutProductInput = {
+    id?: string
+    packingTaskId: string
+    salesOrderItemId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutPackingTaskItemInput
+  }
+
+  export type PackingTaskItemCreateOrConnectWithoutProductInput = {
+    where: PackingTaskItemWhereUniqueInput
+    create: XOR<PackingTaskItemCreateWithoutProductInput, PackingTaskItemUncheckedCreateWithoutProductInput>
+  }
+
+  export type PackingTaskItemCreateManyProductInputEnvelope = {
+    data: PackingTaskItemCreateManyProductInput | PackingTaskItemCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PackageItemCreateWithoutProductInput = {
+    id?: string
+    quantity: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    package: PackageCreateNestedOneWithoutItemsInput
+    packingTaskItem: PackingTaskItemCreateNestedOneWithoutPackageItemsInput
+  }
+
+  export type PackageItemUncheckedCreateWithoutProductInput = {
+    id?: string
+    packageId: string
+    packingTaskItemId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackageItemCreateOrConnectWithoutProductInput = {
+    where: PackageItemWhereUniqueInput
+    create: XOR<PackageItemCreateWithoutProductInput, PackageItemUncheckedCreateWithoutProductInput>
+  }
+
+  export type PackageItemCreateManyProductInputEnvelope = {
+    data: PackageItemCreateManyProductInput | PackageItemCreateManyProductInput[]
     skipDuplicates?: boolean
   }
 
@@ -51812,6 +59208,1150 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"PickingTaskItem"> | Date | string
   }
 
+  export type PackingTaskItemUpsertWithWhereUniqueWithoutProductInput = {
+    where: PackingTaskItemWhereUniqueInput
+    update: XOR<PackingTaskItemUpdateWithoutProductInput, PackingTaskItemUncheckedUpdateWithoutProductInput>
+    create: XOR<PackingTaskItemCreateWithoutProductInput, PackingTaskItemUncheckedCreateWithoutProductInput>
+  }
+
+  export type PackingTaskItemUpdateWithWhereUniqueWithoutProductInput = {
+    where: PackingTaskItemWhereUniqueInput
+    data: XOR<PackingTaskItemUpdateWithoutProductInput, PackingTaskItemUncheckedUpdateWithoutProductInput>
+  }
+
+  export type PackingTaskItemUpdateManyWithWhereWithoutProductInput = {
+    where: PackingTaskItemScalarWhereInput
+    data: XOR<PackingTaskItemUpdateManyMutationInput, PackingTaskItemUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type PackingTaskItemScalarWhereInput = {
+    AND?: PackingTaskItemScalarWhereInput | PackingTaskItemScalarWhereInput[]
+    OR?: PackingTaskItemScalarWhereInput[]
+    NOT?: PackingTaskItemScalarWhereInput | PackingTaskItemScalarWhereInput[]
+    id?: StringFilter<"PackingTaskItem"> | string
+    packingTaskId?: StringFilter<"PackingTaskItem"> | string
+    salesOrderItemId?: StringFilter<"PackingTaskItem"> | string
+    productId?: StringFilter<"PackingTaskItem"> | string
+    requiredQuantity?: DecimalFilter<"PackingTaskItem"> | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFilter<"PackingTaskItem"> | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFilter<"PackingTaskItem"> | $Enums.PackingItemStatus
+    createdAt?: DateTimeFilter<"PackingTaskItem"> | Date | string
+    updatedAt?: DateTimeFilter<"PackingTaskItem"> | Date | string
+  }
+
+  export type PackageItemUpsertWithWhereUniqueWithoutProductInput = {
+    where: PackageItemWhereUniqueInput
+    update: XOR<PackageItemUpdateWithoutProductInput, PackageItemUncheckedUpdateWithoutProductInput>
+    create: XOR<PackageItemCreateWithoutProductInput, PackageItemUncheckedCreateWithoutProductInput>
+  }
+
+  export type PackageItemUpdateWithWhereUniqueWithoutProductInput = {
+    where: PackageItemWhereUniqueInput
+    data: XOR<PackageItemUpdateWithoutProductInput, PackageItemUncheckedUpdateWithoutProductInput>
+  }
+
+  export type PackageItemUpdateManyWithWhereWithoutProductInput = {
+    where: PackageItemScalarWhereInput
+    data: XOR<PackageItemUpdateManyMutationInput, PackageItemUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type PackageItemScalarWhereInput = {
+    AND?: PackageItemScalarWhereInput | PackageItemScalarWhereInput[]
+    OR?: PackageItemScalarWhereInput[]
+    NOT?: PackageItemScalarWhereInput | PackageItemScalarWhereInput[]
+    id?: StringFilter<"PackageItem"> | string
+    packageId?: StringFilter<"PackageItem"> | string
+    packingTaskItemId?: StringFilter<"PackageItem"> | string
+    productId?: StringFilter<"PackageItem"> | string
+    quantity?: DecimalFilter<"PackageItem"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"PackageItem"> | Date | string
+    updatedAt?: DateTimeFilter<"PackageItem"> | Date | string
+  }
+
+  export type SalesOrderCreateWithoutPackingTaskInput = {
+    id?: string
+    orderNumber: string
+    status?: $Enums.SalesOrderStatus
+    totalAmount?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    cancellationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutCreatedSalesOrdersInput
+    warehouse: WarehouseCreateNestedOneWithoutSalesOrdersInput
+    items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
+    reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
+  }
+
+  export type SalesOrderUncheckedCreateWithoutPackingTaskInput = {
+    id?: string
+    orderNumber: string
+    createdById: string
+    warehouseId: string
+    status?: $Enums.SalesOrderStatus
+    totalAmount?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    cancellationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
+    reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+  }
+
+  export type SalesOrderCreateOrConnectWithoutPackingTaskInput = {
+    where: SalesOrderWhereUniqueInput
+    create: XOR<SalesOrderCreateWithoutPackingTaskInput, SalesOrderUncheckedCreateWithoutPackingTaskInput>
+  }
+
+  export type WarehouseCreateWithoutPackingTasksInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    status?: $Enums.WarehouseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutWarehouseInput
+    inventoryStocks?: InventoryStockCreateNestedManyWithoutWarehouseInput
+    stockMovements?: StockMovementCreateNestedManyWithoutWarehouseInput
+    purchaseOrders?: PurchaseOrderCreateNestedManyWithoutWarehouseInput
+    zones?: ZoneCreateNestedManyWithoutWarehouseInput
+    inventoryLocationStocks?: InventoryLocationStockCreateNestedManyWithoutWarehouseInput
+    inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutWarehouseInput
+    goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
+    salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
+    stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseUncheckedCreateWithoutPackingTasksInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    status?: $Enums.WarehouseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutWarehouseInput
+    inventoryStocks?: InventoryStockUncheckedCreateNestedManyWithoutWarehouseInput
+    stockMovements?: StockMovementUncheckedCreateNestedManyWithoutWarehouseInput
+    purchaseOrders?: PurchaseOrderUncheckedCreateNestedManyWithoutWarehouseInput
+    zones?: ZoneUncheckedCreateNestedManyWithoutWarehouseInput
+    inventoryLocationStocks?: InventoryLocationStockUncheckedCreateNestedManyWithoutWarehouseInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutWarehouseInput
+    goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
+    salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
+    stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseCreateOrConnectWithoutPackingTasksInput = {
+    where: WarehouseWhereUniqueInput
+    create: XOR<WarehouseCreateWithoutPackingTasksInput, WarehouseUncheckedCreateWithoutPackingTasksInput>
+  }
+
+  export type UserCreateWithoutPackedTasksInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    needPasswordChange?: boolean
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse?: WarehouseCreateNestedOneWithoutUsersInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    stockMovements?: StockMovementCreateNestedManyWithoutCreatedByInput
+    createdPurchaseOrders?: PurchaseOrderCreateNestedManyWithoutCreatedByInput
+    approvedPurchaseOrders?: PurchaseOrderCreateNestedManyWithoutApprovedByInput
+    inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutCreatedByInput
+    goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
+    createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+  }
+
+  export type UserUncheckedCreateWithoutPackedTasksInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    warehouseId?: string | null
+    needPasswordChange?: boolean
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    stockMovements?: StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+    createdPurchaseOrders?: PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    approvedPurchaseOrders?: PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutCreatedByInput
+    goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
+    createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+  }
+
+  export type UserCreateOrConnectWithoutPackedTasksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPackedTasksInput, UserUncheckedCreateWithoutPackedTasksInput>
+  }
+
+  export type PackingTaskItemCreateWithoutPackingTaskInput = {
+    id?: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrderItem: SalesOrderItemCreateNestedOneWithoutPackingTaskItemsInput
+    product: ProductCreateNestedOneWithoutPackingTaskItemsInput
+    packageItems?: PackageItemCreateNestedManyWithoutPackingTaskItemInput
+  }
+
+  export type PackingTaskItemUncheckedCreateWithoutPackingTaskInput = {
+    id?: string
+    salesOrderItemId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutPackingTaskItemInput
+  }
+
+  export type PackingTaskItemCreateOrConnectWithoutPackingTaskInput = {
+    where: PackingTaskItemWhereUniqueInput
+    create: XOR<PackingTaskItemCreateWithoutPackingTaskInput, PackingTaskItemUncheckedCreateWithoutPackingTaskInput>
+  }
+
+  export type PackingTaskItemCreateManyPackingTaskInputEnvelope = {
+    data: PackingTaskItemCreateManyPackingTaskInput | PackingTaskItemCreateManyPackingTaskInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PackageCreateWithoutPackingTaskInput = {
+    id?: string
+    packageNumber: string
+    status?: $Enums.PackageStatus
+    weight?: Decimal | DecimalJsLike | number | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: PackageItemCreateNestedManyWithoutPackageInput
+  }
+
+  export type PackageUncheckedCreateWithoutPackingTaskInput = {
+    id?: string
+    packageNumber: string
+    status?: $Enums.PackageStatus
+    weight?: Decimal | DecimalJsLike | number | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: PackageItemUncheckedCreateNestedManyWithoutPackageInput
+  }
+
+  export type PackageCreateOrConnectWithoutPackingTaskInput = {
+    where: PackageWhereUniqueInput
+    create: XOR<PackageCreateWithoutPackingTaskInput, PackageUncheckedCreateWithoutPackingTaskInput>
+  }
+
+  export type PackageCreateManyPackingTaskInputEnvelope = {
+    data: PackageCreateManyPackingTaskInput | PackageCreateManyPackingTaskInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SalesOrderUpsertWithoutPackingTaskInput = {
+    update: XOR<SalesOrderUpdateWithoutPackingTaskInput, SalesOrderUncheckedUpdateWithoutPackingTaskInput>
+    create: XOR<SalesOrderCreateWithoutPackingTaskInput, SalesOrderUncheckedCreateWithoutPackingTaskInput>
+    where?: SalesOrderWhereInput
+  }
+
+  export type SalesOrderUpdateToOneWithWhereWithoutPackingTaskInput = {
+    where?: SalesOrderWhereInput
+    data: XOR<SalesOrderUpdateWithoutPackingTaskInput, SalesOrderUncheckedUpdateWithoutPackingTaskInput>
+  }
+
+  export type SalesOrderUpdateWithoutPackingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesOrderStatusFieldUpdateOperationsInput | $Enums.SalesOrderStatus
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutCreatedSalesOrdersNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutSalesOrdersNestedInput
+    items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
+    reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
+  }
+
+  export type SalesOrderUncheckedUpdateWithoutPackingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesOrderStatusFieldUpdateOperationsInput | $Enums.SalesOrderStatus
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
+    reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+  }
+
+  export type WarehouseUpsertWithoutPackingTasksInput = {
+    update: XOR<WarehouseUpdateWithoutPackingTasksInput, WarehouseUncheckedUpdateWithoutPackingTasksInput>
+    create: XOR<WarehouseCreateWithoutPackingTasksInput, WarehouseUncheckedCreateWithoutPackingTasksInput>
+    where?: WarehouseWhereInput
+  }
+
+  export type WarehouseUpdateToOneWithWhereWithoutPackingTasksInput = {
+    where?: WarehouseWhereInput
+    data: XOR<WarehouseUpdateWithoutPackingTasksInput, WarehouseUncheckedUpdateWithoutPackingTasksInput>
+  }
+
+  export type WarehouseUpdateWithoutPackingTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutWarehouseNestedInput
+    inventoryStocks?: InventoryStockUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: StockMovementUpdateManyWithoutWarehouseNestedInput
+    purchaseOrders?: PurchaseOrderUpdateManyWithoutWarehouseNestedInput
+    zones?: ZoneUpdateManyWithoutWarehouseNestedInput
+    inventoryLocationStocks?: InventoryLocationStockUpdateManyWithoutWarehouseNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutWarehouseNestedInput
+    goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
+    salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
+    stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type WarehouseUncheckedUpdateWithoutPackingTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutWarehouseNestedInput
+    inventoryStocks?: InventoryStockUncheckedUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: StockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
+    purchaseOrders?: PurchaseOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+    zones?: ZoneUncheckedUpdateManyWithoutWarehouseNestedInput
+    inventoryLocationStocks?: InventoryLocationStockUncheckedUpdateManyWithoutWarehouseNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutWarehouseNestedInput
+    goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
+    salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+    stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type UserUpsertWithoutPackedTasksInput = {
+    update: XOR<UserUpdateWithoutPackedTasksInput, UserUncheckedUpdateWithoutPackedTasksInput>
+    create: XOR<UserCreateWithoutPackedTasksInput, UserUncheckedCreateWithoutPackedTasksInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPackedTasksInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPackedTasksInput, UserUncheckedUpdateWithoutPackedTasksInput>
+  }
+
+  export type UserUpdateWithoutPackedTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneWithoutUsersNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    stockMovements?: StockMovementUpdateManyWithoutCreatedByNestedInput
+    createdPurchaseOrders?: PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+    approvedPurchaseOrders?: PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutCreatedByNestedInput
+    goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
+    createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPackedTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
+    needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    stockMovements?: StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdPurchaseOrders?: PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    approvedPurchaseOrders?: PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+    goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
+    createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+  }
+
+  export type PackingTaskItemUpsertWithWhereUniqueWithoutPackingTaskInput = {
+    where: PackingTaskItemWhereUniqueInput
+    update: XOR<PackingTaskItemUpdateWithoutPackingTaskInput, PackingTaskItemUncheckedUpdateWithoutPackingTaskInput>
+    create: XOR<PackingTaskItemCreateWithoutPackingTaskInput, PackingTaskItemUncheckedCreateWithoutPackingTaskInput>
+  }
+
+  export type PackingTaskItemUpdateWithWhereUniqueWithoutPackingTaskInput = {
+    where: PackingTaskItemWhereUniqueInput
+    data: XOR<PackingTaskItemUpdateWithoutPackingTaskInput, PackingTaskItemUncheckedUpdateWithoutPackingTaskInput>
+  }
+
+  export type PackingTaskItemUpdateManyWithWhereWithoutPackingTaskInput = {
+    where: PackingTaskItemScalarWhereInput
+    data: XOR<PackingTaskItemUpdateManyMutationInput, PackingTaskItemUncheckedUpdateManyWithoutPackingTaskInput>
+  }
+
+  export type PackageUpsertWithWhereUniqueWithoutPackingTaskInput = {
+    where: PackageWhereUniqueInput
+    update: XOR<PackageUpdateWithoutPackingTaskInput, PackageUncheckedUpdateWithoutPackingTaskInput>
+    create: XOR<PackageCreateWithoutPackingTaskInput, PackageUncheckedCreateWithoutPackingTaskInput>
+  }
+
+  export type PackageUpdateWithWhereUniqueWithoutPackingTaskInput = {
+    where: PackageWhereUniqueInput
+    data: XOR<PackageUpdateWithoutPackingTaskInput, PackageUncheckedUpdateWithoutPackingTaskInput>
+  }
+
+  export type PackageUpdateManyWithWhereWithoutPackingTaskInput = {
+    where: PackageScalarWhereInput
+    data: XOR<PackageUpdateManyMutationInput, PackageUncheckedUpdateManyWithoutPackingTaskInput>
+  }
+
+  export type PackageScalarWhereInput = {
+    AND?: PackageScalarWhereInput | PackageScalarWhereInput[]
+    OR?: PackageScalarWhereInput[]
+    NOT?: PackageScalarWhereInput | PackageScalarWhereInput[]
+    id?: StringFilter<"Package"> | string
+    packingTaskId?: StringFilter<"Package"> | string
+    packageNumber?: StringFilter<"Package"> | string
+    status?: EnumPackageStatusFilter<"Package"> | $Enums.PackageStatus
+    weight?: DecimalNullableFilter<"Package"> | Decimal | DecimalJsLike | number | string | null
+    notes?: StringNullableFilter<"Package"> | string | null
+    createdAt?: DateTimeFilter<"Package"> | Date | string
+    updatedAt?: DateTimeFilter<"Package"> | Date | string
+  }
+
+  export type PackingTaskCreateWithoutItemsInput = {
+    id?: string
+    packingNumber: string
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutPackingTaskInput
+    warehouse: WarehouseCreateNestedOneWithoutPackingTasksInput
+    packedBy?: UserCreateNestedOneWithoutPackedTasksInput
+    packages?: PackageCreateNestedManyWithoutPackingTaskInput
+  }
+
+  export type PackingTaskUncheckedCreateWithoutItemsInput = {
+    id?: string
+    packingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    packedById?: string | null
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    packages?: PackageUncheckedCreateNestedManyWithoutPackingTaskInput
+  }
+
+  export type PackingTaskCreateOrConnectWithoutItemsInput = {
+    where: PackingTaskWhereUniqueInput
+    create: XOR<PackingTaskCreateWithoutItemsInput, PackingTaskUncheckedCreateWithoutItemsInput>
+  }
+
+  export type SalesOrderItemCreateWithoutPackingTaskItemsInput = {
+    id?: string
+    quantity: Decimal | DecimalJsLike | number | string
+    unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutItemsInput
+    product: ProductCreateNestedOneWithoutSalesOrderItemsInput
+    reservations?: StockReservationCreateNestedManyWithoutSalesOrderItemInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutSalesOrderItemInput
+  }
+
+  export type SalesOrderItemUncheckedCreateWithoutPackingTaskItemsInput = {
+    id?: string
+    salesOrderId: string
+    productId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderItemInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
+  }
+
+  export type SalesOrderItemCreateOrConnectWithoutPackingTaskItemsInput = {
+    where: SalesOrderItemWhereUniqueInput
+    create: XOR<SalesOrderItemCreateWithoutPackingTaskItemsInput, SalesOrderItemUncheckedCreateWithoutPackingTaskItemsInput>
+  }
+
+  export type ProductCreateWithoutPackingTaskItemsInput = {
+    id?: string
+    sku: string
+    name: string
+    slug: string
+    description?: string | null
+    unit: string
+    image?: string | null
+    status?: $Enums.ProductStatus
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutProductsInput
+    brand?: BrandCreateNestedOneWithoutProductsInput
+    inventoryStocks?: InventoryStockCreateNestedManyWithoutProductInput
+    stockMovements?: StockMovementCreateNestedManyWithoutProductInput
+    purchaseOrderItems?: PurchaseOrderItemCreateNestedManyWithoutProductInput
+    inventoryLocationStocks?: InventoryLocationStockCreateNestedManyWithoutProductInput
+    inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutProductInput
+    goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
+    salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
+    stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutPackingTaskItemsInput = {
+    id?: string
+    sku: string
+    name: string
+    slug: string
+    description?: string | null
+    categoryId: string
+    brandId?: string | null
+    unit: string
+    image?: string | null
+    status?: $Enums.ProductStatus
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryStocks?: InventoryStockUncheckedCreateNestedManyWithoutProductInput
+    stockMovements?: StockMovementUncheckedCreateNestedManyWithoutProductInput
+    purchaseOrderItems?: PurchaseOrderItemUncheckedCreateNestedManyWithoutProductInput
+    inventoryLocationStocks?: InventoryLocationStockUncheckedCreateNestedManyWithoutProductInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutProductInput
+    goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
+    salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
+    stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutPackingTaskItemsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutPackingTaskItemsInput, ProductUncheckedCreateWithoutPackingTaskItemsInput>
+  }
+
+  export type PackageItemCreateWithoutPackingTaskItemInput = {
+    id?: string
+    quantity: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    package: PackageCreateNestedOneWithoutItemsInput
+    product: ProductCreateNestedOneWithoutPackageItemsInput
+  }
+
+  export type PackageItemUncheckedCreateWithoutPackingTaskItemInput = {
+    id?: string
+    packageId: string
+    productId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackageItemCreateOrConnectWithoutPackingTaskItemInput = {
+    where: PackageItemWhereUniqueInput
+    create: XOR<PackageItemCreateWithoutPackingTaskItemInput, PackageItemUncheckedCreateWithoutPackingTaskItemInput>
+  }
+
+  export type PackageItemCreateManyPackingTaskItemInputEnvelope = {
+    data: PackageItemCreateManyPackingTaskItemInput | PackageItemCreateManyPackingTaskItemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PackingTaskUpsertWithoutItemsInput = {
+    update: XOR<PackingTaskUpdateWithoutItemsInput, PackingTaskUncheckedUpdateWithoutItemsInput>
+    create: XOR<PackingTaskCreateWithoutItemsInput, PackingTaskUncheckedCreateWithoutItemsInput>
+    where?: PackingTaskWhereInput
+  }
+
+  export type PackingTaskUpdateToOneWithWhereWithoutItemsInput = {
+    where?: PackingTaskWhereInput
+    data: XOR<PackingTaskUpdateWithoutItemsInput, PackingTaskUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type PackingTaskUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutPackingTaskNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutPackingTasksNestedInput
+    packedBy?: UserUpdateOneWithoutPackedTasksNestedInput
+    packages?: PackageUpdateManyWithoutPackingTaskNestedInput
+  }
+
+  export type PackingTaskUncheckedUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    packedById?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packages?: PackageUncheckedUpdateManyWithoutPackingTaskNestedInput
+  }
+
+  export type SalesOrderItemUpsertWithoutPackingTaskItemsInput = {
+    update: XOR<SalesOrderItemUpdateWithoutPackingTaskItemsInput, SalesOrderItemUncheckedUpdateWithoutPackingTaskItemsInput>
+    create: XOR<SalesOrderItemCreateWithoutPackingTaskItemsInput, SalesOrderItemUncheckedCreateWithoutPackingTaskItemsInput>
+    where?: SalesOrderItemWhereInput
+  }
+
+  export type SalesOrderItemUpdateToOneWithWhereWithoutPackingTaskItemsInput = {
+    where?: SalesOrderItemWhereInput
+    data: XOR<SalesOrderItemUpdateWithoutPackingTaskItemsInput, SalesOrderItemUncheckedUpdateWithoutPackingTaskItemsInput>
+  }
+
+  export type SalesOrderItemUpdateWithoutPackingTaskItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutSalesOrderItemsNestedInput
+    reservations?: StockReservationUpdateManyWithoutSalesOrderItemNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
+  }
+
+  export type SalesOrderItemUncheckedUpdateWithoutPackingTaskItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderItemNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
+  }
+
+  export type ProductUpsertWithoutPackingTaskItemsInput = {
+    update: XOR<ProductUpdateWithoutPackingTaskItemsInput, ProductUncheckedUpdateWithoutPackingTaskItemsInput>
+    create: XOR<ProductCreateWithoutPackingTaskItemsInput, ProductUncheckedCreateWithoutPackingTaskItemsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutPackingTaskItemsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutPackingTaskItemsInput, ProductUncheckedUpdateWithoutPackingTaskItemsInput>
+  }
+
+  export type ProductUpdateWithoutPackingTaskItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unit?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    brand?: BrandUpdateOneWithoutProductsNestedInput
+    inventoryStocks?: InventoryStockUpdateManyWithoutProductNestedInput
+    stockMovements?: StockMovementUpdateManyWithoutProductNestedInput
+    purchaseOrderItems?: PurchaseOrderItemUpdateManyWithoutProductNestedInput
+    inventoryLocationStocks?: InventoryLocationStockUpdateManyWithoutProductNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutProductNestedInput
+    goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
+    salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
+    stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutPackingTaskItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    categoryId?: StringFieldUpdateOperationsInput | string
+    brandId?: NullableStringFieldUpdateOperationsInput | string | null
+    unit?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryStocks?: InventoryStockUncheckedUpdateManyWithoutProductNestedInput
+    stockMovements?: StockMovementUncheckedUpdateManyWithoutProductNestedInput
+    purchaseOrderItems?: PurchaseOrderItemUncheckedUpdateManyWithoutProductNestedInput
+    inventoryLocationStocks?: InventoryLocationStockUncheckedUpdateManyWithoutProductNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutProductNestedInput
+    goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
+    salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
+    stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type PackageItemUpsertWithWhereUniqueWithoutPackingTaskItemInput = {
+    where: PackageItemWhereUniqueInput
+    update: XOR<PackageItemUpdateWithoutPackingTaskItemInput, PackageItemUncheckedUpdateWithoutPackingTaskItemInput>
+    create: XOR<PackageItemCreateWithoutPackingTaskItemInput, PackageItemUncheckedCreateWithoutPackingTaskItemInput>
+  }
+
+  export type PackageItemUpdateWithWhereUniqueWithoutPackingTaskItemInput = {
+    where: PackageItemWhereUniqueInput
+    data: XOR<PackageItemUpdateWithoutPackingTaskItemInput, PackageItemUncheckedUpdateWithoutPackingTaskItemInput>
+  }
+
+  export type PackageItemUpdateManyWithWhereWithoutPackingTaskItemInput = {
+    where: PackageItemScalarWhereInput
+    data: XOR<PackageItemUpdateManyMutationInput, PackageItemUncheckedUpdateManyWithoutPackingTaskItemInput>
+  }
+
+  export type PackingTaskCreateWithoutPackagesInput = {
+    id?: string
+    packingNumber: string
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutPackingTaskInput
+    warehouse: WarehouseCreateNestedOneWithoutPackingTasksInput
+    packedBy?: UserCreateNestedOneWithoutPackedTasksInput
+    items?: PackingTaskItemCreateNestedManyWithoutPackingTaskInput
+  }
+
+  export type PackingTaskUncheckedCreateWithoutPackagesInput = {
+    id?: string
+    packingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    packedById?: string | null
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: PackingTaskItemUncheckedCreateNestedManyWithoutPackingTaskInput
+  }
+
+  export type PackingTaskCreateOrConnectWithoutPackagesInput = {
+    where: PackingTaskWhereUniqueInput
+    create: XOR<PackingTaskCreateWithoutPackagesInput, PackingTaskUncheckedCreateWithoutPackagesInput>
+  }
+
+  export type PackageItemCreateWithoutPackageInput = {
+    id?: string
+    quantity: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    packingTaskItem: PackingTaskItemCreateNestedOneWithoutPackageItemsInput
+    product: ProductCreateNestedOneWithoutPackageItemsInput
+  }
+
+  export type PackageItemUncheckedCreateWithoutPackageInput = {
+    id?: string
+    packingTaskItemId: string
+    productId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackageItemCreateOrConnectWithoutPackageInput = {
+    where: PackageItemWhereUniqueInput
+    create: XOR<PackageItemCreateWithoutPackageInput, PackageItemUncheckedCreateWithoutPackageInput>
+  }
+
+  export type PackageItemCreateManyPackageInputEnvelope = {
+    data: PackageItemCreateManyPackageInput | PackageItemCreateManyPackageInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PackingTaskUpsertWithoutPackagesInput = {
+    update: XOR<PackingTaskUpdateWithoutPackagesInput, PackingTaskUncheckedUpdateWithoutPackagesInput>
+    create: XOR<PackingTaskCreateWithoutPackagesInput, PackingTaskUncheckedCreateWithoutPackagesInput>
+    where?: PackingTaskWhereInput
+  }
+
+  export type PackingTaskUpdateToOneWithWhereWithoutPackagesInput = {
+    where?: PackingTaskWhereInput
+    data: XOR<PackingTaskUpdateWithoutPackagesInput, PackingTaskUncheckedUpdateWithoutPackagesInput>
+  }
+
+  export type PackingTaskUpdateWithoutPackagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutPackingTaskNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutPackingTasksNestedInput
+    packedBy?: UserUpdateOneWithoutPackedTasksNestedInput
+    items?: PackingTaskItemUpdateManyWithoutPackingTaskNestedInput
+  }
+
+  export type PackingTaskUncheckedUpdateWithoutPackagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    packedById?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: PackingTaskItemUncheckedUpdateManyWithoutPackingTaskNestedInput
+  }
+
+  export type PackageItemUpsertWithWhereUniqueWithoutPackageInput = {
+    where: PackageItemWhereUniqueInput
+    update: XOR<PackageItemUpdateWithoutPackageInput, PackageItemUncheckedUpdateWithoutPackageInput>
+    create: XOR<PackageItemCreateWithoutPackageInput, PackageItemUncheckedCreateWithoutPackageInput>
+  }
+
+  export type PackageItemUpdateWithWhereUniqueWithoutPackageInput = {
+    where: PackageItemWhereUniqueInput
+    data: XOR<PackageItemUpdateWithoutPackageInput, PackageItemUncheckedUpdateWithoutPackageInput>
+  }
+
+  export type PackageItemUpdateManyWithWhereWithoutPackageInput = {
+    where: PackageItemScalarWhereInput
+    data: XOR<PackageItemUpdateManyMutationInput, PackageItemUncheckedUpdateManyWithoutPackageInput>
+  }
+
+  export type PackageCreateWithoutItemsInput = {
+    id?: string
+    packageNumber: string
+    status?: $Enums.PackageStatus
+    weight?: Decimal | DecimalJsLike | number | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    packingTask: PackingTaskCreateNestedOneWithoutPackagesInput
+  }
+
+  export type PackageUncheckedCreateWithoutItemsInput = {
+    id?: string
+    packingTaskId: string
+    packageNumber: string
+    status?: $Enums.PackageStatus
+    weight?: Decimal | DecimalJsLike | number | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackageCreateOrConnectWithoutItemsInput = {
+    where: PackageWhereUniqueInput
+    create: XOR<PackageCreateWithoutItemsInput, PackageUncheckedCreateWithoutItemsInput>
+  }
+
+  export type PackingTaskItemCreateWithoutPackageItemsInput = {
+    id?: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    packingTask: PackingTaskCreateNestedOneWithoutItemsInput
+    salesOrderItem: SalesOrderItemCreateNestedOneWithoutPackingTaskItemsInput
+    product: ProductCreateNestedOneWithoutPackingTaskItemsInput
+  }
+
+  export type PackingTaskItemUncheckedCreateWithoutPackageItemsInput = {
+    id?: string
+    packingTaskId: string
+    salesOrderItemId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackingTaskItemCreateOrConnectWithoutPackageItemsInput = {
+    where: PackingTaskItemWhereUniqueInput
+    create: XOR<PackingTaskItemCreateWithoutPackageItemsInput, PackingTaskItemUncheckedCreateWithoutPackageItemsInput>
+  }
+
+  export type ProductCreateWithoutPackageItemsInput = {
+    id?: string
+    sku: string
+    name: string
+    slug: string
+    description?: string | null
+    unit: string
+    image?: string | null
+    status?: $Enums.ProductStatus
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutProductsInput
+    brand?: BrandCreateNestedOneWithoutProductsInput
+    inventoryStocks?: InventoryStockCreateNestedManyWithoutProductInput
+    stockMovements?: StockMovementCreateNestedManyWithoutProductInput
+    purchaseOrderItems?: PurchaseOrderItemCreateNestedManyWithoutProductInput
+    inventoryLocationStocks?: InventoryLocationStockCreateNestedManyWithoutProductInput
+    inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutProductInput
+    goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
+    salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
+    stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutPackageItemsInput = {
+    id?: string
+    sku: string
+    name: string
+    slug: string
+    description?: string | null
+    categoryId: string
+    brandId?: string | null
+    unit: string
+    image?: string | null
+    status?: $Enums.ProductStatus
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryStocks?: InventoryStockUncheckedCreateNestedManyWithoutProductInput
+    stockMovements?: StockMovementUncheckedCreateNestedManyWithoutProductInput
+    purchaseOrderItems?: PurchaseOrderItemUncheckedCreateNestedManyWithoutProductInput
+    inventoryLocationStocks?: InventoryLocationStockUncheckedCreateNestedManyWithoutProductInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutProductInput
+    goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
+    salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
+    stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutPackageItemsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutPackageItemsInput, ProductUncheckedCreateWithoutPackageItemsInput>
+  }
+
+  export type PackageUpsertWithoutItemsInput = {
+    update: XOR<PackageUpdateWithoutItemsInput, PackageUncheckedUpdateWithoutItemsInput>
+    create: XOR<PackageCreateWithoutItemsInput, PackageUncheckedCreateWithoutItemsInput>
+    where?: PackageWhereInput
+  }
+
+  export type PackageUpdateToOneWithWhereWithoutItemsInput = {
+    where?: PackageWhereInput
+    data: XOR<PackageUpdateWithoutItemsInput, PackageUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type PackageUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackageStatusFieldUpdateOperationsInput | $Enums.PackageStatus
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingTask?: PackingTaskUpdateOneRequiredWithoutPackagesNestedInput
+  }
+
+  export type PackageUncheckedUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingTaskId?: StringFieldUpdateOperationsInput | string
+    packageNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackageStatusFieldUpdateOperationsInput | $Enums.PackageStatus
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingTaskItemUpsertWithoutPackageItemsInput = {
+    update: XOR<PackingTaskItemUpdateWithoutPackageItemsInput, PackingTaskItemUncheckedUpdateWithoutPackageItemsInput>
+    create: XOR<PackingTaskItemCreateWithoutPackageItemsInput, PackingTaskItemUncheckedCreateWithoutPackageItemsInput>
+    where?: PackingTaskItemWhereInput
+  }
+
+  export type PackingTaskItemUpdateToOneWithWhereWithoutPackageItemsInput = {
+    where?: PackingTaskItemWhereInput
+    data: XOR<PackingTaskItemUpdateWithoutPackageItemsInput, PackingTaskItemUncheckedUpdateWithoutPackageItemsInput>
+  }
+
+  export type PackingTaskItemUpdateWithoutPackageItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingTask?: PackingTaskUpdateOneRequiredWithoutItemsNestedInput
+    salesOrderItem?: SalesOrderItemUpdateOneRequiredWithoutPackingTaskItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutPackingTaskItemsNestedInput
+  }
+
+  export type PackingTaskItemUncheckedUpdateWithoutPackageItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingTaskId?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductUpsertWithoutPackageItemsInput = {
+    update: XOR<ProductUpdateWithoutPackageItemsInput, ProductUncheckedUpdateWithoutPackageItemsInput>
+    create: XOR<ProductCreateWithoutPackageItemsInput, ProductUncheckedCreateWithoutPackageItemsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutPackageItemsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutPackageItemsInput, ProductUncheckedUpdateWithoutPackageItemsInput>
+  }
+
+  export type ProductUpdateWithoutPackageItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unit?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    brand?: BrandUpdateOneWithoutProductsNestedInput
+    inventoryStocks?: InventoryStockUpdateManyWithoutProductNestedInput
+    stockMovements?: StockMovementUpdateManyWithoutProductNestedInput
+    purchaseOrderItems?: PurchaseOrderItemUpdateManyWithoutProductNestedInput
+    inventoryLocationStocks?: InventoryLocationStockUpdateManyWithoutProductNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutProductNestedInput
+    goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
+    salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
+    stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutPackageItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    categoryId?: StringFieldUpdateOperationsInput | string
+    brandId?: NullableStringFieldUpdateOperationsInput | string | null
+    unit?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryStocks?: InventoryStockUncheckedUpdateManyWithoutProductNestedInput
+    stockMovements?: StockMovementUncheckedUpdateManyWithoutProductNestedInput
+    purchaseOrderItems?: PurchaseOrderItemUncheckedUpdateManyWithoutProductNestedInput
+    inventoryLocationStocks?: InventoryLocationStockUncheckedUpdateManyWithoutProductNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutProductNestedInput
+    goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
+    salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
+    stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+  }
+
   export type WarehouseCreateWithoutZonesInput = {
     id?: string
     code: string
@@ -51833,6 +60373,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutZonesInput = {
@@ -51856,6 +60397,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutZonesInput = {
@@ -51933,6 +60475,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutZonesInput = {
@@ -51956,6 +60499,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type AisleUpsertWithWhereUniqueWithoutZoneInput = {
@@ -52516,6 +61060,7 @@ export namespace Prisma {
     warehouse: WarehouseCreateNestedOneWithoutSalesOrdersInput
     items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
+    packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutPickingTaskInput = {
@@ -52531,6 +61076,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
+    packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutPickingTaskInput = {
@@ -52559,6 +61105,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutPickingTasksInput = {
@@ -52582,6 +61129,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutPickingTasksInput = {
@@ -52612,6 +61160,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
     pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUncheckedCreateWithoutAssignedPickingTasksInput = {
@@ -52637,6 +61186,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
     pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskUncheckedCreateNestedManyWithoutPackedByInput
   }
 
   export type UserCreateOrConnectWithoutAssignedPickingTasksInput = {
@@ -52702,6 +61252,7 @@ export namespace Prisma {
     warehouse?: WarehouseUpdateOneRequiredWithoutSalesOrdersNestedInput
     items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutPickingTaskInput = {
@@ -52717,6 +61268,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type WarehouseUpsertWithoutPickingTasksInput = {
@@ -52751,6 +61303,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutPickingTasksInput = {
@@ -52774,6 +61327,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type UserUpsertWithoutAssignedPickingTasksInput = {
@@ -52810,6 +61364,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
     pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedPickingTasksInput = {
@@ -52835,6 +61390,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
     pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput
   }
 
   export type PickingTaskItemUpsertWithWhereUniqueWithoutPickingTaskInput = {
@@ -52891,6 +61447,7 @@ export namespace Prisma {
     salesOrder: SalesOrderCreateNestedOneWithoutItemsInput
     product: ProductCreateNestedOneWithoutSalesOrderItemsInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderItemInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemUncheckedCreateWithoutPickingTaskItemsInput = {
@@ -52904,6 +61461,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderItemInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemCreateOrConnectWithoutPickingTaskItemsInput = {
@@ -52934,6 +61492,8 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutPickingTaskItemsInput = {
@@ -52959,6 +61519,8 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutPickingTaskItemsInput = {
@@ -53047,6 +61609,7 @@ export namespace Prisma {
     salesOrder?: SalesOrderUpdateOneRequiredWithoutItemsNestedInput
     product?: ProductUpdateOneRequiredWithoutSalesOrderItemsNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderItemNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateWithoutPickingTaskItemsInput = {
@@ -53060,6 +61623,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderItemNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type ProductUpsertWithoutPickingTaskItemsInput = {
@@ -53096,6 +61660,8 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutPickingTaskItemsInput = {
@@ -53121,6 +61687,8 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type PickingAllocationUpsertWithWhereUniqueWithoutPickingTaskItemInput = {
@@ -53216,6 +61784,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
+    packedTasks?: PackingTaskCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUncheckedCreateWithoutPickingAllocationsInput = {
@@ -53241,6 +61810,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    packedTasks?: PackingTaskUncheckedCreateNestedManyWithoutPackedByInput
   }
 
   export type UserCreateOrConnectWithoutPickingAllocationsInput = {
@@ -53348,6 +61918,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
+    packedTasks?: PackingTaskUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPickingAllocationsInput = {
@@ -53373,6 +61944,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    packedTasks?: PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput
   }
 
   export type PurchaseOrderCreateWithoutSupplierInput = {
@@ -53497,6 +62069,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutPurchaseOrdersInput = {
@@ -53520,6 +62093,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutPurchaseOrdersInput = {
@@ -53550,6 +62124,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUncheckedCreateWithoutCreatedPurchaseOrdersInput = {
@@ -53575,6 +62150,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskUncheckedCreateNestedManyWithoutPackedByInput
   }
 
   export type UserCreateOrConnectWithoutCreatedPurchaseOrdersInput = {
@@ -53605,6 +62181,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUncheckedCreateWithoutApprovedPurchaseOrdersInput = {
@@ -53630,6 +62207,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskUncheckedCreateNestedManyWithoutPackedByInput
   }
 
   export type UserCreateOrConnectWithoutApprovedPurchaseOrdersInput = {
@@ -53782,6 +62360,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutPurchaseOrdersInput = {
@@ -53805,6 +62384,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type UserUpsertWithoutCreatedPurchaseOrdersInput = {
@@ -53841,6 +62421,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedPurchaseOrdersInput = {
@@ -53866,6 +62447,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUpsertWithoutApprovedPurchaseOrdersInput = {
@@ -53902,6 +62484,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApprovedPurchaseOrdersInput = {
@@ -53927,6 +62510,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput
   }
 
   export type PurchaseOrderItemUpsertWithWhereUniqueWithoutPurchaseOrderInput = {
@@ -54025,6 +62609,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutPurchaseOrderItemsInput = {
@@ -54050,6 +62636,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutPurchaseOrderItemsInput = {
@@ -54138,6 +62726,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutPurchaseOrderItemsInput = {
@@ -54163,6 +62753,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type PurchaseOrderCreateWithoutGoodsReceiptsInput = {
@@ -54227,6 +62819,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutGoodsReceiptsInput = {
@@ -54250,6 +62843,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutGoodsReceiptsInput = {
@@ -54280,6 +62874,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUncheckedCreateWithoutGoodsReceiptsInput = {
@@ -54305,6 +62900,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
     assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskUncheckedCreateNestedManyWithoutPackedByInput
   }
 
   export type UserCreateOrConnectWithoutGoodsReceiptsInput = {
@@ -54413,6 +63009,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutGoodsReceiptsInput = {
@@ -54436,6 +63033,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type UserUpsertWithoutGoodsReceiptsInput = {
@@ -54472,6 +63070,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGoodsReceiptsInput = {
@@ -54497,6 +63096,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput
   }
 
   export type GoodsReceiptItemUpsertWithWhereUniqueWithoutGoodsReceiptInput = {
@@ -54569,6 +63169,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutGoodsReceiptItemsInput = {
@@ -54594,6 +63196,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutGoodsReceiptItemsInput = {
@@ -54672,6 +63276,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutGoodsReceiptItemsInput = {
@@ -54697,6 +63303,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserCreateWithoutCreatedSalesOrdersInput = {
@@ -54722,6 +63330,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutReceivedByInput
     assignedPickingTasks?: PickingTaskCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskCreateNestedManyWithoutPackedByInput
   }
 
   export type UserUncheckedCreateWithoutCreatedSalesOrdersInput = {
@@ -54747,6 +63356,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutReceivedByInput
     assignedPickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutAssignedToInput
     pickingAllocations?: PickingAllocationUncheckedCreateNestedManyWithoutPickedByInput
+    packedTasks?: PackingTaskUncheckedCreateNestedManyWithoutPackedByInput
   }
 
   export type UserCreateOrConnectWithoutCreatedSalesOrdersInput = {
@@ -54775,6 +63385,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutSalesOrdersInput = {
@@ -54798,6 +63409,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutSalesOrdersInput = {
@@ -54816,6 +63428,7 @@ export namespace Prisma {
     product: ProductCreateNestedOneWithoutSalesOrderItemsInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderItemInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutSalesOrderItemInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemUncheckedCreateWithoutSalesOrderInput = {
@@ -54829,6 +63442,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderItemInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemCreateOrConnectWithoutSalesOrderInput = {
@@ -54900,6 +63514,35 @@ export namespace Prisma {
     create: XOR<PickingTaskCreateWithoutSalesOrderInput, PickingTaskUncheckedCreateWithoutSalesOrderInput>
   }
 
+  export type PackingTaskCreateWithoutSalesOrderInput = {
+    id?: string
+    packingNumber: string
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutPackingTasksInput
+    packedBy?: UserCreateNestedOneWithoutPackedTasksInput
+    items?: PackingTaskItemCreateNestedManyWithoutPackingTaskInput
+    packages?: PackageCreateNestedManyWithoutPackingTaskInput
+  }
+
+  export type PackingTaskUncheckedCreateWithoutSalesOrderInput = {
+    id?: string
+    packingNumber: string
+    warehouseId: string
+    packedById?: string | null
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: PackingTaskItemUncheckedCreateNestedManyWithoutPackingTaskInput
+    packages?: PackageUncheckedCreateNestedManyWithoutPackingTaskInput
+  }
+
+  export type PackingTaskCreateOrConnectWithoutSalesOrderInput = {
+    where: PackingTaskWhereUniqueInput
+    create: XOR<PackingTaskCreateWithoutSalesOrderInput, PackingTaskUncheckedCreateWithoutSalesOrderInput>
+  }
+
   export type UserUpsertWithoutCreatedSalesOrdersInput = {
     update: XOR<UserUpdateWithoutCreatedSalesOrdersInput, UserUncheckedUpdateWithoutCreatedSalesOrdersInput>
     create: XOR<UserCreateWithoutCreatedSalesOrdersInput, UserUncheckedCreateWithoutCreatedSalesOrdersInput>
@@ -54934,6 +63577,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutReceivedByNestedInput
     assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedSalesOrdersInput = {
@@ -54959,6 +63603,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
     assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput
   }
 
   export type WarehouseUpsertWithoutSalesOrdersInput = {
@@ -54993,6 +63638,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutSalesOrdersInput = {
@@ -55016,6 +63662,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type SalesOrderItemUpsertWithWhereUniqueWithoutSalesOrderInput = {
@@ -55083,6 +63730,41 @@ export namespace Prisma {
     items?: PickingTaskItemUncheckedUpdateManyWithoutPickingTaskNestedInput
   }
 
+  export type PackingTaskUpsertWithoutSalesOrderInput = {
+    update: XOR<PackingTaskUpdateWithoutSalesOrderInput, PackingTaskUncheckedUpdateWithoutSalesOrderInput>
+    create: XOR<PackingTaskCreateWithoutSalesOrderInput, PackingTaskUncheckedCreateWithoutSalesOrderInput>
+    where?: PackingTaskWhereInput
+  }
+
+  export type PackingTaskUpdateToOneWithWhereWithoutSalesOrderInput = {
+    where?: PackingTaskWhereInput
+    data: XOR<PackingTaskUpdateWithoutSalesOrderInput, PackingTaskUncheckedUpdateWithoutSalesOrderInput>
+  }
+
+  export type PackingTaskUpdateWithoutSalesOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutPackingTasksNestedInput
+    packedBy?: UserUpdateOneWithoutPackedTasksNestedInput
+    items?: PackingTaskItemUpdateManyWithoutPackingTaskNestedInput
+    packages?: PackageUpdateManyWithoutPackingTaskNestedInput
+  }
+
+  export type PackingTaskUncheckedUpdateWithoutSalesOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    packedById?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: PackingTaskItemUncheckedUpdateManyWithoutPackingTaskNestedInput
+    packages?: PackageUncheckedUpdateManyWithoutPackingTaskNestedInput
+  }
+
   export type SalesOrderCreateWithoutItemsInput = {
     id?: string
     orderNumber: string
@@ -55096,6 +63778,7 @@ export namespace Prisma {
     warehouse: WarehouseCreateNestedOneWithoutSalesOrdersInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
+    packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutItemsInput = {
@@ -55111,6 +63794,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutItemsInput = {
@@ -55141,6 +63825,8 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutSalesOrderItemsInput = {
@@ -55166,6 +63852,8 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutSalesOrderItemsInput = {
@@ -55239,6 +63927,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PackingTaskItemCreateWithoutSalesOrderItemInput = {
+    id?: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    packingTask: PackingTaskCreateNestedOneWithoutItemsInput
+    product: ProductCreateNestedOneWithoutPackingTaskItemsInput
+    packageItems?: PackageItemCreateNestedManyWithoutPackingTaskItemInput
+  }
+
+  export type PackingTaskItemUncheckedCreateWithoutSalesOrderItemInput = {
+    id?: string
+    packingTaskId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutPackingTaskItemInput
+  }
+
+  export type PackingTaskItemCreateOrConnectWithoutSalesOrderItemInput = {
+    where: PackingTaskItemWhereUniqueInput
+    create: XOR<PackingTaskItemCreateWithoutSalesOrderItemInput, PackingTaskItemUncheckedCreateWithoutSalesOrderItemInput>
+  }
+
+  export type PackingTaskItemCreateManySalesOrderItemInputEnvelope = {
+    data: PackingTaskItemCreateManySalesOrderItemInput | PackingTaskItemCreateManySalesOrderItemInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SalesOrderUpsertWithoutItemsInput = {
     update: XOR<SalesOrderUpdateWithoutItemsInput, SalesOrderUncheckedUpdateWithoutItemsInput>
     create: XOR<SalesOrderCreateWithoutItemsInput, SalesOrderUncheckedCreateWithoutItemsInput>
@@ -55263,6 +63985,7 @@ export namespace Prisma {
     warehouse?: WarehouseUpdateOneRequiredWithoutSalesOrdersNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutItemsInput = {
@@ -55278,6 +64001,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type ProductUpsertWithoutSalesOrderItemsInput = {
@@ -55314,6 +64038,8 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutSalesOrderItemsInput = {
@@ -55339,6 +64065,8 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type StockReservationUpsertWithWhereUniqueWithoutSalesOrderItemInput = {
@@ -55373,6 +64101,22 @@ export namespace Prisma {
     data: XOR<PickingTaskItemUpdateManyMutationInput, PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemInput>
   }
 
+  export type PackingTaskItemUpsertWithWhereUniqueWithoutSalesOrderItemInput = {
+    where: PackingTaskItemWhereUniqueInput
+    update: XOR<PackingTaskItemUpdateWithoutSalesOrderItemInput, PackingTaskItemUncheckedUpdateWithoutSalesOrderItemInput>
+    create: XOR<PackingTaskItemCreateWithoutSalesOrderItemInput, PackingTaskItemUncheckedCreateWithoutSalesOrderItemInput>
+  }
+
+  export type PackingTaskItemUpdateWithWhereUniqueWithoutSalesOrderItemInput = {
+    where: PackingTaskItemWhereUniqueInput
+    data: XOR<PackingTaskItemUpdateWithoutSalesOrderItemInput, PackingTaskItemUncheckedUpdateWithoutSalesOrderItemInput>
+  }
+
+  export type PackingTaskItemUpdateManyWithWhereWithoutSalesOrderItemInput = {
+    where: PackingTaskItemScalarWhereInput
+    data: XOR<PackingTaskItemUpdateManyMutationInput, PackingTaskItemUncheckedUpdateManyWithoutSalesOrderItemInput>
+  }
+
   export type SalesOrderCreateWithoutReservationsInput = {
     id?: string
     orderNumber: string
@@ -55386,6 +64130,7 @@ export namespace Prisma {
     warehouse: WarehouseCreateNestedOneWithoutSalesOrdersInput
     items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
+    packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutReservationsInput = {
@@ -55401,6 +64146,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutReservationsInput = {
@@ -55419,6 +64165,7 @@ export namespace Prisma {
     salesOrder: SalesOrderCreateNestedOneWithoutItemsInput
     product: ProductCreateNestedOneWithoutSalesOrderItemsInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutSalesOrderItemInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemUncheckedCreateWithoutReservationsInput = {
@@ -55432,6 +64179,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutSalesOrderItemInput
   }
 
   export type SalesOrderItemCreateOrConnectWithoutReservationsInput = {
@@ -55460,6 +64208,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutStockReservationsInput = {
@@ -55483,6 +64232,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutStockReservationsInput = {
@@ -55513,6 +64263,8 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutStockReservationsInput = {
@@ -55538,6 +64290,8 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedCreateNestedManyWithoutProductInput
     salesOrderItems?: SalesOrderItemUncheckedCreateNestedManyWithoutProductInput
     pickingTaskItems?: PickingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packingTaskItems?: PackingTaskItemUncheckedCreateNestedManyWithoutProductInput
+    packageItems?: PackageItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutStockReservationsInput = {
@@ -55569,6 +64323,7 @@ export namespace Prisma {
     warehouse?: WarehouseUpdateOneRequiredWithoutSalesOrdersNestedInput
     items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutReservationsInput = {
@@ -55584,6 +64339,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderItemUpsertWithoutReservationsInput = {
@@ -55608,6 +64364,7 @@ export namespace Prisma {
     salesOrder?: SalesOrderUpdateOneRequiredWithoutItemsNestedInput
     product?: ProductUpdateOneRequiredWithoutSalesOrderItemsNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateWithoutReservationsInput = {
@@ -55621,6 +64378,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type WarehouseUpsertWithoutStockReservationsInput = {
@@ -55655,6 +64413,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutStockReservationsInput = {
@@ -55678,6 +64437,7 @@ export namespace Prisma {
     goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type ProductUpsertWithoutStockReservationsInput = {
@@ -55714,6 +64474,8 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutStockReservationsInput = {
@@ -55739,6 +64501,8 @@ export namespace Prisma {
     goodsReceiptItems?: GoodsReceiptItemUncheckedUpdateManyWithoutProductNestedInput
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -55864,6 +64628,16 @@ export namespace Prisma {
     locationStockId: string
     quantity: Decimal | DecimalJsLike | number | string
     pickedAt?: Date | string
+  }
+
+  export type PackingTaskCreateManyPackedByInput = {
+    id?: string
+    packingNumber: string
+    salesOrderId: string
+    warehouseId: string
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -56174,6 +64948,7 @@ export namespace Prisma {
     items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutCreatedByInput = {
@@ -56189,6 +64964,7 @@ export namespace Prisma {
     items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateManyWithoutCreatedByInput = {
@@ -56257,6 +65033,40 @@ export namespace Prisma {
     locationStockId?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     pickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingTaskUpdateWithoutPackedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutPackingTaskNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutPackingTasksNestedInput
+    items?: PackingTaskItemUpdateManyWithoutPackingTaskNestedInput
+    packages?: PackageUpdateManyWithoutPackingTaskNestedInput
+  }
+
+  export type PackingTaskUncheckedUpdateWithoutPackedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: PackingTaskItemUncheckedUpdateManyWithoutPackingTaskNestedInput
+    packages?: PackageUncheckedUpdateManyWithoutPackingTaskNestedInput
+  }
+
+  export type PackingTaskUncheckedUpdateManyWithoutPackedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PickingAllocationCreateManyLocationStockInput = {
@@ -56423,6 +65233,16 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type PackingTaskCreateManyWarehouseInput = {
+    id?: string
+    packingNumber: string
+    salesOrderId: string
+    packedById?: string | null
+    status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserUpdateWithoutWarehouseInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -56446,6 +65266,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWarehouseInput = {
@@ -56471,6 +65292,7 @@ export namespace Prisma {
     createdSalesOrders?: SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
     assignedPickingTasks?: PickingTaskUncheckedUpdateManyWithoutAssignedToNestedInput
     pickingAllocations?: PickingAllocationUncheckedUpdateManyWithoutPickedByNestedInput
+    packedTasks?: PackingTaskUncheckedUpdateManyWithoutPackedByNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutWarehouseInput = {
@@ -56763,6 +65585,7 @@ export namespace Prisma {
     items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutWarehouseInput = {
@@ -56778,6 +65601,7 @@ export namespace Prisma {
     items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateManyWithoutWarehouseInput = {
@@ -56857,6 +65681,40 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PackingTaskUpdateWithoutWarehouseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutPackingTaskNestedInput
+    packedBy?: UserUpdateOneWithoutPackedTasksNestedInput
+    items?: PackingTaskItemUpdateManyWithoutPackingTaskNestedInput
+    packages?: PackageUpdateManyWithoutPackingTaskNestedInput
+  }
+
+  export type PackingTaskUncheckedUpdateWithoutWarehouseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    packedById?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: PackingTaskItemUncheckedUpdateManyWithoutPackingTaskNestedInput
+    packages?: PackageUncheckedUpdateManyWithoutPackingTaskNestedInput
+  }
+
+  export type PackingTaskUncheckedUpdateManyWithoutWarehouseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    packedById?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProductCreateManyCategoryInput = {
     id?: string
     sku: string
@@ -56896,6 +65754,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCategoryInput = {
@@ -56921,6 +65781,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutCategoryInput = {
@@ -56978,6 +65840,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutBrandInput = {
@@ -57003,6 +65867,8 @@ export namespace Prisma {
     salesOrderItems?: SalesOrderItemUncheckedUpdateManyWithoutProductNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutProductNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
+    packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutBrandInput = {
@@ -57110,6 +65976,26 @@ export namespace Prisma {
     requiredQuantity: Decimal | DecimalJsLike | number | string
     pickedQuantity?: Decimal | DecimalJsLike | number | string
     status?: $Enums.PickingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackingTaskItemCreateManyProductInput = {
+    id?: string
+    packingTaskId: string
+    salesOrderItemId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackageItemCreateManyProductInput = {
+    id?: string
+    packageId: string
+    packingTaskItemId: string
+    quantity: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -57307,6 +66193,7 @@ export namespace Prisma {
     salesOrder?: SalesOrderUpdateOneRequiredWithoutItemsNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderItemNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateWithoutProductInput = {
@@ -57320,6 +66207,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderItemNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateManyWithoutProductInput = {
@@ -57397,6 +66285,228 @@ export namespace Prisma {
     requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingTaskItemUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingTask?: PackingTaskUpdateOneRequiredWithoutItemsNestedInput
+    salesOrderItem?: SalesOrderItemUpdateOneRequiredWithoutPackingTaskItemsNestedInput
+    packageItems?: PackageItemUpdateManyWithoutPackingTaskItemNestedInput
+  }
+
+  export type PackingTaskItemUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingTaskId?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packageItems?: PackageItemUncheckedUpdateManyWithoutPackingTaskItemNestedInput
+  }
+
+  export type PackingTaskItemUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingTaskId?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackageItemUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    package?: PackageUpdateOneRequiredWithoutItemsNestedInput
+    packingTaskItem?: PackingTaskItemUpdateOneRequiredWithoutPackageItemsNestedInput
+  }
+
+  export type PackageItemUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageId?: StringFieldUpdateOperationsInput | string
+    packingTaskItemId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackageItemUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageId?: StringFieldUpdateOperationsInput | string
+    packingTaskItemId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingTaskItemCreateManyPackingTaskInput = {
+    id?: string
+    salesOrderItemId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackageCreateManyPackingTaskInput = {
+    id?: string
+    packageNumber: string
+    status?: $Enums.PackageStatus
+    weight?: Decimal | DecimalJsLike | number | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackingTaskItemUpdateWithoutPackingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrderItem?: SalesOrderItemUpdateOneRequiredWithoutPackingTaskItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutPackingTaskItemsNestedInput
+    packageItems?: PackageItemUpdateManyWithoutPackingTaskItemNestedInput
+  }
+
+  export type PackingTaskItemUncheckedUpdateWithoutPackingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packageItems?: PackageItemUncheckedUpdateManyWithoutPackingTaskItemNestedInput
+  }
+
+  export type PackingTaskItemUncheckedUpdateManyWithoutPackingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    salesOrderItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackageUpdateWithoutPackingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackageStatusFieldUpdateOperationsInput | $Enums.PackageStatus
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: PackageItemUpdateManyWithoutPackageNestedInput
+  }
+
+  export type PackageUncheckedUpdateWithoutPackingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackageStatusFieldUpdateOperationsInput | $Enums.PackageStatus
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: PackageItemUncheckedUpdateManyWithoutPackageNestedInput
+  }
+
+  export type PackageUncheckedUpdateManyWithoutPackingTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumPackageStatusFieldUpdateOperationsInput | $Enums.PackageStatus
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackageItemCreateManyPackingTaskItemInput = {
+    id?: string
+    packageId: string
+    productId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackageItemUpdateWithoutPackingTaskItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    package?: PackageUpdateOneRequiredWithoutItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutPackageItemsNestedInput
+  }
+
+  export type PackageItemUncheckedUpdateWithoutPackingTaskItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackageItemUncheckedUpdateManyWithoutPackingTaskItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackageItemCreateManyPackageInput = {
+    id?: string
+    packingTaskItemId: string
+    productId: string
+    quantity: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PackageItemUpdateWithoutPackageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingTaskItem?: PackingTaskItemUpdateOneRequiredWithoutPackageItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutPackageItemsNestedInput
+  }
+
+  export type PackageItemUncheckedUpdateWithoutPackageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingTaskItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackageItemUncheckedUpdateManyWithoutPackageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingTaskItemId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -58006,6 +67116,7 @@ export namespace Prisma {
     product?: ProductUpdateOneRequiredWithoutSalesOrderItemsNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderItemNestedInput
     pickingTaskItems?: PickingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
+    packingTaskItems?: PackingTaskItemUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateWithoutSalesOrderInput = {
@@ -58019,6 +67130,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderItemNestedInput
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
+    packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutSalesOrderItemNestedInput
   }
 
   export type SalesOrderItemUncheckedUpdateManyWithoutSalesOrderInput = {
@@ -58087,6 +67199,17 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type PackingTaskItemCreateManySalesOrderItemInput = {
+    id?: string
+    packingTaskId: string
+    productId: string
+    requiredQuantity: Decimal | DecimalJsLike | number | string
+    packedQuantity?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.PackingItemStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type StockReservationUpdateWithoutSalesOrderItemInput = {
     id?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -58151,6 +67274,41 @@ export namespace Prisma {
     requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     pickedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumPickingItemStatusFieldUpdateOperationsInput | $Enums.PickingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingTaskItemUpdateWithoutSalesOrderItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingTask?: PackingTaskUpdateOneRequiredWithoutItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutPackingTaskItemsNestedInput
+    packageItems?: PackageItemUpdateManyWithoutPackingTaskItemNestedInput
+  }
+
+  export type PackingTaskItemUncheckedUpdateWithoutSalesOrderItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingTaskId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packageItems?: PackageItemUncheckedUpdateManyWithoutPackingTaskItemNestedInput
+  }
+
+  export type PackingTaskItemUncheckedUpdateManyWithoutSalesOrderItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packingTaskId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    requiredQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    packedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumPackingItemStatusFieldUpdateOperationsInput | $Enums.PackingItemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

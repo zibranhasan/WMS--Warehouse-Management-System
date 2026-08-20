@@ -91,3 +91,22 @@ enum PickingItemStatus {
   PICKED
 }
 
+enum PackingStatus {
+  PENDING
+  IN_PROGRESS
+  PARTIALLY_PACKED
+  PACKED
+  CANCELLED
+}
+
+enum PackingItemStatus {
+  PENDING
+  PARTIALLY_PACKED
+  PACKED
+}
+
+enum PackageStatus {
+  OPEN
+  PACKED
+  CANCELLED
+}

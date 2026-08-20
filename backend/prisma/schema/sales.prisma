@@ -21,6 +21,7 @@ model SalesOrder {
   items        SalesOrderItem[]
   reservations StockReservation[]
   pickingTask  PickingTask?
+  packingTask  PackingTask?
 
   @@map("sales_orders")
 }
@@ -42,6 +43,7 @@ model SalesOrderItem {
 
   reservations     StockReservation[]
   pickingTaskItems PickingTaskItem[]
+  packingTaskItems PackingTaskItem[]
 
   @@unique([salesOrderId, productId])
   @@map("sales_order_items")
