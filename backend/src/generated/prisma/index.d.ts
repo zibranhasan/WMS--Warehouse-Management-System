@@ -168,6 +168,11 @@ export type SalesOrderItem = $Result.DefaultSelection<Prisma.$SalesOrderItemPayl
  * 
  */
 export type StockReservation = $Result.DefaultSelection<Prisma.$StockReservationPayload>
+/**
+ * Model Shipment
+ * 
+ */
+export type Shipment = $Result.DefaultSelection<Prisma.$ShipmentPayload>
 
 /**
  * Enums
@@ -275,6 +280,8 @@ export type PurchaseOrderStatus = (typeof PurchaseOrderStatus)[keyof typeof Purc
 export const SalesOrderStatus: {
   PENDING: 'PENDING',
   CONFIRMED: 'CONFIRMED',
+  SHIPPED: 'SHIPPED',
+  DELIVERED: 'DELIVERED',
   CANCELLED: 'CANCELLED'
 };
 
@@ -338,6 +345,27 @@ export const PackageStatus: {
 };
 
 export type PackageStatus = (typeof PackageStatus)[keyof typeof PackageStatus]
+
+
+export const ShipmentStatus: {
+  READY: 'READY',
+  SHIPPED: 'SHIPPED',
+  IN_TRANSIT: 'IN_TRANSIT',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type ShipmentStatus = (typeof ShipmentStatus)[keyof typeof ShipmentStatus]
+
+
+export const ShippingMethod: {
+  STANDARD: 'STANDARD',
+  EXPRESS: 'EXPRESS',
+  SAME_DAY: 'SAME_DAY',
+  PICKUP: 'PICKUP'
+};
+
+export type ShippingMethod = (typeof ShippingMethod)[keyof typeof ShippingMethod]
 
 }
 
@@ -412,6 +440,14 @@ export const PackingItemStatus: typeof $Enums.PackingItemStatus
 export type PackageStatus = $Enums.PackageStatus
 
 export const PackageStatus: typeof $Enums.PackageStatus
+
+export type ShipmentStatus = $Enums.ShipmentStatus
+
+export const ShipmentStatus: typeof $Enums.ShipmentStatus
+
+export type ShippingMethod = $Enums.ShippingMethod
+
+export const ShippingMethod: typeof $Enums.ShippingMethod
 
 /**
  * ##  Prisma Client ʲˢ
@@ -843,6 +879,16 @@ export class PrismaClient<
     * ```
     */
   get stockReservation(): Prisma.StockReservationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.shipment`: Exposes CRUD operations for the **Shipment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Shipments
+    * const shipments = await prisma.shipment.findMany()
+    * ```
+    */
+  get shipment(): Prisma.ShipmentDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1320,7 +1366,8 @@ export namespace Prisma {
     GoodsReceiptItem: 'GoodsReceiptItem',
     SalesOrder: 'SalesOrder',
     SalesOrderItem: 'SalesOrderItem',
-    StockReservation: 'StockReservation'
+    StockReservation: 'StockReservation',
+    Shipment: 'Shipment'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1336,7 +1383,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "inventoryStock" | "stockMovement" | "inventoryLocationStock" | "inventoryLocationMovement" | "warehouse" | "category" | "brand" | "product" | "packingTask" | "packingTaskItem" | "package" | "packageItem" | "zone" | "aisle" | "shelf" | "bin" | "pickingTask" | "pickingTaskItem" | "pickingAllocation" | "supplier" | "purchaseOrder" | "purchaseOrderItem" | "goodsReceipt" | "goodsReceiptItem" | "salesOrder" | "salesOrderItem" | "stockReservation"
+      modelProps: "user" | "session" | "account" | "verification" | "inventoryStock" | "stockMovement" | "inventoryLocationStock" | "inventoryLocationMovement" | "warehouse" | "category" | "brand" | "product" | "packingTask" | "packingTaskItem" | "package" | "packageItem" | "zone" | "aisle" | "shelf" | "bin" | "pickingTask" | "pickingTaskItem" | "pickingAllocation" | "supplier" | "purchaseOrder" | "purchaseOrderItem" | "goodsReceipt" | "goodsReceiptItem" | "salesOrder" | "salesOrderItem" | "stockReservation" | "shipment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3634,6 +3681,80 @@ export namespace Prisma {
           }
         }
       }
+      Shipment: {
+        payload: Prisma.$ShipmentPayload<ExtArgs>
+        fields: Prisma.ShipmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ShipmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShipmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ShipmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShipmentPayload>
+          }
+          findFirst: {
+            args: Prisma.ShipmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShipmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ShipmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShipmentPayload>
+          }
+          findMany: {
+            args: Prisma.ShipmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShipmentPayload>[]
+          }
+          create: {
+            args: Prisma.ShipmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShipmentPayload>
+          }
+          createMany: {
+            args: Prisma.ShipmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ShipmentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShipmentPayload>[]
+          }
+          delete: {
+            args: Prisma.ShipmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShipmentPayload>
+          }
+          update: {
+            args: Prisma.ShipmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShipmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.ShipmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ShipmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ShipmentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShipmentPayload>[]
+          }
+          upsert: {
+            args: Prisma.ShipmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShipmentPayload>
+          }
+          aggregate: {
+            args: Prisma.ShipmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateShipment>
+          }
+          groupBy: {
+            args: Prisma.ShipmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ShipmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ShipmentCountArgs<ExtArgs>
+            result: $Utils.Optional<ShipmentCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3788,6 +3909,7 @@ export namespace Prisma {
     salesOrder?: SalesOrderOmit
     salesOrderItem?: SalesOrderItemOmit
     stockReservation?: StockReservationOmit
+    shipment?: ShipmentOmit
   }
 
   /* Types for Logging */
@@ -4032,6 +4154,7 @@ export namespace Prisma {
     stockReservations: number
     pickingTasks: number
     packingTasks: number
+    shipments: number
   }
 
   export type WarehouseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4047,6 +4170,7 @@ export namespace Prisma {
     stockReservations?: boolean | WarehouseCountOutputTypeCountStockReservationsArgs
     pickingTasks?: boolean | WarehouseCountOutputTypeCountPickingTasksArgs
     packingTasks?: boolean | WarehouseCountOutputTypeCountPackingTasksArgs
+    shipments?: boolean | WarehouseCountOutputTypeCountShipmentsArgs
   }
 
   // Custom InputTypes
@@ -4142,6 +4266,13 @@ export namespace Prisma {
    */
   export type WarehouseCountOutputTypeCountPackingTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PackingTaskWhereInput
+  }
+
+  /**
+   * WarehouseCountOutputType without action
+   */
+  export type WarehouseCountOutputTypeCountShipmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ShipmentWhereInput
   }
 
 
@@ -14592,6 +14723,7 @@ export namespace Prisma {
     stockReservations?: boolean | Warehouse$stockReservationsArgs<ExtArgs>
     pickingTasks?: boolean | Warehouse$pickingTasksArgs<ExtArgs>
     packingTasks?: boolean | Warehouse$packingTasksArgs<ExtArgs>
+    shipments?: boolean | Warehouse$shipmentsArgs<ExtArgs>
     _count?: boolean | WarehouseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["warehouse"]>
 
@@ -14648,6 +14780,7 @@ export namespace Prisma {
     stockReservations?: boolean | Warehouse$stockReservationsArgs<ExtArgs>
     pickingTasks?: boolean | Warehouse$pickingTasksArgs<ExtArgs>
     packingTasks?: boolean | Warehouse$packingTasksArgs<ExtArgs>
+    shipments?: boolean | Warehouse$shipmentsArgs<ExtArgs>
     _count?: boolean | WarehouseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WarehouseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -14668,6 +14801,7 @@ export namespace Prisma {
       stockReservations: Prisma.$StockReservationPayload<ExtArgs>[]
       pickingTasks: Prisma.$PickingTaskPayload<ExtArgs>[]
       packingTasks: Prisma.$PackingTaskPayload<ExtArgs>[]
+      shipments: Prisma.$ShipmentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -15086,6 +15220,7 @@ export namespace Prisma {
     stockReservations<T extends Warehouse$stockReservationsArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$stockReservationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockReservationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pickingTasks<T extends Warehouse$pickingTasksArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$pickingTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     packingTasks<T extends Warehouse$packingTasksArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$packingTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    shipments<T extends Warehouse$shipmentsArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$shipmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15803,6 +15938,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PackingTaskScalarFieldEnum | PackingTaskScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse.shipments
+   */
+  export type Warehouse$shipmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentInclude<ExtArgs> | null
+    where?: ShipmentWhereInput
+    orderBy?: ShipmentOrderByWithRelationInput | ShipmentOrderByWithRelationInput[]
+    cursor?: ShipmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ShipmentScalarFieldEnum | ShipmentScalarFieldEnum[]
   }
 
   /**
@@ -38848,6 +39007,7 @@ export namespace Prisma {
     reservations?: boolean | SalesOrder$reservationsArgs<ExtArgs>
     pickingTask?: boolean | SalesOrder$pickingTaskArgs<ExtArgs>
     packingTask?: boolean | SalesOrder$packingTaskArgs<ExtArgs>
+    shipment?: boolean | SalesOrder$shipmentArgs<ExtArgs>
     _count?: boolean | SalesOrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["salesOrder"]>
 
@@ -38902,6 +39062,7 @@ export namespace Prisma {
     reservations?: boolean | SalesOrder$reservationsArgs<ExtArgs>
     pickingTask?: boolean | SalesOrder$pickingTaskArgs<ExtArgs>
     packingTask?: boolean | SalesOrder$packingTaskArgs<ExtArgs>
+    shipment?: boolean | SalesOrder$shipmentArgs<ExtArgs>
     _count?: boolean | SalesOrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SalesOrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -38922,6 +39083,7 @@ export namespace Prisma {
       reservations: Prisma.$StockReservationPayload<ExtArgs>[]
       pickingTask: Prisma.$PickingTaskPayload<ExtArgs> | null
       packingTask: Prisma.$PackingTaskPayload<ExtArgs> | null
+      shipment: Prisma.$ShipmentPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -39334,6 +39496,7 @@ export namespace Prisma {
     reservations<T extends SalesOrder$reservationsArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrder$reservationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockReservationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pickingTask<T extends SalesOrder$pickingTaskArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrder$pickingTaskArgs<ExtArgs>>): Prisma__PickingTaskClient<$Result.GetResult<Prisma.$PickingTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     packingTask<T extends SalesOrder$packingTaskArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrder$packingTaskArgs<ExtArgs>>): Prisma__PackingTaskClient<$Result.GetResult<Prisma.$PackingTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    shipment<T extends SalesOrder$shipmentArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrder$shipmentArgs<ExtArgs>>): Prisma__ShipmentClient<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -39857,6 +40020,25 @@ export namespace Prisma {
      */
     include?: PackingTaskInclude<ExtArgs> | null
     where?: PackingTaskWhereInput
+  }
+
+  /**
+   * SalesOrder.shipment
+   */
+  export type SalesOrder$shipmentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentInclude<ExtArgs> | null
+    where?: ShipmentWhereInput
   }
 
   /**
@@ -42307,6 +42489,1233 @@ export namespace Prisma {
 
 
   /**
+   * Model Shipment
+   */
+
+  export type AggregateShipment = {
+    _count: ShipmentCountAggregateOutputType | null
+    _min: ShipmentMinAggregateOutputType | null
+    _max: ShipmentMaxAggregateOutputType | null
+  }
+
+  export type ShipmentMinAggregateOutputType = {
+    id: string | null
+    shipmentNumber: string | null
+    salesOrderId: string | null
+    warehouseId: string | null
+    status: $Enums.ShipmentStatus | null
+    shippingMethod: $Enums.ShippingMethod | null
+    carrier: string | null
+    trackingNumber: string | null
+    shippingAddress: string | null
+    shippingCity: string | null
+    shippingCountry: string | null
+    shippingPhone: string | null
+    shippedAt: Date | null
+    deliveredAt: Date | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ShipmentMaxAggregateOutputType = {
+    id: string | null
+    shipmentNumber: string | null
+    salesOrderId: string | null
+    warehouseId: string | null
+    status: $Enums.ShipmentStatus | null
+    shippingMethod: $Enums.ShippingMethod | null
+    carrier: string | null
+    trackingNumber: string | null
+    shippingAddress: string | null
+    shippingCity: string | null
+    shippingCountry: string | null
+    shippingPhone: string | null
+    shippedAt: Date | null
+    deliveredAt: Date | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ShipmentCountAggregateOutputType = {
+    id: number
+    shipmentNumber: number
+    salesOrderId: number
+    warehouseId: number
+    status: number
+    shippingMethod: number
+    carrier: number
+    trackingNumber: number
+    shippingAddress: number
+    shippingCity: number
+    shippingCountry: number
+    shippingPhone: number
+    shippedAt: number
+    deliveredAt: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ShipmentMinAggregateInputType = {
+    id?: true
+    shipmentNumber?: true
+    salesOrderId?: true
+    warehouseId?: true
+    status?: true
+    shippingMethod?: true
+    carrier?: true
+    trackingNumber?: true
+    shippingAddress?: true
+    shippingCity?: true
+    shippingCountry?: true
+    shippingPhone?: true
+    shippedAt?: true
+    deliveredAt?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ShipmentMaxAggregateInputType = {
+    id?: true
+    shipmentNumber?: true
+    salesOrderId?: true
+    warehouseId?: true
+    status?: true
+    shippingMethod?: true
+    carrier?: true
+    trackingNumber?: true
+    shippingAddress?: true
+    shippingCity?: true
+    shippingCountry?: true
+    shippingPhone?: true
+    shippedAt?: true
+    deliveredAt?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ShipmentCountAggregateInputType = {
+    id?: true
+    shipmentNumber?: true
+    salesOrderId?: true
+    warehouseId?: true
+    status?: true
+    shippingMethod?: true
+    carrier?: true
+    trackingNumber?: true
+    shippingAddress?: true
+    shippingCity?: true
+    shippingCountry?: true
+    shippingPhone?: true
+    shippedAt?: true
+    deliveredAt?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ShipmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Shipment to aggregate.
+     */
+    where?: ShipmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Shipments to fetch.
+     */
+    orderBy?: ShipmentOrderByWithRelationInput | ShipmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ShipmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Shipments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Shipments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Shipments
+    **/
+    _count?: true | ShipmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ShipmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ShipmentMaxAggregateInputType
+  }
+
+  export type GetShipmentAggregateType<T extends ShipmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateShipment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateShipment[P]>
+      : GetScalarType<T[P], AggregateShipment[P]>
+  }
+
+
+
+
+  export type ShipmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ShipmentWhereInput
+    orderBy?: ShipmentOrderByWithAggregationInput | ShipmentOrderByWithAggregationInput[]
+    by: ShipmentScalarFieldEnum[] | ShipmentScalarFieldEnum
+    having?: ShipmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ShipmentCountAggregateInputType | true
+    _min?: ShipmentMinAggregateInputType
+    _max?: ShipmentMaxAggregateInputType
+  }
+
+  export type ShipmentGroupByOutputType = {
+    id: string
+    shipmentNumber: string
+    salesOrderId: string
+    warehouseId: string
+    status: $Enums.ShipmentStatus
+    shippingMethod: $Enums.ShippingMethod
+    carrier: string | null
+    trackingNumber: string | null
+    shippingAddress: string
+    shippingCity: string
+    shippingCountry: string
+    shippingPhone: string
+    shippedAt: Date | null
+    deliveredAt: Date | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ShipmentCountAggregateOutputType | null
+    _min: ShipmentMinAggregateOutputType | null
+    _max: ShipmentMaxAggregateOutputType | null
+  }
+
+  type GetShipmentGroupByPayload<T extends ShipmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ShipmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ShipmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ShipmentGroupByOutputType[P]>
+            : GetScalarType<T[P], ShipmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ShipmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    shipmentNumber?: boolean
+    salesOrderId?: boolean
+    warehouseId?: boolean
+    status?: boolean
+    shippingMethod?: boolean
+    carrier?: boolean
+    trackingNumber?: boolean
+    shippingAddress?: boolean
+    shippingCity?: boolean
+    shippingCountry?: boolean
+    shippingPhone?: boolean
+    shippedAt?: boolean
+    deliveredAt?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["shipment"]>
+
+  export type ShipmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    shipmentNumber?: boolean
+    salesOrderId?: boolean
+    warehouseId?: boolean
+    status?: boolean
+    shippingMethod?: boolean
+    carrier?: boolean
+    trackingNumber?: boolean
+    shippingAddress?: boolean
+    shippingCity?: boolean
+    shippingCountry?: boolean
+    shippingPhone?: boolean
+    shippedAt?: boolean
+    deliveredAt?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["shipment"]>
+
+  export type ShipmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    shipmentNumber?: boolean
+    salesOrderId?: boolean
+    warehouseId?: boolean
+    status?: boolean
+    shippingMethod?: boolean
+    carrier?: boolean
+    trackingNumber?: boolean
+    shippingAddress?: boolean
+    shippingCity?: boolean
+    shippingCountry?: boolean
+    shippingPhone?: boolean
+    shippedAt?: boolean
+    deliveredAt?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["shipment"]>
+
+  export type ShipmentSelectScalar = {
+    id?: boolean
+    shipmentNumber?: boolean
+    salesOrderId?: boolean
+    warehouseId?: boolean
+    status?: boolean
+    shippingMethod?: boolean
+    carrier?: boolean
+    trackingNumber?: boolean
+    shippingAddress?: boolean
+    shippingCity?: boolean
+    shippingCountry?: boolean
+    shippingPhone?: boolean
+    shippedAt?: boolean
+    deliveredAt?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ShipmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "shipmentNumber" | "salesOrderId" | "warehouseId" | "status" | "shippingMethod" | "carrier" | "trackingNumber" | "shippingAddress" | "shippingCity" | "shippingCountry" | "shippingPhone" | "shippedAt" | "deliveredAt" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["shipment"]>
+  export type ShipmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+  }
+  export type ShipmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+  }
+  export type ShipmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    salesOrder?: boolean | SalesOrderDefaultArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+  }
+
+  export type $ShipmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Shipment"
+    objects: {
+      salesOrder: Prisma.$SalesOrderPayload<ExtArgs>
+      warehouse: Prisma.$WarehousePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      shipmentNumber: string
+      salesOrderId: string
+      warehouseId: string
+      status: $Enums.ShipmentStatus
+      shippingMethod: $Enums.ShippingMethod
+      carrier: string | null
+      trackingNumber: string | null
+      shippingAddress: string
+      shippingCity: string
+      shippingCountry: string
+      shippingPhone: string
+      shippedAt: Date | null
+      deliveredAt: Date | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["shipment"]>
+    composites: {}
+  }
+
+  type ShipmentGetPayload<S extends boolean | null | undefined | ShipmentDefaultArgs> = $Result.GetResult<Prisma.$ShipmentPayload, S>
+
+  type ShipmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ShipmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ShipmentCountAggregateInputType | true
+    }
+
+  export interface ShipmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Shipment'], meta: { name: 'Shipment' } }
+    /**
+     * Find zero or one Shipment that matches the filter.
+     * @param {ShipmentFindUniqueArgs} args - Arguments to find a Shipment
+     * @example
+     * // Get one Shipment
+     * const shipment = await prisma.shipment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ShipmentFindUniqueArgs>(args: SelectSubset<T, ShipmentFindUniqueArgs<ExtArgs>>): Prisma__ShipmentClient<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Shipment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ShipmentFindUniqueOrThrowArgs} args - Arguments to find a Shipment
+     * @example
+     * // Get one Shipment
+     * const shipment = await prisma.shipment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ShipmentFindUniqueOrThrowArgs>(args: SelectSubset<T, ShipmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ShipmentClient<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Shipment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShipmentFindFirstArgs} args - Arguments to find a Shipment
+     * @example
+     * // Get one Shipment
+     * const shipment = await prisma.shipment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ShipmentFindFirstArgs>(args?: SelectSubset<T, ShipmentFindFirstArgs<ExtArgs>>): Prisma__ShipmentClient<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Shipment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShipmentFindFirstOrThrowArgs} args - Arguments to find a Shipment
+     * @example
+     * // Get one Shipment
+     * const shipment = await prisma.shipment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ShipmentFindFirstOrThrowArgs>(args?: SelectSubset<T, ShipmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__ShipmentClient<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Shipments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShipmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Shipments
+     * const shipments = await prisma.shipment.findMany()
+     * 
+     * // Get first 10 Shipments
+     * const shipments = await prisma.shipment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const shipmentWithIdOnly = await prisma.shipment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ShipmentFindManyArgs>(args?: SelectSubset<T, ShipmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Shipment.
+     * @param {ShipmentCreateArgs} args - Arguments to create a Shipment.
+     * @example
+     * // Create one Shipment
+     * const Shipment = await prisma.shipment.create({
+     *   data: {
+     *     // ... data to create a Shipment
+     *   }
+     * })
+     * 
+     */
+    create<T extends ShipmentCreateArgs>(args: SelectSubset<T, ShipmentCreateArgs<ExtArgs>>): Prisma__ShipmentClient<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Shipments.
+     * @param {ShipmentCreateManyArgs} args - Arguments to create many Shipments.
+     * @example
+     * // Create many Shipments
+     * const shipment = await prisma.shipment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ShipmentCreateManyArgs>(args?: SelectSubset<T, ShipmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Shipments and returns the data saved in the database.
+     * @param {ShipmentCreateManyAndReturnArgs} args - Arguments to create many Shipments.
+     * @example
+     * // Create many Shipments
+     * const shipment = await prisma.shipment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Shipments and only return the `id`
+     * const shipmentWithIdOnly = await prisma.shipment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ShipmentCreateManyAndReturnArgs>(args?: SelectSubset<T, ShipmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Shipment.
+     * @param {ShipmentDeleteArgs} args - Arguments to delete one Shipment.
+     * @example
+     * // Delete one Shipment
+     * const Shipment = await prisma.shipment.delete({
+     *   where: {
+     *     // ... filter to delete one Shipment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ShipmentDeleteArgs>(args: SelectSubset<T, ShipmentDeleteArgs<ExtArgs>>): Prisma__ShipmentClient<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Shipment.
+     * @param {ShipmentUpdateArgs} args - Arguments to update one Shipment.
+     * @example
+     * // Update one Shipment
+     * const shipment = await prisma.shipment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ShipmentUpdateArgs>(args: SelectSubset<T, ShipmentUpdateArgs<ExtArgs>>): Prisma__ShipmentClient<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Shipments.
+     * @param {ShipmentDeleteManyArgs} args - Arguments to filter Shipments to delete.
+     * @example
+     * // Delete a few Shipments
+     * const { count } = await prisma.shipment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ShipmentDeleteManyArgs>(args?: SelectSubset<T, ShipmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Shipments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShipmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Shipments
+     * const shipment = await prisma.shipment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ShipmentUpdateManyArgs>(args: SelectSubset<T, ShipmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Shipments and returns the data updated in the database.
+     * @param {ShipmentUpdateManyAndReturnArgs} args - Arguments to update many Shipments.
+     * @example
+     * // Update many Shipments
+     * const shipment = await prisma.shipment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Shipments and only return the `id`
+     * const shipmentWithIdOnly = await prisma.shipment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ShipmentUpdateManyAndReturnArgs>(args: SelectSubset<T, ShipmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Shipment.
+     * @param {ShipmentUpsertArgs} args - Arguments to update or create a Shipment.
+     * @example
+     * // Update or create a Shipment
+     * const shipment = await prisma.shipment.upsert({
+     *   create: {
+     *     // ... data to create a Shipment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Shipment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ShipmentUpsertArgs>(args: SelectSubset<T, ShipmentUpsertArgs<ExtArgs>>): Prisma__ShipmentClient<$Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Shipments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShipmentCountArgs} args - Arguments to filter Shipments to count.
+     * @example
+     * // Count the number of Shipments
+     * const count = await prisma.shipment.count({
+     *   where: {
+     *     // ... the filter for the Shipments we want to count
+     *   }
+     * })
+    **/
+    count<T extends ShipmentCountArgs>(
+      args?: Subset<T, ShipmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ShipmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Shipment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShipmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ShipmentAggregateArgs>(args: Subset<T, ShipmentAggregateArgs>): Prisma.PrismaPromise<GetShipmentAggregateType<T>>
+
+    /**
+     * Group by Shipment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShipmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ShipmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ShipmentGroupByArgs['orderBy'] }
+        : { orderBy?: ShipmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ShipmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShipmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Shipment model
+   */
+  readonly fields: ShipmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Shipment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ShipmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    salesOrder<T extends SalesOrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SalesOrderDefaultArgs<ExtArgs>>): Prisma__SalesOrderClient<$Result.GetResult<Prisma.$SalesOrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    warehouse<T extends WarehouseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WarehouseDefaultArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Shipment model
+   */
+  interface ShipmentFieldRefs {
+    readonly id: FieldRef<"Shipment", 'String'>
+    readonly shipmentNumber: FieldRef<"Shipment", 'String'>
+    readonly salesOrderId: FieldRef<"Shipment", 'String'>
+    readonly warehouseId: FieldRef<"Shipment", 'String'>
+    readonly status: FieldRef<"Shipment", 'ShipmentStatus'>
+    readonly shippingMethod: FieldRef<"Shipment", 'ShippingMethod'>
+    readonly carrier: FieldRef<"Shipment", 'String'>
+    readonly trackingNumber: FieldRef<"Shipment", 'String'>
+    readonly shippingAddress: FieldRef<"Shipment", 'String'>
+    readonly shippingCity: FieldRef<"Shipment", 'String'>
+    readonly shippingCountry: FieldRef<"Shipment", 'String'>
+    readonly shippingPhone: FieldRef<"Shipment", 'String'>
+    readonly shippedAt: FieldRef<"Shipment", 'DateTime'>
+    readonly deliveredAt: FieldRef<"Shipment", 'DateTime'>
+    readonly notes: FieldRef<"Shipment", 'String'>
+    readonly createdAt: FieldRef<"Shipment", 'DateTime'>
+    readonly updatedAt: FieldRef<"Shipment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Shipment findUnique
+   */
+  export type ShipmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Shipment to fetch.
+     */
+    where: ShipmentWhereUniqueInput
+  }
+
+  /**
+   * Shipment findUniqueOrThrow
+   */
+  export type ShipmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Shipment to fetch.
+     */
+    where: ShipmentWhereUniqueInput
+  }
+
+  /**
+   * Shipment findFirst
+   */
+  export type ShipmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Shipment to fetch.
+     */
+    where?: ShipmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Shipments to fetch.
+     */
+    orderBy?: ShipmentOrderByWithRelationInput | ShipmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Shipments.
+     */
+    cursor?: ShipmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Shipments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Shipments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Shipments.
+     */
+    distinct?: ShipmentScalarFieldEnum | ShipmentScalarFieldEnum[]
+  }
+
+  /**
+   * Shipment findFirstOrThrow
+   */
+  export type ShipmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Shipment to fetch.
+     */
+    where?: ShipmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Shipments to fetch.
+     */
+    orderBy?: ShipmentOrderByWithRelationInput | ShipmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Shipments.
+     */
+    cursor?: ShipmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Shipments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Shipments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Shipments.
+     */
+    distinct?: ShipmentScalarFieldEnum | ShipmentScalarFieldEnum[]
+  }
+
+  /**
+   * Shipment findMany
+   */
+  export type ShipmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Shipments to fetch.
+     */
+    where?: ShipmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Shipments to fetch.
+     */
+    orderBy?: ShipmentOrderByWithRelationInput | ShipmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Shipments.
+     */
+    cursor?: ShipmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Shipments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Shipments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Shipments.
+     */
+    distinct?: ShipmentScalarFieldEnum | ShipmentScalarFieldEnum[]
+  }
+
+  /**
+   * Shipment create
+   */
+  export type ShipmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Shipment.
+     */
+    data: XOR<ShipmentCreateInput, ShipmentUncheckedCreateInput>
+  }
+
+  /**
+   * Shipment createMany
+   */
+  export type ShipmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Shipments.
+     */
+    data: ShipmentCreateManyInput | ShipmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Shipment createManyAndReturn
+   */
+  export type ShipmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * The data used to create many Shipments.
+     */
+    data: ShipmentCreateManyInput | ShipmentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Shipment update
+   */
+  export type ShipmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Shipment.
+     */
+    data: XOR<ShipmentUpdateInput, ShipmentUncheckedUpdateInput>
+    /**
+     * Choose, which Shipment to update.
+     */
+    where: ShipmentWhereUniqueInput
+  }
+
+  /**
+   * Shipment updateMany
+   */
+  export type ShipmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Shipments.
+     */
+    data: XOR<ShipmentUpdateManyMutationInput, ShipmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Shipments to update
+     */
+    where?: ShipmentWhereInput
+    /**
+     * Limit how many Shipments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Shipment updateManyAndReturn
+   */
+  export type ShipmentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * The data used to update Shipments.
+     */
+    data: XOR<ShipmentUpdateManyMutationInput, ShipmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Shipments to update
+     */
+    where?: ShipmentWhereInput
+    /**
+     * Limit how many Shipments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Shipment upsert
+   */
+  export type ShipmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Shipment to update in case it exists.
+     */
+    where: ShipmentWhereUniqueInput
+    /**
+     * In case the Shipment found by the `where` argument doesn't exist, create a new Shipment with this data.
+     */
+    create: XOR<ShipmentCreateInput, ShipmentUncheckedCreateInput>
+    /**
+     * In case the Shipment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ShipmentUpdateInput, ShipmentUncheckedUpdateInput>
+  }
+
+  /**
+   * Shipment delete
+   */
+  export type ShipmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentInclude<ExtArgs> | null
+    /**
+     * Filter which Shipment to delete.
+     */
+    where: ShipmentWhereUniqueInput
+  }
+
+  /**
+   * Shipment deleteMany
+   */
+  export type ShipmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Shipments to delete
+     */
+    where?: ShipmentWhereInput
+    /**
+     * Limit how many Shipments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Shipment without action
+   */
+  export type ShipmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Shipment
+     */
+    select?: ShipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Shipment
+     */
+    omit?: ShipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShipmentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -42801,6 +44210,29 @@ export namespace Prisma {
   export type StockReservationScalarFieldEnum = (typeof StockReservationScalarFieldEnum)[keyof typeof StockReservationScalarFieldEnum]
 
 
+  export const ShipmentScalarFieldEnum: {
+    id: 'id',
+    shipmentNumber: 'shipmentNumber',
+    salesOrderId: 'salesOrderId',
+    warehouseId: 'warehouseId',
+    status: 'status',
+    shippingMethod: 'shippingMethod',
+    carrier: 'carrier',
+    trackingNumber: 'trackingNumber',
+    shippingAddress: 'shippingAddress',
+    shippingCity: 'shippingCity',
+    shippingCountry: 'shippingCountry',
+    shippingPhone: 'shippingPhone',
+    shippedAt: 'shippedAt',
+    deliveredAt: 'deliveredAt',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ShipmentScalarFieldEnum = (typeof ShipmentScalarFieldEnum)[keyof typeof ShipmentScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -43142,6 +44574,34 @@ export namespace Prisma {
    * Reference to a field of type 'ReservationStatus[]'
    */
   export type ListEnumReservationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReservationStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ShipmentStatus'
+   */
+  export type EnumShipmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShipmentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ShipmentStatus[]'
+   */
+  export type ListEnumShipmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShipmentStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ShippingMethod'
+   */
+  export type EnumShippingMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShippingMethod'>
+    
+
+
+  /**
+   * Reference to a field of type 'ShippingMethod[]'
+   */
+  export type ListEnumShippingMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShippingMethod[]'>
     
 
 
@@ -43873,6 +45333,7 @@ export namespace Prisma {
     stockReservations?: StockReservationListRelationFilter
     pickingTasks?: PickingTaskListRelationFilter
     packingTasks?: PackingTaskListRelationFilter
+    shipments?: ShipmentListRelationFilter
   }
 
   export type WarehouseOrderByWithRelationInput = {
@@ -43898,6 +45359,7 @@ export namespace Prisma {
     stockReservations?: StockReservationOrderByRelationAggregateInput
     pickingTasks?: PickingTaskOrderByRelationAggregateInput
     packingTasks?: PackingTaskOrderByRelationAggregateInput
+    shipments?: ShipmentOrderByRelationAggregateInput
   }
 
   export type WarehouseWhereUniqueInput = Prisma.AtLeast<{
@@ -43926,6 +45388,7 @@ export namespace Prisma {
     stockReservations?: StockReservationListRelationFilter
     pickingTasks?: PickingTaskListRelationFilter
     packingTasks?: PackingTaskListRelationFilter
+    shipments?: ShipmentListRelationFilter
   }, "id" | "code">
 
   export type WarehouseOrderByWithAggregationInput = {
@@ -45629,6 +47092,7 @@ export namespace Prisma {
     reservations?: StockReservationListRelationFilter
     pickingTask?: XOR<PickingTaskNullableScalarRelationFilter, PickingTaskWhereInput> | null
     packingTask?: XOR<PackingTaskNullableScalarRelationFilter, PackingTaskWhereInput> | null
+    shipment?: XOR<ShipmentNullableScalarRelationFilter, ShipmentWhereInput> | null
   }
 
   export type SalesOrderOrderByWithRelationInput = {
@@ -45648,6 +47112,7 @@ export namespace Prisma {
     reservations?: StockReservationOrderByRelationAggregateInput
     pickingTask?: PickingTaskOrderByWithRelationInput
     packingTask?: PackingTaskOrderByWithRelationInput
+    shipment?: ShipmentOrderByWithRelationInput
   }
 
   export type SalesOrderWhereUniqueInput = Prisma.AtLeast<{
@@ -45670,6 +47135,7 @@ export namespace Prisma {
     reservations?: StockReservationListRelationFilter
     pickingTask?: XOR<PickingTaskNullableScalarRelationFilter, PickingTaskWhereInput> | null
     packingTask?: XOR<PackingTaskNullableScalarRelationFilter, PackingTaskWhereInput> | null
+    shipment?: XOR<ShipmentNullableScalarRelationFilter, ShipmentWhereInput> | null
   }, "id" | "orderNumber">
 
   export type SalesOrderOrderByWithAggregationInput = {
@@ -45880,6 +47346,124 @@ export namespace Prisma {
     status?: EnumReservationStatusWithAggregatesFilter<"StockReservation"> | $Enums.ReservationStatus
     createdAt?: DateTimeWithAggregatesFilter<"StockReservation"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"StockReservation"> | Date | string
+  }
+
+  export type ShipmentWhereInput = {
+    AND?: ShipmentWhereInput | ShipmentWhereInput[]
+    OR?: ShipmentWhereInput[]
+    NOT?: ShipmentWhereInput | ShipmentWhereInput[]
+    id?: StringFilter<"Shipment"> | string
+    shipmentNumber?: StringFilter<"Shipment"> | string
+    salesOrderId?: StringFilter<"Shipment"> | string
+    warehouseId?: StringFilter<"Shipment"> | string
+    status?: EnumShipmentStatusFilter<"Shipment"> | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodFilter<"Shipment"> | $Enums.ShippingMethod
+    carrier?: StringNullableFilter<"Shipment"> | string | null
+    trackingNumber?: StringNullableFilter<"Shipment"> | string | null
+    shippingAddress?: StringFilter<"Shipment"> | string
+    shippingCity?: StringFilter<"Shipment"> | string
+    shippingCountry?: StringFilter<"Shipment"> | string
+    shippingPhone?: StringFilter<"Shipment"> | string
+    shippedAt?: DateTimeNullableFilter<"Shipment"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"Shipment"> | Date | string | null
+    notes?: StringNullableFilter<"Shipment"> | string | null
+    createdAt?: DateTimeFilter<"Shipment"> | Date | string
+    updatedAt?: DateTimeFilter<"Shipment"> | Date | string
+    salesOrder?: XOR<SalesOrderScalarRelationFilter, SalesOrderWhereInput>
+    warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
+  }
+
+  export type ShipmentOrderByWithRelationInput = {
+    id?: SortOrder
+    shipmentNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    status?: SortOrder
+    shippingMethod?: SortOrder
+    carrier?: SortOrderInput | SortOrder
+    trackingNumber?: SortOrderInput | SortOrder
+    shippingAddress?: SortOrder
+    shippingCity?: SortOrder
+    shippingCountry?: SortOrder
+    shippingPhone?: SortOrder
+    shippedAt?: SortOrderInput | SortOrder
+    deliveredAt?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    salesOrder?: SalesOrderOrderByWithRelationInput
+    warehouse?: WarehouseOrderByWithRelationInput
+  }
+
+  export type ShipmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    shipmentNumber?: string
+    salesOrderId?: string
+    AND?: ShipmentWhereInput | ShipmentWhereInput[]
+    OR?: ShipmentWhereInput[]
+    NOT?: ShipmentWhereInput | ShipmentWhereInput[]
+    warehouseId?: StringFilter<"Shipment"> | string
+    status?: EnumShipmentStatusFilter<"Shipment"> | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodFilter<"Shipment"> | $Enums.ShippingMethod
+    carrier?: StringNullableFilter<"Shipment"> | string | null
+    trackingNumber?: StringNullableFilter<"Shipment"> | string | null
+    shippingAddress?: StringFilter<"Shipment"> | string
+    shippingCity?: StringFilter<"Shipment"> | string
+    shippingCountry?: StringFilter<"Shipment"> | string
+    shippingPhone?: StringFilter<"Shipment"> | string
+    shippedAt?: DateTimeNullableFilter<"Shipment"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"Shipment"> | Date | string | null
+    notes?: StringNullableFilter<"Shipment"> | string | null
+    createdAt?: DateTimeFilter<"Shipment"> | Date | string
+    updatedAt?: DateTimeFilter<"Shipment"> | Date | string
+    salesOrder?: XOR<SalesOrderScalarRelationFilter, SalesOrderWhereInput>
+    warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
+  }, "id" | "shipmentNumber" | "salesOrderId">
+
+  export type ShipmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    shipmentNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    status?: SortOrder
+    shippingMethod?: SortOrder
+    carrier?: SortOrderInput | SortOrder
+    trackingNumber?: SortOrderInput | SortOrder
+    shippingAddress?: SortOrder
+    shippingCity?: SortOrder
+    shippingCountry?: SortOrder
+    shippingPhone?: SortOrder
+    shippedAt?: SortOrderInput | SortOrder
+    deliveredAt?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ShipmentCountOrderByAggregateInput
+    _max?: ShipmentMaxOrderByAggregateInput
+    _min?: ShipmentMinOrderByAggregateInput
+  }
+
+  export type ShipmentScalarWhereWithAggregatesInput = {
+    AND?: ShipmentScalarWhereWithAggregatesInput | ShipmentScalarWhereWithAggregatesInput[]
+    OR?: ShipmentScalarWhereWithAggregatesInput[]
+    NOT?: ShipmentScalarWhereWithAggregatesInput | ShipmentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Shipment"> | string
+    shipmentNumber?: StringWithAggregatesFilter<"Shipment"> | string
+    salesOrderId?: StringWithAggregatesFilter<"Shipment"> | string
+    warehouseId?: StringWithAggregatesFilter<"Shipment"> | string
+    status?: EnumShipmentStatusWithAggregatesFilter<"Shipment"> | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodWithAggregatesFilter<"Shipment"> | $Enums.ShippingMethod
+    carrier?: StringNullableWithAggregatesFilter<"Shipment"> | string | null
+    trackingNumber?: StringNullableWithAggregatesFilter<"Shipment"> | string | null
+    shippingAddress?: StringWithAggregatesFilter<"Shipment"> | string
+    shippingCity?: StringWithAggregatesFilter<"Shipment"> | string
+    shippingCountry?: StringWithAggregatesFilter<"Shipment"> | string
+    shippingPhone?: StringWithAggregatesFilter<"Shipment"> | string
+    shippedAt?: DateTimeNullableWithAggregatesFilter<"Shipment"> | Date | string | null
+    deliveredAt?: DateTimeNullableWithAggregatesFilter<"Shipment"> | Date | string | null
+    notes?: StringNullableWithAggregatesFilter<"Shipment"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Shipment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Shipment"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -46630,6 +48214,7 @@ export namespace Prisma {
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateInput = {
@@ -46655,6 +48240,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUpdateInput = {
@@ -46680,6 +48266,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateInput = {
@@ -46705,6 +48292,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseCreateManyInput = {
@@ -48514,6 +50102,7 @@ export namespace Prisma {
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
     packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateInput = {
@@ -48531,6 +50120,7 @@ export namespace Prisma {
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
     packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUpdateInput = {
@@ -48548,6 +50138,7 @@ export namespace Prisma {
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
     packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateInput = {
@@ -48565,6 +50156,7 @@ export namespace Prisma {
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
     packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderCreateManyInput = {
@@ -48774,6 +50366,144 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumReservationStatusFieldUpdateOperationsInput | $Enums.ReservationStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShipmentCreateInput = {
+    id?: string
+    shipmentNumber: string
+    status?: $Enums.ShipmentStatus
+    shippingMethod: $Enums.ShippingMethod
+    carrier?: string | null
+    trackingNumber?: string | null
+    shippingAddress: string
+    shippingCity: string
+    shippingCountry: string
+    shippingPhone: string
+    shippedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutShipmentInput
+    warehouse: WarehouseCreateNestedOneWithoutShipmentsInput
+  }
+
+  export type ShipmentUncheckedCreateInput = {
+    id?: string
+    shipmentNumber: string
+    salesOrderId: string
+    warehouseId: string
+    status?: $Enums.ShipmentStatus
+    shippingMethod: $Enums.ShippingMethod
+    carrier?: string | null
+    trackingNumber?: string | null
+    shippingAddress: string
+    shippingCity: string
+    shippingCountry: string
+    shippingPhone: string
+    shippedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShipmentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipmentNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumShipmentStatusFieldUpdateOperationsInput | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodFieldUpdateOperationsInput | $Enums.ShippingMethod
+    carrier?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: StringFieldUpdateOperationsInput | string
+    shippingCity?: StringFieldUpdateOperationsInput | string
+    shippingCountry?: StringFieldUpdateOperationsInput | string
+    shippingPhone?: StringFieldUpdateOperationsInput | string
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutShipmentNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutShipmentsNestedInput
+  }
+
+  export type ShipmentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipmentNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    status?: EnumShipmentStatusFieldUpdateOperationsInput | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodFieldUpdateOperationsInput | $Enums.ShippingMethod
+    carrier?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: StringFieldUpdateOperationsInput | string
+    shippingCity?: StringFieldUpdateOperationsInput | string
+    shippingCountry?: StringFieldUpdateOperationsInput | string
+    shippingPhone?: StringFieldUpdateOperationsInput | string
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShipmentCreateManyInput = {
+    id?: string
+    shipmentNumber: string
+    salesOrderId: string
+    warehouseId: string
+    status?: $Enums.ShipmentStatus
+    shippingMethod: $Enums.ShippingMethod
+    carrier?: string | null
+    trackingNumber?: string | null
+    shippingAddress: string
+    shippingCity: string
+    shippingCountry: string
+    shippingPhone: string
+    shippedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShipmentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipmentNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumShipmentStatusFieldUpdateOperationsInput | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodFieldUpdateOperationsInput | $Enums.ShippingMethod
+    carrier?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: StringFieldUpdateOperationsInput | string
+    shippingCity?: StringFieldUpdateOperationsInput | string
+    shippingCountry?: StringFieldUpdateOperationsInput | string
+    shippingPhone?: StringFieldUpdateOperationsInput | string
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShipmentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipmentNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    status?: EnumShipmentStatusFieldUpdateOperationsInput | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodFieldUpdateOperationsInput | $Enums.ShippingMethod
+    carrier?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: StringFieldUpdateOperationsInput | string
+    shippingCity?: StringFieldUpdateOperationsInput | string
+    shippingCountry?: StringFieldUpdateOperationsInput | string
+    shippingPhone?: StringFieldUpdateOperationsInput | string
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -49522,6 +51252,12 @@ export namespace Prisma {
     none?: StockReservationWhereInput
   }
 
+  export type ShipmentListRelationFilter = {
+    every?: ShipmentWhereInput
+    some?: ShipmentWhereInput
+    none?: ShipmentWhereInput
+  }
+
   export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -49539,6 +51275,10 @@ export namespace Prisma {
   }
 
   export type StockReservationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ShipmentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -50897,6 +52637,11 @@ export namespace Prisma {
     isNot?: PackingTaskWhereInput | null
   }
 
+  export type ShipmentNullableScalarRelationFilter = {
+    is?: ShipmentWhereInput | null
+    isNot?: ShipmentWhereInput | null
+  }
+
   export type SalesOrderCountOrderByAggregateInput = {
     id?: SortOrder
     orderNumber?: SortOrder
@@ -51068,6 +52813,100 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumReservationStatusFilter<$PrismaModel>
     _max?: NestedEnumReservationStatusFilter<$PrismaModel>
+  }
+
+  export type EnumShipmentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShipmentStatus | EnumShipmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ShipmentStatus[] | ListEnumShipmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShipmentStatus[] | ListEnumShipmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumShipmentStatusFilter<$PrismaModel> | $Enums.ShipmentStatus
+  }
+
+  export type EnumShippingMethodFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShippingMethod | EnumShippingMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.ShippingMethod[] | ListEnumShippingMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShippingMethod[] | ListEnumShippingMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumShippingMethodFilter<$PrismaModel> | $Enums.ShippingMethod
+  }
+
+  export type ShipmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    shipmentNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    status?: SortOrder
+    shippingMethod?: SortOrder
+    carrier?: SortOrder
+    trackingNumber?: SortOrder
+    shippingAddress?: SortOrder
+    shippingCity?: SortOrder
+    shippingCountry?: SortOrder
+    shippingPhone?: SortOrder
+    shippedAt?: SortOrder
+    deliveredAt?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ShipmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    shipmentNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    status?: SortOrder
+    shippingMethod?: SortOrder
+    carrier?: SortOrder
+    trackingNumber?: SortOrder
+    shippingAddress?: SortOrder
+    shippingCity?: SortOrder
+    shippingCountry?: SortOrder
+    shippingPhone?: SortOrder
+    shippedAt?: SortOrder
+    deliveredAt?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ShipmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    shipmentNumber?: SortOrder
+    salesOrderId?: SortOrder
+    warehouseId?: SortOrder
+    status?: SortOrder
+    shippingMethod?: SortOrder
+    carrier?: SortOrder
+    trackingNumber?: SortOrder
+    shippingAddress?: SortOrder
+    shippingCity?: SortOrder
+    shippingCountry?: SortOrder
+    shippingPhone?: SortOrder
+    shippedAt?: SortOrder
+    deliveredAt?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumShipmentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShipmentStatus | EnumShipmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ShipmentStatus[] | ListEnumShipmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShipmentStatus[] | ListEnumShipmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumShipmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.ShipmentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumShipmentStatusFilter<$PrismaModel>
+    _max?: NestedEnumShipmentStatusFilter<$PrismaModel>
+  }
+
+  export type EnumShippingMethodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShippingMethod | EnumShippingMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.ShippingMethod[] | ListEnumShippingMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShippingMethod[] | ListEnumShippingMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumShippingMethodWithAggregatesFilter<$PrismaModel> | $Enums.ShippingMethod
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumShippingMethodFilter<$PrismaModel>
+    _max?: NestedEnumShippingMethodFilter<$PrismaModel>
   }
 
   export type WarehouseCreateNestedOneWithoutUsersInput = {
@@ -51936,6 +53775,13 @@ export namespace Prisma {
     connect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
   }
 
+  export type ShipmentCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<ShipmentCreateWithoutWarehouseInput, ShipmentUncheckedCreateWithoutWarehouseInput> | ShipmentCreateWithoutWarehouseInput[] | ShipmentUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: ShipmentCreateOrConnectWithoutWarehouseInput | ShipmentCreateOrConnectWithoutWarehouseInput[]
+    createMany?: ShipmentCreateManyWarehouseInputEnvelope
+    connect?: ShipmentWhereUniqueInput | ShipmentWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutWarehouseInput = {
     create?: XOR<UserCreateWithoutWarehouseInput, UserUncheckedCreateWithoutWarehouseInput> | UserCreateWithoutWarehouseInput[] | UserUncheckedCreateWithoutWarehouseInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWarehouseInput | UserCreateOrConnectWithoutWarehouseInput[]
@@ -52018,6 +53864,13 @@ export namespace Prisma {
     connectOrCreate?: PackingTaskCreateOrConnectWithoutWarehouseInput | PackingTaskCreateOrConnectWithoutWarehouseInput[]
     createMany?: PackingTaskCreateManyWarehouseInputEnvelope
     connect?: PackingTaskWhereUniqueInput | PackingTaskWhereUniqueInput[]
+  }
+
+  export type ShipmentUncheckedCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<ShipmentCreateWithoutWarehouseInput, ShipmentUncheckedCreateWithoutWarehouseInput> | ShipmentCreateWithoutWarehouseInput[] | ShipmentUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: ShipmentCreateOrConnectWithoutWarehouseInput | ShipmentCreateOrConnectWithoutWarehouseInput[]
+    createMany?: ShipmentCreateManyWarehouseInputEnvelope
+    connect?: ShipmentWhereUniqueInput | ShipmentWhereUniqueInput[]
   }
 
   export type EnumWarehouseStatusFieldUpdateOperationsInput = {
@@ -52192,6 +54045,20 @@ export namespace Prisma {
     deleteMany?: PackingTaskScalarWhereInput | PackingTaskScalarWhereInput[]
   }
 
+  export type ShipmentUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<ShipmentCreateWithoutWarehouseInput, ShipmentUncheckedCreateWithoutWarehouseInput> | ShipmentCreateWithoutWarehouseInput[] | ShipmentUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: ShipmentCreateOrConnectWithoutWarehouseInput | ShipmentCreateOrConnectWithoutWarehouseInput[]
+    upsert?: ShipmentUpsertWithWhereUniqueWithoutWarehouseInput | ShipmentUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: ShipmentCreateManyWarehouseInputEnvelope
+    set?: ShipmentWhereUniqueInput | ShipmentWhereUniqueInput[]
+    disconnect?: ShipmentWhereUniqueInput | ShipmentWhereUniqueInput[]
+    delete?: ShipmentWhereUniqueInput | ShipmentWhereUniqueInput[]
+    connect?: ShipmentWhereUniqueInput | ShipmentWhereUniqueInput[]
+    update?: ShipmentUpdateWithWhereUniqueWithoutWarehouseInput | ShipmentUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: ShipmentUpdateManyWithWhereWithoutWarehouseInput | ShipmentUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: ShipmentScalarWhereInput | ShipmentScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutWarehouseNestedInput = {
     create?: XOR<UserCreateWithoutWarehouseInput, UserUncheckedCreateWithoutWarehouseInput> | UserCreateWithoutWarehouseInput[] | UserUncheckedCreateWithoutWarehouseInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWarehouseInput | UserCreateOrConnectWithoutWarehouseInput[]
@@ -52358,6 +54225,20 @@ export namespace Prisma {
     update?: PackingTaskUpdateWithWhereUniqueWithoutWarehouseInput | PackingTaskUpdateWithWhereUniqueWithoutWarehouseInput[]
     updateMany?: PackingTaskUpdateManyWithWhereWithoutWarehouseInput | PackingTaskUpdateManyWithWhereWithoutWarehouseInput[]
     deleteMany?: PackingTaskScalarWhereInput | PackingTaskScalarWhereInput[]
+  }
+
+  export type ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<ShipmentCreateWithoutWarehouseInput, ShipmentUncheckedCreateWithoutWarehouseInput> | ShipmentCreateWithoutWarehouseInput[] | ShipmentUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: ShipmentCreateOrConnectWithoutWarehouseInput | ShipmentCreateOrConnectWithoutWarehouseInput[]
+    upsert?: ShipmentUpsertWithWhereUniqueWithoutWarehouseInput | ShipmentUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: ShipmentCreateManyWarehouseInputEnvelope
+    set?: ShipmentWhereUniqueInput | ShipmentWhereUniqueInput[]
+    disconnect?: ShipmentWhereUniqueInput | ShipmentWhereUniqueInput[]
+    delete?: ShipmentWhereUniqueInput | ShipmentWhereUniqueInput[]
+    connect?: ShipmentWhereUniqueInput | ShipmentWhereUniqueInput[]
+    update?: ShipmentUpdateWithWhereUniqueWithoutWarehouseInput | ShipmentUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: ShipmentUpdateManyWithWhereWithoutWarehouseInput | ShipmentUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: ShipmentScalarWhereInput | ShipmentScalarWhereInput[]
   }
 
   export type ProductCreateNestedManyWithoutCategoryInput = {
@@ -54188,6 +56069,12 @@ export namespace Prisma {
     connect?: PackingTaskWhereUniqueInput
   }
 
+  export type ShipmentCreateNestedOneWithoutSalesOrderInput = {
+    create?: XOR<ShipmentCreateWithoutSalesOrderInput, ShipmentUncheckedCreateWithoutSalesOrderInput>
+    connectOrCreate?: ShipmentCreateOrConnectWithoutSalesOrderInput
+    connect?: ShipmentWhereUniqueInput
+  }
+
   export type SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput = {
     create?: XOR<SalesOrderItemCreateWithoutSalesOrderInput, SalesOrderItemUncheckedCreateWithoutSalesOrderInput> | SalesOrderItemCreateWithoutSalesOrderInput[] | SalesOrderItemUncheckedCreateWithoutSalesOrderInput[]
     connectOrCreate?: SalesOrderItemCreateOrConnectWithoutSalesOrderInput | SalesOrderItemCreateOrConnectWithoutSalesOrderInput[]
@@ -54212,6 +56099,12 @@ export namespace Prisma {
     create?: XOR<PackingTaskCreateWithoutSalesOrderInput, PackingTaskUncheckedCreateWithoutSalesOrderInput>
     connectOrCreate?: PackingTaskCreateOrConnectWithoutSalesOrderInput
     connect?: PackingTaskWhereUniqueInput
+  }
+
+  export type ShipmentUncheckedCreateNestedOneWithoutSalesOrderInput = {
+    create?: XOR<ShipmentCreateWithoutSalesOrderInput, ShipmentUncheckedCreateWithoutSalesOrderInput>
+    connectOrCreate?: ShipmentCreateOrConnectWithoutSalesOrderInput
+    connect?: ShipmentWhereUniqueInput
   }
 
   export type EnumSalesOrderStatusFieldUpdateOperationsInput = {
@@ -54282,6 +56175,16 @@ export namespace Prisma {
     update?: XOR<XOR<PackingTaskUpdateToOneWithWhereWithoutSalesOrderInput, PackingTaskUpdateWithoutSalesOrderInput>, PackingTaskUncheckedUpdateWithoutSalesOrderInput>
   }
 
+  export type ShipmentUpdateOneWithoutSalesOrderNestedInput = {
+    create?: XOR<ShipmentCreateWithoutSalesOrderInput, ShipmentUncheckedCreateWithoutSalesOrderInput>
+    connectOrCreate?: ShipmentCreateOrConnectWithoutSalesOrderInput
+    upsert?: ShipmentUpsertWithoutSalesOrderInput
+    disconnect?: ShipmentWhereInput | boolean
+    delete?: ShipmentWhereInput | boolean
+    connect?: ShipmentWhereUniqueInput
+    update?: XOR<XOR<ShipmentUpdateToOneWithWhereWithoutSalesOrderInput, ShipmentUpdateWithoutSalesOrderInput>, ShipmentUncheckedUpdateWithoutSalesOrderInput>
+  }
+
   export type SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput = {
     create?: XOR<SalesOrderItemCreateWithoutSalesOrderInput, SalesOrderItemUncheckedCreateWithoutSalesOrderInput> | SalesOrderItemCreateWithoutSalesOrderInput[] | SalesOrderItemUncheckedCreateWithoutSalesOrderInput[]
     connectOrCreate?: SalesOrderItemCreateOrConnectWithoutSalesOrderInput | SalesOrderItemCreateOrConnectWithoutSalesOrderInput[]
@@ -54328,6 +56231,16 @@ export namespace Prisma {
     delete?: PackingTaskWhereInput | boolean
     connect?: PackingTaskWhereUniqueInput
     update?: XOR<XOR<PackingTaskUpdateToOneWithWhereWithoutSalesOrderInput, PackingTaskUpdateWithoutSalesOrderInput>, PackingTaskUncheckedUpdateWithoutSalesOrderInput>
+  }
+
+  export type ShipmentUncheckedUpdateOneWithoutSalesOrderNestedInput = {
+    create?: XOR<ShipmentCreateWithoutSalesOrderInput, ShipmentUncheckedCreateWithoutSalesOrderInput>
+    connectOrCreate?: ShipmentCreateOrConnectWithoutSalesOrderInput
+    upsert?: ShipmentUpsertWithoutSalesOrderInput
+    disconnect?: ShipmentWhereInput | boolean
+    delete?: ShipmentWhereInput | boolean
+    connect?: ShipmentWhereUniqueInput
+    update?: XOR<XOR<ShipmentUpdateToOneWithWhereWithoutSalesOrderInput, ShipmentUpdateWithoutSalesOrderInput>, ShipmentUncheckedUpdateWithoutSalesOrderInput>
   }
 
   export type SalesOrderCreateNestedOneWithoutItemsInput = {
@@ -54542,6 +56455,42 @@ export namespace Prisma {
     upsert?: ProductUpsertWithoutStockReservationsInput
     connect?: ProductWhereUniqueInput
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutStockReservationsInput, ProductUpdateWithoutStockReservationsInput>, ProductUncheckedUpdateWithoutStockReservationsInput>
+  }
+
+  export type SalesOrderCreateNestedOneWithoutShipmentInput = {
+    create?: XOR<SalesOrderCreateWithoutShipmentInput, SalesOrderUncheckedCreateWithoutShipmentInput>
+    connectOrCreate?: SalesOrderCreateOrConnectWithoutShipmentInput
+    connect?: SalesOrderWhereUniqueInput
+  }
+
+  export type WarehouseCreateNestedOneWithoutShipmentsInput = {
+    create?: XOR<WarehouseCreateWithoutShipmentsInput, WarehouseUncheckedCreateWithoutShipmentsInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutShipmentsInput
+    connect?: WarehouseWhereUniqueInput
+  }
+
+  export type EnumShipmentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ShipmentStatus
+  }
+
+  export type EnumShippingMethodFieldUpdateOperationsInput = {
+    set?: $Enums.ShippingMethod
+  }
+
+  export type SalesOrderUpdateOneRequiredWithoutShipmentNestedInput = {
+    create?: XOR<SalesOrderCreateWithoutShipmentInput, SalesOrderUncheckedCreateWithoutShipmentInput>
+    connectOrCreate?: SalesOrderCreateOrConnectWithoutShipmentInput
+    upsert?: SalesOrderUpsertWithoutShipmentInput
+    connect?: SalesOrderWhereUniqueInput
+    update?: XOR<XOR<SalesOrderUpdateToOneWithWhereWithoutShipmentInput, SalesOrderUpdateWithoutShipmentInput>, SalesOrderUncheckedUpdateWithoutShipmentInput>
+  }
+
+  export type WarehouseUpdateOneRequiredWithoutShipmentsNestedInput = {
+    create?: XOR<WarehouseCreateWithoutShipmentsInput, WarehouseUncheckedCreateWithoutShipmentsInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutShipmentsInput
+    upsert?: WarehouseUpsertWithoutShipmentsInput
+    connect?: WarehouseWhereUniqueInput
+    update?: XOR<XOR<WarehouseUpdateToOneWithWhereWithoutShipmentsInput, WarehouseUpdateWithoutShipmentsInput>, WarehouseUncheckedUpdateWithoutShipmentsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -55078,6 +57027,40 @@ export namespace Prisma {
     _max?: NestedEnumReservationStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumShipmentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShipmentStatus | EnumShipmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ShipmentStatus[] | ListEnumShipmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShipmentStatus[] | ListEnumShipmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumShipmentStatusFilter<$PrismaModel> | $Enums.ShipmentStatus
+  }
+
+  export type NestedEnumShippingMethodFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShippingMethod | EnumShippingMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.ShippingMethod[] | ListEnumShippingMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShippingMethod[] | ListEnumShippingMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumShippingMethodFilter<$PrismaModel> | $Enums.ShippingMethod
+  }
+
+  export type NestedEnumShipmentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShipmentStatus | EnumShipmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ShipmentStatus[] | ListEnumShipmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShipmentStatus[] | ListEnumShipmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumShipmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.ShipmentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumShipmentStatusFilter<$PrismaModel>
+    _max?: NestedEnumShipmentStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumShippingMethodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShippingMethod | EnumShippingMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.ShippingMethod[] | ListEnumShippingMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShippingMethod[] | ListEnumShippingMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumShippingMethodWithAggregatesFilter<$PrismaModel> | $Enums.ShippingMethod
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumShippingMethodFilter<$PrismaModel>
+    _max?: NestedEnumShippingMethodFilter<$PrismaModel>
+  }
+
   export type WarehouseCreateWithoutUsersInput = {
     id?: string
     code: string
@@ -55100,6 +57083,7 @@ export namespace Prisma {
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutUsersInput = {
@@ -55124,6 +57108,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutUsersInput = {
@@ -55415,6 +57400,7 @@ export namespace Prisma {
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
     packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutCreatedByInput = {
@@ -55431,6 +57417,7 @@ export namespace Prisma {
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
     packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutCreatedByInput = {
@@ -55568,6 +57555,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutUsersInput = {
@@ -55592,6 +57580,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
@@ -56191,6 +58180,7 @@ export namespace Prisma {
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutInventoryStocksInput = {
@@ -56215,6 +58205,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutInventoryStocksInput = {
@@ -56314,6 +58305,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutInventoryStocksInput = {
@@ -56338,6 +58330,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type ProductUpsertWithoutInventoryStocksInput = {
@@ -56427,6 +58420,7 @@ export namespace Prisma {
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutStockMovementsInput = {
@@ -56451,6 +58445,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutStockMovementsInput = {
@@ -56607,6 +58602,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutStockMovementsInput = {
@@ -56631,6 +58627,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type ProductUpsertWithoutStockMovementsInput = {
@@ -56783,6 +58780,7 @@ export namespace Prisma {
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutInventoryLocationStocksInput = {
@@ -56807,6 +58805,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutInventoryLocationStocksInput = {
@@ -56969,6 +58968,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutInventoryLocationStocksInput = {
@@ -56993,6 +58993,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type BinUpsertWithoutInventoryLocationStocksInput = {
@@ -57141,6 +59142,7 @@ export namespace Prisma {
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutInventoryLocationMovementsInput = {
@@ -57165,6 +59167,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutInventoryLocationMovementsInput = {
@@ -57395,6 +59398,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutInventoryLocationMovementsInput = {
@@ -57419,6 +59423,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type ProductUpsertWithoutInventoryLocationMovementsInput = {
@@ -57959,6 +59964,7 @@ export namespace Prisma {
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
     packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutWarehouseInput = {
@@ -57975,6 +59981,7 @@ export namespace Prisma {
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
     packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutWarehouseInput = {
@@ -58082,6 +60089,54 @@ export namespace Prisma {
 
   export type PackingTaskCreateManyWarehouseInputEnvelope = {
     data: PackingTaskCreateManyWarehouseInput | PackingTaskCreateManyWarehouseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ShipmentCreateWithoutWarehouseInput = {
+    id?: string
+    shipmentNumber: string
+    status?: $Enums.ShipmentStatus
+    shippingMethod: $Enums.ShippingMethod
+    carrier?: string | null
+    trackingNumber?: string | null
+    shippingAddress: string
+    shippingCity: string
+    shippingCountry: string
+    shippingPhone: string
+    shippedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesOrder: SalesOrderCreateNestedOneWithoutShipmentInput
+  }
+
+  export type ShipmentUncheckedCreateWithoutWarehouseInput = {
+    id?: string
+    shipmentNumber: string
+    salesOrderId: string
+    status?: $Enums.ShipmentStatus
+    shippingMethod: $Enums.ShippingMethod
+    carrier?: string | null
+    trackingNumber?: string | null
+    shippingAddress: string
+    shippingCity: string
+    shippingCountry: string
+    shippingPhone: string
+    shippedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShipmentCreateOrConnectWithoutWarehouseInput = {
+    where: ShipmentWhereUniqueInput
+    create: XOR<ShipmentCreateWithoutWarehouseInput, ShipmentUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type ShipmentCreateManyWarehouseInputEnvelope = {
+    data: ShipmentCreateManyWarehouseInput | ShipmentCreateManyWarehouseInput[]
     skipDuplicates?: boolean
   }
 
@@ -58351,6 +60406,45 @@ export namespace Prisma {
   export type PackingTaskUpdateManyWithWhereWithoutWarehouseInput = {
     where: PackingTaskScalarWhereInput
     data: XOR<PackingTaskUpdateManyMutationInput, PackingTaskUncheckedUpdateManyWithoutWarehouseInput>
+  }
+
+  export type ShipmentUpsertWithWhereUniqueWithoutWarehouseInput = {
+    where: ShipmentWhereUniqueInput
+    update: XOR<ShipmentUpdateWithoutWarehouseInput, ShipmentUncheckedUpdateWithoutWarehouseInput>
+    create: XOR<ShipmentCreateWithoutWarehouseInput, ShipmentUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type ShipmentUpdateWithWhereUniqueWithoutWarehouseInput = {
+    where: ShipmentWhereUniqueInput
+    data: XOR<ShipmentUpdateWithoutWarehouseInput, ShipmentUncheckedUpdateWithoutWarehouseInput>
+  }
+
+  export type ShipmentUpdateManyWithWhereWithoutWarehouseInput = {
+    where: ShipmentScalarWhereInput
+    data: XOR<ShipmentUpdateManyMutationInput, ShipmentUncheckedUpdateManyWithoutWarehouseInput>
+  }
+
+  export type ShipmentScalarWhereInput = {
+    AND?: ShipmentScalarWhereInput | ShipmentScalarWhereInput[]
+    OR?: ShipmentScalarWhereInput[]
+    NOT?: ShipmentScalarWhereInput | ShipmentScalarWhereInput[]
+    id?: StringFilter<"Shipment"> | string
+    shipmentNumber?: StringFilter<"Shipment"> | string
+    salesOrderId?: StringFilter<"Shipment"> | string
+    warehouseId?: StringFilter<"Shipment"> | string
+    status?: EnumShipmentStatusFilter<"Shipment"> | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodFilter<"Shipment"> | $Enums.ShippingMethod
+    carrier?: StringNullableFilter<"Shipment"> | string | null
+    trackingNumber?: StringNullableFilter<"Shipment"> | string | null
+    shippingAddress?: StringFilter<"Shipment"> | string
+    shippingCity?: StringFilter<"Shipment"> | string
+    shippingCountry?: StringFilter<"Shipment"> | string
+    shippingPhone?: StringFilter<"Shipment"> | string
+    shippedAt?: DateTimeNullableFilter<"Shipment"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"Shipment"> | Date | string | null
+    notes?: StringNullableFilter<"Shipment"> | string | null
+    createdAt?: DateTimeFilter<"Shipment"> | Date | string
+    updatedAt?: DateTimeFilter<"Shipment"> | Date | string
   }
 
   export type ProductCreateWithoutCategoryInput = {
@@ -59282,6 +61376,7 @@ export namespace Prisma {
     items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutPackingTaskInput = {
@@ -59298,6 +61393,7 @@ export namespace Prisma {
     items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutPackingTaskInput = {
@@ -59327,6 +61423,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutPackingTasksInput = {
@@ -59351,6 +61448,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutPackingTasksInput = {
@@ -59506,6 +61604,7 @@ export namespace Prisma {
     items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutPackingTaskInput = {
@@ -59522,6 +61621,7 @@ export namespace Prisma {
     items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type WarehouseUpsertWithoutPackingTasksInput = {
@@ -59557,6 +61657,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutPackingTasksInput = {
@@ -59581,6 +61682,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type UserUpsertWithoutPackedTasksInput = {
@@ -60374,6 +62476,7 @@ export namespace Prisma {
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutZonesInput = {
@@ -60398,6 +62501,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutZonesInput = {
@@ -60476,6 +62580,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutZonesInput = {
@@ -60500,6 +62605,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type AisleUpsertWithWhereUniqueWithoutZoneInput = {
@@ -61061,6 +63167,7 @@ export namespace Prisma {
     items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
     packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutPickingTaskInput = {
@@ -61077,6 +63184,7 @@ export namespace Prisma {
     items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
     packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutPickingTaskInput = {
@@ -61106,6 +63214,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutPickingTasksInput = {
@@ -61130,6 +63239,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutPickingTasksInput = {
@@ -61253,6 +63363,7 @@ export namespace Prisma {
     items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
     packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutPickingTaskInput = {
@@ -61269,6 +63380,7 @@ export namespace Prisma {
     items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
     packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type WarehouseUpsertWithoutPickingTasksInput = {
@@ -61304,6 +63416,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutPickingTasksInput = {
@@ -61328,6 +63441,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type UserUpsertWithoutAssignedPickingTasksInput = {
@@ -62070,6 +64184,7 @@ export namespace Prisma {
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutPurchaseOrdersInput = {
@@ -62094,6 +64209,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutPurchaseOrdersInput = {
@@ -62361,6 +64477,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutPurchaseOrdersInput = {
@@ -62385,6 +64502,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type UserUpsertWithoutCreatedPurchaseOrdersInput = {
@@ -62820,6 +64938,7 @@ export namespace Prisma {
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutGoodsReceiptsInput = {
@@ -62844,6 +64963,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutGoodsReceiptsInput = {
@@ -63010,6 +65130,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutGoodsReceiptsInput = {
@@ -63034,6 +65155,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type UserUpsertWithoutGoodsReceiptsInput = {
@@ -63386,6 +65508,7 @@ export namespace Prisma {
     stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutSalesOrdersInput = {
@@ -63410,6 +65533,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutSalesOrdersInput = {
@@ -63543,6 +65667,49 @@ export namespace Prisma {
     create: XOR<PackingTaskCreateWithoutSalesOrderInput, PackingTaskUncheckedCreateWithoutSalesOrderInput>
   }
 
+  export type ShipmentCreateWithoutSalesOrderInput = {
+    id?: string
+    shipmentNumber: string
+    status?: $Enums.ShipmentStatus
+    shippingMethod: $Enums.ShippingMethod
+    carrier?: string | null
+    trackingNumber?: string | null
+    shippingAddress: string
+    shippingCity: string
+    shippingCountry: string
+    shippingPhone: string
+    shippedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutShipmentsInput
+  }
+
+  export type ShipmentUncheckedCreateWithoutSalesOrderInput = {
+    id?: string
+    shipmentNumber: string
+    warehouseId: string
+    status?: $Enums.ShipmentStatus
+    shippingMethod: $Enums.ShippingMethod
+    carrier?: string | null
+    trackingNumber?: string | null
+    shippingAddress: string
+    shippingCity: string
+    shippingCountry: string
+    shippingPhone: string
+    shippedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShipmentCreateOrConnectWithoutSalesOrderInput = {
+    where: ShipmentWhereUniqueInput
+    create: XOR<ShipmentCreateWithoutSalesOrderInput, ShipmentUncheckedCreateWithoutSalesOrderInput>
+  }
+
   export type UserUpsertWithoutCreatedSalesOrdersInput = {
     update: XOR<UserUpdateWithoutCreatedSalesOrdersInput, UserUncheckedUpdateWithoutCreatedSalesOrdersInput>
     create: XOR<UserCreateWithoutCreatedSalesOrdersInput, UserUncheckedCreateWithoutCreatedSalesOrdersInput>
@@ -63639,6 +65806,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutSalesOrdersInput = {
@@ -63663,6 +65831,7 @@ export namespace Prisma {
     stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type SalesOrderItemUpsertWithWhereUniqueWithoutSalesOrderInput = {
@@ -63765,6 +65934,55 @@ export namespace Prisma {
     packages?: PackageUncheckedUpdateManyWithoutPackingTaskNestedInput
   }
 
+  export type ShipmentUpsertWithoutSalesOrderInput = {
+    update: XOR<ShipmentUpdateWithoutSalesOrderInput, ShipmentUncheckedUpdateWithoutSalesOrderInput>
+    create: XOR<ShipmentCreateWithoutSalesOrderInput, ShipmentUncheckedCreateWithoutSalesOrderInput>
+    where?: ShipmentWhereInput
+  }
+
+  export type ShipmentUpdateToOneWithWhereWithoutSalesOrderInput = {
+    where?: ShipmentWhereInput
+    data: XOR<ShipmentUpdateWithoutSalesOrderInput, ShipmentUncheckedUpdateWithoutSalesOrderInput>
+  }
+
+  export type ShipmentUpdateWithoutSalesOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipmentNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumShipmentStatusFieldUpdateOperationsInput | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodFieldUpdateOperationsInput | $Enums.ShippingMethod
+    carrier?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: StringFieldUpdateOperationsInput | string
+    shippingCity?: StringFieldUpdateOperationsInput | string
+    shippingCountry?: StringFieldUpdateOperationsInput | string
+    shippingPhone?: StringFieldUpdateOperationsInput | string
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutShipmentsNestedInput
+  }
+
+  export type ShipmentUncheckedUpdateWithoutSalesOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipmentNumber?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    status?: EnumShipmentStatusFieldUpdateOperationsInput | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodFieldUpdateOperationsInput | $Enums.ShippingMethod
+    carrier?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: StringFieldUpdateOperationsInput | string
+    shippingCity?: StringFieldUpdateOperationsInput | string
+    shippingCountry?: StringFieldUpdateOperationsInput | string
+    shippingPhone?: StringFieldUpdateOperationsInput | string
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SalesOrderCreateWithoutItemsInput = {
     id?: string
     orderNumber: string
@@ -63779,6 +65997,7 @@ export namespace Prisma {
     reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
     packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutItemsInput = {
@@ -63795,6 +66014,7 @@ export namespace Prisma {
     reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
     packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutItemsInput = {
@@ -63986,6 +66206,7 @@ export namespace Prisma {
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
     packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutItemsInput = {
@@ -64002,6 +66223,7 @@ export namespace Prisma {
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
     packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type ProductUpsertWithoutSalesOrderItemsInput = {
@@ -64131,6 +66353,7 @@ export namespace Prisma {
     items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
     packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderUncheckedCreateWithoutReservationsInput = {
@@ -64147,6 +66370,7 @@ export namespace Prisma {
     items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
     pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
     packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    shipment?: ShipmentUncheckedCreateNestedOneWithoutSalesOrderInput
   }
 
   export type SalesOrderCreateOrConnectWithoutReservationsInput = {
@@ -64209,6 +66433,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseUncheckedCreateWithoutStockReservationsInput = {
@@ -64233,6 +66458,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
     pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
     packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    shipments?: ShipmentUncheckedCreateNestedManyWithoutWarehouseInput
   }
 
   export type WarehouseCreateOrConnectWithoutStockReservationsInput = {
@@ -64324,6 +66550,7 @@ export namespace Prisma {
     items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
     packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutReservationsInput = {
@@ -64340,6 +66567,7 @@ export namespace Prisma {
     items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
     packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderItemUpsertWithoutReservationsInput = {
@@ -64414,6 +66642,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUpdateManyWithoutWarehouseNestedInput
   }
 
   export type WarehouseUncheckedUpdateWithoutStockReservationsInput = {
@@ -64438,6 +66667,7 @@ export namespace Prisma {
     salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
     pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
     packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    shipments?: ShipmentUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type ProductUpsertWithoutStockReservationsInput = {
@@ -64503,6 +66733,206 @@ export namespace Prisma {
     pickingTaskItems?: PickingTaskItemUncheckedUpdateManyWithoutProductNestedInput
     packingTaskItems?: PackingTaskItemUncheckedUpdateManyWithoutProductNestedInput
     packageItems?: PackageItemUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type SalesOrderCreateWithoutShipmentInput = {
+    id?: string
+    orderNumber: string
+    status?: $Enums.SalesOrderStatus
+    totalAmount?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    cancellationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutCreatedSalesOrdersInput
+    warehouse: WarehouseCreateNestedOneWithoutSalesOrdersInput
+    items?: SalesOrderItemCreateNestedManyWithoutSalesOrderInput
+    reservations?: StockReservationCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskCreateNestedOneWithoutSalesOrderInput
+    packingTask?: PackingTaskCreateNestedOneWithoutSalesOrderInput
+  }
+
+  export type SalesOrderUncheckedCreateWithoutShipmentInput = {
+    id?: string
+    orderNumber: string
+    createdById: string
+    warehouseId: string
+    status?: $Enums.SalesOrderStatus
+    totalAmount?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    cancellationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: SalesOrderItemUncheckedCreateNestedManyWithoutSalesOrderInput
+    reservations?: StockReservationUncheckedCreateNestedManyWithoutSalesOrderInput
+    pickingTask?: PickingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+    packingTask?: PackingTaskUncheckedCreateNestedOneWithoutSalesOrderInput
+  }
+
+  export type SalesOrderCreateOrConnectWithoutShipmentInput = {
+    where: SalesOrderWhereUniqueInput
+    create: XOR<SalesOrderCreateWithoutShipmentInput, SalesOrderUncheckedCreateWithoutShipmentInput>
+  }
+
+  export type WarehouseCreateWithoutShipmentsInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    status?: $Enums.WarehouseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutWarehouseInput
+    inventoryStocks?: InventoryStockCreateNestedManyWithoutWarehouseInput
+    stockMovements?: StockMovementCreateNestedManyWithoutWarehouseInput
+    purchaseOrders?: PurchaseOrderCreateNestedManyWithoutWarehouseInput
+    zones?: ZoneCreateNestedManyWithoutWarehouseInput
+    inventoryLocationStocks?: InventoryLocationStockCreateNestedManyWithoutWarehouseInput
+    inventoryLocationMovements?: InventoryLocationMovementCreateNestedManyWithoutWarehouseInput
+    goodsReceipts?: GoodsReceiptCreateNestedManyWithoutWarehouseInput
+    salesOrders?: SalesOrderCreateNestedManyWithoutWarehouseInput
+    stockReservations?: StockReservationCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseUncheckedCreateWithoutShipmentsInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    address?: string | null
+    city?: string | null
+    country?: string | null
+    status?: $Enums.WarehouseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutWarehouseInput
+    inventoryStocks?: InventoryStockUncheckedCreateNestedManyWithoutWarehouseInput
+    stockMovements?: StockMovementUncheckedCreateNestedManyWithoutWarehouseInput
+    purchaseOrders?: PurchaseOrderUncheckedCreateNestedManyWithoutWarehouseInput
+    zones?: ZoneUncheckedCreateNestedManyWithoutWarehouseInput
+    inventoryLocationStocks?: InventoryLocationStockUncheckedCreateNestedManyWithoutWarehouseInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedCreateNestedManyWithoutWarehouseInput
+    goodsReceipts?: GoodsReceiptUncheckedCreateNestedManyWithoutWarehouseInput
+    salesOrders?: SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
+    stockReservations?: StockReservationUncheckedCreateNestedManyWithoutWarehouseInput
+    pickingTasks?: PickingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+    packingTasks?: PackingTaskUncheckedCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseCreateOrConnectWithoutShipmentsInput = {
+    where: WarehouseWhereUniqueInput
+    create: XOR<WarehouseCreateWithoutShipmentsInput, WarehouseUncheckedCreateWithoutShipmentsInput>
+  }
+
+  export type SalesOrderUpsertWithoutShipmentInput = {
+    update: XOR<SalesOrderUpdateWithoutShipmentInput, SalesOrderUncheckedUpdateWithoutShipmentInput>
+    create: XOR<SalesOrderCreateWithoutShipmentInput, SalesOrderUncheckedCreateWithoutShipmentInput>
+    where?: SalesOrderWhereInput
+  }
+
+  export type SalesOrderUpdateToOneWithWhereWithoutShipmentInput = {
+    where?: SalesOrderWhereInput
+    data: XOR<SalesOrderUpdateWithoutShipmentInput, SalesOrderUncheckedUpdateWithoutShipmentInput>
+  }
+
+  export type SalesOrderUpdateWithoutShipmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesOrderStatusFieldUpdateOperationsInput | $Enums.SalesOrderStatus
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutCreatedSalesOrdersNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutSalesOrdersNestedInput
+    items?: SalesOrderItemUpdateManyWithoutSalesOrderNestedInput
+    reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
+  }
+
+  export type SalesOrderUncheckedUpdateWithoutShipmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
+    warehouseId?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesOrderStatusFieldUpdateOperationsInput | $Enums.SalesOrderStatus
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: SalesOrderItemUncheckedUpdateManyWithoutSalesOrderNestedInput
+    reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
+    pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+  }
+
+  export type WarehouseUpsertWithoutShipmentsInput = {
+    update: XOR<WarehouseUpdateWithoutShipmentsInput, WarehouseUncheckedUpdateWithoutShipmentsInput>
+    create: XOR<WarehouseCreateWithoutShipmentsInput, WarehouseUncheckedCreateWithoutShipmentsInput>
+    where?: WarehouseWhereInput
+  }
+
+  export type WarehouseUpdateToOneWithWhereWithoutShipmentsInput = {
+    where?: WarehouseWhereInput
+    data: XOR<WarehouseUpdateWithoutShipmentsInput, WarehouseUncheckedUpdateWithoutShipmentsInput>
+  }
+
+  export type WarehouseUpdateWithoutShipmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutWarehouseNestedInput
+    inventoryStocks?: InventoryStockUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: StockMovementUpdateManyWithoutWarehouseNestedInput
+    purchaseOrders?: PurchaseOrderUpdateManyWithoutWarehouseNestedInput
+    zones?: ZoneUpdateManyWithoutWarehouseNestedInput
+    inventoryLocationStocks?: InventoryLocationStockUpdateManyWithoutWarehouseNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUpdateManyWithoutWarehouseNestedInput
+    goodsReceipts?: GoodsReceiptUpdateManyWithoutWarehouseNestedInput
+    salesOrders?: SalesOrderUpdateManyWithoutWarehouseNestedInput
+    stockReservations?: StockReservationUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type WarehouseUncheckedUpdateWithoutShipmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutWarehouseNestedInput
+    inventoryStocks?: InventoryStockUncheckedUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: StockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
+    purchaseOrders?: PurchaseOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+    zones?: ZoneUncheckedUpdateManyWithoutWarehouseNestedInput
+    inventoryLocationStocks?: InventoryLocationStockUncheckedUpdateManyWithoutWarehouseNestedInput
+    inventoryLocationMovements?: InventoryLocationMovementUncheckedUpdateManyWithoutWarehouseNestedInput
+    goodsReceipts?: GoodsReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
+    salesOrders?: SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+    stockReservations?: StockReservationUncheckedUpdateManyWithoutWarehouseNestedInput
+    pickingTasks?: PickingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
+    packingTasks?: PackingTaskUncheckedUpdateManyWithoutWarehouseNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -64949,6 +67379,7 @@ export namespace Prisma {
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
     packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutCreatedByInput = {
@@ -64965,6 +67396,7 @@ export namespace Prisma {
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
     packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateManyWithoutCreatedByInput = {
@@ -65239,6 +67671,25 @@ export namespace Prisma {
     salesOrderId: string
     packedById?: string | null
     status?: $Enums.PackingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShipmentCreateManyWarehouseInput = {
+    id?: string
+    shipmentNumber: string
+    salesOrderId: string
+    status?: $Enums.ShipmentStatus
+    shippingMethod: $Enums.ShippingMethod
+    carrier?: string | null
+    trackingNumber?: string | null
+    shippingAddress: string
+    shippingCity: string
+    shippingCountry: string
+    shippingPhone: string
+    shippedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -65586,6 +68037,7 @@ export namespace Prisma {
     reservations?: StockReservationUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUpdateOneWithoutSalesOrderNestedInput
     packingTask?: PackingTaskUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateWithoutWarehouseInput = {
@@ -65602,6 +68054,7 @@ export namespace Prisma {
     reservations?: StockReservationUncheckedUpdateManyWithoutSalesOrderNestedInput
     pickingTask?: PickingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
     packingTask?: PackingTaskUncheckedUpdateOneWithoutSalesOrderNestedInput
+    shipment?: ShipmentUncheckedUpdateOneWithoutSalesOrderNestedInput
   }
 
   export type SalesOrderUncheckedUpdateManyWithoutWarehouseInput = {
@@ -65711,6 +68164,63 @@ export namespace Prisma {
     salesOrderId?: StringFieldUpdateOperationsInput | string
     packedById?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumPackingStatusFieldUpdateOperationsInput | $Enums.PackingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShipmentUpdateWithoutWarehouseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipmentNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumShipmentStatusFieldUpdateOperationsInput | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodFieldUpdateOperationsInput | $Enums.ShippingMethod
+    carrier?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: StringFieldUpdateOperationsInput | string
+    shippingCity?: StringFieldUpdateOperationsInput | string
+    shippingCountry?: StringFieldUpdateOperationsInput | string
+    shippingPhone?: StringFieldUpdateOperationsInput | string
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesOrder?: SalesOrderUpdateOneRequiredWithoutShipmentNestedInput
+  }
+
+  export type ShipmentUncheckedUpdateWithoutWarehouseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipmentNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    status?: EnumShipmentStatusFieldUpdateOperationsInput | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodFieldUpdateOperationsInput | $Enums.ShippingMethod
+    carrier?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: StringFieldUpdateOperationsInput | string
+    shippingCity?: StringFieldUpdateOperationsInput | string
+    shippingCountry?: StringFieldUpdateOperationsInput | string
+    shippingPhone?: StringFieldUpdateOperationsInput | string
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShipmentUncheckedUpdateManyWithoutWarehouseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipmentNumber?: StringFieldUpdateOperationsInput | string
+    salesOrderId?: StringFieldUpdateOperationsInput | string
+    status?: EnumShipmentStatusFieldUpdateOperationsInput | $Enums.ShipmentStatus
+    shippingMethod?: EnumShippingMethodFieldUpdateOperationsInput | $Enums.ShippingMethod
+    carrier?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: StringFieldUpdateOperationsInput | string
+    shippingCity?: StringFieldUpdateOperationsInput | string
+    shippingCountry?: StringFieldUpdateOperationsInput | string
+    shippingPhone?: StringFieldUpdateOperationsInput | string
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

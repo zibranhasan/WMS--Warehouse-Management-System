@@ -33,6 +33,7 @@ model Warehouse {
   stockReservations          StockReservation[]
   pickingTasks               PickingTask[]
   packingTasks               PackingTask[]
+  shipments                  Shipment[]
 
   @@map("warehouses")
 }
