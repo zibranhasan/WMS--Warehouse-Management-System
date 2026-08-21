@@ -67,6 +67,8 @@ enum PurchaseOrderStatus {
 enum SalesOrderStatus {
   PENDING
   CONFIRMED
+  SHIPPED
+  DELIVERED
   CANCELLED
 }
 
@@ -109,4 +111,19 @@ enum PackageStatus {
   OPEN
   PACKED
   CANCELLED
+}
+
+enum ShipmentStatus {
+  READY
+  SHIPPED
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+}
+
+enum ShippingMethod {
+  STANDARD
+  EXPRESS
+  SAME_DAY
+  PICKUP
 }

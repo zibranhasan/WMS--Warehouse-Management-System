@@ -508,6 +508,26 @@ exports.Prisma.StockReservationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ShipmentScalarFieldEnum = {
+  id: 'id',
+  shipmentNumber: 'shipmentNumber',
+  salesOrderId: 'salesOrderId',
+  warehouseId: 'warehouseId',
+  status: 'status',
+  shippingMethod: 'shippingMethod',
+  carrier: 'carrier',
+  trackingNumber: 'trackingNumber',
+  shippingAddress: 'shippingAddress',
+  shippingCity: 'shippingCity',
+  shippingCountry: 'shippingCountry',
+  shippingPhone: 'shippingPhone',
+  shippedAt: 'shippedAt',
+  deliveredAt: 'deliveredAt',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -626,6 +646,8 @@ exports.PurchaseOrderStatus = exports.$Enums.PurchaseOrderStatus = {
 exports.SalesOrderStatus = exports.$Enums.SalesOrderStatus = {
   PENDING: 'PENDING',
   CONFIRMED: 'CONFIRMED',
+  SHIPPED: 'SHIPPED',
+  DELIVERED: 'DELIVERED',
   CANCELLED: 'CANCELLED'
 };
 
@@ -633,6 +655,21 @@ exports.ReservationStatus = exports.$Enums.ReservationStatus = {
   ACTIVE: 'ACTIVE',
   RELEASED: 'RELEASED',
   CONSUMED: 'CONSUMED'
+};
+
+exports.ShipmentStatus = exports.$Enums.ShipmentStatus = {
+  READY: 'READY',
+  SHIPPED: 'SHIPPED',
+  IN_TRANSIT: 'IN_TRANSIT',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.ShippingMethod = exports.$Enums.ShippingMethod = {
+  STANDARD: 'STANDARD',
+  EXPRESS: 'EXPRESS',
+  SAME_DAY: 'SAME_DAY',
+  PICKUP: 'PICKUP'
 };
 
 exports.Prisma.ModelName = {
@@ -666,7 +703,8 @@ exports.Prisma.ModelName = {
   GoodsReceiptItem: 'GoodsReceiptItem',
   SalesOrder: 'SalesOrder',
   SalesOrderItem: 'SalesOrderItem',
-  StockReservation: 'StockReservation'
+  StockReservation: 'StockReservation',
+  Shipment: 'Shipment'
 };
 
 /**

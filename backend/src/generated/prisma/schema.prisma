@@ -172,6 +172,8 @@ enum PurchaseOrderStatus {
 enum SalesOrderStatus {
   PENDING
   CONFIRMED
+  SHIPPED
+  DELIVERED
   CANCELLED
 }
 
@@ -214,6 +216,21 @@ enum PackageStatus {
   OPEN
   PACKED
   CANCELLED
+}
+
+enum ShipmentStatus {
+  READY
+  SHIPPED
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+}
+
+enum ShippingMethod {
+  STANDARD
+  EXPRESS
+  SAME_DAY
+  PICKUP
 }
 
 // =============================================================================
@@ -348,6 +365,7 @@ model Warehouse {
   stockReservations          StockReservation[]
   pickingTasks               PickingTask[]
   packingTasks               PackingTask[]
+  shipments                  Shipment[]
 
   @@map("warehouses")
 }
@@ -802,6 +820,7 @@ model SalesOrder {
   reservations StockReservation[]
   pickingTask  PickingTask?
   packingTask  PackingTask?
+  shipment     Shipment?
 
   @@map("sales_orders")
 }
@@ -863,4 +882,35 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+// =============================================================================
+// Shipping & Shipment Models
+// =============================================================================
+
+model Shipment {
+  id              String         @id @default(cuid())
+  shipmentNumber  String         @unique
+  salesOrderId    String         @unique
+  warehouseId     String
+  status          ShipmentStatus @default(READY)
+  shippingMethod  ShippingMethod
+  carrier         String?
+  trackingNumber  String?
+  shippingAddress String
+  shippingCity    String
+  shippingCountry String
+  shippingPhone   String
+  shippedAt       DateTime?
+  deliveredAt     DateTime?
+  notes           String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  salesOrder SalesOrder @relation(fields: [salesOrderId], references: [id], onDelete: Restrict)
+  warehouse  Warehouse  @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+
+  @@index([warehouseId, status])
+  @@map("shipments")
 }
