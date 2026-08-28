@@ -4,20 +4,20 @@ import { useState } from "react";
 import { useCurrentUser } from "@/features/auth/auth.hooks";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import {
-  useCategories,
-  useCreateCategory,
-  useUpdateCategory,
-  useUpdateCategoryStatus,
-  useDeleteCategory,
-} from "@/features/category/category.hooks";
+  useBrands,
+  useCreateBrand,
+  useUpdateBrand,
+  useUpdateBrandStatus,
+  useDeleteBrand,
+} from "@/features/brand/brand.hooks";
 import {
-  Category,
-  CategoryStatus,
-} from "@/features/category/category.types";
-import { CreateCategoryFormValues } from "@/features/category/category.schema";
-import { CategoryTable } from "@/features/category/components/category-table";
-import { CategoryForm } from "@/features/category/components/category-form";
-import { CategoryDeleteDialog } from "@/features/category/components/category-delete-dialog";
+  Brand,
+  BrandStatus,
+} from "@/features/brand/brand.types";
+import { CreateBrandFormValues } from "@/features/brand/brand.schema";
+import { BrandTable } from "@/features/brand/components/brand-table";
+import { BrandForm } from "@/features/brand/components/brand-form";
+import { BrandDeleteDialog } from "@/features/brand/components/brand-delete-dialog";
 import { SearchInput } from "@/components/shared/search-input";
 import { StatusTabFilter, StatusTabOption } from "@/components/shared/status-tab-filter";
 import { DataTablePagination } from "@/components/shared/data-table-pagination";
@@ -26,7 +26,7 @@ import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
 
-type StatusFilterType = CategoryStatus | "ALL";
+type StatusFilterType = BrandStatus | "ALL";
 
 const STATUS_OPTIONS: StatusTabOption<StatusFilterType>[] = [
   { label: "All", value: "ALL" },
@@ -34,7 +34,7 @@ const STATUS_OPTIONS: StatusTabOption<StatusFilterType>[] = [
   { label: "Inactive", value: "INACTIVE" },
 ];
 
-export default function CategoriesPage() {
+export default function BrandsPage() {
   const { data: meData } = useCurrentUser();
   const user = meData?.data?.user;
   const canMutate =
@@ -63,18 +63,18 @@ export default function CategoriesPage() {
     ...(statusFilter !== "ALL" ? { status: statusFilter } : {}),
   };
 
-  const { data, isLoading, isError, error, refetch } = useCategories(queryParams);
+  const { data, isLoading, isError, error, refetch } = useBrands(queryParams);
 
   // Mutations
-  const createMutation = useCreateCategory();
-  const updateMutation = useUpdateCategory();
-  const updateStatusMutation = useUpdateCategoryStatus();
-  const deleteMutation = useDeleteCategory();
+  const createMutation = useCreateBrand();
+  const updateMutation = useUpdateBrand();
+  const updateStatusMutation = useUpdateBrandStatus();
+  const deleteMutation = useDeleteBrand();
 
   // Dialog States
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
-  const [deletingCategory, setDeletingCategory] = useState<Category | null>(null);
+  const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
+  const [deletingBrand, setDeletingBrand] = useState<Brand | null>(null);
   const [statusTogglePendingId, setStatusTogglePendingId] = useState<string | null>(null);
 
   // Feedback Notification State
@@ -96,47 +96,47 @@ export default function CategoriesPage() {
     setPage(1);
   };
 
-  const handleCreateSubmit = async (values: CreateCategoryFormValues) => {
+  const handleCreateSubmit = async (values: CreateBrandFormValues) => {
     await createMutation.mutateAsync(values);
     setIsCreateOpen(false);
-    showFeedback("success", "Category created successfully.");
+    showFeedback("success", "Brand created successfully.");
   };
 
-  const handleEditSubmit = async (values: CreateCategoryFormValues) => {
-    if (!editingCategory) return;
+  const handleEditSubmit = async (values: CreateBrandFormValues) => {
+    if (!editingBrand) return;
     await updateMutation.mutateAsync({
-      id: editingCategory.id,
+      id: editingBrand.id,
       payload: values,
     });
-    setEditingCategory(null);
-    showFeedback("success", "Category updated successfully.");
+    setEditingBrand(null);
+    showFeedback("success", "Brand updated successfully.");
   };
 
   const handleStatusToggle = async (
     id: string,
-    currentStatus: CategoryStatus
+    currentStatus: BrandStatus
   ) => {
-    const nextStatus: CategoryStatus =
+    const nextStatus: BrandStatus =
       currentStatus === "ACTIVE" ? "INACTIVE" : "ACTIVE";
     setStatusTogglePendingId(id);
     try {
       await updateStatusMutation.mutateAsync({ id, status: nextStatus });
       showFeedback(
         "success",
-        `Category status updated to ${nextStatus}.`
+        `Brand status updated to ${nextStatus}.`
       );
     } catch {
-      showFeedback("error", "Failed to update category status.");
+      showFeedback("error", "Failed to update brand status.");
     }
     setStatusTogglePendingId(null);
   };
 
   const handleDeleteConfirm = async (id: string) => {
     await deleteMutation.mutateAsync(id);
-    showFeedback("success", "Category deleted successfully.");
+    showFeedback("success", "Brand deleted successfully.");
   };
 
-  const categories = data?.data || [];
+  const brands = data?.data || [];
   const meta = data?.meta;
 
   return (
@@ -165,10 +165,10 @@ export default function CategoriesPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Categories
+            Brands
           </h2>
           <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-            Manage product categorization, status visibility, and metadata.
+            Manage product brand organization, status visibility, and metadata.
           </p>
         </div>
 
@@ -179,7 +179,7 @@ export default function CategoriesPage() {
             className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 shrink-0 self-start sm:self-auto"
           >
             <Plus className="h-4 w-4" />
-            Add Category
+            Add Brand
           </Button>
         )}
       </div>
@@ -190,7 +190,7 @@ export default function CategoriesPage() {
         <SearchInput
           value={searchInput}
           onChange={handleSearchChange}
-          placeholder="Search categories by name or slug..."
+          placeholder="Search brands by name or slug..."
         />
 
         {/* Status Filter */}
@@ -205,21 +205,21 @@ export default function CategoriesPage() {
       {/* Error State */}
       {isError && (
         <PageErrorAlert
-          title="Error loading categories"
+          title="Error loading brands"
           message={error instanceof Error ? error.message : "Failed to fetch data."}
           onRetry={refetch}
         />
       )}
 
-      {/* Categories Table */}
+      {/* Brands Table */}
       {!isError && (
-        <CategoryTable
-          categories={categories}
+        <BrandTable
+          brands={brands}
           isLoading={isLoading}
           canMutate={canMutate}
-          onEdit={(cat) => setEditingCategory(cat)}
+          onEdit={(brand) => setEditingBrand(brand)}
           onStatusToggle={handleStatusToggle}
-          onDelete={(cat) => setDeletingCategory(cat)}
+          onDelete={(brand) => setDeletingBrand(brand)}
           statusTogglePendingId={statusTogglePendingId}
         />
       )}
@@ -233,42 +233,42 @@ export default function CategoriesPage() {
           totalPages={meta.totalPages}
           isLoading={isLoading}
           onPageChange={(newPage) => setPage(newPage)}
-          entityName="categories"
+          entityName="brands"
         />
       )}
 
-      {/* Modal: Create Category */}
+      {/* Modal: Create Brand */}
       <Modal
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
-        title="Add New Category"
+        title="Add New Brand"
       >
-        <CategoryForm
+        <BrandForm
           onSubmit={handleCreateSubmit}
           onCancel={() => setIsCreateOpen(false)}
           isPending={createMutation.isPending}
         />
       </Modal>
 
-      {/* Modal: Edit Category */}
+      {/* Modal: Edit Brand */}
       <Modal
-        isOpen={Boolean(editingCategory)}
-        onClose={() => setEditingCategory(null)}
-        title={editingCategory ? `Edit Category "${editingCategory.name}"` : "Edit Category"}
+        isOpen={Boolean(editingBrand)}
+        onClose={() => setEditingBrand(null)}
+        title={editingBrand ? `Edit Brand "${editingBrand.name}"` : "Edit Brand"}
       >
-        <CategoryForm
-          initialData={editingCategory}
+        <BrandForm
+          initialData={editingBrand}
           onSubmit={handleEditSubmit}
-          onCancel={() => setEditingCategory(null)}
+          onCancel={() => setEditingBrand(null)}
           isPending={updateMutation.isPending}
         />
       </Modal>
 
-      {/* Modal: Delete Category */}
-      <CategoryDeleteDialog
-        category={deletingCategory}
-        isOpen={Boolean(deletingCategory)}
-        onClose={() => setDeletingCategory(null)}
+      {/* Modal: Delete Brand */}
+      <BrandDeleteDialog
+        brand={deletingBrand}
+        isOpen={Boolean(deletingBrand)}
+        onClose={() => setDeletingBrand(null)}
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}
       />
