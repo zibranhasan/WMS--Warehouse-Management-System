@@ -1,11 +1,11 @@
-import { CategoryStatus } from "../category.types";
+import { BrandStatus } from "../brand.types";
 import { StatusBadge } from "@/components/shared/status-badge";
 
-interface CategoryStatusBadgeProps {
-  status: CategoryStatus;
+interface BrandStatusBadgeProps {
+  status: BrandStatus;
 }
 
-export function CategoryStatusBadge({ status }: CategoryStatusBadgeProps) {
+export function BrandStatusBadge({ status }: BrandStatusBadgeProps) {
   return (
     <StatusBadge
       label={status === "ACTIVE" ? "Active" : "Inactive"}

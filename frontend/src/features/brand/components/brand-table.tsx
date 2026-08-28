@@ -2,31 +2,31 @@
 
 import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { Category, CategoryStatus } from "../category.types";
-import { CategoryStatusBadge } from "./category-status-badge";
+import { Brand, BrandStatus } from "../brand.types";
+import { BrandStatusBadge } from "./brand-status-badge";
 import { DataTable } from "@/components/shared/data-table";
 import { Button } from "@/components/ui/button";
 import { Edit2, Trash2, ToggleLeft, ToggleRight, Loader2 } from "lucide-react";
 
-interface CategoryTableProps {
-  categories: Category[];
+interface BrandTableProps {
+  brands: Brand[];
   isLoading: boolean;
   canMutate: boolean;
-  onEdit: (category: Category) => void;
-  onStatusToggle: (id: string, currentStatus: CategoryStatus) => void;
-  onDelete: (category: Category) => void;
+  onEdit: (brand: Brand) => void;
+  onStatusToggle: (id: string, currentStatus: BrandStatus) => void;
+  onDelete: (brand: Brand) => void;
   statusTogglePendingId?: string | null;
 }
 
-export function CategoryTable({
-  categories,
+export function BrandTable({
+  brands,
   isLoading,
   canMutate,
   onEdit,
   onStatusToggle,
   onDelete,
   statusTogglePendingId,
-}: CategoryTableProps) {
+}: BrandTableProps) {
   const formatDate = (dateString: string) => {
     try {
       return new Date(dateString).toLocaleDateString(undefined, {
@@ -39,8 +39,8 @@ export function CategoryTable({
     }
   };
 
-  const columns = React.useMemo<ColumnDef<Category>[]>(() => {
-    const cols: ColumnDef<Category>[] = [
+  const columns = React.useMemo<ColumnDef<Brand>[]>(() => {
+    const cols: ColumnDef<Brand>[] = [
       {
         accessorKey: "name",
         header: "Name",
@@ -76,7 +76,7 @@ export function CategoryTable({
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => (
-          <CategoryStatusBadge status={row.original.status} />
+          <BrandStatusBadge status={row.original.status} />
         ),
       },
       {
@@ -95,8 +95,8 @@ export function CategoryTable({
         id: "actions",
         header: () => <div className="text-right">Actions</div>,
         cell: ({ row }) => {
-          const category = row.original;
-          const isPending = statusTogglePendingId === category.id;
+          const brand = row.original;
+          const isPending = statusTogglePendingId === brand.id;
 
           return (
             <div className="flex items-center justify-end gap-1.5 whitespace-nowrap">
@@ -105,16 +105,16 @@ export function CategoryTable({
                 type="button"
                 variant="ghost"
                 size="sm"
-                onClick={() => onStatusToggle(category.id, category.status)}
+                onClick={() => onStatusToggle(brand.id, brand.status)}
                 disabled={isPending}
                 title={`Switch status to ${
-                  category.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
+                  brand.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
                 }`}
                 className="text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
               >
                 {isPending ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
-                ) : category.status === "ACTIVE" ? (
+                ) : brand.status === "ACTIVE" ? (
                   <ToggleRight className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 ) : (
                   <ToggleLeft className="h-4 w-4 text-slate-400" />
@@ -127,8 +127,8 @@ export function CategoryTable({
                 type="button"
                 variant="ghost"
                 size="sm"
-                onClick={() => onEdit(category)}
-                title="Edit Category"
+                onClick={() => onEdit(brand)}
+                title="Edit Brand"
                 className="text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
               >
                 <Edit2 className="h-4 w-4" />
@@ -140,8 +140,8 @@ export function CategoryTable({
                 type="button"
                 variant="ghost"
                 size="sm"
-                onClick={() => onDelete(category)}
-                title="Delete Category"
+                onClick={() => onDelete(brand)}
+                title="Delete Brand"
                 className="text-slate-600 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400"
               >
                 <Trash2 className="h-4 w-4" />
@@ -159,10 +159,10 @@ export function CategoryTable({
   return (
     <DataTable
       columns={columns}
-      data={categories}
+      data={brands}
       isLoading={isLoading}
-      emptyTitle="No Categories Found"
-      emptyDescription="No category records match your filter criteria or search query."
+      emptyTitle="No Brands Found"
+      emptyDescription="No brand records match your filter criteria or search query."
     />
   );
 }
