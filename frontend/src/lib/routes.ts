@@ -1,4 +1,11 @@
-export const PUBLIC_ROUTES = ["/login"];
+export const PUBLIC_ROUTES = [
+  "/login",
+  "/forgot-password",
+  "/reset-password",
+  "/verify-email",
+];
+
+
 
 export const PROTECTED_ROUTES = [
   "/dashboard",

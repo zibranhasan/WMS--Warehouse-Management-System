@@ -8,22 +8,59 @@ import { UserValidation } from "./user.validation";
 
 const router = Router();
 
-// Create employee user (Only ADMIN or SUPER_ADMIN)
+// Create employee user (Only SUPER_ADMIN or ADMIN)
 router.post(
     "/",
-    // checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
+    checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
     multerUpload.single("image"),
     validateRequest(UserValidation.createUserValidationSchema),
     UserController.createUser,
 );
 
-// List users with pagination, search, filter, and sort
-router.get("/", UserController.getAllUsers);
+// List users with pagination, search, filter, and sort (Only SUPER_ADMIN or ADMIN)
+router.get(
+    "/",
+    checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
+    UserController.getAllUsers,
+);
 
-// Get single user details
-router.get("/:id", UserController.getUserById);
+// Block user (Only SUPER_ADMIN or ADMIN) — must be before /:id to avoid conflict
+router.patch(
+    "/:id/block",
+    checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
+    UserController.blockUser,
+);
 
-// Update user details
+// Unblock user (Only SUPER_ADMIN or ADMIN) — must be before /:id to avoid conflict
+router.patch(
+    "/:id/unblock",
+    checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
+    UserController.unblockUser,
+);
+
+// Assign role to user (Only SUPER_ADMIN or ADMIN) — must be before /:id
+router.patch(
+    "/:id/role",
+    checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
+    validateRequest(UserValidation.assignRoleValidationSchema),
+    UserController.assignRole,
+);
+
+// Assign warehouse to user (Prepared for future Warehouse model integration) — must be before /:id
+router.patch(
+    "/:id/warehouse",
+    validateRequest(UserValidation.assignWarehouseValidationSchema),
+    UserController.assignWarehouse,
+);
+
+// Get single user details (Only SUPER_ADMIN or ADMIN)
+router.get(
+    "/:id",
+    checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
+    UserController.getUserById,
+);
+
+// Update user details (Only SUPER_ADMIN or ADMIN)
 router.patch(
     "/:id",
     checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
@@ -32,27 +69,11 @@ router.patch(
     UserController.updateUser,
 );
 
-// Block user
-router.patch("/:id/block", UserController.blockUser);
-
-// Unblock user
-router.patch("/:id/unblock", UserController.unblockUser);
-
-// Assign role to user
-router.patch(
-    "/:id/role",
-    validateRequest(UserValidation.assignRoleValidationSchema),
-    UserController.assignRole,
+// Soft delete user (Only SUPER_ADMIN or ADMIN)
+router.delete(
+    "/:id",
+    checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
+    UserController.deleteUser,
 );
-
-// Assign warehouse to user (Prepared for future Warehouse model integration)
-router.patch(
-    "/:id/warehouse",
-    validateRequest(UserValidation.assignWarehouseValidationSchema),
-    UserController.assignWarehouse,
-);
-
-// Soft delete user
-router.delete("/:id", UserController.deleteUser);
 
 export const UserRoutes = router;

@@ -12,15 +12,11 @@ const createUserValidationSchema = z.object({
             message: "Email is required.",
         })
         .email("Invalid email address format."),
-    password: z
-        .string({
-            message: "Password is required.",
-        })
-        .min(8, "Password must be at least 8 characters."),
     role: z.nativeEnum(Role, {
         message: "Invalid or missing role.",
     }),
 });
+
 
 const updateUserValidationSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters.").optional(),

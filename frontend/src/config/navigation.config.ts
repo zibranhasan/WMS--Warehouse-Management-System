@@ -18,7 +18,9 @@ import {
   PackageOpen,
   Send,
   User as UserIcon,
+  KeyRound,
 } from "lucide-react";
+
 
 export type IconComponent = React.ComponentType<{ className?: string }>;
 
@@ -186,8 +188,14 @@ export const navigationConfig: NavGroup[] = [
         href: "/profile",
         icon: UserIcon,
       },
+      {
+        title: "Change Password",
+        href: "/change-password",
+        icon: KeyRound,
+      },
     ],
   },
+
 ];
 
 export function getFilteredNavigation(role?: string): NavGroup[] {

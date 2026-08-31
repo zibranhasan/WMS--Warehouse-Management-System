@@ -230,14 +230,16 @@ const changePassword = async (req: Request) => {
 
     const { currentPassword, newPassword } = req.body;
 
+    let result;
     try {
-        await auth.api.changePassword({
+        result = await auth.api.changePassword({
             body: {
                 currentPassword,
                 newPassword,
                 revokeOtherSessions: true,
             },
             headers: fromNodeHeaders(req.headers),
+            returnHeaders: true,
         });
     } catch (error: any) {
         throw new AppError(
@@ -254,7 +256,10 @@ const changePassword = async (req: Request) => {
     }
 
     return {
-        message: "Password changed successfully.",
+        data: {
+            message: "Password changed successfully.",
+        },
+        headers: result.headers,
     };
 };
 
