@@ -53,7 +53,8 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
 
 const blockUser = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
-    const result = await UserService.blockUser(id);
+    const currentUserId = req.user?.userId;
+    const result = await UserService.blockUser(id, currentUserId);
 
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
@@ -101,7 +102,8 @@ const assignWarehouse = catchAsync(async (req: Request, res: Response) => {
 
 const deleteUser = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
-    const result = await UserService.deleteUser(id);
+    const currentUserId = req.user?.userId;
+    const result = await UserService.deleteUser(id, currentUserId);
 
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,

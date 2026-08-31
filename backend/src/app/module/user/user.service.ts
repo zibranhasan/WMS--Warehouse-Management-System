@@ -6,6 +6,8 @@ import { IQueryParams } from "../../interfaces/query.interface";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
 import { QueryBuilder } from "../../utils/QueryBuilder";
+import { generateTemporaryPassword } from "../../utils/password";
+import { sendEmail } from "../../utils/email";
 import {
     userFilterableFields,
     userSearchableFields,
@@ -18,7 +20,7 @@ import {
 } from "./user.interface";
 
 const createUser = async (payload: ICreateUser, file?: Express.Multer.File) => {
-    const { name, email, password, role } = payload;
+    const { name, email, role } = payload;
 
     // Check if user already exists in the system
     const existingUser = await prisma.user.findUnique({
@@ -32,12 +34,15 @@ const createUser = async (payload: ICreateUser, file?: Express.Multer.File) => {
         );
     }
 
+    // Generate secure temporary password
+    const tempPassword = generateTemporaryPassword();
+
     // Better Auth handles secure user creation & password hashing
     const authData = await auth.api.signUpEmail({
         body: {
             name,
             email,
-            password,
+            password: tempPassword,
         },
     });
 
@@ -64,9 +69,21 @@ const createUser = async (payload: ICreateUser, file?: Express.Multer.File) => {
             },
         });
 
+        // Send credentials email to the new employee
+        await sendEmail({
+            to: email,
+            subject: "Your WMS Account Credentials",
+            templateName: "credentials",
+            templateData: {
+                name,
+                email,
+                tempPassword,
+            },
+        });
+
         return updatedUser;
     } catch (error) {
-        // Cleanup created user if subsequent Prisma operation fails
+        // Cleanup created user if subsequent operations (Prisma update or email send) fail
         await prisma.user
             .delete({
                 where: { id: authData.user.id },
@@ -75,6 +92,7 @@ const createUser = async (payload: ICreateUser, file?: Express.Multer.File) => {
         throw error;
     }
 };
+
 
 const getAllUsers = async (query: Record<string, unknown>) => {
     const queryBuilder = new QueryBuilder<User>(
@@ -86,6 +104,7 @@ const getAllUsers = async (query: Record<string, unknown>) => {
         },
     )
         .where({ isDeleted: false })
+        .include({ warehouse: true })
         .search()
         .filter()
         .sort()
@@ -102,6 +121,9 @@ const getUserById = async (id: string) => {
         where: {
             id,
             isDeleted: false,
+        },
+        include: {
+            warehouse: true,
         },
     });
 
@@ -148,7 +170,14 @@ const updateUser = async (
     return updatedUser;
 };
 
-const blockUser = async (id: string) => {
+const blockUser = async (id: string, currentUserId?: string) => {
+    if (currentUserId && id === currentUserId) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "You cannot block your own account.",
+        );
+    }
+
     const existingUser = await prisma.user.findFirst({
         where: {
             id,
@@ -242,7 +271,14 @@ const assignWarehouse = async (id: string, payload: IAssignWarehouse) => {
     };
 };
 
-const deleteUser = async (id: string) => {
+const deleteUser = async (id: string, currentUserId?: string) => {
+    if (currentUserId && id === currentUserId) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "You cannot delete your own account.",
+        );
+    }
+
     const existingUser = await prisma.user.findFirst({
         where: {
             id,

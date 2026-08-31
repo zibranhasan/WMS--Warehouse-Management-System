@@ -125,6 +125,9 @@ export function useAssignUser() {
       queryClient.invalidateQueries({
         queryKey: warehouseKeys.users(variables.warehouseId),
       });
+      queryClient.invalidateQueries({
+        queryKey: ["users"],
+      });
     },
   });
 }
@@ -143,6 +146,9 @@ export function useUnassignUser() {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: warehouseKeys.users(variables.warehouseId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["users"],
       });
     },
   });

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,6 +20,7 @@ export function LoginForm() {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
@@ -45,6 +47,11 @@ export function LoginForm() {
   };
 
   const serverError = getErrorMessage();
+  const isUnverifiedEmailError =
+    serverError &&
+    (serverError.toLowerCase().includes("email not verified") ||
+      serverError.toLowerCase().includes("verify your email") ||
+      serverError.toLowerCase().includes("unverified"));
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
@@ -54,9 +61,24 @@ export function LoginForm() {
           className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/50 dark:text-red-300"
         >
           <AlertCircle className="h-5 w-5 shrink-0 text-red-600 dark:text-red-400 mt-0.5" />
-          <div className="flex-1 font-medium">{serverError}</div>
+          <div className="flex-1 space-y-1.5">
+            <div className="font-medium">{serverError}</div>
+            {isUnverifiedEmailError && (
+              <div>
+                <Link
+                  href={`/verify-email?email=${encodeURIComponent(
+                    getValues("email") || ""
+                  )}`}
+                  className="inline-flex items-center text-xs font-semibold text-blue-700 underline hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200"
+                >
+                  Verify Email Now &rarr;
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       )}
+
 
       {/* Email Field */}
       <div className="space-y-2">
@@ -93,12 +115,21 @@ export function LoginForm() {
 
       {/* Password Field */}
       <div className="space-y-2">
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-slate-700 dark:text-slate-300"
-        >
-          Password
-        </label>
+        <div className="flex items-center justify-between">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+          >
+            Password
+          </label>
+          <Link
+            href="/forgot-password"
+            className="text-xs font-medium text-blue-600 hover:underline dark:text-blue-400"
+          >
+            Forgot password?
+          </Link>
+        </div>
+
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
             <Lock className="h-4 w-4" />

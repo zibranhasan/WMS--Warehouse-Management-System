@@ -3,10 +3,10 @@ import { Role, UserStatus } from "../../../generated/prisma/index.js";
 export interface ICreateUser {
     name: string;
     email: string;
-    password: string;
     role: Role;
     image?: string;
 }
+
 
 export interface IUpdateUser {
     name?: string;

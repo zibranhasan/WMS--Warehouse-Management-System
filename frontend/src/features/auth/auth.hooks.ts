@@ -4,7 +4,12 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { authApi } from "./auth.api";
-import { LoginPayload } from "./auth.types";
+import {
+  ChangePasswordPayload,
+  ForgotPasswordPayload,
+  LoginPayload,
+  ResetPasswordPayload,
+} from "./auth.types";
 
 export const authKeys = {
   all: ["auth"] as const,
@@ -40,3 +45,36 @@ export function useLogout() {
     },
   });
 }
+
+export function useChangePassword() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: ChangePasswordPayload) =>
+      authApi.changePassword(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: authKeys.currentUser() });
+    },
+  });
+}
+
+export function useForgotPassword() {
+  return useMutation({
+    mutationFn: (payload: ForgotPasswordPayload) =>
+      authApi.forgotPassword(payload),
+  });
+}
+
+export function useResetPassword() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: ResetPasswordPayload) =>
+      authApi.resetPassword(payload),
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: authKeys.currentUser() });
+    },
+  });
+}
+
+

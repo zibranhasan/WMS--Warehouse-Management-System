@@ -48,8 +48,11 @@ export async function proxy(request: NextRequest) {
   // 1. Handle public routes (e.g. /login)
   if (isPublic) {
     if (hasSessionCookie) {
-      const { authenticated } = await verifySession(cookieHeader);
-      if (authenticated) {
+      const { authenticated, user } = await verifySession(cookieHeader);
+      if (authenticated && user) {
+        if (user.needPasswordChange) {
+          return NextResponse.redirect(new URL("/change-password", request.url));
+        }
         return NextResponse.redirect(new URL("/dashboard", request.url));
       }
     }
@@ -67,17 +70,26 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // 3. Handle role-based route ownership (e.g. /users -> SUPER_ADMIN, ADMIN)
+  // 3. Enforce password change for users requiring it
+  if (user.needPasswordChange && pathname !== "/change-password") {
+    return NextResponse.redirect(new URL("/change-password", request.url));
+  }
+
+  // 4. Handle role-based route ownership (e.g. /users -> SUPER_ADMIN, ADMIN)
   if (!isRoleAllowedForRoute(pathname, user.role)) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  // 4. Redirect root route '/' to '/dashboard' for authenticated users
+  // 5. Redirect root route '/' to '/dashboard' or '/change-password' for authenticated users
   if (pathname === "/") {
+    if (user.needPasswordChange) {
+      return NextResponse.redirect(new URL("/change-password", request.url));
+    }
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
+
 }
 
 export const config = {

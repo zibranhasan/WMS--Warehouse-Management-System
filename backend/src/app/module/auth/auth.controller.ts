@@ -73,10 +73,17 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
 const changePassword = catchAsync(async (req: Request, res: Response) => {
     const result = await AuthService.changePassword(req);
 
+    if (result.headers) {
+        const setCookies = result.headers.getSetCookie();
+        if (setCookies.length > 0) {
+            res.setHeader("Set-Cookie", setCookies);
+        }
+    }
+
     sendResponse(res, {
         httpStatusCode: status.OK,
         success: true,
-        message: result.message,
+        message: result.data.message,
     });
 });
 
