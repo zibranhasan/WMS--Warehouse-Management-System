@@ -69,7 +69,12 @@ const createAisle = async (payload: ICreateAisle) => {
 };
 
 const getAllAisles = async (query: Record<string, unknown>) => {
-    const filterQuery = { isDeleted: "false", ...query };
+    const filterQuery: Record<string, unknown> = { isDeleted: "false", ...query };
+
+    if (filterQuery.warehouseId) {
+        filterQuery["zone.warehouseId"] = filterQuery.warehouseId;
+        delete filterQuery.warehouseId;
+    }
 
     const queryBuilder = new QueryBuilder<Aisle>(
         prisma.aisle,
@@ -83,7 +88,8 @@ const getAllAisles = async (query: Record<string, unknown>) => {
         .filter()
         .sort()
         .paginate()
-        .fields();
+        .fields()
+        .include({ zone: { include: { warehouse: true } } });
 
     const result = await queryBuilder.execute();
     return result;

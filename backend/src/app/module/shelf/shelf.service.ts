@@ -69,7 +69,16 @@ const createShelf = async (payload: ICreateShelf) => {
 };
 
 const getAllShelves = async (query: Record<string, unknown>) => {
-    const filterQuery = { isDeleted: "false", ...query };
+    const filterQuery: Record<string, unknown> = { isDeleted: "false", ...query };
+
+    if (filterQuery.warehouseId) {
+        filterQuery["aisle.zone.warehouseId"] = filterQuery.warehouseId;
+        delete filterQuery.warehouseId;
+    }
+    if (filterQuery.zoneId) {
+        filterQuery["aisle.zoneId"] = filterQuery.zoneId;
+        delete filterQuery.zoneId;
+    }
 
     const queryBuilder = new QueryBuilder<Shelf>(
         prisma.shelf,
@@ -83,7 +92,8 @@ const getAllShelves = async (query: Record<string, unknown>) => {
         .filter()
         .sort()
         .paginate()
-        .fields();
+        .fields()
+        .include({ aisle: { include: { zone: { include: { warehouse: true } } } } });
 
     const result = await queryBuilder.execute();
     return result;

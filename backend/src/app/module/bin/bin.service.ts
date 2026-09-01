@@ -69,7 +69,28 @@ const createBin = async (payload: ICreateBin) => {
 };
 
 const getAllBins = async (query: Record<string, unknown>) => {
-    const filterQuery = { isDeleted: "false", ...query };
+    const filterQuery: Record<string, unknown> = { isDeleted: "false", ...query };
+    const shelfWhere: Record<string, unknown> = {};
+
+    if (filterQuery.warehouseId) {
+        shelfWhere.aisle = {
+            zone: {
+                warehouseId: filterQuery.warehouseId as string,
+            },
+        };
+        delete filterQuery.warehouseId;
+    }
+    if (filterQuery.zoneId) {
+        shelfWhere.aisle = {
+            ...(shelfWhere.aisle as Record<string, unknown> || {}),
+            zoneId: filterQuery.zoneId as string,
+        };
+        delete filterQuery.zoneId;
+    }
+    if (filterQuery.aisleId) {
+        shelfWhere.aisleId = filterQuery.aisleId as string;
+        delete filterQuery.aisleId;
+    }
 
     const queryBuilder = new QueryBuilder<Bin>(
         prisma.bin,
@@ -80,10 +101,31 @@ const getAllBins = async (query: Record<string, unknown>) => {
         },
     )
         .search()
-        .filter()
+        .filter();
+
+    if (Object.keys(shelfWhere).length > 0) {
+        queryBuilder.where({ shelf: shelfWhere });
+    }
+
+    queryBuilder
         .sort()
         .paginate()
-        .fields();
+        .fields()
+        .include({
+            shelf: {
+                include: {
+                    aisle: {
+                        include: {
+                            zone: {
+                                include: {
+                                    warehouse: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        });
 
     const result = await queryBuilder.execute();
     return result;

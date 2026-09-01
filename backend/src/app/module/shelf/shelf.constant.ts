@@ -7,6 +7,10 @@ export const shelfSearchableFields: string[] = [
 export const shelfFilterableFields: string[] = [
     "searchTerm",
     "aisleId",
+    "aisle.zoneId",
+    "zoneId",
+    "aisle.zone.warehouseId",
+    "warehouseId",
     "status",
     "code",
     "name",

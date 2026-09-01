@@ -63,9 +63,45 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
               <nav className="space-y-1">
                 {group.items.map((item) => {
                   const Icon = item.icon;
-                  const isActive =
-                    pathname === item.href ||
-                    pathname.startsWith(`${item.href}/`);
+                  const isActive = (() => {
+                    if (item.href === "/shelves") {
+                      return (
+                        pathname === "/shelves" ||
+                        pathname.startsWith("/shelves/") ||
+                        pathname.endsWith("/shelves")
+                      );
+                    }
+                    if (item.href === "/aisles") {
+                      return (
+                        (pathname === "/aisles" ||
+                          pathname.startsWith("/aisles/") ||
+                          pathname.includes("/aisles")) &&
+                        !pathname.includes("/shelves")
+                      );
+                    }
+                    if (item.href === "/zones") {
+                      return (
+                        (pathname === "/zones" ||
+                          pathname.startsWith("/zones/") ||
+                          pathname.includes("/zones")) &&
+                        !pathname.includes("/aisles") &&
+                        !pathname.includes("/shelves")
+                      );
+                    }
+                    if (item.href === "/warehouses") {
+                      return (
+                        pathname === "/warehouses" ||
+                        (pathname.startsWith("/warehouses/") &&
+                          !pathname.includes("/zones") &&
+                          !pathname.includes("/aisles") &&
+                          !pathname.includes("/shelves"))
+                      );
+                    }
+                    return (
+                      pathname === item.href ||
+                      pathname.startsWith(`${item.href}/`)
+                    );
+                  })();
 
                   return (
                     <Link
