@@ -7,6 +7,8 @@ export const aisleSearchableFields: string[] = [
 export const aisleFilterableFields: string[] = [
     "searchTerm",
     "zoneId",
+    "zone.warehouseId",
+    "warehouseId",
     "status",
     "code",
     "name",

@@ -7,6 +7,9 @@ export const binSearchableFields: string[] = [
 export const binFilterableFields: string[] = [
     "searchTerm",
     "shelfId",
+    "aisleId",
+    "zoneId",
+    "warehouseId",
     "status",
     "code",
     "name",

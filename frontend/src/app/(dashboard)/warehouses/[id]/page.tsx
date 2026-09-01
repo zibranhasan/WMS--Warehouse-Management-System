@@ -8,6 +8,9 @@ import { PageErrorAlert } from "@/components/shared/page-error-alert";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Building2, MapPin, Calendar, Globe } from "lucide-react";
 
+import { WarehouseAssignedUsers } from "@/features/warehouse/components/warehouse-assigned-users";
+import { WarehouseStructureTree } from "@/features/warehouse/components/warehouse-structure-tree";
+
 interface WarehouseDetailPageProps {
   params: Promise<{ id: string }>;
 }
@@ -177,6 +180,12 @@ export default function WarehouseDetailPage({ params }: WarehouseDetailPageProps
               </dl>
             </div>
           </div>
+
+          {/* Assigned Employees Section */}
+          <WarehouseAssignedUsers warehouseId={id} />
+
+          {/* Physical Structure Section */}
+          <WarehouseStructureTree warehouseId={id} />
         </div>
       )}
     </div>

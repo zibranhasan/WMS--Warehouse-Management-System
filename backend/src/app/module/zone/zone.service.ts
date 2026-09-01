@@ -83,7 +83,8 @@ const getAllZones = async (query: Record<string, unknown>) => {
         .filter()
         .sort()
         .paginate()
-        .fields();
+        .fields()
+        .include({ warehouse: true });
 
     const result = await queryBuilder.execute();
     return result;

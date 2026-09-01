@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { User } from "../user.types";
 import { useWarehouses, useAssignUser, useUnassignUser } from "@/features/warehouse/warehouse.hooks";
 import { Modal } from "@/components/shared/modal";
@@ -35,12 +35,15 @@ export function UserWarehouseDialog({
 
   const isPending = assignMutation.isPending || unassignMutation.isPending;
 
-  useEffect(() => {
-    if (user) {
-      setSelectedWarehouseId(user.warehouseId || "");
-      setErrorMessage(null);
-    }
-  }, [user, isOpen]);
+  const [prevUser, setPrevUser] = useState<User | null>(user);
+  const [prevIsOpen, setPrevIsOpen] = useState<boolean>(isOpen);
+
+  if (user !== prevUser || isOpen !== prevIsOpen) {
+    setPrevUser(user);
+    setPrevIsOpen(isOpen);
+    setSelectedWarehouseId(user?.warehouseId || "");
+    setErrorMessage(null);
+  }
 
   if (!user) return null;
 
