@@ -5,6 +5,7 @@ import { fromNodeHeaders } from "better-auth/node";
 import { Role, UserStatus } from "../../generated/prisma/enums";
 import AppError from "../errorHelpers/AppError";
 import { auth } from "../lib/auth";
+import { prisma } from "../lib/prisma";
 
 export const checkAuth =
     (...authRoles: Role[]) =>
@@ -48,10 +49,16 @@ export const checkAuth =
                     );
                 }
 
+                const dbUser = await prisma.user.findUnique({
+                    where: { id: user.id },
+                    select: { warehouseId: true },
+                });
+
                 req.user = {
                     userId: user.id,
                     role: user.role as Role,
                     email: user.email,
+                    warehouseId: dbUser?.warehouseId ?? null,
                 };
 
                 next();

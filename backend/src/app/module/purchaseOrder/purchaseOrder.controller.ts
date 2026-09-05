@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { catchAsync } from "../../shared/catchAsync";
 import { sendResponse } from "../../shared/sendResponse";
+import { getWarehouseScope } from "../../utils/warehouseScope";
 import { PurchaseOrderService } from "./purchaseOrder.service";
 
 const createPurchaseOrder = catchAsync(async (req: Request, res: Response) => {
@@ -20,7 +21,14 @@ const createPurchaseOrder = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllPurchaseOrders = catchAsync(async (req: Request, res: Response) => {
-    const result = await PurchaseOrderService.getAllPurchaseOrders(req.query);
+    const warehouseScope = getWarehouseScope(
+        req.user.role,
+        req.user.warehouseId,
+    );
+    const result = await PurchaseOrderService.getAllPurchaseOrders(
+        req.query,
+        warehouseScope,
+    );
 
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
@@ -45,9 +53,11 @@ const getPurchaseOrderById = catchAsync(async (req: Request, res: Response) => {
 
 const updatePurchaseOrder = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
+    const userRole = req.user.role;
     const result = await PurchaseOrderService.updatePurchaseOrder(
         id,
         req.body,
+        userRole,
     );
 
     sendResponse(res, {

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { catchAsync } from "../../shared/catchAsync";
 import { sendResponse } from "../../shared/sendResponse";
+import { getWarehouseScope } from "../../utils/warehouseScope";
 import { AisleService } from "./aisle.service";
 
 const createAisle = catchAsync(async (req: Request, res: Response) => {
@@ -16,7 +17,11 @@ const createAisle = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllAisles = catchAsync(async (req: Request, res: Response) => {
-    const result = await AisleService.getAllAisles(req.query);
+    const warehouseScope = getWarehouseScope(
+        req.user.role,
+        req.user.warehouseId,
+    );
+    const result = await AisleService.getAllAisles(req.query, warehouseScope);
 
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,

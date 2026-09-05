@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { Role } from "../../../generated/prisma/index.js";
 import { checkAuth } from "../../middleware/checkAuth";
+import {
+    checkWarehouseAccess,
+    checkBinWarehouseAccess,
+} from "../../middleware/checkWarehouseAccess";
 import { validateRequest } from "../../middleware/validateRequest";
 import { InventoryController } from "./inventory.controller";
 import { InventoryLocationValidation } from "./inventory-location.validation";
@@ -17,10 +21,21 @@ const ALL_ROLES = [
     Role.STAFF,
 ];
 
+const WRITE_ROLES = [
+    Role.SUPER_ADMIN,
+    Role.ADMIN,
+    Role.WAREHOUSE_MANAGER,
+];
+
+// =========================================================================
+// READ ENDPOINTS — warehouse-scoped
+// =========================================================================
+
 // 1. Get warehouse stock
 router.get(
     "/warehouse/:warehouseId",
     checkAuth(...ALL_ROLES),
+    checkWarehouseAccess,
     InventoryController.getStockByWarehouse,
 );
 
@@ -28,6 +43,7 @@ router.get(
 router.get(
     "/warehouse/:warehouseId/product/:productId/summary",
     checkAuth(...ALL_ROLES),
+    checkWarehouseAccess,
     InventoryController.getInventorySummary,
 );
 
@@ -35,81 +51,96 @@ router.get(
 router.get(
     "/warehouse/:warehouseId/product/:productId",
     checkAuth(...ALL_ROLES),
+    checkWarehouseAccess,
     InventoryController.getProductStock,
 );
 
-// 3. Adjust stock
+// =========================================================================
+// WRITE ENDPOINTS — role + warehouse scoped
+// =========================================================================
+
+// 4. Adjust stock
 router.post(
     "/adjust",
-    checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.WAREHOUSE_MANAGER),
+    checkAuth(...WRITE_ROLES),
+    checkWarehouseAccess,
     validateRequest(InventoryValidation.stockAdjustmentValidationSchema),
     InventoryController.adjustStock,
 );
 
-// 4. Get stock movements
+// =========================================================================
+// MOVEMENT ENDPOINTS — auto-filtered for warehouse-scoped users
+// =========================================================================
+
+// 5. Get stock movements
 router.get(
     "/movements",
     checkAuth(...ALL_ROLES),
     InventoryController.getStockMovements,
 );
 
-// 5. Get product movements
+// 6. Get product movements
 router.get(
     "/product/:productId/movements",
     checkAuth(...ALL_ROLES),
     InventoryController.getProductMovements,
 );
 
-// ---------------------------------------------------------------------------
+// =========================================================================
 // INVENTORY LOCATION / BIN STOCK ENDPOINTS
-// ---------------------------------------------------------------------------
+// =========================================================================
 
-// Allocate stock to bin
+// 7. Allocate stock to bin
 router.post(
     "/locations/allocate",
-    checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.WAREHOUSE_MANAGER),
+    checkAuth(...WRITE_ROLES),
+    checkBinWarehouseAccess,
     validateRequest(InventoryLocationValidation.allocateStockValidationSchema),
     InventoryController.allocateStock,
 );
 
-// Deallocate stock from bin
+// 8. Deallocate stock from bin
 router.post(
     "/locations/deallocate",
-    checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.WAREHOUSE_MANAGER),
+    checkAuth(...WRITE_ROLES),
+    checkBinWarehouseAccess,
     validateRequest(InventoryLocationValidation.deallocateStockValidationSchema),
     InventoryController.deallocateStock,
 );
 
-// Transfer stock between bins
+// 9. Transfer stock between bins
 router.post(
     "/locations/transfer",
-    checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.WAREHOUSE_MANAGER),
+    checkAuth(...WRITE_ROLES),
+    checkBinWarehouseAccess,
     validateRequest(InventoryLocationValidation.transferStockValidationSchema),
     InventoryController.transferStock,
 );
 
-// Get stock in a bin
+// 10. Get stock in a bin
 router.get(
     "/locations/bin/:binId",
     checkAuth(...ALL_ROLES),
+    checkBinWarehouseAccess,
     InventoryController.getStockByBin,
 );
 
-// Get product locations
+// 11. Get product locations (auto-filtered for warehouse-scoped users)
 router.get(
     "/locations/product/:productId",
     checkAuth(...ALL_ROLES),
     InventoryController.getProductLocations,
 );
 
-// Get warehouse location stock
+// 12. Get warehouse location stock
 router.get(
     "/locations/warehouse/:warehouseId",
     checkAuth(...ALL_ROLES),
+    checkWarehouseAccess,
     InventoryController.getWarehouseLocationStock,
 );
 
-// Get location stock movement history
+// 13. Get location stock movement history (auto-filtered for warehouse-scoped users)
 router.get(
     "/locations/movements",
     checkAuth(...ALL_ROLES),

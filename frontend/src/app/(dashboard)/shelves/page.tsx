@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useCurrentUser } from "@/features/auth/auth.hooks";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { useWarehouses } from "@/features/warehouse/warehouse.hooks";
@@ -45,9 +45,12 @@ const STATUS_OPTIONS: StatusTabOption<StatusFilterType>[] = [
   })),
 ];
 
+const GLOBAL_ROLES = ["SUPER_ADMIN", "ADMIN"];
+
 export default function GlobalShelvesPage() {
   const { data: meData } = useCurrentUser();
   const user = meData?.data?.user;
+  const isGlobalUser = GLOBAL_ROLES.includes(user?.role ?? "");
   const canMutate =
     user?.role === "SUPER_ADMIN" ||
     user?.role === "ADMIN" ||
@@ -57,7 +60,18 @@ export default function GlobalShelvesPage() {
   const { data: warehousesData, isLoading: isLoadingWarehouses } = useWarehouses({
     limit: 100,
   });
-  const warehousesList = warehousesData?.data || [];
+  const allWarehouses = warehousesData?.data || [];
+
+  // Scoped users only see their assigned warehouse in the list filter
+  const warehousesList = useMemo(() => {
+    if (isGlobalUser) return allWarehouses;
+    if (!user?.warehouseId) return [];
+    const filtered = allWarehouses.filter((wh) => wh.id === user.warehouseId);
+    if (filtered.length === 0 && user.warehouse) {
+      return [user.warehouse as any];
+    }
+    return filtered;
+  }, [isGlobalUser, allWarehouses, user?.warehouseId, user?.warehouse]);
 
   // Filter & Query States
   const [page, setPage] = useState(1);
@@ -68,18 +82,33 @@ export default function GlobalShelvesPage() {
   const [aisleFilter, setAisleFilter] = useState<string>("ALL");
   const [searchInput, setSearchInput] = useState("");
 
+  // Sync warehouse filter for scoped users
+  useEffect(() => {
+    if (!isGlobalUser && user?.warehouseId) {
+      setWarehouseFilter(user.warehouseId);
+    }
+  }, [isGlobalUser, user?.warehouseId]);
+
   const debouncedSearch = useDebounce(searchInput.trim(), 400);
 
-  // Fetch zones for zone filter dropdown (filtered by warehouse if selected)
+  // Determine effective warehouse filter for scoping zones, aisles, and shelves
+  const effectiveWarehouseFilter = !isGlobalUser
+    ? user?.warehouseId
+    : warehouseFilter !== "ALL"
+      ? warehouseFilter
+      : undefined;
+
+  // Fetch zones for zone filter dropdown (scoped to warehouse)
   const { data: zonesData, isLoading: isLoadingZones } = useZones({
     limit: 200,
-    ...(warehouseFilter !== "ALL" ? { warehouseId: warehouseFilter } : {}),
+    ...(effectiveWarehouseFilter ? { warehouseId: effectiveWarehouseFilter } : {}),
   });
   const zonesList = zonesData?.data || [];
 
-  // Fetch aisles for aisle filter dropdown (filtered by zone if selected)
+  // Fetch aisles for aisle filter dropdown (scoped to warehouse and zone)
   const { data: aislesData, isLoading: isLoadingAisles } = useAisles({
     limit: 200,
+    ...(effectiveWarehouseFilter ? { warehouseId: effectiveWarehouseFilter } : {}),
     ...(zoneFilter !== "ALL" ? { zoneId: zoneFilter } : {}),
   });
   const aislesList = aislesData?.data || [];
@@ -115,7 +144,7 @@ export default function GlobalShelvesPage() {
     sortOrder: "desc" as const,
     ...(debouncedSearch ? { searchTerm: debouncedSearch } : {}),
     ...(statusFilter !== "ALL" ? { status: statusFilter } : {}),
-    ...(warehouseFilter !== "ALL" ? { warehouseId: warehouseFilter } : {}),
+    ...(effectiveWarehouseFilter ? { warehouseId: effectiveWarehouseFilter } : {}),
     ...(zoneFilter !== "ALL" ? { zoneId: zoneFilter } : {}),
     ...(aisleFilter !== "ALL" ? { aisleId: aisleFilter } : {}),
   };
@@ -269,19 +298,37 @@ export default function GlobalShelvesPage() {
           {/* Warehouse Dropdown Filter */}
           <div className="flex items-center gap-2 shrink-0">
             <Building2 className="h-4 w-4 text-slate-400 hidden sm:inline-block" />
-            <select
-              value={warehouseFilter}
-              onChange={(e) => handleWarehouseFilterChange(e.target.value)}
-              disabled={isLoadingWarehouses}
-              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-700 outline-none focus:border-blue-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
-            >
-              <option value="ALL">All Warehouses</option>
-              {warehousesList.map((wh) => (
-                <option key={wh.id} value={wh.id}>
-                  {wh.name} ({wh.code})
-                </option>
-              ))}
-            </select>
+            {isGlobalUser ? (
+              <select
+                value={warehouseFilter}
+                onChange={(e) => handleWarehouseFilterChange(e.target.value)}
+                disabled={isLoadingWarehouses}
+                className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-700 outline-none focus:border-blue-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+              >
+                <option value="ALL">All Warehouses</option>
+                {warehousesList.map((wh) => (
+                  <option key={wh.id} value={wh.id}>
+                    {wh.name} ({wh.code})
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <select
+                value={user?.warehouseId ?? ""}
+                disabled={true}
+                className="rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-xs text-slate-700 outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 cursor-not-allowed"
+              >
+                {warehousesList.length === 0 ? (
+                  <option value="">No warehouse assigned</option>
+                ) : (
+                  warehousesList.map((wh) => (
+                    <option key={wh.id} value={wh.id}>
+                      {wh.name} ({wh.code})
+                    </option>
+                  ))
+                )}
+              </select>
+            )}
           </div>
 
           {/* Zone Dropdown Filter */}

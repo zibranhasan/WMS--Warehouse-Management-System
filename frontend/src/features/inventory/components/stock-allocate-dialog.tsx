@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useCurrentUser } from "@/features/auth/auth.hooks";
 import { useProducts } from "@/features/product/product.hooks";
 import { useWarehouses } from "@/features/warehouse/warehouse.hooks";
 import { useBins } from "@/features/bin/bin.hooks";
@@ -9,6 +10,8 @@ import { AllocateStockPayload } from "../inventory.types";
 import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+
+const GLOBAL_ROLES = ["SUPER_ADMIN", "ADMIN"];
 
 interface StockAllocateDialogProps {
   isOpen: boolean;
@@ -35,11 +38,20 @@ export function StockAllocateDialog({
   onSubmit,
   isPending,
 }: StockAllocateDialogProps) {
+  const { data: meData } = useCurrentUser();
+  const user = meData?.data?.user;
+  const isGlobalUser = GLOBAL_ROLES.includes(user?.role ?? "");
+
   const { data: warehousesData, isLoading: isLoadingWarehouses } = useWarehouses({
     limit: 100,
     status: "ACTIVE",
   });
-  const warehouses = warehousesData?.data || [];
+  const allWarehouses = warehousesData?.data || [];
+
+  const warehouses = useMemo(() => {
+    if (isGlobalUser) return allWarehouses;
+    return allWarehouses.filter((wh) => wh.id === user?.warehouseId);
+  }, [isGlobalUser, allWarehouses, user?.warehouseId]);
 
   const { data: productsData, isLoading: isLoadingProducts } = useProducts({
     limit: 200,
@@ -123,12 +135,22 @@ export function StockAllocateDialog({
               disabled={isPending || isWarehouseLocked}
               className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-75"
             >
-              <option value="">-- Select Target Warehouse --</option>
-              {warehouses.map((wh) => (
-                <option key={wh.id} value={wh.id}>
-                  {wh.name} ({wh.code})
-                </option>
-              ))}
+              {isWarehouseLocked ? (
+                warehouses.map((wh) => (
+                  <option key={wh.id} value={wh.id}>
+                    {wh.name} ({wh.code})
+                  </option>
+                ))
+              ) : (
+                <>
+                  <option value="">-- Select Target Warehouse --</option>
+                  {warehouses.map((wh) => (
+                    <option key={wh.id} value={wh.id}>
+                      {wh.name} ({wh.code})
+                    </option>
+                  ))}
+                </>
+              )}
             </select>
           )}
           {errors.warehouseId && (

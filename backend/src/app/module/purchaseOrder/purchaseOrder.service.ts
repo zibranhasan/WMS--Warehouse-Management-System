@@ -4,6 +4,7 @@ import {
     Prisma,
     PurchaseOrder,
     PurchaseOrderStatus,
+    Role,
     SupplierStatus,
     WarehouseStatus,
 } from "../../../generated/prisma/index.js";
@@ -193,7 +194,10 @@ const createPurchaseOrder = async (
 // ---------------------------------------------------------------------------
 // getAllPurchaseOrders
 // ---------------------------------------------------------------------------
-const getAllPurchaseOrders = async (query: Record<string, unknown>) => {
+const getAllPurchaseOrders = async (
+    query: Record<string, unknown>,
+    warehouseScope?: string | null,
+) => {
     const queryBuilder = new QueryBuilder<PurchaseOrder>(
         prisma.purchaseOrder,
         query as IQueryParams,
@@ -226,14 +230,19 @@ const getAllPurchaseOrders = async (query: Record<string, unknown>) => {
                     product: true,
                 },
             },
-        })
+        });
+
+    if (warehouseScope) {
+        queryBuilder.where({ warehouseId: warehouseScope } as never);
+    }
+
+    return await queryBuilder
         .search()
         .filter()
         .sort()
         .paginate()
-        .fields();
-
-    return await queryBuilder.execute();
+        .fields()
+        .execute();
 };
 
 // ---------------------------------------------------------------------------
@@ -282,6 +291,7 @@ const getPurchaseOrderById = async (id: string) => {
 const updatePurchaseOrder = async (
     id: string,
     payload: IUpdatePurchaseOrder,
+    userRole?: Role,
 ) => {
     const existingPO = await prisma.purchaseOrder.findUnique({
         where: { id },
@@ -320,6 +330,14 @@ const updatePurchaseOrder = async (
 
     let warehouseId = existingPO.warehouseId;
     if (payload.warehouseId && payload.warehouseId !== existingPO.warehouseId) {
+        // Only SUPER_ADMIN and ADMIN may change the warehouse assignment
+        if (userRole !== Role.SUPER_ADMIN && userRole !== Role.ADMIN) {
+            throw new AppError(
+                httpStatus.FORBIDDEN,
+                "You do not have permission to change the warehouse assignment.",
+            );
+        }
+
         const warehouse = await prisma.warehouse.findUnique({
             where: { id: payload.warehouseId },
         });

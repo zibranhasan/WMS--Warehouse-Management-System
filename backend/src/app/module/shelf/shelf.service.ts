@@ -68,13 +68,19 @@ const createShelf = async (payload: ICreateShelf) => {
     return result;
 };
 
-const getAllShelves = async (query: Record<string, unknown>) => {
+const getAllShelves = async (
+    query: Record<string, unknown>,
+    warehouseScope?: string | null,
+) => {
     const filterQuery: Record<string, unknown> = { isDeleted: "false", ...query };
 
-    if (filterQuery.warehouseId) {
-        filterQuery["aisle.zone.warehouseId"] = filterQuery.warehouseId;
-        delete filterQuery.warehouseId;
-    }
+    // Determine authoritative warehouse ID (warehouseScope takes precedence)
+    const effectiveWarehouseId = warehouseScope || (filterQuery.warehouseId as string | undefined);
+
+    // Remove warehouseId from filterQuery to avoid QueryBuilder creating an invalid 3-part 'some' relation
+    delete filterQuery.warehouseId;
+    delete filterQuery["aisle.zone.warehouseId"];
+
     if (filterQuery.zoneId) {
         filterQuery["aisle.zoneId"] = filterQuery.zoneId;
         delete filterQuery.zoneId;
@@ -94,6 +100,16 @@ const getAllShelves = async (query: Record<string, unknown>) => {
         .paginate()
         .fields()
         .include({ aisle: { include: { zone: { include: { warehouse: true } } } } });
+
+    if (effectiveWarehouseId) {
+        queryBuilder.where({
+            aisle: {
+                zone: {
+                    warehouseId: effectiveWarehouseId,
+                },
+            },
+        } as never);
+    }
 
     const result = await queryBuilder.execute();
     return result;

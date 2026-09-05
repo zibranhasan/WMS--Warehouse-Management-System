@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCurrentUser } from "@/features/auth/auth.hooks";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { useWarehouses } from "@/features/warehouse/warehouse.hooks";
@@ -35,13 +35,16 @@ import { DataTablePagination } from "@/components/shared/data-table-pagination";
 import { PageErrorAlert } from "@/components/shared/page-error-alert";
 import { TableEmptyState } from "@/components/shared/table-empty-state";
 import { Button } from "@/components/ui/button";
-import { Building2, Boxes, Box, History, Plus, RefreshCw, X } from "lucide-react";
+import { Building2, Boxes, Box, History, Plus, RefreshCw, X, AlertTriangle } from "lucide-react";
 
 type InventoryTab = "warehouse" | "location" | "movements";
+
+const GLOBAL_ROLES = ["SUPER_ADMIN", "ADMIN"];
 
 export default function InventoryDashboardPage() {
   const { data: meData } = useCurrentUser();
   const user = meData?.data?.user;
+  const isGlobalUser = GLOBAL_ROLES.includes(user?.role ?? "");
   const canMutate =
     user?.role === "SUPER_ADMIN" ||
     user?.role === "ADMIN" ||
@@ -52,11 +55,26 @@ export default function InventoryDashboardPage() {
     limit: 100,
     status: "ACTIVE",
   });
-  const warehouses = warehousesData?.data || [];
+  const allWarehouses = warehousesData?.data || [];
+
+  // Filter warehouses based on user role
+  const warehouses = isGlobalUser
+    ? allWarehouses
+    : allWarehouses.filter((wh) => wh.id === user?.warehouseId);
+
+  const isWarehouseLocked = !isGlobalUser;
+  const hasNoAssignedWarehouse = !isGlobalUser && !user?.warehouseId;
 
   // Active state
   const [selectedWarehouseId, setSelectedWarehouseId] = useState<string>("");
   const [activeTab, setActiveTab] = useState<InventoryTab>("warehouse");
+
+  // Auto-select warehouse for scoped users
+  useEffect(() => {
+    if (isWarehouseLocked && user?.warehouseId && !selectedWarehouseId) {
+      setSelectedWarehouseId(user.warehouseId);
+    }
+  }, [isWarehouseLocked, user?.warehouseId, selectedWarehouseId]);
 
   // Filter & Pagination States
   const [page, setPage] = useState(1);
@@ -205,6 +223,21 @@ export default function InventoryDashboardPage() {
         </div>
       )}
 
+      {/* No Warehouse Assigned Warning */}
+      {hasNoAssignedWarehouse && (
+        <div className="flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs dark:border-amber-900/50 dark:bg-amber-950/40">
+          <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0" />
+          <div>
+            <p className="font-semibold text-amber-900 dark:text-amber-200">
+              No Warehouse Assigned
+            </p>
+            <p className="text-amber-700 dark:text-amber-300 mt-0.5">
+              Your account is not assigned to any warehouse. Please contact an administrator to gain inventory access.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Header Bar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -246,7 +279,7 @@ export default function InventoryDashboardPage() {
             <Building2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400 shrink-0" />
             <div className="flex flex-col">
               <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-                Select Active Facility:
+                {isWarehouseLocked ? "Your Assigned Facility:" : "Select Active Facility:"}
               </span>
               {isLoadingWarehouses ? (
                 <div className="h-8 w-48 animate-pulse rounded bg-slate-100 dark:bg-slate-900" />
@@ -254,14 +287,25 @@ export default function InventoryDashboardPage() {
                 <select
                   value={selectedWarehouseId}
                   onChange={(e) => handleWarehouseChange(e.target.value)}
-                  className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                  disabled={isWarehouseLocked || hasNoAssignedWarehouse}
+                  className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white disabled:opacity-75"
                 >
-                  <option value="">-- Select Warehouse Facility --</option>
-                  {warehouses.map((wh) => (
-                    <option key={wh.id} value={wh.id}>
-                      {wh.name} ({wh.code})
-                    </option>
-                  ))}
+                  {isWarehouseLocked ? (
+                    warehouses.map((wh) => (
+                      <option key={wh.id} value={wh.id}>
+                        {wh.name} ({wh.code})
+                      </option>
+                    ))
+                  ) : (
+                    <>
+                      <option value="">-- Select Warehouse Facility --</option>
+                      {warehouses.map((wh) => (
+                        <option key={wh.id} value={wh.id}>
+                          {wh.name} ({wh.code})
+                        </option>
+                      ))}
+                    </>
+                  )}
                 </select>
               )}
             </div>
@@ -462,6 +506,7 @@ export default function InventoryDashboardPage() {
       <StockAdjustDialog
         isOpen={isAdjustOpen}
         defaultWarehouseId={selectedWarehouseId || undefined}
+        isWarehouseLocked={isWarehouseLocked}
         onClose={() => setIsAdjustOpen(false)}
         onSubmit={handleAdjustSubmit}
         isPending={adjustMutation.isPending}
@@ -471,6 +516,7 @@ export default function InventoryDashboardPage() {
       <StockAllocateDialog
         isOpen={isAllocateOpen}
         defaultWarehouseId={selectedWarehouseId || undefined}
+        isWarehouseLocked={isWarehouseLocked}
         onClose={() => setIsAllocateOpen(false)}
         onSubmit={handleAllocateSubmit}
         isPending={allocateMutation.isPending}

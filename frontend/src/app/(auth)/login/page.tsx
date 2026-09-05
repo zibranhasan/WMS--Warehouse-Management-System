@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { Warehouse } from "lucide-react";
 import { LoginForm } from "@/features/auth/components/login-form";
+import { QuickLogin } from "@/features/auth/components/quick-login";
 
 export const metadata: Metadata = {
   title: "Login | Warehouse Management System",
@@ -27,6 +28,7 @@ export default function LoginPage() {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white px-6 py-8 shadow-sm ring-1 ring-slate-900/5 sm:rounded-xl sm:px-10 dark:bg-slate-950 dark:ring-slate-800">
           <LoginForm />
+          <QuickLogin />
         </div>
       </div>
     </div>

@@ -266,7 +266,15 @@ const adjustStock = async (payload: IStockAdjustment, userId: string) => {
 // getStockMovements — Filterable, paginated audit trail of all stock movements
 // ---------------------------------------------------------------------------
 
-const getStockMovements = async (query: Record<string, unknown>) => {
+const getStockMovements = async (
+    query: Record<string, unknown>,
+    warehouseScope?: string | null,
+) => {
+    const where: Record<string, unknown> = {};
+    if (warehouseScope) {
+        where.warehouseId = warehouseScope;
+    }
+
     const queryBuilder = new QueryBuilder<StockMovement>(
         prisma.stockMovement,
         query as IQueryParams,
@@ -275,6 +283,7 @@ const getStockMovements = async (query: Record<string, unknown>) => {
             filterableFields: stockMovementFilterableFields,
         },
     )
+        .where(where)
         .include({
             warehouse: true,
             product: true,
@@ -303,6 +312,7 @@ const getStockMovements = async (query: Record<string, unknown>) => {
 const getProductMovements = async (
     productId: string,
     query: Record<string, unknown>,
+    warehouseScope?: string | null,
 ) => {
     const product = await prisma.product.findFirst({
         where: { id: productId, isDeleted: false },
@@ -310,6 +320,11 @@ const getProductMovements = async (
 
     if (!product) {
         throw new AppError(httpStatus.NOT_FOUND, "Product not found.");
+    }
+
+    const where: Record<string, unknown> = { productId };
+    if (warehouseScope) {
+        where.warehouseId = warehouseScope;
     }
 
     const queryBuilder = new QueryBuilder<StockMovement>(
@@ -320,7 +335,7 @@ const getProductMovements = async (
             filterableFields: stockMovementFilterableFields,
         },
     )
-        .where({ productId })
+        .where(where)
         .include({
             warehouse: true,
             product: true,
