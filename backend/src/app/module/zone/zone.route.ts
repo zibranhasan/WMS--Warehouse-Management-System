@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { Role } from "../../../generated/prisma/index.js";
 import { checkAuth } from "../../middleware/checkAuth";
+import { checkWarehouseAccess } from "../../middleware/checkWarehouseAccess";
 import { validateRequest } from "../../middleware/validateRequest";
 import { ZoneController } from "./zone.controller";
 import { ZoneValidation } from "./zone.validation";
@@ -11,6 +12,7 @@ const router = Router();
 router.post(
     "/",
     checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.WAREHOUSE_MANAGER),
+    checkWarehouseAccess,
     validateRequest(ZoneValidation.createZoneValidationSchema),
     ZoneController.createZone,
 );

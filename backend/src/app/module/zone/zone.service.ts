@@ -68,8 +68,16 @@ const createZone = async (payload: ICreateZone) => {
     return result;
 };
 
-const getAllZones = async (query: Record<string, unknown>) => {
-    const filterQuery = { isDeleted: "false", ...query };
+const getAllZones = async (
+    query: Record<string, unknown>,
+    warehouseScope?: string | null,
+) => {
+    const filterQuery: Record<string, unknown> = { isDeleted: "false", ...query };
+
+    // Enforce authenticated warehouse scope (prevents client ?warehouseId= override)
+    if (warehouseScope) {
+        filterQuery.warehouseId = warehouseScope;
+    }
 
     const queryBuilder = new QueryBuilder<Zone>(
         prisma.zone,
@@ -85,6 +93,10 @@ const getAllZones = async (query: Record<string, unknown>) => {
         .paginate()
         .fields()
         .include({ warehouse: true });
+
+    if (warehouseScope) {
+        queryBuilder.where({ warehouseId: warehouseScope } as never);
+    }
 
     const result = await queryBuilder.execute();
     return result;

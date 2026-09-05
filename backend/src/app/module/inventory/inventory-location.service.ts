@@ -533,7 +533,10 @@ const getStockByBin = async (binId: string) => {
 // ---------------------------------------------------------------------------
 // 5. GET PRODUCT LOCATIONS
 // ---------------------------------------------------------------------------
-const getProductLocations = async (productId: string) => {
+const getProductLocations = async (
+    productId: string,
+    warehouseScope?: string | null,
+) => {
     const product = await prisma.product.findFirst({
         where: { id: productId, isDeleted: false },
     });
@@ -542,11 +545,16 @@ const getProductLocations = async (productId: string) => {
         throw new AppError(httpStatus.NOT_FOUND, "Product not found.");
     }
 
+    const where: Record<string, unknown> = {
+        productId,
+        quantity: { gt: 0 },
+    };
+    if (warehouseScope) {
+        where.warehouseId = warehouseScope;
+    }
+
     const locationStocks = await prisma.inventoryLocationStock.findMany({
-        where: {
-            productId,
-            quantity: { gt: 0 },
-        },
+        where,
         include: {
             warehouse: true,
             bin: {
@@ -641,7 +649,15 @@ const getWarehouseLocationStock = async (
 // ---------------------------------------------------------------------------
 // 7. GET LOCATION MOVEMENT AUDIT HISTORY
 // ---------------------------------------------------------------------------
-const getLocationMovements = async (query: Record<string, unknown>) => {
+const getLocationMovements = async (
+    query: Record<string, unknown>,
+    warehouseScope?: string | null,
+) => {
+    const where: Record<string, unknown> = {};
+    if (warehouseScope) {
+        where.warehouseId = warehouseScope;
+    }
+
     const queryBuilder = new QueryBuilder(
         prisma.inventoryLocationMovement,
         query as unknown as IQueryParams,
@@ -650,6 +666,7 @@ const getLocationMovements = async (query: Record<string, unknown>) => {
             filterableFields: inventoryLocationMovementFilterableFields,
         },
     )
+        .where(where)
         .search()
         .filter()
         .sort()

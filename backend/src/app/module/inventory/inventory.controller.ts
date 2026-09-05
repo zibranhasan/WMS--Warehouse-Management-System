@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { catchAsync } from "../../shared/catchAsync";
 import { sendResponse } from "../../shared/sendResponse";
+import { getWarehouseScope } from "../../utils/warehouseScope";
 import { InventoryLocationService } from "./inventory-location.service";
 import { InventoryService } from "./inventory.service";
 
@@ -84,7 +85,14 @@ const adjustStock = catchAsync(async (req: Request, res: Response) => {
 // ---------------------------------------------------------------------------
 
 const getStockMovements = catchAsync(async (req: Request, res: Response) => {
-    const result = await InventoryService.getStockMovements(req.query);
+    const warehouseScope = getWarehouseScope(
+        req.user.role,
+        req.user.warehouseId,
+    );
+    const result = await InventoryService.getStockMovements(
+        req.query,
+        warehouseScope,
+    );
 
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
@@ -101,9 +109,14 @@ const getStockMovements = catchAsync(async (req: Request, res: Response) => {
 
 const getProductMovements = catchAsync(async (req: Request, res: Response) => {
     const { productId } = req.params;
+    const warehouseScope = getWarehouseScope(
+        req.user.role,
+        req.user.warehouseId,
+    );
     const result = await InventoryService.getProductMovements(
         productId as string,
         req.query,
+        warehouseScope,
     );
 
     sendResponse(res, {
@@ -191,8 +204,13 @@ const getStockByBin = catchAsync(async (req: Request, res: Response) => {
 
 const getProductLocations = catchAsync(async (req: Request, res: Response) => {
     const { productId } = req.params;
+    const warehouseScope = getWarehouseScope(
+        req.user.role,
+        req.user.warehouseId,
+    );
     const result = await InventoryLocationService.getProductLocations(
         productId as string,
+        warehouseScope,
     );
 
     sendResponse(res, {
@@ -230,8 +248,13 @@ const getWarehouseLocationStock = catchAsync(
 // ---------------------------------------------------------------------------
 
 const getLocationMovements = catchAsync(async (req: Request, res: Response) => {
+    const warehouseScope = getWarehouseScope(
+        req.user.role,
+        req.user.warehouseId,
+    );
     const result = await InventoryLocationService.getLocationMovements(
         req.query,
+        warehouseScope,
     );
 
     sendResponse(res, {

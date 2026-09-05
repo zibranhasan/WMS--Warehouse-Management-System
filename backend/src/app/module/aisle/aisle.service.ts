@@ -68,10 +68,17 @@ const createAisle = async (payload: ICreateAisle) => {
     return result;
 };
 
-const getAllAisles = async (query: Record<string, unknown>) => {
+const getAllAisles = async (
+    query: Record<string, unknown>,
+    warehouseScope?: string | null,
+) => {
     const filterQuery: Record<string, unknown> = { isDeleted: "false", ...query };
 
-    if (filterQuery.warehouseId) {
+    if (warehouseScope) {
+        // Enforce authenticated warehouse scope (prevents client ?warehouseId= override)
+        filterQuery["zone.warehouseId"] = warehouseScope;
+        delete filterQuery.warehouseId;
+    } else if (filterQuery.warehouseId) {
         filterQuery["zone.warehouseId"] = filterQuery.warehouseId;
         delete filterQuery.warehouseId;
     }
@@ -90,6 +97,14 @@ const getAllAisles = async (query: Record<string, unknown>) => {
         .paginate()
         .fields()
         .include({ zone: { include: { warehouse: true } } });
+
+    if (warehouseScope) {
+        queryBuilder.where({
+            zone: {
+                warehouseId: warehouseScope,
+            },
+        } as never);
+    }
 
     const result = await queryBuilder.execute();
     return result;

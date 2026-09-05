@@ -91,6 +91,14 @@ const getMe = async (req: Request) => {
             deletedAt: true,
             createdAt: true,
             updatedAt: true,
+            warehouseId: true,
+            warehouse: {
+                select: {
+                    id: true,
+                    name: true,
+                    code: true,
+                },
+            },
         },
     });
 

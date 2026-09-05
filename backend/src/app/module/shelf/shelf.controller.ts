@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { catchAsync } from "../../shared/catchAsync";
 import { sendResponse } from "../../shared/sendResponse";
+import { getWarehouseScope } from "../../utils/warehouseScope";
 import { ShelfService } from "./shelf.service";
 
 const createShelf = catchAsync(async (req: Request, res: Response) => {
@@ -16,7 +17,11 @@ const createShelf = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllShelves = catchAsync(async (req: Request, res: Response) => {
-    const result = await ShelfService.getAllShelves(req.query);
+    const warehouseScope = getWarehouseScope(
+        req.user.role,
+        req.user.warehouseId,
+    );
+    const result = await ShelfService.getAllShelves(req.query, warehouseScope);
 
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,

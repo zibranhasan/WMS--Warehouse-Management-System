@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -8,8 +9,11 @@ import {
 } from "../zone.schema";
 import { CreateZonePayload, UpdateZonePayload, Zone } from "../zone.types";
 import { useWarehouses } from "@/features/warehouse/warehouse.hooks";
+import { useCurrentUser } from "@/features/auth/auth.hooks";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+
+const GLOBAL_ROLES = ["SUPER_ADMIN", "ADMIN"];
 
 interface ZoneFormProps {
   initialData?: Zone | null;
@@ -28,27 +32,50 @@ export function ZoneForm({
 }: ZoneFormProps) {
   const isEditing = Boolean(initialData);
 
+  const { data: meData, isLoading: isLoadingUser } = useCurrentUser();
+  const user = meData?.data?.user;
+  const isGlobalUser = GLOBAL_ROLES.includes(user?.role ?? "");
+
   // Fetch active warehouses for global /zones creation
   const { data: warehouseData, isLoading: isLoadingWarehouses } = useWarehouses({
     limit: 100,
     status: "ACTIVE",
   });
-  const warehouses = warehouseData?.data || [];
+  const allWarehouses = warehouseData?.data || [];
+
+  const warehouses = useMemo(() => {
+    if (isGlobalUser) return allWarehouses;
+    if (!user?.warehouseId) return [];
+    return allWarehouses.filter((wh) => wh.id === user.warehouseId);
+  }, [isGlobalUser, allWarehouses, user?.warehouseId]);
+
+  const effectiveDefaultWarehouseId =
+    initialData?.warehouseId ||
+    defaultWarehouseId ||
+    (!isGlobalUser && user?.warehouseId ? user.warehouseId : "");
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<CreateZoneFormValues>({
     resolver: zodResolver(createZoneSchema),
     defaultValues: {
-      warehouseId: initialData?.warehouseId || defaultWarehouseId || "",
+      warehouseId: effectiveDefaultWarehouseId,
       code: initialData?.code || "",
       name: initialData?.name || "",
       description: initialData?.description || "",
       capacity: initialData?.capacity ?? 0,
     },
   });
+
+  // Auto-select warehouse for scoped users in create mode
+  useEffect(() => {
+    if (!isEditing && !defaultWarehouseId && !isGlobalUser && user?.warehouseId) {
+      setValue("warehouseId", user.warehouseId);
+    }
+  }, [isEditing, defaultWarehouseId, isGlobalUser, user?.warehouseId, setValue]);
 
   const onFormSubmit = async (values: CreateZoneFormValues) => {
     await onSubmit({
@@ -60,6 +87,8 @@ export function ZoneForm({
     });
   };
 
+  const isLoading = isLoadingWarehouses || isLoadingUser;
+
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
       {/* Warehouse Selection (Shown when defaultWarehouseId is not provided) */}
@@ -68,7 +97,7 @@ export function ZoneForm({
           <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
             Warehouse <span className="text-red-500">*</span>
           </label>
-          {isLoadingWarehouses ? (
+          {isLoading ? (
             <div className="flex items-center gap-2 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-xs text-slate-500 dark:border-slate-800 dark:bg-slate-900">
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
               <span>Loading active warehouses...</span>
@@ -79,7 +108,11 @@ export function ZoneForm({
               disabled={isPending}
               className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white"
             >
-              <option value="">-- Select Parent Warehouse --</option>
+              {isGlobalUser ? (
+                <option value="">-- Select Parent Warehouse --</option>
+              ) : warehouses.length === 0 ? (
+                <option value="">No warehouse assigned</option>
+              ) : null}
               {warehouses.map((wh) => (
                 <option key={wh.id} value={wh.id}>
                   {wh.name} ({wh.code})

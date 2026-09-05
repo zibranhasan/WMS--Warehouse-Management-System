@@ -68,25 +68,38 @@ const createBin = async (payload: ICreateBin) => {
     return result;
 };
 
-const getAllBins = async (query: Record<string, unknown>) => {
+const getAllBins = async (
+    query: Record<string, unknown>,
+    warehouseScope?: string | null,
+) => {
     const filterQuery: Record<string, unknown> = { isDeleted: "false", ...query };
     const shelfWhere: Record<string, unknown> = {};
 
-    if (filterQuery.warehouseId) {
+    // Determine authoritative warehouse ID (warehouseScope takes precedence)
+    const effectiveWarehouseId = warehouseScope || (filterQuery.warehouseId as string | undefined);
+
+    // Remove warehouseId from filterQuery to avoid QueryBuilder creating an invalid relation query
+    delete filterQuery.warehouseId;
+    delete filterQuery["shelf.aisle.zone.warehouseId"];
+
+    if (effectiveWarehouseId) {
         shelfWhere.aisle = {
+            ...((shelfWhere.aisle as Record<string, unknown>) || {}),
             zone: {
-                warehouseId: filterQuery.warehouseId as string,
+                ...(((shelfWhere.aisle as Record<string, unknown>)?.zone as Record<string, unknown>) || {}),
+                warehouseId: effectiveWarehouseId,
             },
         };
-        delete filterQuery.warehouseId;
     }
+
     if (filterQuery.zoneId) {
         shelfWhere.aisle = {
-            ...(shelfWhere.aisle as Record<string, unknown> || {}),
+            ...((shelfWhere.aisle as Record<string, unknown>) || {}),
             zoneId: filterQuery.zoneId as string,
         };
         delete filterQuery.zoneId;
     }
+
     if (filterQuery.aisleId) {
         shelfWhere.aisleId = filterQuery.aisleId as string;
         delete filterQuery.aisleId;
@@ -104,7 +117,7 @@ const getAllBins = async (query: Record<string, unknown>) => {
         .filter();
 
     if (Object.keys(shelfWhere).length > 0) {
-        queryBuilder.where({ shelf: shelfWhere });
+        queryBuilder.where({ shelf: shelfWhere } as never);
     }
 
     queryBuilder

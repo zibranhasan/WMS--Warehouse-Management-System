@@ -11,6 +11,12 @@ export interface User {
   deletedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  warehouseId?: string | null;
+  warehouse?: {
+    id: string;
+    name: string;
+    code: string;
+  } | null;
 }
 
 export interface Session {

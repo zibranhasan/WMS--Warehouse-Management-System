@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { Role } from "../../../generated/prisma/index.js";
 import { checkAuth } from "../../middleware/checkAuth";
+import { checkWarehouseAccess, checkPoWarehouseAccess } from "../../middleware/checkWarehouseAccess";
 import { validateRequest } from "../../middleware/validateRequest";
 import { PurchaseOrderController } from "./purchaseOrder.controller";
 import { PurchaseOrderValidation } from "./purchaseOrder.validation";
@@ -11,6 +12,7 @@ const router = Router();
 router.post(
     "/",
     checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT),
+    checkWarehouseAccess,
     validateRequest(
         PurchaseOrderValidation.createPurchaseOrderValidationSchema,
     ),
@@ -31,10 +33,22 @@ router.get(
     PurchaseOrderController.getAllPurchaseOrders,
 );
 
+// Update Purchase Order (SUPER_ADMIN, ADMIN, PROCUREMENT)
+router.patch(
+    "/:id",
+    checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT),
+    checkPoWarehouseAccess,
+    validateRequest(
+        PurchaseOrderValidation.updatePurchaseOrderValidationSchema,
+    ),
+    PurchaseOrderController.updatePurchaseOrder,
+);
+
 // Approve Purchase Order (SUPER_ADMIN, ADMIN, PROCUREMENT)
 router.patch(
     "/:id/approve",
     checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT),
+    checkPoWarehouseAccess,
     PurchaseOrderController.approvePurchaseOrder,
 );
 
@@ -42,6 +56,7 @@ router.patch(
 router.patch(
     "/:id/reject",
     checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT),
+    checkPoWarehouseAccess,
     validateRequest(
         PurchaseOrderValidation.rejectPurchaseOrderValidationSchema,
     ),
@@ -52,6 +67,7 @@ router.patch(
 router.patch(
     "/:id/cancel",
     checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT),
+    checkPoWarehouseAccess,
     validateRequest(
         PurchaseOrderValidation.cancelPurchaseOrderValidationSchema,
     ),
@@ -67,6 +83,7 @@ router.post(
         Role.WAREHOUSE_MANAGER,
         Role.PROCUREMENT,
     ),
+    checkPoWarehouseAccess,
     validateRequest(PurchaseOrderValidation.receiveGoodsValidationSchema),
     PurchaseOrderController.receiveGoods,
 );
@@ -82,6 +99,7 @@ router.get(
         Role.FINANCE,
         Role.STAFF,
     ),
+    checkPoWarehouseAccess,
     PurchaseOrderController.getPurchaseOrderReceipts,
 );
 
@@ -96,17 +114,8 @@ router.get(
         Role.FINANCE,
         Role.STAFF,
     ),
+    checkPoWarehouseAccess,
     PurchaseOrderController.getPurchaseOrderById,
-);
-
-// Update Purchase Order (SUPER_ADMIN, ADMIN, PROCUREMENT)
-router.patch(
-    "/:id",
-    checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT),
-    validateRequest(
-        PurchaseOrderValidation.updatePurchaseOrderValidationSchema,
-    ),
-    PurchaseOrderController.updatePurchaseOrder,
 );
 
 export const PurchaseOrderRoutes = router;
