@@ -12,6 +12,7 @@ export const userFilterableFields: string[] = [
     "id",
     "email",
     "name",
+    "warehouseId",
 ];
 
 export const userPaginationOptionsFields: string[] = [

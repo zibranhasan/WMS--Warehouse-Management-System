@@ -17,10 +17,10 @@ router.post(
     UserController.createUser,
 );
 
-// List users with pagination, search, filter, and sort (Only SUPER_ADMIN or ADMIN)
+// List users with pagination, search, filter, and sort (SUPER_ADMIN, ADMIN, or WAREHOUSE_MANAGER)
 router.get(
     "/",
-    checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
+    checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.WAREHOUSE_MANAGER),
     UserController.getAllUsers,
 );
 
