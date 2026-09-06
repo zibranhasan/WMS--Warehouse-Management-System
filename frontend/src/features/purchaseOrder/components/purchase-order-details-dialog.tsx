@@ -53,7 +53,7 @@ export function PurchaseOrderDetailsDialog({
       description={purchaseOrder.poNumber}
       maxWidthClass="max-w-3xl"
     >
-      <div className="space-y-4">
+      <div className="space-y-4 p-2">
         {/* Loading */}
         {isLoading && (
           <div className="flex items-center justify-center py-12">

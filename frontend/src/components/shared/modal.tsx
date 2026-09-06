@@ -10,6 +10,7 @@ interface ModalProps {
   description?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  contentClassName?: string;
   maxWidthClass?: string;
 }
 
@@ -20,6 +21,7 @@ export function Modal({
   description,
   children,
   className,
+  contentClassName,
   maxWidthClass = "max-w-lg",
 }: ModalProps) {
   return (
@@ -29,6 +31,7 @@ export function Modal({
       title={title}
       description={description}
       className={className}
+      contentClassName={contentClassName}
       maxWidthClass={maxWidthClass}
     >
       {children}

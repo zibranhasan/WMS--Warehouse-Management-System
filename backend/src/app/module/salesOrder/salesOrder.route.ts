@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { Role } from "../../../generated/prisma/index.js";
 import { checkAuth } from "../../middleware/checkAuth";
+import {
+    checkWarehouseAccess,
+    checkSoWarehouseAccess,
+} from "../../middleware/checkWarehouseAccess";
 import { validateRequest } from "../../middleware/validateRequest";
 import { SalesOrderController } from "./salesOrder.controller";
 import { SalesOrderValidation } from "./salesOrder.validation";
@@ -16,6 +20,7 @@ router.post(
         Role.WAREHOUSE_MANAGER,
         Role.STAFF,
     ),
+    checkWarehouseAccess,
     validateRequest(SalesOrderValidation.createSalesOrderValidationSchema),
     SalesOrderController.createSalesOrder,
 );
@@ -43,6 +48,7 @@ router.patch(
         Role.WAREHOUSE_MANAGER,
         Role.STAFF,
     ),
+    checkSoWarehouseAccess,
     validateRequest(SalesOrderValidation.cancelSalesOrderValidationSchema),
     SalesOrderController.cancelSalesOrder,
 );
@@ -58,6 +64,7 @@ router.get(
         Role.FINANCE,
         Role.STAFF,
     ),
+    checkSoWarehouseAccess,
     SalesOrderController.getSalesOrderById,
 );
 
