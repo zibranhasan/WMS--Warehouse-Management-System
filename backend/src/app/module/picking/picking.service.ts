@@ -169,10 +169,36 @@ const createPickingTask = async (
 // ---------------------------------------------------------------------------
 // 2. GET ALL PICKING TASKS
 // ---------------------------------------------------------------------------
-const getAllPickingTasks = async (query: Record<string, unknown>) => {
+const getAllPickingTasks = async (
+    query: Record<string, unknown>,
+    warehouseScope?: string | null,
+    userId?: string,
+    userRole?: Role,
+) => {
+    // STAFF restriction: only show tasks assigned to this user, scoped to their warehouse
+    let enforcedQuery = { ...query };
+    if (userRole === Role.STAFF) {
+        if (!userId) {
+            return { data: [], meta: { page: 1, limit: 10, total: 0, totalPages: 0 } };
+        }
+
+        // Strip client-provided overrides — force STAFF restrictions
+        delete enforcedQuery.assignedToId;
+        delete enforcedQuery.warehouseId;
+
+        // If STAFF user has no warehouse, they can't see anything
+        if (!warehouseScope || warehouseScope === "NO_ACCESS") {
+            return { data: [], meta: { page: 1, limit: 10, total: 0, totalPages: 0 } };
+        }
+
+        // Force warehouse scope and assignedToId for STAFF
+        enforcedQuery.warehouseId = warehouseScope;
+        enforcedQuery.assignedToId = userId;
+    }
+
     const queryBuilder = new QueryBuilder<PickingTask>(
         prisma.pickingTask,
-        query as IQueryParams,
+        enforcedQuery as IQueryParams,
         {
             searchableFields: pickingSearchableFields,
             filterableFields: pickingFilterableFields,
@@ -194,14 +220,19 @@ const getAllPickingTasks = async (query: Record<string, unknown>) => {
                     product: true,
                 },
             },
-        })
+        });
+
+    if (warehouseScope && warehouseScope !== "NO_ACCESS") {
+        queryBuilder.where({ warehouseId: warehouseScope } as never);
+    }
+
+    return await queryBuilder
         .search()
         .filter()
         .sort()
         .paginate()
-        .fields();
-
-    return await queryBuilder.execute();
+        .fields()
+        .execute();
 };
 
 // ---------------------------------------------------------------------------
@@ -385,6 +416,14 @@ const assignPicker = async (id: string, payload: IAssignPicker) => {
         );
     }
 
+    // Enforce STAFF-only picker eligibility
+    if (user.role !== Role.STAFF) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Only STAFF users can be assigned as pickers.",
+        );
+    }
+
     // Task check & transition
     const task = await prisma.pickingTask.findUnique({
         where: { id },
@@ -405,6 +444,21 @@ const assignPicker = async (id: string, payload: IAssignPicker) => {
         throw new AppError(
             httpStatus.BAD_REQUEST,
             "Cannot assign a completed picking task.",
+        );
+    }
+
+    // Enforce same-warehouse: picker must belong to the picking task's warehouse
+    if (!user.warehouseId) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Picker must be assigned to a warehouse.",
+        );
+    }
+
+    if (user.warehouseId !== task.warehouseId) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Picker must belong to the same warehouse as the picking task.",
         );
     }
 
@@ -439,7 +493,7 @@ const assignPicker = async (id: string, payload: IAssignPicker) => {
 // ---------------------------------------------------------------------------
 // 6. START PICKING
 // ---------------------------------------------------------------------------
-const startPicking = async (id: string) => {
+const startPicking = async (id: string, userId: string, userRole: Role) => {
     const task = await prisma.pickingTask.findUnique({
         where: { id },
     });
@@ -460,6 +514,16 @@ const startPicking = async (id: string) => {
             httpStatus.BAD_REQUEST,
             "Cannot start an already completed picking task.",
         );
+    }
+
+    // STAFF can only start tasks assigned to themselves
+    if (userRole === Role.STAFF) {
+        if (task.assignedToId !== userId) {
+            throw new AppError(
+                httpStatus.FORBIDDEN,
+                "You can only start a picking task assigned to you.",
+            );
+        }
     }
 
     const updatedTask = await prisma.pickingTask.update({
@@ -496,6 +560,7 @@ const pickItems = async (
     id: string,
     payload: IPickItems,
     userId: string,
+    userRole: Role,
 ) => {
     return await prisma.$transaction(
         async (tx) => {
@@ -527,6 +592,16 @@ const pickItems = async (
                     httpStatus.BAD_REQUEST,
                     "Cannot pick items for an already completed picking task.",
                 );
+            }
+
+            // STAFF can only pick items for tasks assigned to themselves
+            if (userRole === Role.STAFF) {
+                if (pickingTask.assignedToId !== userId) {
+                    throw new AppError(
+                        httpStatus.FORBIDDEN,
+                        "You can only pick items for a task assigned to you.",
+                    );
+                }
             }
 
             // Process each item pick request in array

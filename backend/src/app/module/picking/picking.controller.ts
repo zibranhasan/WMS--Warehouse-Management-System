@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { catchAsync } from "../../shared/catchAsync";
 import { sendResponse } from "../../shared/sendResponse";
+import { getWarehouseScope } from "../../utils/warehouseScope";
 import { PickingService } from "./picking.service";
 
 const createPickingTask = catchAsync(async (req: Request, res: Response) => {
@@ -17,7 +18,16 @@ const createPickingTask = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllPickingTasks = catchAsync(async (req: Request, res: Response) => {
-    const result = await PickingService.getAllPickingTasks(req.query);
+    const warehouseScope = getWarehouseScope(
+        req.user.role,
+        req.user.warehouseId,
+    );
+    const result = await PickingService.getAllPickingTasks(
+        req.query,
+        warehouseScope,
+        req.user.userId,
+        req.user.role,
+    );
 
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
@@ -69,7 +79,9 @@ const assignPicker = catchAsync(async (req: Request, res: Response) => {
 
 const startPicking = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
-    const result = await PickingService.startPicking(id);
+    const userId = req.user.userId;
+    const userRole = req.user.role;
+    const result = await PickingService.startPicking(id, userId, userRole);
 
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
@@ -82,7 +94,8 @@ const startPicking = catchAsync(async (req: Request, res: Response) => {
 const pickItems = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
     const userId = req.user.userId;
-    const result = await PickingService.pickItems(id, req.body, userId);
+    const userRole = req.user.role;
+    const result = await PickingService.pickItems(id, req.body, userId, userRole);
 
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
