@@ -209,6 +209,82 @@ export const checkPoWarehouseAccess = async (
 };
 
 // ---------------------------------------------------------------------------
+// resolveSoWarehouseId — Helper
+// Resolves the warehouseId for a given Sales Order by querying the DB directly.
+// Returns the resolved warehouseId or throws if SO not found.
+// ---------------------------------------------------------------------------
+
+export const resolveSoWarehouseId = async (soId: string): Promise<string> => {
+    const so = await prisma.salesOrder.findUnique({
+        where: { id: soId },
+        select: { warehouseId: true },
+    });
+
+    if (!so) {
+        throw new AppError(status.NOT_FOUND, "Sales order not found.");
+    }
+
+    return so.warehouseId;
+};
+
+// ---------------------------------------------------------------------------
+// checkSoWarehouseAccess — Middleware
+// Resolves the SO's actual warehouse from the database, then validates that
+// the authenticated user has access to that warehouse.
+// Extracts SO id from req.params.id.
+// ---------------------------------------------------------------------------
+
+export const checkSoWarehouseAccess = async (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const user = req.user;
+
+        if (!user) {
+            throw new AppError(
+                status.UNAUTHORIZED,
+                "Authentication required.",
+            );
+        }
+
+        if (hasGlobalAccess(user.role)) {
+            return next();
+        }
+
+        const soId = req.params.id as string;
+
+        if (!soId || typeof soId !== "string" || !soId.trim()) {
+            throw new AppError(
+                status.BAD_REQUEST,
+                "Sales order ID is required.",
+            );
+        }
+
+        const resolvedWarehouseId = await resolveSoWarehouseId(soId.trim());
+
+        if (!user.warehouseId) {
+            throw new AppError(
+                status.FORBIDDEN,
+                "No warehouse is assigned to your account.",
+            );
+        }
+
+        if (user.warehouseId !== resolvedWarehouseId) {
+            throw new AppError(
+                status.FORBIDDEN,
+                "You do not have access to this warehouse.",
+            );
+        }
+
+        next();
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ---------------------------------------------------------------------------
 // checkBinWarehouseAccess — Middleware
 // Resolves the bin's actual warehouse from the database, then validates that
 // the authenticated user has access to that warehouse.

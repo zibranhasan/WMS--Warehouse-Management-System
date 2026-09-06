@@ -253,7 +253,10 @@ const createSalesOrder = async (
 // ---------------------------------------------------------------------------
 // getAllSalesOrders
 // ---------------------------------------------------------------------------
-const getAllSalesOrders = async (query: Record<string, unknown>) => {
+const getAllSalesOrders = async (
+    query: Record<string, unknown>,
+    warehouseScope?: string | null,
+) => {
     const queryBuilder = new QueryBuilder<SalesOrder>(
         prisma.salesOrder,
         query as IQueryParams,
@@ -278,14 +281,19 @@ const getAllSalesOrders = async (query: Record<string, unknown>) => {
                 },
             },
             reservations: true,
-        })
+        });
+
+    if (warehouseScope) {
+        queryBuilder.where({ warehouseId: warehouseScope } as never);
+    }
+
+    return await queryBuilder
         .search()
         .filter()
         .sort()
         .paginate()
-        .fields();
-
-    return await queryBuilder.execute();
+        .fields()
+        .execute();
 };
 
 // ---------------------------------------------------------------------------
@@ -345,6 +353,13 @@ const cancelSalesOrder = async (
         throw new AppError(
             httpStatus.BAD_REQUEST,
             "Sales order is already cancelled.",
+        );
+    }
+
+    if (salesOrder.status !== SalesOrderStatus.CONFIRMED) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Only confirmed sales orders can be cancelled.",
         );
     }
 

@@ -11,6 +11,7 @@ interface DialogProps {
   description?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  contentClassName?: string;
   maxWidthClass?: string;
 }
 
@@ -21,6 +22,7 @@ export function Dialog({
   description,
   children,
   className,
+  contentClassName,
   maxWidthClass = "max-w-lg",
 }: DialogProps) {
   React.useEffect(() => {
@@ -86,7 +88,7 @@ export function Dialog({
           </div>
         )}
 
-        <div>{children}</div>
+        <div className={contentClassName}>{children}</div>
       </div>
     </div>
   );
