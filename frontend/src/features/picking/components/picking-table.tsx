@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { PackageCheck, Eye, UserPlus, Play } from "lucide-react";
+import { PackageCheck, Eye, UserPlus, Play, HandPlatter } from "lucide-react";
 import { PickingTask } from "../picking.types";
 import { PickingStatusBadge } from "./picking-status-badge";
 import { DataTable } from "@/components/shared/data-table";
@@ -34,6 +34,7 @@ interface PickingTableProps {
   onView?: (task: PickingTask) => void;
   onAssign?: (task: PickingTask) => void;
   onStart?: (task: PickingTask) => void;
+  onPick?: (task: PickingTask) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -47,6 +48,7 @@ export function PickingTable({
   onView,
   onAssign,
   onStart,
+  onPick,
 }: PickingTableProps) {
   const canAssign =
     userRole === "SUPER_ADMIN" ||
@@ -56,6 +58,12 @@ export function PickingTable({
   const canStart =
     userRole === "SUPER_ADMIN" ||
     userRole === "ADMIN" ||
+    userRole === "STAFF";
+
+  const canPick =
+    userRole === "SUPER_ADMIN" ||
+    userRole === "ADMIN" ||
+    userRole === "WAREHOUSE_MANAGER" ||
     userRole === "STAFF";
 
   const columns = useMemo<ColumnDef<PickingTask>[]>(
@@ -137,8 +145,9 @@ export function PickingTable({
           const isInProgress = task.status === "IN_PROGRESS";
           const canStartThis = !isCancelled && !isPicked && !isInProgress;
           const canAssignThis = !isCancelled && !isPicked;
+          const canPickThis = !isCancelled && !isPicked;
 
-          // STAFF can only start tasks assigned to them
+          // STAFF can only start/pick tasks assigned to them
           const isAssignedToMe =
             userRole === "STAFF" ? task.assignedToId === currentUserId : true;
 
@@ -192,12 +201,28 @@ export function PickingTable({
                   <span className="sr-only">Start Picking</span>
                 </Button>
               )}
+              {canPick && canPickThis && isAssignedToMe && onPick && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  title="Pick Items"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onPick(task);
+                  }}
+                  className="text-slate-600 hover:text-violet-600 dark:text-slate-400 dark:hover:text-violet-400"
+                >
+                  <HandPlatter className="h-4 w-4" />
+                  <span className="sr-only">Pick Items</span>
+                </Button>
+              )}
             </div>
           );
         },
       },
     ],
-    [onView, onAssign, onStart, canAssign, canStart, userRole, currentUserId]
+    [onView, onAssign, onStart, onPick, canAssign, canStart, canPick, userRole, currentUserId]
   );
 
   return (

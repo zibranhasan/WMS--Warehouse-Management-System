@@ -11,6 +11,7 @@ import { PickingTable } from "@/features/picking/components/picking-table";
 import { CreatePickingDialog } from "@/features/picking/components/create-picking-dialog";
 import { PickingDetailsDialog } from "@/features/picking/components/picking-details-dialog";
 import { AssignPickerDialog } from "@/features/picking/components/assign-picker-dialog";
+import { PickItemsDialog } from "@/features/picking/components/pick-items-dialog";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { SearchInput } from "@/components/shared/search-input";
 import { StatusTabFilter } from "@/components/shared/status-tab-filter";
@@ -80,6 +81,7 @@ export default function PickingPage() {
   const [viewingTask, setViewingTask] = useState<PickingTask | null>(null);
   const [assigningTask, setAssigningTask] = useState<PickingTask | null>(null);
   const [startingTask, setStartingTask] = useState<PickingTask | null>(null);
+  const [pickingTask, setPickingTask] = useState<PickingTask | null>(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   // Start picking mutation
@@ -175,6 +177,7 @@ export default function PickingPage() {
         onView={(task) => setViewingTask(task)}
         onAssign={(task) => setAssigningTask(task)}
         onStart={(task) => setStartingTask(task)}
+        onPick={(task) => setPickingTask(task)}
       />
 
       {meta && (
@@ -231,6 +234,15 @@ export default function PickingPage() {
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
         onSuccess={() => setCurrentPage(1)}
+      />
+
+      {/* Pick Items Dialog */}
+      <PickItemsDialog
+        pickingTaskId={pickingTask?.id ?? null}
+        isOpen={!!pickingTask}
+        onOpenChange={(open) => {
+          if (!open) setPickingTask(null);
+        }}
       />
     </div>
   );

@@ -605,6 +605,11 @@ const pickItems = async (
             }
 
             // Process each item pick request in array
+            // Track in-memory stock for correct sequential StockMovement snapshots
+            const stockTracker = new Map<string, Prisma.Decimal>();
+            // Track which InventoryStock rows have been locked in this transaction
+            const lockedStockRows = new Set<string>();
+
             for (const itemUnit of payload.items) {
                 // Rule 2 — Item belonging check
                 const taskItem = pickingTask.items.find(
@@ -710,19 +715,59 @@ const pickItems = async (
                     },
                 });
 
-                // Step 6 — Create StockMovement OUT
-                const existingStock = await tx.inventoryStock.findUnique({
+                // Step 6 — Create StockMovement OUT & decrement aggregate InventoryStock
+                const stockKey = `${pickingTask.warehouseId}:${taskItem.productId}`;
+                let previousStock: Prisma.Decimal;
+
+                if (stockTracker.has(stockKey)) {
+                    // Use in-memory tracker for sequential picks of same product
+                    previousStock = stockTracker.get(stockKey)!;
+                } else {
+                    // First pick for this product — lock row and read from database
+                    await tx.$executeRaw`
+                        SELECT id FROM inventory_stocks
+                        WHERE "warehouseId" = ${pickingTask.warehouseId}
+                          AND "productId" = ${taskItem.productId}
+                        FOR UPDATE
+                    `;
+                    lockedStockRows.add(stockKey);
+
+                    const existingStock = await tx.inventoryStock.findUnique({
+                        where: {
+                            warehouseId_productId: {
+                                warehouseId: pickingTask.warehouseId,
+                                productId: taskItem.productId,
+                            },
+                        },
+                    });
+                    previousStock = existingStock
+                        ? existingStock.quantity
+                        : new Prisma.Decimal(0);
+                }
+
+                const newStock = previousStock.minus(itemUnit.quantity);
+                stockTracker.set(stockKey, newStock);
+
+                // Enforce invariant: aggregate stock must never go negative
+                if (newStock.lessThan(0)) {
+                    throw new AppError(
+                        httpStatus.BAD_REQUEST,
+                        `Insufficient aggregate stock for product '${taskItem.productId}'. (Previous: ${previousStock}, Attempted pick: ${itemUnit.quantity})`,
+                    );
+                }
+
+                // Decrement the aggregate InventoryStock quantity
+                await tx.inventoryStock.update({
                     where: {
                         warehouseId_productId: {
                             warehouseId: pickingTask.warehouseId,
                             productId: taskItem.productId,
                         },
                     },
+                    data: {
+                        quantity: { decrement: itemUnit.quantity },
+                    },
                 });
-
-                const totalPhysicalStock = existingStock
-                    ? existingStock.quantity
-                    : new Prisma.Decimal(0);
 
                 await tx.stockMovement.create({
                     data: {
@@ -730,8 +775,8 @@ const pickItems = async (
                         productId: taskItem.productId,
                         type: StockMovementType.OUT,
                         quantity: new Prisma.Decimal(itemUnit.quantity),
-                        previousStock: totalPhysicalStock,
-                        newStock: totalPhysicalStock,
+                        previousStock,
+                        newStock,
                         reason: "Physical stock picked from bin",
                         reference: pickingTask.pickingNumber,
                         createdById: userId,
