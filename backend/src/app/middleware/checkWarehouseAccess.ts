@@ -537,3 +537,83 @@ export const checkSoParamsWarehouseAccess = (paramName: string) => {
         }
     };
 };
+
+// ---------------------------------------------------------------------------
+// resolvePackingTaskWarehouseId — Helper
+// Resolves the warehouseId for a given Packing Task by querying the DB directly.
+// Returns the resolved warehouseId or throws if packing task not found.
+// ---------------------------------------------------------------------------
+
+export const resolvePackingTaskWarehouseId = async (
+    packingTaskId: string,
+): Promise<string> => {
+    const task = await prisma.packingTask.findUnique({
+        where: { id: packingTaskId },
+        select: { warehouseId: true },
+    });
+
+    if (!task) {
+        throw new AppError(status.NOT_FOUND, "Packing task not found.");
+    }
+
+    return task.warehouseId;
+};
+
+// ---------------------------------------------------------------------------
+// checkPackingWarehouseAccess — Middleware
+// Resolves the Packing Task's actual warehouse from the database, then
+// validates that the authenticated user has access to that warehouse.
+// Extracts packing task id from req.params.id.
+// ---------------------------------------------------------------------------
+
+export const checkPackingWarehouseAccess = async (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const user = req.user;
+
+        if (!user) {
+            throw new AppError(
+                status.UNAUTHORIZED,
+                "Authentication required.",
+            );
+        }
+
+        if (hasGlobalAccess(user.role)) {
+            return next();
+        }
+
+        const packingTaskId = req.params.id as string;
+
+        if (!packingTaskId || typeof packingTaskId !== "string" || !packingTaskId.trim()) {
+            throw new AppError(
+                status.BAD_REQUEST,
+                "Packing task ID is required.",
+            );
+        }
+
+        const resolvedWarehouseId = await resolvePackingTaskWarehouseId(
+            packingTaskId.trim(),
+        );
+
+        if (!user.warehouseId) {
+            throw new AppError(
+                status.FORBIDDEN,
+                "No warehouse is assigned to your account.",
+            );
+        }
+
+        if (user.warehouseId !== resolvedWarehouseId) {
+            throw new AppError(
+                status.FORBIDDEN,
+                "You do not have access to this warehouse.",
+            );
+        }
+
+        next();
+    } catch (error) {
+        next(error);
+    }
+};

@@ -39,8 +39,26 @@ const addPackageItemsValidationSchema = z.object({
         .min(1, "At least one item must be specified for package."),
 });
 
+const assignPackerValidationSchema = z.object({
+    assignedToId: z
+        .string({
+            message: "Assigned user ID is required.",
+        })
+        .min(1, "Assigned user ID cannot be empty."),
+});
+
+const cancelPackingTaskValidationSchema = z.object({
+    cancellationReason: z
+        .string({
+            message: "Cancellation reason is required.",
+        })
+        .min(1, "Cancellation reason cannot be empty."),
+});
+
 export const PackingValidation = {
     createPackingTaskValidationSchema,
     createPackageValidationSchema,
     addPackageItemsValidationSchema,
+    assignPackerValidationSchema,
+    cancelPackingTaskValidationSchema,
 };
