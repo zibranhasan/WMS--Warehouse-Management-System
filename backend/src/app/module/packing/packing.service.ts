@@ -7,7 +7,9 @@ import {
     PickingItemStatus,
     PickingStatus,
     Prisma,
+    Role,
     SalesOrderStatus,
+    UserStatus,
 } from "../../../generated/prisma/index.js";
 import AppError from "../../errorHelpers/AppError";
 import { IQueryParams } from "../../interfaces/query.interface";
@@ -19,6 +21,8 @@ import {
 } from "./packing.constant";
 import {
     IAddPackageItems,
+    IAssignPacker,
+    ICancelPackingTask,
     ICreatePackage,
     ICreatePackingTask,
 } from "./packing.interface";
@@ -91,6 +95,23 @@ const generatePackageNumber = async (
     }
 
     return `${prefix}${String(nextSequence).padStart(6, "0")}`;
+};
+
+// ---------------------------------------------------------------------------
+// Helper: Assert STAFF ownership — STAFF users may only operate on tasks
+// they are assigned to (packedById === userId)
+// ---------------------------------------------------------------------------
+const assertStaffOwnership = (
+    task: { packedById: string | null },
+    userRole: Role,
+    userId: string,
+): void => {
+    if (userRole === Role.STAFF && task.packedById !== userId) {
+        throw new AppError(
+            httpStatus.FORBIDDEN,
+            "You can only operate on a packing task assigned to you.",
+        );
+    }
 };
 
 // ---------------------------------------------------------------------------
@@ -313,10 +334,25 @@ const createPackingTask = async (
 // ---------------------------------------------------------------------------
 // 3. GET ALL PACKING TASKS
 // ---------------------------------------------------------------------------
-const getAllPackingTasks = async (query: Record<string, unknown>) => {
+const getAllPackingTasks = async (
+    query: Record<string, unknown>,
+    warehouseScope?: string | null,
+) => {
+    // NO_ACCESS: scoped user without an assigned warehouse sees nothing
+    if (warehouseScope === "NO_ACCESS") {
+        return { data: [], meta: { page: 1, limit: 10, total: 0, totalPages: 0 } };
+    }
+
+    // For scoped users, force warehouse constraint and strip client override
+    let enforcedQuery = { ...query };
+    if (warehouseScope) {
+        delete enforcedQuery.warehouseId;
+        enforcedQuery.warehouseId = warehouseScope;
+    }
+
     const queryBuilder = new QueryBuilder<PackingTask>(
         prisma.packingTask,
-        query as IQueryParams,
+        enforcedQuery as IQueryParams,
         {
             searchableFields: packingSearchableFields,
             filterableFields: packingFilterableFields,
@@ -347,14 +383,19 @@ const getAllPackingTasks = async (query: Record<string, unknown>) => {
                     },
                 },
             },
-        })
+        });
+
+    if (warehouseScope) {
+        queryBuilder.where({ warehouseId: warehouseScope } as never);
+    }
+
+    return await queryBuilder
         .search()
         .filter()
         .sort()
         .paginate()
-        .fields();
-
-    return await queryBuilder.execute();
+        .fields()
+        .execute();
 };
 
 // ---------------------------------------------------------------------------
@@ -379,7 +420,75 @@ const getPackingTaskBySalesOrder = async (salesOrderId: string) => {
 // ---------------------------------------------------------------------------
 // 5. START PACKING
 // ---------------------------------------------------------------------------
-const startPacking = async (id: string, userId: string) => {
+const startPacking = async (id: string, userId: string, userRole: Role) => {
+    const task = await prisma.packingTask.findUnique({
+        where: { id },
+    });
+
+    if (!task) {
+        throw new AppError(httpStatus.NOT_FOUND, "Packing task not found.");
+    }
+
+    // Only PENDING tasks can be started
+    if (task.status !== PackingStatus.PENDING) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Only pending packing tasks can be started.",
+        );
+    }
+
+    // STAFF can only start tasks assigned to themselves
+    if (userRole === Role.STAFF) {
+        if (task.packedById !== userId) {
+            throw new AppError(
+                httpStatus.FORBIDDEN,
+                "You can only start a packing task assigned to you.",
+            );
+        }
+    }
+
+    await prisma.packingTask.update({
+        where: { id },
+        data: {
+            status: PackingStatus.IN_PROGRESS,
+        },
+    });
+
+    return await getPackingTaskById(id);
+};
+
+// ---------------------------------------------------------------------------
+// 6. ASSIGN PACKER
+// ---------------------------------------------------------------------------
+const assignPacker = async (id: string, payload: IAssignPacker) => {
+    // Validate target user exists and is active
+    const user = await prisma.user.findFirst({
+        where: {
+            id: payload.assignedToId,
+            isDeleted: false,
+        },
+    });
+
+    if (!user) {
+        throw new AppError(httpStatus.NOT_FOUND, "Target user not found.");
+    }
+
+    if (user.status !== UserStatus.ACTIVE) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Cannot assign packing task to an inactive user.",
+        );
+    }
+
+    // Enforce STAFF-only packer eligibility
+    if (user.role !== Role.STAFF) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Only STAFF users can be assigned as packers.",
+        );
+    }
+
+    // Task check
     const task = await prisma.packingTask.findUnique({
         where: { id },
     });
@@ -391,32 +500,50 @@ const startPacking = async (id: string, userId: string) => {
     if (task.status === PackingStatus.CANCELLED) {
         throw new AppError(
             httpStatus.BAD_REQUEST,
-            "Cannot start a cancelled packing task.",
+            "Cannot assign a cancelled packing task.",
         );
     }
 
     if (task.status === PackingStatus.PACKED) {
         throw new AppError(
             httpStatus.BAD_REQUEST,
-            "Cannot start an already completed packing task.",
+            "Cannot assign a completed packing task.",
         );
     }
 
-    await prisma.packingTask.update({
+    // Enforce same-warehouse: packer must belong to the packing task's warehouse
+    if (!user.warehouseId) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Packer must be assigned to a warehouse.",
+        );
+    }
+
+    if (user.warehouseId !== task.warehouseId) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Packer must belong to the same warehouse as the packing task.",
+        );
+    }
+
+    const updatedTask = await prisma.packingTask.update({
         where: { id },
         data: {
-            status: PackingStatus.IN_PROGRESS,
-            packedById: userId,
+            packedById: payload.assignedToId,
         },
     });
 
-    return await getPackingTaskById(id);
+    return await getPackingTaskById(updatedTask.id);
 };
 
 // ---------------------------------------------------------------------------
-// 6. CREATE PACKAGE
+// 7. CREATE PACKAGE
 // ---------------------------------------------------------------------------
-const createPackage = async (id: string, payload: ICreatePackage) => {
+const createPackage = async (
+    id: string,
+    payload: ICreatePackage,
+    user: { id: string; role: Role },
+) => {
     const task = await prisma.packingTask.findUnique({
         where: { id },
     });
@@ -424,6 +551,8 @@ const createPackage = async (id: string, payload: ICreatePackage) => {
     if (!task) {
         throw new AppError(httpStatus.NOT_FOUND, "Packing task not found.");
     }
+
+    assertStaffOwnership(task, user.role, user.id);
 
     if (
         task.status === PackingStatus.CANCELLED ||
@@ -521,13 +650,19 @@ const getPackages = async (id: string) => {
 };
 
 // ---------------------------------------------------------------------------
-// 8. ADD ITEMS TO PACKAGE (ATOMIC TRANSACTION)
+// 8. ADD ITEMS TO PACKAGE (ATOMIC TRANSACTION WITH ROW LOCKS)
 // ---------------------------------------------------------------------------
 const addPackageItems = async (
     id: string,
     packageId: string,
     payload: IAddPackageItems,
+    user: { id: string; role: Role },
 ) => {
+    // Sort items by packingTaskItemId for deterministic lock ordering (prevents deadlocks)
+    const sortedItems = [...payload.items].sort((a, b) =>
+        a.packingTaskItemId.localeCompare(b.packingTaskItemId),
+    );
+
     return await prisma.$transaction(
         async (tx) => {
             // Step 1: Validate PackingTask
@@ -541,6 +676,8 @@ const addPackageItems = async (
             if (!task) {
                 throw new AppError(httpStatus.NOT_FOUND, "Packing task not found.");
             }
+
+            assertStaffOwnership(task, user.role, user.id);
 
             if (
                 task.status === PackingStatus.CANCELLED ||
@@ -577,17 +714,34 @@ const addPackageItems = async (
                 );
             }
 
-            // Step 3: Process item list
-            for (const itemUnit of payload.items) {
+            // Step 3: Process item list with row-level locking
+            for (const itemUnit of sortedItems) {
                 // Rule 2: PackingTaskItem must belong to PackingTask
-                const taskItem = task.items.find(
+                const taskItemBelongs = task.items.some(
                     (it) => it.id === itemUnit.packingTaskItemId,
                 );
 
-                if (!taskItem) {
+                if (!taskItemBelongs) {
                     throw new AppError(
                         httpStatus.BAD_REQUEST,
                         `Packing task item '${itemUnit.packingTaskItemId}' does not belong to packing task '${id}'.`,
+                    );
+                }
+
+                // Lock the PackingTaskItem row to prevent concurrent over-packing
+                await tx.$executeRaw`
+                    SELECT id FROM packing_task_items WHERE id = ${itemUnit.packingTaskItemId} FOR UPDATE
+                `;
+
+                // Re-read the PackingTaskItem from the locked row for fresh values
+                const lockedTaskItem = await tx.packingTaskItem.findUnique({
+                    where: { id: itemUnit.packingTaskItemId },
+                });
+
+                if (!lockedTaskItem) {
+                    throw new AppError(
+                        httpStatus.NOT_FOUND,
+                        `Packing task item '${itemUnit.packingTaskItemId}' not found.`,
                     );
                 }
 
@@ -600,8 +754,9 @@ const addPackageItems = async (
                 }
 
                 // Rule 4: Cannot pack more than (requiredQuantity - packedQuantity)
-                const requiredQty = Number(taskItem.requiredQuantity);
-                const currentPackedQty = Number(taskItem.packedQuantity);
+                // Uses locked/fresh values to prevent race condition
+                const requiredQty = Number(lockedTaskItem.requiredQuantity);
+                const currentPackedQty = Number(lockedTaskItem.packedQuantity);
                 const remainingQty = requiredQty - currentPackedQty;
 
                 if (itemUnit.quantity > remainingQty) {
@@ -615,8 +770,8 @@ const addPackageItems = async (
                 await tx.packageItem.create({
                     data: {
                         packageId: pkg.id,
-                        packingTaskItemId: taskItem.id,
-                        productId: taskItem.productId,
+                        packingTaskItemId: lockedTaskItem.id,
+                        productId: lockedTaskItem.productId,
                         quantity: new Prisma.Decimal(itemUnit.quantity),
                     },
                 });
@@ -626,12 +781,12 @@ const addPackageItems = async (
                     itemUnit.quantity,
                 );
                 let itemStatus: PackingItemStatus = PackingItemStatus.PARTIALLY_PACKED;
-                if (newPackedQtyDecimal.gte(taskItem.requiredQuantity)) {
+                if (newPackedQtyDecimal.gte(lockedTaskItem.requiredQuantity)) {
                     itemStatus = PackingItemStatus.PACKED;
                 }
 
                 await tx.packingTaskItem.update({
-                    where: { id: taskItem.id },
+                    where: { id: lockedTaskItem.id },
                     data: {
                         packedQuantity: newPackedQtyDecimal,
                         status: itemStatus,
@@ -677,13 +832,29 @@ const addPackageItems = async (
 // ---------------------------------------------------------------------------
 // 9. CLOSE PACKAGE
 // ---------------------------------------------------------------------------
-const closePackage = async (id: string, packageId: string) => {
+const closePackage = async (
+    id: string,
+    packageId: string,
+    user: { id: string; role: Role },
+) => {
     const task = await prisma.packingTask.findUnique({
         where: { id },
     });
 
     if (!task) {
         throw new AppError(httpStatus.NOT_FOUND, "Packing task not found.");
+    }
+
+    assertStaffOwnership(task, user.role, user.id);
+
+    if (
+        task.status === PackingStatus.CANCELLED ||
+        task.status === PackingStatus.PACKED
+    ) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Cannot close package for a cancelled or completed packing task.",
+        );
     }
 
     const pkg = await prisma.package.findUnique({
@@ -754,14 +925,55 @@ const closePackage = async (id: string, packageId: string) => {
     };
 };
 
+// ---------------------------------------------------------------------------
+// 10. CANCEL PACKING TASK
+// ---------------------------------------------------------------------------
+const cancelPackingTask = async (
+    id: string,
+    _payload: ICancelPackingTask,
+) => {
+    const task = await prisma.packingTask.findUnique({
+        where: { id },
+    });
+
+    if (!task) {
+        throw new AppError(httpStatus.NOT_FOUND, "Packing task not found.");
+    }
+
+    if (task.status === PackingStatus.PACKED) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Cannot cancel a completed packing task.",
+        );
+    }
+
+    if (task.status === PackingStatus.CANCELLED) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Packing task is already cancelled.",
+        );
+    }
+
+    await prisma.packingTask.update({
+        where: { id },
+        data: {
+            status: PackingStatus.CANCELLED,
+        },
+    });
+
+    return await getPackingTaskById(id);
+};
+
 export const PackingService = {
     createPackingTask,
     getAllPackingTasks,
     getPackingTaskById,
     getPackingTaskBySalesOrder,
+    assignPacker,
     startPacking,
     createPackage,
     getPackages,
     addPackageItems,
     closePackage,
+    cancelPackingTask,
 };
