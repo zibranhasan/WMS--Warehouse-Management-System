@@ -14,7 +14,7 @@ export type PackingStatus =
 
 export type PackingItemStatus = "PENDING" | "PARTIALLY_PACKED" | "PACKED";
 
-export type PackageStatus = "OPEN" | "PACKED" | "CANCELLED";
+export type PackageStatus = "OPEN" | "PACKED";
 
 // ---------------------------------------------------------------------------
 // Related models (minimal subset returned by backend)

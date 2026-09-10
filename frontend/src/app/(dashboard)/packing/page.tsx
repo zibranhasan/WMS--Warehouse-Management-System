@@ -15,6 +15,7 @@ import { CreatePackingDialog } from "@/features/packing/components/create-packin
 import { AssignPackerDialog } from "@/features/packing/components/assign-packer-dialog";
 import { StartPackingDialog } from "@/features/packing/components/start-packing-dialog";
 import { CancelPackingDialog } from "@/features/packing/components/cancel-packing-dialog";
+import { CreatePackageDialog } from "@/features/packing/components/create-package-dialog";
 import { SearchInput } from "@/components/shared/search-input";
 import { StatusTabFilter } from "@/components/shared/status-tab-filter";
 import { DataTablePagination } from "@/components/shared/data-table-pagination";
@@ -87,6 +88,8 @@ export default function PackingPage() {
   const [isStartDialogOpen, setIsStartDialogOpen] = useState(false);
   const [cancellingTaskId, setCancellingTaskId] = useState<string | null>(null);
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [createPackageTaskId, setCreatePackageTaskId] = useState<string | null>(null);
+  const [isCreatePackageDialogOpen, setIsCreatePackageDialogOpen] = useState(false);
 
   const userCanCreate =
     user?.role === "SUPER_ADMIN" ||
@@ -190,6 +193,10 @@ export default function PackingPage() {
           setCancellingTaskId(task.id);
           setIsCancelDialogOpen(true);
         }}
+        onCreatePackage={(task) => {
+          setCreatePackageTaskId(task.id);
+          setIsCreatePackageDialogOpen(true);
+        }}
       />
 
       {meta && (
@@ -263,6 +270,20 @@ export default function PackingPage() {
         onOpenChange={(open) => {
           setIsCancelDialogOpen(open);
           if (!open) setCancellingTaskId(null);
+        }}
+      />
+
+      {/* Create Package Dialog */}
+      <CreatePackageDialog
+        packingTask={
+          createPackageTaskId
+            ? packingTasks.find((t) => t.id === createPackageTaskId) ?? null
+            : null
+        }
+        isOpen={isCreatePackageDialogOpen}
+        onOpenChange={(open) => {
+          setIsCreatePackageDialogOpen(open);
+          if (!open) setCreatePackageTaskId(null);
         }}
       />
     </div>

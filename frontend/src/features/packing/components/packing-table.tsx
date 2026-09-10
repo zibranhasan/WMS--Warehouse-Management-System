@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { PackageCheck, Eye, UserPlus, Play, Ban } from "lucide-react";
+import { PackageCheck, Eye, UserPlus, Play, Ban, PackagePlus } from "lucide-react";
 import { PackingTask } from "../packing.types";
 import { PackingStatusBadge } from "./packing-status-badge";
 import { DataTable } from "@/components/shared/data-table";
@@ -35,6 +35,7 @@ interface PackingTableProps {
   onAssign?: (task: PackingTask) => void;
   onStart?: (task: PackingTask) => void;
   onCancel?: (task: PackingTask) => void;
+  onCreatePackage?: (task: PackingTask) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -49,6 +50,7 @@ export function PackingTable({
   onAssign,
   onStart,
   onCancel,
+  onCreatePackage,
 }: PackingTableProps) {
   const canAssign =
     userRole === "SUPER_ADMIN" ||
@@ -235,12 +237,37 @@ export function PackingTable({
                   <span className="sr-only">Cancel Packing</span>
                 </Button>
               )}
+              {(() => {
+                const canCreatePackage =
+                  !isPacked &&
+                  !isCancelled &&
+                  (userRole === "SUPER_ADMIN" ||
+                    userRole === "ADMIN" ||
+                    userRole === "WAREHOUSE_MANAGER" ||
+                    (userRole === "STAFF" && isAssignedToMe));
+                return canCreatePackage && onCreatePackage ? (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    title="Create Package"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onCreatePackage(task);
+                    }}
+                    className="text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
+                  >
+                    <PackagePlus className="h-4 w-4" />
+                    <span className="sr-only">Create Package</span>
+                  </Button>
+                ) : null;
+              })()}
             </div>
           );
         },
       },
     ],
-    [onView, onAssign, onStart, onCancel, canAssign, canStart, canCancel, currentUserId]
+    [onView, onAssign, onStart, onCancel, onCreatePackage, canAssign, canStart, canCancel, currentUserId]
   );
 
   return (
