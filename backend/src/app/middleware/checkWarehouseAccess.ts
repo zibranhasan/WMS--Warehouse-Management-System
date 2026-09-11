@@ -531,11 +531,91 @@ export const checkSoParamsWarehouseAccess = (paramName: string) => {
                 );
             }
 
-            next();
+        next();
         } catch (error) {
             next(error);
         }
     };
+};
+
+// ---------------------------------------------------------------------------
+// resolveShipmentWarehouseId — Helper
+// Resolves the warehouseId for a given Shipment by querying the DB directly.
+// Returns the resolved warehouseId or throws if shipment not found.
+// ---------------------------------------------------------------------------
+
+export const resolveShipmentWarehouseId = async (
+    shipmentId: string,
+): Promise<string> => {
+    const shipment = await prisma.shipment.findUnique({
+        where: { id: shipmentId },
+        select: { warehouseId: true },
+    });
+
+    if (!shipment) {
+        throw new AppError(status.NOT_FOUND, "Shipment not found.");
+    }
+
+    return shipment.warehouseId;
+};
+
+// ---------------------------------------------------------------------------
+// checkShipmentWarehouseAccess — Middleware
+// Resolves the Shipment's actual warehouse from the database, then
+// validates that the authenticated user has access to that warehouse.
+// Extracts shipment id from req.params.id.
+// ---------------------------------------------------------------------------
+
+export const checkShipmentWarehouseAccess = async (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const user = req.user;
+
+        if (!user) {
+            throw new AppError(
+                status.UNAUTHORIZED,
+                "Authentication required.",
+            );
+        }
+
+        if (hasGlobalAccess(user.role)) {
+            return next();
+        }
+
+        const shipmentId = req.params.id as string;
+
+        if (!shipmentId || typeof shipmentId !== "string" || !shipmentId.trim()) {
+            throw new AppError(
+                status.BAD_REQUEST,
+                "Shipment ID is required.",
+            );
+        }
+
+        const resolvedWarehouseId = await resolveShipmentWarehouseId(
+            shipmentId.trim(),
+        );
+
+        if (!user.warehouseId) {
+            throw new AppError(
+                status.FORBIDDEN,
+                "No warehouse is assigned to your account.",
+            );
+        }
+
+        if (user.warehouseId !== resolvedWarehouseId) {
+            throw new AppError(
+                status.FORBIDDEN,
+                "You do not have access to this warehouse.",
+            );
+        }
+
+        next();
+    } catch (error) {
+        next(error);
+    }
 };
 
 // ---------------------------------------------------------------------------
