@@ -209,10 +209,25 @@ const createShipment = async (payload: ICreateShipment) => {
 // ---------------------------------------------------------------------------
 // 3. GET ALL SHIPMENTS
 // ---------------------------------------------------------------------------
-const getAllShipments = async (query: Record<string, unknown>) => {
+const getAllShipments = async (
+    query: Record<string, unknown>,
+    warehouseScope?: string | null,
+) => {
+    // NO_ACCESS: scoped user without an assigned warehouse sees nothing
+    if (warehouseScope === "NO_ACCESS") {
+        return { data: [], meta: { page: 1, limit: 10, total: 0, totalPages: 0 } };
+    }
+
+    // For scoped users, force warehouse constraint and strip client override
+    let enforcedQuery = { ...query };
+    if (warehouseScope) {
+        delete enforcedQuery.warehouseId;
+        enforcedQuery.warehouseId = warehouseScope;
+    }
+
     const queryBuilder = new QueryBuilder<Shipment>(
         prisma.shipment,
-        query as IQueryParams,
+        enforcedQuery as IQueryParams,
         {
             searchableFields: shippingSearchableFields,
             filterableFields: shippingFilterableFields,
@@ -237,14 +252,19 @@ const getAllShipments = async (query: Record<string, unknown>) => {
                     },
                 },
             },
-        })
+        });
+
+    if (warehouseScope) {
+        queryBuilder.where({ warehouseId: warehouseScope } as never);
+    }
+
+    return await queryBuilder
         .search()
         .filter()
         .sort()
         .paginate()
-        .fields();
-
-    return await queryBuilder.execute();
+        .fields()
+        .execute();
 };
 
 // ---------------------------------------------------------------------------
