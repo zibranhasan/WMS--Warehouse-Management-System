@@ -46,9 +46,10 @@ router.patch(
     UserController.assignRole,
 );
 
-// Assign warehouse to user (Prepared for future Warehouse model integration) — must be before /:id
+// Assign warehouse to user (Only SUPER_ADMIN or ADMIN) — must be before /:id
 router.patch(
     "/:id/warehouse",
+    checkAuth(Role.SUPER_ADMIN, Role.ADMIN),
     validateRequest(UserValidation.assignWarehouseValidationSchema),
     UserController.assignWarehouse,
 );

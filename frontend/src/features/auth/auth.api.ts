@@ -9,6 +9,7 @@ import {
   LogoutResponse,
   MeResponse,
   ResetPasswordPayload,
+  UpdateMyProfileResponse,
 } from "./auth.types";
 
 export const authApi = {
@@ -40,6 +41,15 @@ export const authApi = {
     payload: ResetPasswordPayload
   ): Promise<AuthMessageResponse> => {
     return apiClient.post<AuthMessageResponse>("auth/reset-password", payload);
+  },
+
+  updateMyProfile: (
+    payload: FormData
+  ): Promise<UpdateMyProfileResponse> => {
+    return apiClient<UpdateMyProfileResponse>("auth/me", {
+      method: "PATCH",
+      body: payload,
+    });
   },
 };
 

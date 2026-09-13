@@ -77,4 +77,15 @@ export function useResetPassword() {
   });
 }
 
+export function useUpdateMyProfile() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: FormData) => authApi.updateMyProfile(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: authKeys.currentUser() });
+    },
+  });
+}
+
 
