@@ -68,4 +68,13 @@ export const resetPasswordSchema = z
 
 export type ResetPasswordSchemaType = z.infer<typeof resetPasswordSchema>;
 
+export const updateMyProfileSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .optional(),
+});
+
+export type UpdateMyProfileSchemaType = z.infer<typeof updateMyProfileSchema>;
+
 

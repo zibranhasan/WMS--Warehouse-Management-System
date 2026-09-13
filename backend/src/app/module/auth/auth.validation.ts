@@ -67,11 +67,19 @@ const verifyEmail = z.object({
         .regex(/^\d+$/, "OTP must contain only numeric digits."),
 });
 
+const updateMyProfileValidationSchema = z.object({
+    name: z
+        .string()
+        .min(2, "Name must be at least 2 characters.")
+        .optional(),
+});
+
 export const AuthValidation = {
     forgetPasswordValidationSchema,
     resetPasswordValidationSchema,
     changePasswordValidationSchema,
     sendVerificationOTP,
     verifyEmail,
+    updateMyProfileValidationSchema,
 };
 

@@ -85,4 +85,11 @@ export interface AuthMessageResponse {
   message: string;
 }
 
+export interface UpdateMyProfileResponse {
+  success: boolean;
+  message: string;
+  data: {
+    user: User;
+  };
+}
 

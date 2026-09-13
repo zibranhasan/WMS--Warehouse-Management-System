@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { AuthController } from "./auth.controller";
 import { AuthValidation } from "./auth.validation";
+import { multerUpload } from "../../config/multer.config";
 import { checkAuth } from "../../middleware/checkAuth";
 import { validateRequest } from "../../middleware/validateRequest";
 
@@ -21,6 +22,14 @@ router.get(
     "/me",
     checkAuth(),
     AuthController.getMe,
+);
+
+router.patch(
+    "/me",
+    checkAuth(),
+    multerUpload.single("image"),
+    validateRequest(AuthValidation.updateMyProfileValidationSchema),
+    AuthController.updateMyProfile,
 );
 
 router.post(
