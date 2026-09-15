@@ -83,9 +83,11 @@ const approvePurchaseOrder = catchAsync(async (req: Request, res: Response) => {
 
 const rejectPurchaseOrder = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
+    const userId = req.user.userId;
     const result = await PurchaseOrderService.rejectPurchaseOrder(
         id,
         req.body,
+        userId,
     );
 
     sendResponse(res, {

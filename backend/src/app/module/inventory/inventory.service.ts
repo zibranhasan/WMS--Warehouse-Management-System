@@ -112,43 +112,46 @@ const adjustStockTx = async (
     tx: Prisma.TransactionClient,
     payload: IStockAdjustment,
     userId: string,
+    options?: { skipValidation?: boolean },
 ) => {
     const { warehouseId, productId, type, quantity, reason, reference } =
         payload;
 
-    // 1. Guard: warehouse must exist and be ACTIVE
-    const warehouse = await tx.warehouse.findUnique({
-        where: { id: warehouseId },
-    });
+    if (!options?.skipValidation) {
+        // 1. Guard: warehouse must exist and be ACTIVE
+        const warehouse = await tx.warehouse.findUnique({
+            where: { id: warehouseId },
+        });
 
-    if (!warehouse) {
-        throw new AppError(httpStatus.NOT_FOUND, "Warehouse not found.");
+        if (!warehouse) {
+            throw new AppError(httpStatus.NOT_FOUND, "Warehouse not found.");
+        }
+
+        if (warehouse.status !== WarehouseStatus.ACTIVE) {
+            throw new AppError(
+                httpStatus.BAD_REQUEST,
+                "Cannot adjust stock for an inactive warehouse.",
+            );
+        }
+
+        // 2. Guard: product must exist, not be deleted, and be ACTIVE
+        const product = await tx.product.findFirst({
+            where: { id: productId, isDeleted: false },
+        });
+
+        if (!product) {
+            throw new AppError(httpStatus.NOT_FOUND, "Product not found.");
+        }
+
+        if (product.status !== ProductStatus.ACTIVE) {
+            throw new AppError(
+                httpStatus.BAD_REQUEST,
+                "Cannot adjust stock for an inactive product.",
+            );
+        }
     }
 
-    if (warehouse.status !== WarehouseStatus.ACTIVE) {
-        throw new AppError(
-            httpStatus.BAD_REQUEST,
-            "Cannot adjust stock for an inactive warehouse.",
-        );
-    }
-
-    // 2. Guard: product must exist, not be deleted, and be ACTIVE
-    const product = await tx.product.findFirst({
-        where: { id: productId, isDeleted: false },
-    });
-
-    if (!product) {
-        throw new AppError(httpStatus.NOT_FOUND, "Product not found.");
-    }
-
-    if (product.status !== ProductStatus.ACTIVE) {
-        throw new AppError(
-            httpStatus.BAD_REQUEST,
-            "Cannot adjust stock for an inactive product.",
-        );
-    }
-
-    // 3. Guard: validate quantity constraints according to movement type
+    // 3. Guard: validate quantity constraints according to movement type (in-memory)
     if (type === StockMovementType.IN || type === StockMovementType.OUT) {
         if (quantity <= 0) {
             throw new AppError(
@@ -165,21 +168,18 @@ const adjustStockTx = async (
         }
     }
 
-    // Row lock check using SQL FOR UPDATE if stock record exists
-    await tx.$executeRaw`
-        SELECT id FROM inventory_stocks 
+    // 4. Acquire row lock on inventory_stocks (if record exists) and fetch current quantity in a single query
+    const lockedStocks = await tx.$queryRaw<
+        Array<{ id: string; quantity: Prisma.Decimal | string | number }>
+    >`
+        SELECT id, quantity FROM inventory_stocks 
         WHERE "warehouseId" = ${warehouseId} AND "productId" = ${productId}
         FOR UPDATE
     `;
 
-    const existingStock = await tx.inventoryStock.findUnique({
-        where: {
-            warehouseId_productId: { warehouseId, productId },
-        },
-    });
-
+    const existingStock = lockedStocks[0];
     const previousStock: Prisma.Decimal = existingStock
-        ? existingStock.quantity
+        ? new Prisma.Decimal(existingStock.quantity)
         : new Prisma.Decimal(0);
 
     let newStock: Prisma.Decimal;
@@ -213,10 +213,6 @@ const adjustStockTx = async (
         update: {
             quantity: newStock,
         },
-        include: {
-            warehouse: true,
-            product: true,
-        },
     });
 
     const movement = await tx.stockMovement.create({
@@ -230,18 +226,6 @@ const adjustStockTx = async (
             reason: reason ?? null,
             reference: reference ?? null,
             createdById: userId,
-        },
-        include: {
-            warehouse: true,
-            product: true,
-            createdBy: {
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    role: true,
-                },
-            },
         },
     });
 

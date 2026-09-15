@@ -562,7 +562,61 @@ const pickItems = async (
     userId: string,
     userRole: Role,
 ) => {
-    return await prisma.$transaction(
+    // -----------------------------------------------------------------------
+    // Step 0: Pre-validation outside transaction (fast-fail without holding locks/connections)
+    // -----------------------------------------------------------------------
+    const initialTask = await prisma.pickingTask.findUnique({
+        where: { id },
+        include: {
+            items: true,
+        },
+    });
+
+    if (!initialTask) {
+        throw new AppError(httpStatus.NOT_FOUND, "Picking task not found.");
+    }
+
+    if (initialTask.status === PickingStatus.CANCELLED) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Cannot pick items for a cancelled picking task.",
+        );
+    }
+
+    if (initialTask.status === PickingStatus.PICKED) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Cannot pick items for an already completed picking task.",
+        );
+    }
+
+    // STAFF can only pick items for tasks assigned to themselves
+    if (userRole === Role.STAFF) {
+        if (initialTask.assignedToId !== userId) {
+            throw new AppError(
+                httpStatus.FORBIDDEN,
+                "You can only pick items for a task assigned to you.",
+            );
+        }
+    }
+
+    // Validate all items belong to this picking task before acquiring locks
+    for (const itemUnit of payload.items) {
+        const taskItem = initialTask.items.find(
+            (it) => it.id === itemUnit.pickingTaskItemId,
+        );
+        if (!taskItem) {
+            throw new AppError(
+                httpStatus.BAD_REQUEST,
+                `Picking task item '${itemUnit.pickingTaskItemId}' does not belong to picking task '${id}'.`,
+            );
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    // Atomic Transaction: Minimal lock-holding duration
+    // -----------------------------------------------------------------------
+    await prisma.$transaction(
         async (tx) => {
             // Step 1: Lock & re-read picking task to prevent concurrent pick collisions
             await tx.$executeRaw`
@@ -594,7 +648,7 @@ const pickItems = async (
                 );
             }
 
-            // STAFF can only pick items for tasks assigned to themselves
+            // STAFF check inside lock
             if (userRole === Role.STAFF) {
                 if (pickingTask.assignedToId !== userId) {
                     throw new AppError(
@@ -604,37 +658,97 @@ const pickItems = async (
                 }
             }
 
-            // Process each item pick request in array
-            // Track in-memory stock for correct sequential StockMovement snapshots
-            const stockTracker = new Map<string, Prisma.Decimal>();
-            // Track which InventoryStock rows have been locked in this transaction
-            const lockedStockRows = new Set<string>();
-
+            // Re-validate item membership against fresh task items
             for (const itemUnit of payload.items) {
-                // Rule 2 — Item belonging check
                 const taskItem = pickingTask.items.find(
                     (it) => it.id === itemUnit.pickingTaskItemId,
                 );
-
                 if (!taskItem) {
                     throw new AppError(
                         httpStatus.BAD_REQUEST,
                         `Picking task item '${itemUnit.pickingTaskItemId}' does not belong to picking task '${id}'.`,
                     );
                 }
+            }
 
-                // Lock location stock record
-                await tx.$executeRaw`
-                    SELECT id FROM inventory_location_stocks WHERE id = ${itemUnit.locationStockId} FOR UPDATE
+            // Establish deterministic productId ascending lock ordering for all affected aggregate inventory_stocks rows
+            const distinctProductIds = Array.from(
+                new Set(
+                    payload.items.map((unit) => {
+                        const taskItem = pickingTask.items.find(
+                            (it) => it.id === unit.pickingTaskItemId,
+                        )!;
+                        return taskItem.productId;
+                    }),
+                ),
+            ).sort((a, b) => a.localeCompare(b));
+
+            // Track in-memory stock for correct sequential StockMovement snapshots
+            const stockTracker = new Map<string, Prisma.Decimal>();
+            // Track which InventoryStock rows have been locked in this transaction
+            const lockedStockRows = new Set<string>();
+
+            // Pre-lock and initialize stockTracker for every distinct product in deterministic ascending order in a single query
+            for (const productId of distinctProductIds) {
+                const stockKey = `${pickingTask.warehouseId}:${productId}`;
+
+                const lockedStocks = await tx.$queryRaw<
+                    Array<{ id: string; quantity: Prisma.Decimal | string | number }>
+                >`
+                    SELECT id, quantity FROM inventory_stocks
+                    WHERE "warehouseId" = ${pickingTask.warehouseId}
+                      AND "productId" = ${productId}
+                    FOR UPDATE
+                `;
+                lockedStockRows.add(stockKey);
+
+                const existingStock = lockedStocks[0];
+                const initialStock = existingStock
+                    ? new Prisma.Decimal(existingStock.quantity)
+                    : new Prisma.Decimal(0);
+
+                stockTracker.set(stockKey, initialStock);
+            }
+
+            // In-memory tracker for picking task item quantities and statuses
+            const itemProgressMap = new Map<
+                string,
+                {
+                    pickedQuantity: Prisma.Decimal;
+                    requiredQuantity: Prisma.Decimal;
+                    status: PickingItemStatus;
+                }
+            >();
+
+            for (const it of pickingTask.items) {
+                itemProgressMap.set(it.id, {
+                    pickedQuantity: new Prisma.Decimal(it.pickedQuantity),
+                    requiredQuantity: new Prisma.Decimal(it.requiredQuantity),
+                    status: it.status,
+                });
+            }
+
+            for (const itemUnit of payload.items) {
+                const taskItem = pickingTask.items.find(
+                    (it) => it.id === itemUnit.pickingTaskItemId,
+                )!;
+
+                // Lock & fetch location stock in a single combined query
+                const lockedLocationStocks = await tx.$queryRaw<
+                    Array<{
+                        id: string;
+                        warehouseId: string;
+                        productId: string;
+                        quantity: Prisma.Decimal | string | number;
+                    }>
+                >`
+                    SELECT id, "warehouseId", "productId", quantity
+                    FROM inventory_location_stocks
+                    WHERE id = ${itemUnit.locationStockId}
+                    FOR UPDATE
                 `;
 
-                const locationStock = await tx.inventoryLocationStock.findUnique({
-                    where: { id: itemUnit.locationStockId },
-                    include: {
-                        bin: true,
-                        product: true,
-                    },
-                });
+                const locationStock = lockedLocationStocks[0];
 
                 if (!locationStock) {
                     throw new AppError(
@@ -668,9 +782,10 @@ const pickItems = async (
                     );
                 }
 
-                // Rule 6 — Reserved / Required quantity check
-                const requiredQty = Number(taskItem.requiredQuantity);
-                const currentPickedQty = Number(taskItem.pickedQuantity);
+                // Rule 6 — Reserved / Required quantity check against current in-progress state
+                const currentProgress = itemProgressMap.get(taskItem.id)!;
+                const requiredQty = Number(currentProgress.requiredQuantity);
+                const currentPickedQty = Number(currentProgress.pickedQuantity);
                 const remainingQtyToPick = requiredQty - currentPickedQty;
 
                 if (itemUnit.quantity > remainingQtyToPick) {
@@ -689,13 +804,16 @@ const pickItems = async (
                 });
 
                 // Step 4 — Increase PickingTaskItem.pickedQuantity & update status
-                const newPickedQtyDecimal = new Prisma.Decimal(currentPickedQty).plus(
+                const newPickedQtyDecimal = currentProgress.pickedQuantity.plus(
                     itemUnit.quantity,
                 );
                 let itemStatus: PickingItemStatus = PickingItemStatus.PARTIALLY_PICKED;
-                if (newPickedQtyDecimal.gte(taskItem.requiredQuantity)) {
+                if (newPickedQtyDecimal.gte(currentProgress.requiredQuantity)) {
                     itemStatus = PickingItemStatus.PICKED;
                 }
+
+                currentProgress.pickedQuantity = newPickedQtyDecimal;
+                currentProgress.status = itemStatus;
 
                 await tx.pickingTaskItem.update({
                     where: { id: taskItem.id },
@@ -717,34 +835,7 @@ const pickItems = async (
 
                 // Step 6 — Create StockMovement OUT & decrement aggregate InventoryStock
                 const stockKey = `${pickingTask.warehouseId}:${taskItem.productId}`;
-                let previousStock: Prisma.Decimal;
-
-                if (stockTracker.has(stockKey)) {
-                    // Use in-memory tracker for sequential picks of same product
-                    previousStock = stockTracker.get(stockKey)!;
-                } else {
-                    // First pick for this product — lock row and read from database
-                    await tx.$executeRaw`
-                        SELECT id FROM inventory_stocks
-                        WHERE "warehouseId" = ${pickingTask.warehouseId}
-                          AND "productId" = ${taskItem.productId}
-                        FOR UPDATE
-                    `;
-                    lockedStockRows.add(stockKey);
-
-                    const existingStock = await tx.inventoryStock.findUnique({
-                        where: {
-                            warehouseId_productId: {
-                                warehouseId: pickingTask.warehouseId,
-                                productId: taskItem.productId,
-                            },
-                        },
-                    });
-                    previousStock = existingStock
-                        ? existingStock.quantity
-                        : new Prisma.Decimal(0);
-                }
-
+                const previousStock = stockTracker.get(stockKey)!;
                 const newStock = previousStock.minus(itemUnit.quantity);
                 stockTracker.set(stockKey, newStock);
 
@@ -798,17 +889,13 @@ const pickItems = async (
                 }
             }
 
-            // Step 7 — Calculate overall task picking status
-            const updatedItems = await tx.pickingTaskItem.findMany({
-                where: { pickingTaskId: id },
-            });
-
+            // Step 7 — Calculate overall task picking status from in-memory progress
             let totalRequired = new Prisma.Decimal(0);
             let totalPicked = new Prisma.Decimal(0);
 
-            for (const item of updatedItems) {
-                totalRequired = totalRequired.plus(item.requiredQuantity);
-                totalPicked = totalPicked.plus(item.pickedQuantity);
+            for (const itemProgress of itemProgressMap.values()) {
+                totalRequired = totalRequired.plus(itemProgress.requiredQuantity);
+                totalPicked = totalPicked.plus(itemProgress.pickedQuantity);
             }
 
             let overallStatus: PickingStatus;
@@ -839,31 +926,32 @@ const pickItems = async (
                     },
                 });
             }
-
-            return await tx.pickingTask.findUnique({
-                where: { id },
-                include: {
-                    warehouse: true,
-                    salesOrder: true,
-                    assignedTo: {
-                        select: {
-                            id: true,
-                            name: true,
-                            email: true,
-                            role: true,
-                        },
-                    },
-                    items: {
-                        include: {
-                            product: true,
-                            allocations: true,
-                        },
-                    },
-                },
-            });
         },
         { maxWait: 10000, timeout: 20000 },
     );
+
+    // Step 8 — Fetch full populated task record outside the transaction (locks already released)
+    return await prisma.pickingTask.findUnique({
+        where: { id },
+        include: {
+            warehouse: true,
+            salesOrder: true,
+            assignedTo: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    role: true,
+                },
+            },
+            items: {
+                include: {
+                    product: true,
+                    allocations: true,
+                },
+            },
+        },
+    });
 };
 
 export const PickingService = {

@@ -1,6 +1,7 @@
 import httpStatus from "http-status";
 import { catchAsync } from "../../shared/catchAsync";
 import { sendResponse } from "../../shared/sendResponse";
+import { getWarehouseScope } from "../../utils/warehouseScope";
 import { PackingService } from "./packing.service";
 const createPackingTask = catchAsync(async (req, res) => {
     const result = await PackingService.createPackingTask(req.body);
@@ -12,7 +13,8 @@ const createPackingTask = catchAsync(async (req, res) => {
     });
 });
 const getAllPackingTasks = catchAsync(async (req, res) => {
-    const result = await PackingService.getAllPackingTasks(req.query);
+    const warehouseScope = getWarehouseScope(req.user.role, req.user.warehouseId);
+    const result = await PackingService.getAllPackingTasks(req.query, warehouseScope);
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
         success: true,
@@ -44,7 +46,8 @@ const getPackingTaskBySalesOrder = catchAsync(async (req, res) => {
 const startPacking = catchAsync(async (req, res) => {
     const id = req.params.id;
     const userId = req.user.userId;
-    const result = await PackingService.startPacking(id, userId);
+    const userRole = req.user.role;
+    const result = await PackingService.startPacking(id, userId, userRole);
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
         success: true,
@@ -52,9 +55,22 @@ const startPacking = catchAsync(async (req, res) => {
         data: result,
     });
 });
+const assignPacker = catchAsync(async (req, res) => {
+    const id = req.params.id;
+    const result = await PackingService.assignPacker(id, req.body);
+    sendResponse(res, {
+        httpStatusCode: httpStatus.OK,
+        success: true,
+        message: "Packer assigned successfully.",
+        data: result,
+    });
+});
 const createPackage = catchAsync(async (req, res) => {
     const id = req.params.id;
-    const result = await PackingService.createPackage(id, req.body);
+    const result = await PackingService.createPackage(id, req.body, {
+        id: req.user.userId,
+        role: req.user.role,
+    });
     sendResponse(res, {
         httpStatusCode: httpStatus.CREATED,
         success: true,
@@ -75,7 +91,10 @@ const getPackages = catchAsync(async (req, res) => {
 const addPackageItems = catchAsync(async (req, res) => {
     const id = req.params.id;
     const packageId = req.params.packageId;
-    const result = await PackingService.addPackageItems(id, packageId, req.body);
+    const result = await PackingService.addPackageItems(id, packageId, req.body, {
+        id: req.user.userId,
+        role: req.user.role,
+    });
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
         success: true,
@@ -86,11 +105,24 @@ const addPackageItems = catchAsync(async (req, res) => {
 const closePackage = catchAsync(async (req, res) => {
     const id = req.params.id;
     const packageId = req.params.packageId;
-    const result = await PackingService.closePackage(id, packageId);
+    const result = await PackingService.closePackage(id, packageId, {
+        id: req.user.userId,
+        role: req.user.role,
+    });
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
         success: true,
         message: "Package closed successfully.",
+        data: result,
+    });
+});
+const cancelPackingTask = catchAsync(async (req, res) => {
+    const id = req.params.id;
+    const result = await PackingService.cancelPackingTask(id, req.body);
+    sendResponse(res, {
+        httpStatusCode: httpStatus.OK,
+        success: true,
+        message: "Packing task cancelled successfully.",
         data: result,
     });
 });
@@ -99,9 +131,11 @@ export const PackingController = {
     getAllPackingTasks,
     getPackingTaskById,
     getPackingTaskBySalesOrder,
+    assignPacker,
     startPacking,
     createPackage,
     getPackages,
     addPackageItems,
     closePackage,
+    cancelPackingTask,
 };

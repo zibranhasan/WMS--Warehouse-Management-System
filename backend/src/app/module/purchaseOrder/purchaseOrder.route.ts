@@ -44,18 +44,18 @@ router.patch(
     PurchaseOrderController.updatePurchaseOrder,
 );
 
-// Approve Purchase Order (SUPER_ADMIN, ADMIN, PROCUREMENT)
+// Approve Purchase Order (SUPER_ADMIN, ADMIN, WAREHOUSE_MANAGER)
 router.patch(
     "/:id/approve",
-    checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT),
+    checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.WAREHOUSE_MANAGER),
     checkPoWarehouseAccess,
     PurchaseOrderController.approvePurchaseOrder,
 );
 
-// Reject Purchase Order (SUPER_ADMIN, ADMIN, PROCUREMENT)
+// Reject Purchase Order (SUPER_ADMIN, ADMIN, WAREHOUSE_MANAGER)
 router.patch(
     "/:id/reject",
-    checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT),
+    checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.WAREHOUSE_MANAGER),
     checkPoWarehouseAccess,
     validateRequest(
         PurchaseOrderValidation.rejectPurchaseOrderValidationSchema,

@@ -144,8 +144,18 @@ const createShipment = async (payload) => {
 // ---------------------------------------------------------------------------
 // 3. GET ALL SHIPMENTS
 // ---------------------------------------------------------------------------
-const getAllShipments = async (query) => {
-    const queryBuilder = new QueryBuilder(prisma.shipment, query, {
+const getAllShipments = async (query, warehouseScope) => {
+    // NO_ACCESS: scoped user without an assigned warehouse sees nothing
+    if (warehouseScope === "NO_ACCESS") {
+        return { data: [], meta: { page: 1, limit: 10, total: 0, totalPages: 0 } };
+    }
+    // For scoped users, force warehouse constraint and strip client override
+    let enforcedQuery = { ...query };
+    if (warehouseScope) {
+        delete enforcedQuery.warehouseId;
+        enforcedQuery.warehouseId = warehouseScope;
+    }
+    const queryBuilder = new QueryBuilder(prisma.shipment, enforcedQuery, {
         searchableFields: shippingSearchableFields,
         filterableFields: shippingFilterableFields,
     })
@@ -168,13 +178,17 @@ const getAllShipments = async (query) => {
                 },
             },
         },
-    })
+    });
+    if (warehouseScope) {
+        queryBuilder.where({ warehouseId: warehouseScope });
+    }
+    return await queryBuilder
         .search()
         .filter()
         .sort()
         .paginate()
-        .fields();
-    return await queryBuilder.execute();
+        .fields()
+        .execute();
 };
 // ---------------------------------------------------------------------------
 // 4. GET SHIPMENT BY SALES ORDER

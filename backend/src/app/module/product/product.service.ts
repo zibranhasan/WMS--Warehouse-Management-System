@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import {
     BrandStatus,
     CategoryStatus,
+    Prisma,
     Product,
 } from "../../../generated/prisma/index.js";
 import { deleteFileFromCloudinary } from "../../config/cloudinary.config";
@@ -19,12 +20,50 @@ import {
     IUpdateProductStatus,
 } from "./product.interface";
 
+const MAX_SLUG_RETRIES = 10;
+
 const generateSlug = (text: string): string => {
     return text
         .toLowerCase()
         .trim()
         .replace(/[\s\W-]+/g, "-")
         .replace(/^-+|-+$/g, "");
+};
+
+const findUniqueSlug = async (
+    baseSlug: string,
+    excludeId?: string,
+): Promise<string> => {
+    let candidate = baseSlug;
+    let counter = 2;
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const existing = await prisma.product.findFirst({
+            where: {
+                slug: candidate,
+                ...(excludeId ? { id: { not: excludeId } } : {}),
+            },
+        });
+
+        if (!existing) {
+            return candidate;
+        }
+
+        candidate = `${baseSlug}-${counter}`;
+        counter++;
+    }
+};
+
+const isSlugConstraintViolation = (
+    error: unknown,
+): error is Prisma.PrismaClientKnownRequestError => {
+    return (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2002" &&
+        Array.isArray(error.meta?.target) &&
+        error.meta.target.includes("slug")
+    );
 };
 
 const createProduct = async (payload: ICreateProduct, imageUrl?: string) => {
@@ -42,23 +81,9 @@ const createProduct = async (payload: ICreateProduct, imageUrl?: string) => {
         );
     }
 
-    const slug = payload.slug
-        ? generateSlug(payload.slug)
-        : generateSlug(payload.name);
-
-    const existingSlug = await prisma.product.findFirst({
-        where: {
-            slug,
-            isDeleted: false,
-        },
-    });
-
-    if (existingSlug) {
-        throw new AppError(
-            httpStatus.CONFLICT,
-            "Product with this slug already exists.",
-        );
-    }
+    const baseSlug = generateSlug(payload.name);
+    let candidate = await findUniqueSlug(baseSlug);
+    let counter = candidate === baseSlug ? 2 : parseInt(candidate.slice(baseSlug.length + 1), 10) + 1;
 
     const category = await prisma.category.findFirst({
         where: {
@@ -92,19 +117,34 @@ const createProduct = async (payload: ICreateProduct, imageUrl?: string) => {
         }
     }
 
-    const result = await prisma.product.create({
-        data: {
-            ...payload,
-            slug,
-            image: imageUrl ?? null,
-        },
-        include: {
-            category: true,
-            brand: true,
-        },
-    });
+    for (let attempt = 0; attempt < MAX_SLUG_RETRIES; attempt++) {
+        try {
+            const result = await prisma.product.create({
+                data: {
+                    ...payload,
+                    slug: candidate,
+                    image: imageUrl ?? null,
+                },
+                include: {
+                    category: true,
+                    brand: true,
+                },
+            });
+            return result;
+        } catch (error) {
+            if (isSlugConstraintViolation(error)) {
+                candidate = `${baseSlug}-${counter}`;
+                counter++;
+                continue;
+            }
+            throw error;
+        }
+    }
 
-    return result;
+    throw new AppError(
+        httpStatus.CONFLICT,
+        "Unable to generate a unique slug. Please try again.",
+    );
 };
 
 const getAllProducts = async (query: Record<string, unknown>) => {
@@ -201,29 +241,99 @@ const updateProduct = async (
         }
     }
 
-    let slug = payload.slug
-        ? generateSlug(payload.slug)
-        : payload.name
-          ? generateSlug(payload.name)
-          : undefined;
+    let slug: string | undefined;
+    if (payload.name && payload.name !== existingProduct.name) {
+        const baseSlug = generateSlug(payload.name);
+        let candidate = await findUniqueSlug(baseSlug, id);
+        let counter = candidate === baseSlug ? 2 : parseInt(candidate.slice(baseSlug.length + 1), 10) + 1;
 
-    if (slug && slug !== existingProduct.slug) {
-        const duplicateSlug = await prisma.product.findFirst({
-            where: {
-                slug,
-                id: { not: id },
-                isDeleted: false,
-            },
-        });
+        for (let attempt = 0; attempt < MAX_SLUG_RETRIES; attempt++) {
+            try {
+                // Validate category if changed (must happen before slug retry loop)
+                if (payload.categoryId && payload.categoryId !== existingProduct.categoryId) {
+                    const category = await prisma.category.findFirst({
+                        where: {
+                            id: payload.categoryId,
+                            isDeleted: false,
+                        },
+                    });
 
-        if (duplicateSlug) {
-            throw new AppError(
-                httpStatus.CONFLICT,
-                "Product with this slug already exists.",
-            );
+                    if (!category) {
+                        throw new AppError(httpStatus.NOT_FOUND, "Category not found.");
+                    }
+
+                    if (category.status !== CategoryStatus.ACTIVE) {
+                        throw new AppError(httpStatus.BAD_REQUEST, "Category is inactive.");
+                    }
+                }
+
+                // Validate brand if changed
+                if (payload.brandId && payload.brandId !== existingProduct.brandId) {
+                    const brand = await prisma.brand.findFirst({
+                        where: {
+                            id: payload.brandId,
+                            isDeleted: false,
+                        },
+                    });
+
+                    if (!brand) {
+                        throw new AppError(httpStatus.NOT_FOUND, "Brand not found.");
+                    }
+
+                    if (brand.status !== BrandStatus.ACTIVE) {
+                        throw new AppError(httpStatus.BAD_REQUEST, "Brand is inactive.");
+                    }
+                }
+
+                // Resolve image field
+                const oldImageUrl: string | null = existingProduct.image;
+                let newImageValue: string | null | undefined = undefined;
+
+                if (imageUrl) {
+                    newImageValue = imageUrl;
+                } else if (removeImage === true && !imageUrl) {
+                    newImageValue = null;
+                }
+
+                const { removeImage: _removeImage, ...dbPayload } = payload;
+
+                const updatedProduct = await prisma.product.update({
+                    where: { id },
+                    data: {
+                        ...dbPayload,
+                        slug: candidate,
+                        ...(newImageValue !== undefined && { image: newImageValue }),
+                    },
+                    include: {
+                        category: true,
+                        brand: true,
+                    },
+                });
+
+                if (oldImageUrl && newImageValue !== undefined) {
+                    await deleteFileFromCloudinary(oldImageUrl).catch((err) => {
+                        console.error("Failed to delete old product image from Cloudinary:", err);
+                    });
+                }
+
+                return updatedProduct;
+            } catch (error) {
+                if (isSlugConstraintViolation(error)) {
+                    candidate = `${baseSlug}-${counter}`;
+                    counter++;
+                    continue;
+                }
+                throw error;
+            }
         }
+
+        throw new AppError(
+            httpStatus.CONFLICT,
+            "Unable to generate a unique slug. Please try again.",
+        );
     }
 
+    // No name change — slug stays the same, apply other updates normally
     if (payload.categoryId && payload.categoryId !== existingProduct.categoryId) {
         const category = await prisma.category.findFirst({
             where: {
@@ -258,29 +368,21 @@ const updateProduct = async (
         }
     }
 
-    // -----------------------------------------------------------------------
-    // Resolve image field and track old URL for post-update Cloudinary cleanup
-    // -----------------------------------------------------------------------
     const oldImageUrl: string | null = existingProduct.image;
-    let newImageValue: string | null | undefined = undefined; // undefined = no change
+    let newImageValue: string | null | undefined = undefined;
 
     if (imageUrl) {
-        // A new file was uploaded — replace the image
         newImageValue = imageUrl;
     } else if (removeImage === true && !imageUrl) {
-        // Explicit removal requested and no new file uploaded — clear the image
         newImageValue = null;
     }
-    // else: no image change — newImageValue stays undefined
 
-    // Strip removeImage from the DB payload (Prisma does not know this field)
     const { removeImage: _removeImage, ...dbPayload } = payload;
 
     const updatedProduct = await prisma.product.update({
         where: { id },
         data: {
             ...dbPayload,
-            ...(slug && { slug }),
             ...(newImageValue !== undefined && { image: newImageValue }),
         },
         include: {
@@ -289,13 +391,8 @@ const updateProduct = async (
         },
     });
 
-    // -----------------------------------------------------------------------
-    // Delete old Cloudinary image AFTER successful DB update
-    // -----------------------------------------------------------------------
     if (oldImageUrl && newImageValue !== undefined) {
-        // Only delete if we actually changed/removed the image and there was an old one
         await deleteFileFromCloudinary(oldImageUrl).catch((err) => {
-            // Log but don't fail the request — DB update already succeeded
             console.error("Failed to delete old product image from Cloudinary:", err);
         });
     }

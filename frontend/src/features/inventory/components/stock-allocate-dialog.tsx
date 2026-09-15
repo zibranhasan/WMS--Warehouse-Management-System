@@ -215,18 +215,22 @@ export function StockAllocateDialog({
                     const shelf = b.shelf;
                     const aisle = shelf?.aisle;
                     const zone = aisle?.zone;
-                    const label = [
-                      `Bin: ${b.name} (${b.code})`,
-                      shelf ? `Shelf: ${shelf.name}` : null,
-                      aisle ? `Aisle: ${aisle.name}` : null,
-                      zone ? `Zone: ${zone.name}` : null,
-                    ]
-                      .filter(Boolean)
-                      .join(" — ");
+                    const isFull = b.availableCapacity === 0;
+                    const capacityText = isFull
+                      ? `FULL — Cap: ${b.capacity} | Used: ${b.usedCapacity} | Avail: 0`
+                      : `Cap: ${b.capacity} | Used: ${b.usedCapacity} | Avail: ${b.availableCapacity}`;
 
                     return (
                       <option key={b.id} value={b.id}>
-                        {label} (Cap: {b.capacity})
+                        {[
+                          `Bin: ${b.name} (${b.code})`,
+                          shelf ? `Shelf: ${shelf.name}` : null,
+                          aisle ? `Aisle: ${aisle.name}` : null,
+                          zone ? `Zone: ${zone.name}` : null,
+                          capacityText,
+                        ]
+                          .filter(Boolean)
+                          .join(" — ")}
                       </option>
                     );
                   })}

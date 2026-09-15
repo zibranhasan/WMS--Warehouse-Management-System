@@ -10,6 +10,8 @@ export interface Bin {
   name: string;
   description?: string | null;
   capacity: number;
+  usedCapacity: number;
+  availableCapacity: number;
   status: LocationStatus;
   isDeleted: boolean;
   deletedAt?: string | null;

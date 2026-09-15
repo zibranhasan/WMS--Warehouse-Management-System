@@ -2,6 +2,7 @@ import status from "http-status";
 import { fromNodeHeaders } from "better-auth/node";
 import { UserStatus } from "../../../generated/prisma/enums";
 import AppError from "../../errorHelpers/AppError";
+import { deleteFileFromCloudinary } from "../../config/cloudinary.config";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
 const loginUser = async (req) => {
@@ -231,6 +232,69 @@ const sendVerificationOTP = async (payload) => {
         message: "Verification OTP sent successfully.",
     };
 };
+const updateMyProfile = async (req) => {
+    const userId = req.user?.userId;
+    if (!userId) {
+        throw new AppError(status.UNAUTHORIZED, "Authentication required.");
+    }
+    const existingUser = await prisma.user.findUnique({
+        where: { id: userId },
+    });
+    if (!existingUser) {
+        throw new AppError(status.NOT_FOUND, "User not found.");
+    }
+    if (existingUser.status === UserStatus.BLOCKED ||
+        existingUser.status === UserStatus.DELETED ||
+        existingUser.isDeleted) {
+        throw new AppError(status.UNAUTHORIZED, "User account is not active.");
+    }
+    const { name } = req.body;
+    const file = req.file;
+    const updateData = {};
+    if (name !== undefined) {
+        updateData.name = name;
+    }
+    if (file?.path) {
+        updateData.image = file.path;
+    }
+    if (Object.keys(updateData).length === 0) {
+        throw new AppError(status.BAD_REQUEST, "No valid fields to update.");
+    }
+    const oldImage = existingUser.image;
+    const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: updateData,
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            emailVerified: true,
+            image: true,
+            role: true,
+            status: true,
+            needPasswordChange: true,
+            isDeleted: true,
+            deletedAt: true,
+            createdAt: true,
+            updatedAt: true,
+            warehouseId: true,
+            warehouse: {
+                select: {
+                    id: true,
+                    name: true,
+                    code: true,
+                },
+            },
+        },
+    });
+    // Delete old Cloudinary image only AFTER successful database update
+    if (file?.path && oldImage) {
+        await deleteFileFromCloudinary(oldImage).catch((err) => {
+            console.error("Error deleting old profile image from Cloudinary:", err);
+        });
+    }
+    return { user: updatedUser };
+};
 const verifyEmail = async (payload) => {
     const { email, otp } = payload;
     const user = await prisma.user.findUnique({
@@ -275,6 +339,7 @@ export const AuthService = {
     loginUser,
     logoutUser,
     getMe,
+    updateMyProfile,
     forgetPassword,
     resetPassword,
     changePassword,

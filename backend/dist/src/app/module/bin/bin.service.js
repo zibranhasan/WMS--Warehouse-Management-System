@@ -101,7 +101,26 @@ const getAllBins = async (query, warehouseScope) => {
         },
     });
     const result = await queryBuilder.execute();
-    return result;
+    // Aggregate inventory quantity for all bins in a single query (avoids N+1)
+    const binIds = result.data.map((bin) => bin.id);
+    const aggregates = await prisma.inventoryLocationStock.groupBy({
+        by: ["binId"],
+        where: { binId: { in: binIds }, quantity: { gt: 0 } },
+        _sum: { quantity: true },
+    });
+    const quantityMap = new Map();
+    for (const agg of aggregates) {
+        quantityMap.set(agg.binId, Number(agg._sum.quantity ?? 0));
+    }
+    const data = result.data.map((bin) => {
+        const usedCapacity = quantityMap.get(bin.id) ?? 0;
+        return {
+            ...bin,
+            usedCapacity,
+            availableCapacity: Math.max(0, bin.capacity - usedCapacity),
+        };
+    });
+    return { ...result, data };
 };
 const getBinById = async (id) => {
     const bin = await prisma.bin.findFirst({

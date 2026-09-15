@@ -1,6 +1,7 @@
 import httpStatus from "http-status";
 import { catchAsync } from "../../shared/catchAsync";
 import { sendResponse } from "../../shared/sendResponse";
+import { getWarehouseScope } from "../../utils/warehouseScope";
 import { PickingService } from "./picking.service";
 const createPickingTask = catchAsync(async (req, res) => {
     const userId = req.user.userId;
@@ -13,7 +14,8 @@ const createPickingTask = catchAsync(async (req, res) => {
     });
 });
 const getAllPickingTasks = catchAsync(async (req, res) => {
-    const result = await PickingService.getAllPickingTasks(req.query);
+    const warehouseScope = getWarehouseScope(req.user.role, req.user.warehouseId);
+    const result = await PickingService.getAllPickingTasks(req.query, warehouseScope, req.user.userId, req.user.role);
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
         success: true,
@@ -54,7 +56,9 @@ const assignPicker = catchAsync(async (req, res) => {
 });
 const startPicking = catchAsync(async (req, res) => {
     const id = req.params.id;
-    const result = await PickingService.startPicking(id);
+    const userId = req.user.userId;
+    const userRole = req.user.role;
+    const result = await PickingService.startPicking(id, userId, userRole);
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
         success: true,
@@ -65,7 +69,8 @@ const startPicking = catchAsync(async (req, res) => {
 const pickItems = catchAsync(async (req, res) => {
     const id = req.params.id;
     const userId = req.user.userId;
-    const result = await PickingService.pickItems(id, req.body, userId);
+    const userRole = req.user.role;
+    const result = await PickingService.pickItems(id, req.body, userId, userRole);
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
         success: true,

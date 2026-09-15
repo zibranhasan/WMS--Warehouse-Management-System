@@ -1,6 +1,7 @@
 import httpStatus from "http-status";
 import { catchAsync } from "../../shared/catchAsync";
 import { sendResponse } from "../../shared/sendResponse";
+import { getWarehouseScope } from "../../utils/warehouseScope";
 import { ShippingService } from "./shipping.service";
 const createShipment = catchAsync(async (req, res) => {
     const result = await ShippingService.createShipment(req.body);
@@ -12,7 +13,8 @@ const createShipment = catchAsync(async (req, res) => {
     });
 });
 const getAllShipments = catchAsync(async (req, res) => {
-    const result = await ShippingService.getAllShipments(req.query);
+    const warehouseScope = getWarehouseScope(req.user.role, req.user.warehouseId);
+    const result = await ShippingService.getAllShipments(req.query, warehouseScope);
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
         success: true,

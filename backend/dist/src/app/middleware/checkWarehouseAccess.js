@@ -217,3 +217,212 @@ export const checkBinWarehouseAccess = async (req, _res, next) => {
         next(error);
     }
 };
+// ---------------------------------------------------------------------------
+// resolvePickingTaskWarehouseId — Helper
+// Resolves the warehouseId for a given Picking Task by querying the DB directly.
+// Returns the resolved warehouseId or throws if picking task not found.
+// ---------------------------------------------------------------------------
+export const resolvePickingTaskWarehouseId = async (pickingTaskId) => {
+    const task = await prisma.pickingTask.findUnique({
+        where: { id: pickingTaskId },
+        select: { warehouseId: true },
+    });
+    if (!task) {
+        throw new AppError(status.NOT_FOUND, "Picking task not found.");
+    }
+    return task.warehouseId;
+};
+// ---------------------------------------------------------------------------
+// checkPickingWarehouseAccess — Middleware
+// Resolves the Picking Task's actual warehouse from the database, then
+// validates that the authenticated user has access to that warehouse.
+// Extracts picking task id from req.params.id.
+// ---------------------------------------------------------------------------
+export const checkPickingWarehouseAccess = async (req, _res, next) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            throw new AppError(status.UNAUTHORIZED, "Authentication required.");
+        }
+        if (hasGlobalAccess(user.role)) {
+            return next();
+        }
+        const pickingTaskId = req.params.id;
+        if (!pickingTaskId || typeof pickingTaskId !== "string" || !pickingTaskId.trim()) {
+            throw new AppError(status.BAD_REQUEST, "Picking task ID is required.");
+        }
+        const resolvedWarehouseId = await resolvePickingTaskWarehouseId(pickingTaskId.trim());
+        if (!user.warehouseId) {
+            throw new AppError(status.FORBIDDEN, "No warehouse is assigned to your account.");
+        }
+        if (user.warehouseId !== resolvedWarehouseId) {
+            throw new AppError(status.FORBIDDEN, "You do not have access to this warehouse.");
+        }
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+};
+// ---------------------------------------------------------------------------
+// checkSoBodyWarehouseAccess — Middleware
+// Resolves the Sales Order's actual warehouse from the database, then
+// validates that the authenticated user has access to that warehouse.
+// Extracts SO id from req.body.salesOrderId.
+// Used for endpoints where the salesOrderId is provided in the request body.
+// ---------------------------------------------------------------------------
+export const checkSoBodyWarehouseAccess = async (req, _res, next) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            throw new AppError(status.UNAUTHORIZED, "Authentication required.");
+        }
+        if (hasGlobalAccess(user.role)) {
+            return next();
+        }
+        const soId = req.body?.salesOrderId;
+        if (!soId || typeof soId !== "string" || !soId.trim()) {
+            throw new AppError(status.BAD_REQUEST, "Sales order ID is required.");
+        }
+        const resolvedWarehouseId = await resolveSoWarehouseId(soId.trim());
+        if (!user.warehouseId) {
+            throw new AppError(status.FORBIDDEN, "No warehouse is assigned to your account.");
+        }
+        if (user.warehouseId !== resolvedWarehouseId) {
+            throw new AppError(status.FORBIDDEN, "You do not have access to this warehouse.");
+        }
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+};
+// ---------------------------------------------------------------------------
+// checkSoParamsWarehouseAccess — Middleware
+// Resolves the Sales Order's actual warehouse from the database, then
+// validates that the authenticated user has access to that warehouse.
+// Extracts SO id from req.params[paramName].
+// Used for endpoints where the salesOrderId is a route parameter.
+// ---------------------------------------------------------------------------
+export const checkSoParamsWarehouseAccess = (paramName) => {
+    return async (req, _res, next) => {
+        try {
+            const user = req.user;
+            if (!user) {
+                throw new AppError(status.UNAUTHORIZED, "Authentication required.");
+            }
+            if (hasGlobalAccess(user.role)) {
+                return next();
+            }
+            const soId = req.params[paramName];
+            if (!soId || typeof soId !== "string" || !soId.trim()) {
+                throw new AppError(status.BAD_REQUEST, "Sales order ID is required.");
+            }
+            const resolvedWarehouseId = await resolveSoWarehouseId(soId.trim());
+            if (!user.warehouseId) {
+                throw new AppError(status.FORBIDDEN, "No warehouse is assigned to your account.");
+            }
+            if (user.warehouseId !== resolvedWarehouseId) {
+                throw new AppError(status.FORBIDDEN, "You do not have access to this warehouse.");
+            }
+            next();
+        }
+        catch (error) {
+            next(error);
+        }
+    };
+};
+// ---------------------------------------------------------------------------
+// resolveShipmentWarehouseId — Helper
+// Resolves the warehouseId for a given Shipment by querying the DB directly.
+// Returns the resolved warehouseId or throws if shipment not found.
+// ---------------------------------------------------------------------------
+export const resolveShipmentWarehouseId = async (shipmentId) => {
+    const shipment = await prisma.shipment.findUnique({
+        where: { id: shipmentId },
+        select: { warehouseId: true },
+    });
+    if (!shipment) {
+        throw new AppError(status.NOT_FOUND, "Shipment not found.");
+    }
+    return shipment.warehouseId;
+};
+// ---------------------------------------------------------------------------
+// checkShipmentWarehouseAccess — Middleware
+// Resolves the Shipment's actual warehouse from the database, then
+// validates that the authenticated user has access to that warehouse.
+// Extracts shipment id from req.params.id.
+// ---------------------------------------------------------------------------
+export const checkShipmentWarehouseAccess = async (req, _res, next) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            throw new AppError(status.UNAUTHORIZED, "Authentication required.");
+        }
+        if (hasGlobalAccess(user.role)) {
+            return next();
+        }
+        const shipmentId = req.params.id;
+        if (!shipmentId || typeof shipmentId !== "string" || !shipmentId.trim()) {
+            throw new AppError(status.BAD_REQUEST, "Shipment ID is required.");
+        }
+        const resolvedWarehouseId = await resolveShipmentWarehouseId(shipmentId.trim());
+        if (!user.warehouseId) {
+            throw new AppError(status.FORBIDDEN, "No warehouse is assigned to your account.");
+        }
+        if (user.warehouseId !== resolvedWarehouseId) {
+            throw new AppError(status.FORBIDDEN, "You do not have access to this warehouse.");
+        }
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+};
+// ---------------------------------------------------------------------------
+// resolvePackingTaskWarehouseId — Helper
+// Resolves the warehouseId for a given Packing Task by querying the DB directly.
+// Returns the resolved warehouseId or throws if packing task not found.
+// ---------------------------------------------------------------------------
+export const resolvePackingTaskWarehouseId = async (packingTaskId) => {
+    const task = await prisma.packingTask.findUnique({
+        where: { id: packingTaskId },
+        select: { warehouseId: true },
+    });
+    if (!task) {
+        throw new AppError(status.NOT_FOUND, "Packing task not found.");
+    }
+    return task.warehouseId;
+};
+// ---------------------------------------------------------------------------
+// checkPackingWarehouseAccess — Middleware
+// Resolves the Packing Task's actual warehouse from the database, then
+// validates that the authenticated user has access to that warehouse.
+// Extracts packing task id from req.params.id.
+// ---------------------------------------------------------------------------
+export const checkPackingWarehouseAccess = async (req, _res, next) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            throw new AppError(status.UNAUTHORIZED, "Authentication required.");
+        }
+        if (hasGlobalAccess(user.role)) {
+            return next();
+        }
+        const packingTaskId = req.params.id;
+        if (!packingTaskId || typeof packingTaskId !== "string" || !packingTaskId.trim()) {
+            throw new AppError(status.BAD_REQUEST, "Packing task ID is required.");
+        }
+        const resolvedWarehouseId = await resolvePackingTaskWarehouseId(packingTaskId.trim());
+        if (!user.warehouseId) {
+            throw new AppError(status.FORBIDDEN, "No warehouse is assigned to your account.");
+        }
+        if (user.warehouseId !== resolvedWarehouseId) {
+            throw new AppError(status.FORBIDDEN, "You do not have access to this warehouse.");
+        }
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+};
