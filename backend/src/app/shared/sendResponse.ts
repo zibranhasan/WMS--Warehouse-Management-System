@@ -8,7 +8,6 @@ interface IResponseData<T> {
         page: number;
         limit: number;
         total: number;
-        totalPage?: number;
         totalPages?: number;
     };
     data?: T;

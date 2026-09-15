@@ -5,7 +5,7 @@ export const validateRequest = (zodSchema) => {
         }
         const parsedResult = zodSchema.safeParse(req.body);
         if (!parsedResult.success) {
-            next(parsedResult.error);
+            return next(parsedResult.error);
         }
         //sanitizing the data
         req.body = parsedResult.data;
