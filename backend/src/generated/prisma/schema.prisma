@@ -51,6 +51,7 @@ model User {
   assignedPickingTasks       PickingTask[]               @relation("PickingTaskAssignedTo")
   pickingAllocations         PickingAllocation[]
   packedTasks                PackingTask[]               @relation("PackingTaskPackedBy")
+  notifications              Notification[]
 
   @@map("users")
 }
@@ -231,6 +232,14 @@ enum ShippingMethod {
   EXPRESS
   SAME_DAY
   PICKUP
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
+  SYSTEM
 }
 
 // =============================================================================
@@ -913,4 +922,30 @@ model Shipment {
 
   @@index([warehouseId, status])
   @@map("shipments")
+}
+
+// =============================================================================
+// System & Notification Models
+// =============================================================================
+
+model Notification {
+  id         String           @id @default(cuid())
+  userId     String
+  type       NotificationType @default(INFO)
+  title      String
+  message    String
+  isRead     Boolean          @default(false)
+  readAt     DateTime?
+  entityType String?
+  entityId   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([userId, isRead, createdAt])
+  @@index([entityType, entityId])
+  @@map("notifications")
 }

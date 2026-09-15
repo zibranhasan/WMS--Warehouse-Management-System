@@ -127,3 +127,12 @@ enum ShippingMethod {
   SAME_DAY
   PICKUP
 }
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
+  SYSTEM
+}
+

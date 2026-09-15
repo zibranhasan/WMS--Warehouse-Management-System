@@ -1,10 +1,13 @@
 import httpStatus from "http-status";
 import {
+    NotificationType,
     Prisma,
     ProductStatus,
     ReservationStatus,
+    Role,
     SalesOrder,
     SalesOrderStatus,
+    UserStatus,
     WarehouseStatus,
 } from "../../../generated/prisma/index.js";
 import AppError from "../../errorHelpers/AppError";
@@ -12,6 +15,7 @@ import { IQueryParams } from "../../interfaces/query.interface";
 import { prisma } from "../../lib/prisma";
 import { QueryBuilder } from "../../utils/QueryBuilder";
 import { InventoryService } from "../inventory/inventory.service";
+import { NotificationService } from "../notification/notification.service";
 import {
     salesOrderFilterableFields,
     salesOrderSearchableFields,
@@ -20,6 +24,27 @@ import {
     ICancelSalesOrder,
     ICreateSalesOrder,
 } from "./salesOrder.interface";
+
+// ---------------------------------------------------------------------------
+// Helper: Safe notification dispatcher (non-fatal side effect)
+// ---------------------------------------------------------------------------
+const safeSendNotification = async (payload: {
+    userId: string;
+    type: NotificationType;
+    title: string;
+    message: string;
+    entityType: string;
+    entityId: string;
+}) => {
+    try {
+        await NotificationService.createNotification(payload);
+    } catch (error) {
+        console.error(
+            `[Notification] Failed to create ${payload.type} notification for user ${payload.userId} (entity: ${payload.entityType}, id: ${payload.entityId}):`,
+            error instanceof Error ? error.message : error,
+        );
+    }
+};
 
 // ---------------------------------------------------------------------------
 // Helper: Generate unique human-readable SO number (e.g. SO-2026-000001)
@@ -136,7 +161,7 @@ const createSalesOrder = async (
     }
 
     // 6. Execute atomic transaction with concurrency safe row locking & available stock check
-    return await prisma.$transaction(
+    const newSO = await prisma.$transaction(
         async (tx) => {
             // Sort items deterministically by productId ascending before acquiring locks
             const sortedItems = [...payload.items].sort((a, b) =>
@@ -185,7 +210,7 @@ const createSalesOrder = async (
 
             const orderNumber = await generateOrderNumber(tx);
 
-            const newSO = await tx.salesOrder.create({
+            const createdSO = await tx.salesOrder.create({
                 data: {
                     orderNumber,
                     createdById: userId,
@@ -216,8 +241,8 @@ const createSalesOrder = async (
             });
 
             // Create stock reservations
-            const reservationDataList = newSO.items.map((soItem) => ({
-                salesOrderId: newSO.id,
+            const reservationDataList = createdSO.items.map((soItem) => ({
+                salesOrderId: createdSO.id,
                 salesOrderItemId: soItem.id,
                 warehouseId: payload.warehouseId,
                 productId: soItem.productId,
@@ -231,7 +256,7 @@ const createSalesOrder = async (
 
             // Return full order with reservations included
             return await tx.salesOrder.findUnique({
-                where: { id: newSO.id },
+                where: { id: createdSO.id },
                 include: {
                     warehouse: true,
                     createdBy: {
@@ -253,6 +278,39 @@ const createSalesOrder = async (
         },
         { maxWait: 10000, timeout: 20000 },
     );
+
+    // Notify appropriate Warehouse Manager(s) for the Sales Order's warehouse
+    if (newSO) {
+        try {
+            const warehouseManagers = await prisma.user.findMany({
+                where: {
+                    warehouseId: newSO.warehouseId,
+                    role: Role.WAREHOUSE_MANAGER,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+
+            for (const manager of warehouseManagers) {
+                await safeSendNotification({
+                    userId: manager.id,
+                    type: NotificationType.INFO,
+                    title: "Sales Order Created",
+                    message: `Sales Order ${newSO.orderNumber} was created and is ready for fulfillment.`,
+                    entityType: "SALES_ORDER",
+                    entityId: newSO.id,
+                });
+            }
+        } catch (error) {
+            console.error(
+                `[Notification] Failed to query warehouse managers for SO ${newSO.id}:`,
+                error instanceof Error ? error.message : error,
+            );
+        }
+    }
+
+    return newSO;
 };
 
 // ---------------------------------------------------------------------------
@@ -368,7 +426,7 @@ const cancelSalesOrder = async (
         );
     }
 
-    return await prisma.$transaction(
+    const updatedSO = await prisma.$transaction(
         async (tx) => {
             // 1. Change reservation status to RELEASED
             await tx.stockReservation.updateMany({
@@ -421,6 +479,41 @@ const cancelSalesOrder = async (
         },
         { maxWait: 10000, timeout: 20000 },
     );
+
+    // Notify the Sales Order creator
+    if (updatedSO) {
+        try {
+            const creator = await prisma.user.findFirst({
+                where: {
+                    id: updatedSO.createdById,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+
+            if (creator) {
+                const reasonText = updatedSO.cancellationReason
+                    ? ` Reason: ${updatedSO.cancellationReason}`
+                    : "";
+                await safeSendNotification({
+                    userId: creator.id,
+                    type: NotificationType.WARNING,
+                    title: "Sales Order Cancelled",
+                    message: `Sales Order ${updatedSO.orderNumber} was cancelled.${reasonText}`,
+                    entityType: "SALES_ORDER",
+                    entityId: updatedSO.id,
+                });
+            }
+        } catch (error) {
+            console.error(
+                `[Notification] Failed to query creator for cancelled SO ${updatedSO.id}:`,
+                error instanceof Error ? error.message : error,
+            );
+        }
+    }
+
+    return updatedSO;
 };
 
 export const SalesOrderService = {

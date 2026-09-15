@@ -1,11 +1,13 @@
 import httpStatus from "http-status";
 import {
+    NotificationType,
     ProductStatus,
     Prisma,
     PurchaseOrder,
     PurchaseOrderStatus,
     Role,
     SupplierStatus,
+    UserStatus,
     WarehouseStatus,
 } from "../../../generated/prisma/index.js";
 import AppError from "../../errorHelpers/AppError";
@@ -13,6 +15,7 @@ import { IQueryParams } from "../../interfaces/query.interface";
 import { prisma } from "../../lib/prisma";
 import { QueryBuilder } from "../../utils/QueryBuilder";
 import { InventoryService } from "../inventory/inventory.service";
+import { NotificationService } from "../notification/notification.service";
 import {
     purchaseOrderFilterableFields,
     purchaseOrderSearchableFields,
@@ -24,6 +27,27 @@ import {
     IRejectPurchaseOrder,
     IUpdatePurchaseOrder,
 } from "./purchaseOrder.interface";
+
+// ---------------------------------------------------------------------------
+// Helper: Safe notification dispatcher (non-fatal side effect)
+// ---------------------------------------------------------------------------
+const safeSendNotification = async (payload: {
+    userId: string;
+    type: NotificationType;
+    title: string;
+    message: string;
+    entityType: string;
+    entityId: string;
+}) => {
+    try {
+        await NotificationService.createNotification(payload);
+    } catch (error) {
+        console.error(
+            `[Notification] Failed to create ${payload.type} notification for user ${payload.userId} (entity: ${payload.entityType}, id: ${payload.entityId}):`,
+            error instanceof Error ? error.message : error,
+        );
+    }
+};
 
 // ---------------------------------------------------------------------------
 // Helper: Generate unique human-readable PO number (e.g. PO-2026-000001)
@@ -149,10 +173,10 @@ const createPurchaseOrder = async (
     });
 
     // 6. Execute atomic transaction
-    return await prisma.$transaction(async (tx) => {
+    const newPO = await prisma.$transaction(async (tx) => {
         const poNumber = await generatePONumber(tx);
 
-        const newPO = await tx.purchaseOrder.create({
+        const createdPO = await tx.purchaseOrder.create({
             data: {
                 poNumber,
                 supplierId: payload.supplierId,
@@ -184,11 +208,42 @@ const createPurchaseOrder = async (
             },
         });
 
-        return newPO;
+        return createdPO;
     }, {
         maxWait: 10000,
         timeout: 20000,
     });
+
+    // Notify appropriate Warehouse Manager(s) for the PO's warehouse
+    try {
+        const warehouseManagers = await prisma.user.findMany({
+            where: {
+                warehouseId: newPO.warehouseId,
+                role: Role.WAREHOUSE_MANAGER,
+                status: UserStatus.ACTIVE,
+                isDeleted: false,
+            },
+            select: { id: true },
+        });
+
+        for (const manager of warehouseManagers) {
+            await safeSendNotification({
+                userId: manager.id,
+                type: NotificationType.INFO,
+                title: "Purchase Order Created",
+                message: `Purchase Order ${newPO.poNumber} was created and requires review.`,
+                entityType: "PURCHASE_ORDER",
+                entityId: newPO.id,
+            });
+        }
+    } catch (error) {
+        console.error(
+            `[Notification] Failed to query warehouse managers for PO ${newPO.id}:`,
+            error instanceof Error ? error.message : error,
+        );
+    }
+
+    return newPO;
 };
 
 // ---------------------------------------------------------------------------
@@ -560,6 +615,34 @@ const approvePurchaseOrder = async (id: string, userId: string) => {
         },
     });
 
+    // Notify the creator (Procurement user)
+    try {
+        const creator = await prisma.user.findFirst({
+            where: {
+                id: updatedPO.createdById,
+                status: UserStatus.ACTIVE,
+                isDeleted: false,
+            },
+            select: { id: true },
+        });
+
+        if (creator) {
+            await safeSendNotification({
+                userId: creator.id,
+                type: NotificationType.SUCCESS,
+                title: "Purchase Order Approved",
+                message: `Purchase Order ${updatedPO.poNumber} has been approved.`,
+                entityType: "PURCHASE_ORDER",
+                entityId: updatedPO.id,
+            });
+        }
+    } catch (error) {
+        console.error(
+            `[Notification] Failed to query creator for approved PO ${updatedPO.id}:`,
+            error instanceof Error ? error.message : error,
+        );
+    }
+
     return updatedPO;
 };
 
@@ -617,6 +700,37 @@ const rejectPurchaseOrder = async (
             },
         },
     });
+
+    // Notify the creator (Procurement user)
+    try {
+        const creator = await prisma.user.findFirst({
+            where: {
+                id: updatedPO.createdById,
+                status: UserStatus.ACTIVE,
+                isDeleted: false,
+            },
+            select: { id: true },
+        });
+
+        if (creator) {
+            const reasonText = updatedPO.rejectionReason
+                ? ` Reason: ${updatedPO.rejectionReason}`
+                : "";
+            await safeSendNotification({
+                userId: creator.id,
+                type: NotificationType.WARNING,
+                title: "Purchase Order Rejected",
+                message: `Purchase Order ${updatedPO.poNumber} was rejected.${reasonText}`,
+                entityType: "PURCHASE_ORDER",
+                entityId: updatedPO.id,
+            });
+        }
+    } catch (error) {
+        console.error(
+            `[Notification] Failed to query creator for rejected PO ${updatedPO.id}:`,
+            error instanceof Error ? error.message : error,
+        );
+    }
 
     return updatedPO;
 };
@@ -987,6 +1101,36 @@ const receiveGoods = async (
             },
         },
     });
+
+    // Notify the creator (Procurement user)
+    if (finalPO) {
+        try {
+            const creator = await prisma.user.findFirst({
+                where: {
+                    id: finalPO.createdById,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+
+            if (creator) {
+                await safeSendNotification({
+                    userId: creator.id,
+                    type: NotificationType.SUCCESS,
+                    title: "Purchase Order Received",
+                    message: `Goods for Purchase Order ${finalPO.poNumber} have been received.`,
+                    entityType: "PURCHASE_ORDER",
+                    entityId: finalPO.id,
+                });
+            }
+        } catch (error) {
+            console.error(
+                `[Notification] Failed to query creator for received PO ${finalPO.id}:`,
+                error instanceof Error ? error.message : error,
+            );
+        }
+    }
 
     return {
         purchaseOrder: finalPO,

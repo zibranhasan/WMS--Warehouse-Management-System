@@ -1,9 +1,21 @@
 import httpStatus from "http-status";
-import { PackingItemStatus, PackingStatus, SalesOrderStatus, ShipmentStatus, } from "../../../generated/prisma/index.js";
+import { NotificationType, PackingItemStatus, PackingStatus, Role, SalesOrderStatus, ShipmentStatus, UserStatus, } from "../../../generated/prisma/index.js";
 import AppError from "../../errorHelpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { QueryBuilder } from "../../utils/QueryBuilder";
+import { NotificationService } from "../notification/notification.service";
 import { shippingFilterableFields, shippingSearchableFields, } from "./shipping.constant";
+// ---------------------------------------------------------------------------
+// Helper: Safe notification dispatcher (non-fatal side effect)
+// ---------------------------------------------------------------------------
+const safeSendNotification = async (payload) => {
+    try {
+        await NotificationService.createNotification(payload);
+    }
+    catch (error) {
+        console.error(`[Notification] Failed to create ${payload.type} notification for user ${payload.userId} (entity: ${payload.entityType}, id: ${payload.entityId}):`, error instanceof Error ? error.message : error);
+    }
+};
 // ---------------------------------------------------------------------------
 // Helper: Generate unique human-readable shipment number (e.g. SHIP-2026-000001)
 // ---------------------------------------------------------------------------
@@ -139,7 +151,35 @@ const createShipment = async (payload) => {
         });
         return shipment.id;
     }, { maxWait: 10000, timeout: 20000 });
-    return await getShipmentById(createdShipmentId);
+    const createdShipment = await getShipmentById(createdShipmentId);
+    // Notify appropriate Warehouse Manager(s) for the Shipment's warehouse
+    if (createdShipment) {
+        try {
+            const warehouseManagers = await prisma.user.findMany({
+                where: {
+                    warehouseId: createdShipment.warehouseId,
+                    role: Role.WAREHOUSE_MANAGER,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+            for (const manager of warehouseManagers) {
+                await safeSendNotification({
+                    userId: manager.id,
+                    type: NotificationType.INFO,
+                    title: "Shipment Created",
+                    message: `Shipment ${createdShipment.shipmentNumber} was created for Sales Order ${createdShipment.salesOrder.orderNumber}.`,
+                    entityType: "SHIPMENT",
+                    entityId: createdShipment.id,
+                });
+            }
+        }
+        catch (error) {
+            console.error(`[Notification] Failed to query warehouse managers for shipment ${createdShipment.id}:`, error instanceof Error ? error.message : error);
+        }
+    }
+    return createdShipment;
 };
 // ---------------------------------------------------------------------------
 // 3. GET ALL SHIPMENTS
@@ -207,6 +247,7 @@ const getShipmentBySalesOrder = async (salesOrderId) => {
 // 5. UPDATE SHIPMENT STATUS
 // ---------------------------------------------------------------------------
 const updateShipmentStatus = async (id, payload) => {
+    let previousStatus = null;
     const updatedShipmentId = await prisma.$transaction(async (tx) => {
         const shipment = await tx.shipment.findUnique({
             where: { id },
@@ -222,6 +263,7 @@ const updateShipmentStatus = async (id, payload) => {
         if (currentStatus === targetStatus) {
             return shipment.id;
         }
+        previousStatus = currentStatus;
         // Terminal state checks
         if (currentStatus === ShipmentStatus.DELIVERED) {
             throw new AppError(httpStatus.BAD_REQUEST, "Cannot change status of a delivered shipment.");
@@ -281,7 +323,70 @@ const updateShipmentStatus = async (id, payload) => {
         }
         return shipment.id;
     }, { maxWait: 10000, timeout: 20000 });
-    return await getShipmentById(updatedShipmentId);
+    const result = await getShipmentById(updatedShipmentId);
+    // Dispatch status-transition notification to Sales Order creator
+    if (result && previousStatus && previousStatus !== result.status) {
+        try {
+            const creator = await prisma.user.findFirst({
+                where: {
+                    id: result.salesOrder.createdById,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+            if (creator) {
+                if (previousStatus === ShipmentStatus.READY &&
+                    result.status === ShipmentStatus.SHIPPED) {
+                    await safeSendNotification({
+                        userId: creator.id,
+                        type: NotificationType.SUCCESS,
+                        title: "Shipment Shipped",
+                        message: `Shipment ${result.shipmentNumber} for Sales Order ${result.salesOrder.orderNumber} has been shipped.`,
+                        entityType: "SHIPMENT",
+                        entityId: result.id,
+                    });
+                }
+                else if (previousStatus === ShipmentStatus.SHIPPED &&
+                    result.status === ShipmentStatus.IN_TRANSIT) {
+                    await safeSendNotification({
+                        userId: creator.id,
+                        type: NotificationType.INFO,
+                        title: "Shipment In Transit",
+                        message: `Shipment ${result.shipmentNumber} for Sales Order ${result.salesOrder.orderNumber} is now in transit.`,
+                        entityType: "SHIPMENT",
+                        entityId: result.id,
+                    });
+                }
+                else if (previousStatus === ShipmentStatus.IN_TRANSIT &&
+                    result.status === ShipmentStatus.DELIVERED) {
+                    await safeSendNotification({
+                        userId: creator.id,
+                        type: NotificationType.SUCCESS,
+                        title: "Shipment Delivered",
+                        message: `Shipment ${result.shipmentNumber} for Sales Order ${result.salesOrder.orderNumber} has been delivered.`,
+                        entityType: "SHIPMENT",
+                        entityId: result.id,
+                    });
+                }
+                else if (previousStatus === ShipmentStatus.READY &&
+                    result.status === ShipmentStatus.CANCELLED) {
+                    await safeSendNotification({
+                        userId: creator.id,
+                        type: NotificationType.WARNING,
+                        title: "Shipment Cancelled",
+                        message: `Shipment ${result.shipmentNumber} for Sales Order ${result.salesOrder.orderNumber} was cancelled.`,
+                        entityType: "SHIPMENT",
+                        entityId: result.id,
+                    });
+                }
+            }
+        }
+        catch (error) {
+            console.error(`[Notification] Failed to query creator for shipment status transition ${result.id}:`, error instanceof Error ? error.message : error);
+        }
+    }
+    return result;
 };
 // ---------------------------------------------------------------------------
 // 6. UPDATE SHIPMENT INFORMATION
