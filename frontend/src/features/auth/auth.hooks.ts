@@ -42,6 +42,7 @@ export function useLogout() {
     mutationFn: authApi.logout,
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: authKeys.currentUser() });
+      queryClient.removeQueries({ queryKey: ["notifications"] });
     },
   });
 }

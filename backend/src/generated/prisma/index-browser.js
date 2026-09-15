@@ -528,6 +528,20 @@ exports.Prisma.ShipmentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  isRead: 'isRead',
+  readAt: 'readAt',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -672,6 +686,14 @@ exports.ShippingMethod = exports.$Enums.ShippingMethod = {
   PICKUP: 'PICKUP'
 };
 
+exports.NotificationType = exports.$Enums.NotificationType = {
+  INFO: 'INFO',
+  SUCCESS: 'SUCCESS',
+  WARNING: 'WARNING',
+  ERROR: 'ERROR',
+  SYSTEM: 'SYSTEM'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
@@ -704,7 +726,8 @@ exports.Prisma.ModelName = {
   SalesOrder: 'SalesOrder',
   SalesOrderItem: 'SalesOrderItem',
   StockReservation: 'StockReservation',
-  Shipment: 'Shipment'
+  Shipment: 'Shipment',
+  Notification: 'Notification'
 };
 
 /**

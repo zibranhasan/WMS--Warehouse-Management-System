@@ -1,5 +1,6 @@
 import httpStatus from "http-status";
 import {
+    NotificationType,
     PackageStatus,
     PackingItemStatus,
     PackingStatus,
@@ -15,6 +16,7 @@ import AppError from "../../errorHelpers/AppError";
 import { IQueryParams } from "../../interfaces/query.interface";
 import { prisma } from "../../lib/prisma";
 import { QueryBuilder } from "../../utils/QueryBuilder";
+import { NotificationService } from "../notification/notification.service";
 import {
     packingFilterableFields,
     packingSearchableFields,
@@ -26,6 +28,27 @@ import {
     ICreatePackage,
     ICreatePackingTask,
 } from "./packing.interface";
+
+// ---------------------------------------------------------------------------
+// Helper: Safe notification dispatcher (non-fatal side effect)
+// ---------------------------------------------------------------------------
+const safeSendNotification = async (payload: {
+    userId: string;
+    type: NotificationType;
+    title: string;
+    message: string;
+    entityType: string;
+    entityId: string;
+}) => {
+    try {
+        await NotificationService.createNotification(payload);
+    } catch (error) {
+        console.error(
+            `[Notification] Failed to create ${payload.type} notification for user ${payload.userId} (entity: ${payload.entityType}, id: ${payload.entityId}):`,
+            error instanceof Error ? error.message : error,
+        );
+    }
+};
 
 // ---------------------------------------------------------------------------
 // Helper: Generate unique human-readable packing number (e.g. PACK-2026-000001)
@@ -328,7 +351,40 @@ const createPackingTask = async (
         { maxWait: 10000, timeout: 20000 },
     );
 
-    return await getPackingTaskById(createdTaskId);
+    const createdTask = await getPackingTaskById(createdTaskId);
+
+    // Notify appropriate Warehouse Manager(s) for the Packing Task's warehouse
+    if (createdTask) {
+        try {
+            const warehouseManagers = await prisma.user.findMany({
+                where: {
+                    warehouseId: createdTask.warehouseId,
+                    role: Role.WAREHOUSE_MANAGER,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+
+            for (const manager of warehouseManagers) {
+                await safeSendNotification({
+                    userId: manager.id,
+                    type: NotificationType.INFO,
+                    title: "Packing Task Created",
+                    message: `Packing Task ${createdTask.packingNumber} was created for Sales Order ${createdTask.salesOrder.orderNumber}.`,
+                    entityType: "PACKING_TASK",
+                    entityId: createdTask.id,
+                });
+            }
+        } catch (error) {
+            console.error(
+                `[Notification] Failed to query warehouse managers for packing task ${createdTask.id}:`,
+                error instanceof Error ? error.message : error,
+            );
+        }
+    }
+
+    return createdTask;
 };
 
 // ---------------------------------------------------------------------------
@@ -454,7 +510,39 @@ const startPacking = async (id: string, userId: string, userRole: Role) => {
         },
     });
 
-    return await getPackingTaskById(id);
+    const result = await getPackingTaskById(id);
+
+    // Notify the assigned packer if one exists and is active/non-deleted
+    if (result && result.packedById) {
+        try {
+            const packer = await prisma.user.findFirst({
+                where: {
+                    id: result.packedById,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+
+            if (packer) {
+                await safeSendNotification({
+                    userId: packer.id,
+                    type: NotificationType.INFO,
+                    title: "Packing Started",
+                    message: `Packing Task ${result.packingNumber} has been started for Sales Order ${result.salesOrder.orderNumber}.`,
+                    entityType: "PACKING_TASK",
+                    entityId: result.id,
+                });
+            }
+        } catch (error) {
+            console.error(
+                `[Notification] Failed to query assigned packer for started packing task ${result.id}:`,
+                error instanceof Error ? error.message : error,
+            );
+        }
+    }
+
+    return result;
 };
 
 // ---------------------------------------------------------------------------
@@ -533,7 +621,39 @@ const assignPacker = async (id: string, payload: IAssignPacker) => {
         },
     });
 
-    return await getPackingTaskById(updatedTask.id);
+    const result = await getPackingTaskById(updatedTask.id);
+
+    // Notify the newly assigned packer
+    if (result && result.packedById) {
+        try {
+            const packer = await prisma.user.findFirst({
+                where: {
+                    id: result.packedById,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+
+            if (packer) {
+                await safeSendNotification({
+                    userId: packer.id,
+                    type: NotificationType.INFO,
+                    title: "Packing Task Assigned",
+                    message: `You have been assigned Packing Task ${result.packingNumber} for Sales Order ${result.salesOrder.orderNumber}.`,
+                    entityType: "PACKING_TASK",
+                    entityId: result.id,
+                });
+            }
+        } catch (error) {
+            console.error(
+                `[Notification] Failed to query assigned packer for packing task ${result.id}:`,
+                error instanceof Error ? error.message : error,
+            );
+        }
+    }
+
+    return result;
 };
 
 // ---------------------------------------------------------------------------
@@ -663,7 +783,9 @@ const addPackageItems = async (
         a.packingTaskItemId.localeCompare(b.packingTaskItemId),
     );
 
-    return await prisma.$transaction(
+    let becamePacked = false;
+
+    await prisma.$transaction(
         async (tx) => {
             // Step 1: Validate PackingTask
             const task = await tx.packingTask.findUnique({
@@ -816,6 +938,10 @@ const addPackageItems = async (
                 overallStatus = PackingStatus.IN_PROGRESS;
             }
 
+            if (overallStatus === PackingStatus.PACKED) {
+                becamePacked = true;
+            }
+
             await tx.packingTask.update({
                 where: { id },
                 data: {
@@ -826,7 +952,39 @@ const addPackageItems = async (
         { maxWait: 10000, timeout: 20000 },
     );
 
-    return await getPackingTaskById(id);
+    const result = await getPackingTaskById(id);
+
+    // Notify Sales Order creator ONLY when task transitions to PACKED
+    if (result && becamePacked && result.status === PackingStatus.PACKED) {
+        try {
+            const creator = await prisma.user.findFirst({
+                where: {
+                    id: result.salesOrder.createdById,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+
+            if (creator) {
+                await safeSendNotification({
+                    userId: creator.id,
+                    type: NotificationType.SUCCESS,
+                    title: "Packing Completed",
+                    message: `Packing Task ${result.packingNumber} for Sales Order ${result.salesOrder.orderNumber} has been completed.`,
+                    entityType: "PACKING_TASK",
+                    entityId: result.id,
+                });
+            }
+        } catch (error) {
+            console.error(
+                `[Notification] Failed to query creator for completed packing task ${result.id}:`,
+                error instanceof Error ? error.message : error,
+            );
+        }
+    }
+
+    return result;
 };
 
 // ---------------------------------------------------------------------------
@@ -930,7 +1088,7 @@ const closePackage = async (
 // ---------------------------------------------------------------------------
 const cancelPackingTask = async (
     id: string,
-    _payload: ICancelPackingTask,
+    payload?: ICancelPackingTask,
 ) => {
     const task = await prisma.packingTask.findUnique({
         where: { id },
@@ -961,7 +1119,43 @@ const cancelPackingTask = async (
         },
     });
 
-    return await getPackingTaskById(id);
+    const result = await getPackingTaskById(id);
+
+    // Notify Sales Order creator after successful cancellation
+    if (result) {
+        try {
+            const creator = await prisma.user.findFirst({
+                where: {
+                    id: result.salesOrder.createdById,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+
+            if (creator) {
+                const message = payload?.cancellationReason
+                    ? `Packing Task ${result.packingNumber} for Sales Order ${result.salesOrder.orderNumber} was cancelled. Reason: ${payload.cancellationReason}`
+                    : `Packing Task ${result.packingNumber} for Sales Order ${result.salesOrder.orderNumber} was cancelled.`;
+
+                await safeSendNotification({
+                    userId: creator.id,
+                    type: NotificationType.WARNING,
+                    title: "Packing Task Cancelled",
+                    message,
+                    entityType: "PACKING_TASK",
+                    entityId: result.id,
+                });
+            }
+        } catch (error) {
+            console.error(
+                `[Notification] Failed to query creator for cancelled packing task ${result.id}:`,
+                error instanceof Error ? error.message : error,
+            );
+        }
+    }
+
+    return result;
 };
 
 export const PackingService = {

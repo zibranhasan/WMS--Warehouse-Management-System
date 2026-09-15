@@ -6,6 +6,7 @@ import { BinRoutes } from "../module/bin/bin.route";
 import { BrandRoutes } from "../module/brand/brand.route";
 import { CategoryRoutes } from "../module/category/category.route";
 import { InventoryRoutes } from "../module/inventory/inventory.route";
+import { NotificationRoutes } from "../module/notification/notification.route";
 import { PackingRoutes } from "../module/packing/packing.route";
 import { PickingRoutes } from "../module/picking/picking.route";
 import { ProductRoutes } from "../module/product/product.route";
@@ -36,6 +37,8 @@ router.use("/sales-orders", SalesOrderRoutes);
 router.use("/picking", PickingRoutes);
 router.use("/packing", PackingRoutes);
 router.use("/shipping", ShippingRoutes);
+router.use("/notifications", NotificationRoutes);
 
 export const IndexRoutes = router;
+
 

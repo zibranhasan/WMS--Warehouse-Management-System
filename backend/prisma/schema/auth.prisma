@@ -51,6 +51,7 @@ model User {
   assignedPickingTasks       PickingTask[]               @relation("PickingTaskAssignedTo")
   pickingAllocations         PickingAllocation[]
   packedTasks                PackingTask[]               @relation("PackingTaskPackedBy")
+  notifications              Notification[]
 
   @@map("users")
 }

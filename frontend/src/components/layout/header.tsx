@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu, PanelLeft, Warehouse } from "lucide-react";
+import { NotificationBell } from "@/features/notification/components/notification-bell";
 import { UserNav } from "./user-nav";
 
 interface HeaderProps {
@@ -51,8 +52,12 @@ export function Header({
         </div>
       </div>
 
-      {/* Right User Navigation Menu */}
-      <UserNav />
+      {/* Right Header Actions */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        <NotificationBell />
+        <UserNav />
+      </div>
     </header>
   );
 }
+

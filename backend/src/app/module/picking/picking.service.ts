@@ -1,5 +1,6 @@
 import httpStatus from "http-status";
 import {
+    NotificationType,
     PickingItemStatus,
     PickingStatus,
     PickingTask,
@@ -14,6 +15,7 @@ import AppError from "../../errorHelpers/AppError";
 import { IQueryParams } from "../../interfaces/query.interface";
 import { prisma } from "../../lib/prisma";
 import { QueryBuilder } from "../../utils/QueryBuilder";
+import { NotificationService } from "../notification/notification.service";
 import {
     pickingFilterableFields,
     pickingSearchableFields,
@@ -23,6 +25,27 @@ import {
     ICreatePickingTask,
     IPickItems,
 } from "./picking.interface";
+
+// ---------------------------------------------------------------------------
+// Helper: Safe notification dispatcher (non-fatal side effect)
+// ---------------------------------------------------------------------------
+const safeSendNotification = async (payload: {
+    userId: string;
+    type: NotificationType;
+    title: string;
+    message: string;
+    entityType: string;
+    entityId: string;
+}) => {
+    try {
+        await NotificationService.createNotification(payload);
+    } catch (error) {
+        console.error(
+            `[Notification] Failed to create ${payload.type} notification for user ${payload.userId} (entity: ${payload.entityType}, id: ${payload.entityId}):`,
+            error instanceof Error ? error.message : error,
+        );
+    }
+};
 
 // ---------------------------------------------------------------------------
 // Helper: Generate unique human-readable picking number (e.g. PICK-2026-000001)
@@ -66,7 +89,7 @@ const createPickingTask = async (
     payload: ICreatePickingTask,
     userId: string,
 ) => {
-    return await prisma.$transaction(
+    const newTask = await prisma.$transaction(
         async (tx) => {
             // 1. Validate Sales Order
             const salesOrder = await tx.salesOrder.findUnique({
@@ -164,6 +187,39 @@ const createPickingTask = async (
         },
         { maxWait: 10000, timeout: 20000 },
     );
+
+    // Notify appropriate Warehouse Manager(s) for the Picking Task's warehouse
+    if (newTask) {
+        try {
+            const warehouseManagers = await prisma.user.findMany({
+                where: {
+                    warehouseId: newTask.warehouseId,
+                    role: Role.WAREHOUSE_MANAGER,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+
+            for (const manager of warehouseManagers) {
+                await safeSendNotification({
+                    userId: manager.id,
+                    type: NotificationType.INFO,
+                    title: "Picking Task Created",
+                    message: `Picking Task ${newTask.pickingNumber} was created for Sales Order ${newTask.salesOrder.orderNumber}.`,
+                    entityType: "PICKING_TASK",
+                    entityId: newTask.id,
+                });
+            }
+        } catch (error) {
+            console.error(
+                `[Notification] Failed to query warehouse managers for picking task ${newTask.id}:`,
+                error instanceof Error ? error.message : error,
+            );
+        }
+    }
+
+    return newTask;
 };
 
 // ---------------------------------------------------------------------------
@@ -487,6 +543,36 @@ const assignPicker = async (id: string, payload: IAssignPicker) => {
         },
     });
 
+    // Notify the newly assigned picker
+    if (updatedTask.assignedToId) {
+        try {
+            const picker = await prisma.user.findFirst({
+                where: {
+                    id: updatedTask.assignedToId,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+
+            if (picker) {
+                await safeSendNotification({
+                    userId: picker.id,
+                    type: NotificationType.INFO,
+                    title: "Picking Task Assigned",
+                    message: `You have been assigned Picking Task ${updatedTask.pickingNumber} for Sales Order ${updatedTask.salesOrder.orderNumber}.`,
+                    entityType: "PICKING_TASK",
+                    entityId: updatedTask.id,
+                });
+            }
+        } catch (error) {
+            console.error(
+                `[Notification] Failed to query assigned picker for task ${updatedTask.id}:`,
+                error instanceof Error ? error.message : error,
+            );
+        }
+    }
+
     return updatedTask;
 };
 
@@ -549,6 +635,36 @@ const startPicking = async (id: string, userId: string, userRole: Role) => {
             },
         },
     });
+
+    // Notify the assigned picker if one exists and is active/non-deleted
+    if (updatedTask.assignedToId) {
+        try {
+            const picker = await prisma.user.findFirst({
+                where: {
+                    id: updatedTask.assignedToId,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+
+            if (picker) {
+                await safeSendNotification({
+                    userId: picker.id,
+                    type: NotificationType.INFO,
+                    title: "Picking Started",
+                    message: `Picking Task ${updatedTask.pickingNumber} has been started for Sales Order ${updatedTask.salesOrder.orderNumber}.`,
+                    entityType: "PICKING_TASK",
+                    entityId: updatedTask.id,
+                });
+            }
+        } catch (error) {
+            console.error(
+                `[Notification] Failed to query assigned picker for started task ${updatedTask.id}:`,
+                error instanceof Error ? error.message : error,
+            );
+        }
+    }
 
     return updatedTask;
 };
@@ -931,7 +1047,7 @@ const pickItems = async (
     );
 
     // Step 8 — Fetch full populated task record outside the transaction (locks already released)
-    return await prisma.pickingTask.findUnique({
+    const finalTask = await prisma.pickingTask.findUnique({
         where: { id },
         include: {
             warehouse: true,
@@ -952,6 +1068,38 @@ const pickItems = async (
             },
         },
     });
+
+    // Notify Sales Order creator ONLY when task transitions to PICKED
+    if (finalTask && finalTask.status === PickingStatus.PICKED) {
+        try {
+            const creator = await prisma.user.findFirst({
+                where: {
+                    id: finalTask.salesOrder.createdById,
+                    status: UserStatus.ACTIVE,
+                    isDeleted: false,
+                },
+                select: { id: true },
+            });
+
+            if (creator) {
+                await safeSendNotification({
+                    userId: creator.id,
+                    type: NotificationType.SUCCESS,
+                    title: "Picking Completed",
+                    message: `Picking Task ${finalTask.pickingNumber} for Sales Order ${finalTask.salesOrder.orderNumber} has been completed.`,
+                    entityType: "PICKING_TASK",
+                    entityId: finalTask.id,
+                });
+            }
+        } catch (error) {
+            console.error(
+                `[Notification] Failed to query creator for completed picking task ${finalTask.id}:`,
+                error instanceof Error ? error.message : error,
+            );
+        }
+    }
+
+    return finalTask;
 };
 
 export const PickingService = {
