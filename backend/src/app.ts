@@ -13,7 +13,7 @@ import cors from "cors";
 import qs from "qs";
 
 import { envVars } from "./app/config/env";
-import { globalErrorHandler } from "./app/middleware/globalErrorHnadler";
+import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 
 
 const app: Application = express();
@@ -42,9 +42,6 @@ app.use(
         allowedHeaders: ["Content-Type", "Authorization"],
     }),
 );
-
-// Enable URL-encoded form data parsing
-app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", toNodeHandler(auth));
 

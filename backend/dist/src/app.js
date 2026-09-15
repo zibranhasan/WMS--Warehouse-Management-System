@@ -8,7 +8,7 @@ import path from "node:path";
 import cors from "cors";
 import qs from "qs";
 import { envVars } from "./app/config/env";
-import { globalErrorHandler } from "./app/middleware/globalErrorHnadler";
+import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 const app = express();
 app.set("query parser", (str) => qs.parse(str));
 app.set("view engine", "ejs");
@@ -30,8 +30,6 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
-// Enable URL-encoded form data parsing
-app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", toNodeHandler(auth));
 // Enable URL-encoded form data parsing
 app.use(express.urlencoded({ extended: true }));
