@@ -11,6 +11,7 @@ export const userFilterableFields = [
     "id",
     "email",
     "name",
+    "warehouseId",
 ];
 export const userPaginationOptionsFields = [
     "page",

@@ -360,6 +360,9 @@ const approvePurchaseOrder = async (id, userId) => {
     if (po.status !== PurchaseOrderStatus.PENDING) {
         throw new AppError(httpStatus.BAD_REQUEST, `Cannot approve Purchase Order with status '${po.status}'. Only PENDING orders can be approved.`);
     }
+    if (po.createdById === userId) {
+        throw new AppError(httpStatus.FORBIDDEN, "You cannot approve a purchase order you created.");
+    }
     if (po.items.length === 0) {
         throw new AppError(httpStatus.BAD_REQUEST, "Cannot approve a purchase order with no items.");
     }
@@ -412,7 +415,7 @@ const approvePurchaseOrder = async (id, userId) => {
 // ---------------------------------------------------------------------------
 // rejectPurchaseOrder
 // ---------------------------------------------------------------------------
-const rejectPurchaseOrder = async (id, payload) => {
+const rejectPurchaseOrder = async (id, payload, userId) => {
     const po = await prisma.purchaseOrder.findUnique({
         where: { id },
     });
@@ -421,6 +424,9 @@ const rejectPurchaseOrder = async (id, payload) => {
     }
     if (po.status !== PurchaseOrderStatus.PENDING) {
         throw new AppError(httpStatus.BAD_REQUEST, `Cannot reject Purchase Order with status '${po.status}'. Only PENDING orders can be rejected.`);
+    }
+    if (po.createdById === userId) {
+        throw new AppError(httpStatus.FORBIDDEN, "You cannot reject a purchase order you created.");
     }
     const updatedPO = await prisma.purchaseOrder.update({
         where: { id },
@@ -532,8 +538,19 @@ const generateGRNNumber = async (tx) => {
 // receiveGoods — Critical Integration Transaction with GoodsReceipt audit history
 // ---------------------------------------------------------------------------
 const receiveGoods = async (id, payload, userId) => {
+    // -----------------------------------------------------------------------
+    // Step 0: Pre-validation outside transaction (fast-fail without holding locks/connections)
+    // -----------------------------------------------------------------------
     const initialPO = await prisma.purchaseOrder.findUnique({
         where: { id },
+        include: {
+            items: {
+                include: {
+                    product: true,
+                },
+            },
+            warehouse: true,
+        },
     });
     if (!initialPO) {
         throw new AppError(httpStatus.NOT_FOUND, "Purchase order not found.");
@@ -542,29 +559,51 @@ const receiveGoods = async (id, payload, userId) => {
         initialPO.status !== PurchaseOrderStatus.PARTIALLY_RECEIVED) {
         throw new AppError(httpStatus.BAD_REQUEST, `Cannot receive goods for Purchase Order with status '${initialPO.status}'. Order must be APPROVED or PARTIALLY_RECEIVED.`);
     }
-    // Interactive Prisma Transaction for 100% atomicity
-    return await prisma.$transaction(async (tx) => {
+    if (initialPO.warehouse.status !== WarehouseStatus.ACTIVE) {
+        throw new AppError(httpStatus.BAD_REQUEST, "Cannot receive goods: Warehouse is inactive.");
+    }
+    // Map initial PO items by productId
+    const initialPoItemsMap = new Map(initialPO.items.map((item) => [item.productId, item]));
+    // Pre-validate all receive items before entering transaction
+    for (const rxItem of payload.items) {
+        const poItem = initialPoItemsMap.get(rxItem.productId);
+        if (!poItem) {
+            throw new AppError(httpStatus.BAD_REQUEST, `Product ID '${rxItem.productId}' is not part of this purchase order.`);
+        }
+        if (poItem.product.status !== ProductStatus.ACTIVE || poItem.product.isDeleted) {
+            throw new AppError(httpStatus.BAD_REQUEST, `Cannot receive goods: Product '${poItem.product.name}' is inactive or deleted.`);
+        }
+        const rxQtyVal = rxItem.receivedQuantity ?? rxItem.quantity ?? rxItem.Quantity ?? 0;
+        if (typeof rxQtyVal !== "number" || isNaN(rxQtyVal) || rxQtyVal <= 0) {
+            throw new AppError(httpStatus.BAD_REQUEST, `Received quantity must be greater than zero for product '${poItem.product.name}'.`);
+        }
+        const currentReceived = poItem.receivedQuantity;
+        const newReceived = currentReceived.plus(new Prisma.Decimal(rxQtyVal));
+        if (newReceived.greaterThan(poItem.orderedQuantity)) {
+            throw new AppError(httpStatus.BAD_REQUEST, `Received quantity cannot exceed ordered quantity for product '${poItem.product.name}'. (Ordered: ${poItem.orderedQuantity}, Already Received: ${currentReceived}, Attempted: ${rxQtyVal})`);
+        }
+    }
+    // -----------------------------------------------------------------------
+    // Atomic Transaction: Minimal lock-holding duration
+    // -----------------------------------------------------------------------
+    const createdReceiptId = await prisma.$transaction(async (tx) => {
         // 1. Fetch fresh PO with items inside transaction
         const po = await tx.purchaseOrder.findUnique({
             where: { id },
             include: {
-                items: {
-                    include: {
-                        product: true,
-                    },
-                },
-                warehouse: true,
+                items: true,
             },
         });
         if (!po) {
             throw new AppError(httpStatus.NOT_FOUND, "Purchase order not found.");
         }
-        if (po.warehouse.status !== WarehouseStatus.ACTIVE) {
-            throw new AppError(httpStatus.BAD_REQUEST, "Cannot receive goods: Warehouse is inactive.");
+        if (po.status !== PurchaseOrderStatus.APPROVED &&
+            po.status !== PurchaseOrderStatus.PARTIALLY_RECEIVED) {
+            throw new AppError(httpStatus.BAD_REQUEST, `Cannot receive goods for Purchase Order with status '${po.status}'. Order must be APPROVED or PARTIALLY_RECEIVED.`);
         }
         // Map PO items by productId
         const poItemsMap = new Map(po.items.map((item) => [item.productId, item]));
-        // 2. Validate all receive items before mutating any state
+        // 2. Validate all receive items against fresh PO state
         for (const rxItem of payload.items) {
             const poItem = poItemsMap.get(rxItem.productId);
             if (!poItem) {
@@ -575,10 +614,10 @@ const receiveGoods = async (id, payload, userId) => {
             const currentReceived = poItem.receivedQuantity;
             const newReceived = currentReceived.plus(rxQty);
             if (newReceived.greaterThan(poItem.orderedQuantity)) {
-                throw new AppError(httpStatus.BAD_REQUEST, `Received quantity cannot exceed ordered quantity for product '${poItem.product.name}'. (Ordered: ${poItem.orderedQuantity}, Already Received: ${currentReceived}, Attempted: ${rxQtyVal})`);
+                throw new AppError(httpStatus.BAD_REQUEST, `Received quantity cannot exceed ordered quantity for product '${rxItem.productId}'. (Ordered: ${poItem.orderedQuantity}, Already Received: ${currentReceived}, Attempted: ${rxQtyVal})`);
             }
         }
-        // 3. Generate receipt number & create GoodsReceipt + GoodsReceiptItems record
+        // 3. Generate receipt number & create GoodsReceipt + GoodsReceiptItems record (no heavy presentation includes)
         const receiptNumber = await generateGRNNumber(tx);
         const receivingReference = payload.reference ?? `GRN-${po.poNumber}`;
         const receivingReason = payload.reason ?? "Goods received from supplier";
@@ -600,28 +639,18 @@ const receiveGoods = async (id, payload, userId) => {
                     }),
                 },
             },
-            include: {
-                items: {
-                    include: {
-                        product: true,
-                    },
-                },
-                receivedBy: {
-                    select: {
-                        id: true,
-                        name: true,
-                        email: true,
-                        role: true,
-                    },
-                },
+            select: {
+                id: true,
             },
         });
-        // 4. Process receiving: update inventory stock, create stock movement, update PO item
-        for (const rxItem of payload.items) {
+        // 4. Process receiving: sort items by productId for deterministic lock ordering
+        const sortedRxItems = [...payload.items].sort((a, b) => a.productId.localeCompare(b.productId));
+        const updatedReceivedMap = new Map();
+        for (const rxItem of sortedRxItems) {
             const poItem = poItemsMap.get(rxItem.productId);
             const rxQtyVal = rxItem.receivedQuantity ?? rxItem.quantity ?? rxItem.Quantity ?? 0;
             const rxQty = new Prisma.Decimal(rxQtyVal);
-            // Trigger Inventory IN adjustment inside transaction
+            // Trigger Inventory IN adjustment inside transaction (validation pre-performed above)
             await InventoryService.adjustStockTx(tx, {
                 warehouseId: po.warehouseId,
                 productId: rxItem.productId,
@@ -629,9 +658,10 @@ const receiveGoods = async (id, payload, userId) => {
                 quantity: Number(rxQtyVal),
                 reason: receivingReason,
                 reference: receiptNumber,
-            }, userId);
+            }, userId, { skipValidation: true });
             // Update PurchaseOrderItem receivedQuantity
             const newReceived = poItem.receivedQuantity.plus(rxQty);
+            updatedReceivedMap.set(poItem.id, newReceived);
             await tx.purchaseOrderItem.update({
                 where: { id: poItem.id },
                 data: {
@@ -639,17 +669,15 @@ const receiveGoods = async (id, payload, userId) => {
                 },
             });
         }
-        // 5. Calculate new overall PO receiving status
-        const updatedItems = await tx.purchaseOrderItem.findMany({
-            where: { purchaseOrderId: id },
-        });
+        // 5. Calculate new overall PO receiving status in memory
         let allFullyReceived = true;
         let anyReceived = false;
-        for (const item of updatedItems) {
-            if (item.receivedQuantity.greaterThan(0)) {
+        for (const item of po.items) {
+            const itemReceived = updatedReceivedMap.get(item.id) ?? item.receivedQuantity;
+            if (itemReceived.greaterThan(0)) {
                 anyReceived = true;
             }
-            if (item.receivedQuantity.lessThan(item.orderedQuantity)) {
+            if (itemReceived.lessThan(item.orderedQuantity)) {
                 allFullyReceived = false;
             }
         }
@@ -660,46 +688,53 @@ const receiveGoods = async (id, payload, userId) => {
         else if (anyReceived) {
             newPOStatus = PurchaseOrderStatus.PARTIALLY_RECEIVED;
         }
-        // 6. Update PurchaseOrder status
-        const finalPO = await tx.purchaseOrder.update({
+        // 6. Update PurchaseOrder status (without heavy presentation includes)
+        await tx.purchaseOrder.update({
             where: { id },
             data: {
                 status: newPOStatus,
             },
-            include: {
-                supplier: true,
-                warehouse: true,
-                createdBy: {
-                    select: {
-                        id: true,
-                        name: true,
-                        email: true,
-                        role: true,
-                    },
-                },
-                approvedBy: {
-                    select: {
-                        id: true,
-                        name: true,
-                        email: true,
-                        role: true,
-                    },
-                },
-                items: {
-                    include: {
-                        product: true,
-                    },
+        });
+        return goodsReceipt.id;
+    }, {
+        maxWait: 10000,
+        timeout: 20000,
+    });
+    // -----------------------------------------------------------------------
+    // Step 7: Presentation queries executed outside the transaction (locks already released)
+    // -----------------------------------------------------------------------
+    const finalPO = await prisma.purchaseOrder.findUnique({
+        where: { id },
+        include: {
+            items: {
+                include: {
+                    product: true,
                 },
             },
-        });
-        return {
-            purchaseOrder: finalPO,
-            goodsReceipt,
-        };
-    }, {
-        maxWait: 5000,
-        timeout: 15000,
+        },
     });
+    const goodsReceipt = await prisma.goodsReceipt.findUnique({
+        where: { id: createdReceiptId },
+        include: {
+            items: {
+                include: {
+                    product: true,
+                },
+            },
+            receivedBy: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    role: true,
+                },
+            },
+        },
+    });
+    return {
+        purchaseOrder: finalPO,
+        goodsReceipt,
+    };
 };
 // ---------------------------------------------------------------------------
 // getPurchaseOrderReceipts — Fetch receiving audit history for a PO

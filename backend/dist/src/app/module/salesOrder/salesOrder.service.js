@@ -84,8 +84,10 @@ const createSalesOrder = async (payload, userId) => {
     }
     // 6. Execute atomic transaction with concurrency safe row locking & available stock check
     return await prisma.$transaction(async (tx) => {
-        // Check available stock for EVERY item
-        for (const item of payload.items) {
+        // Sort items deterministically by productId ascending before acquiring locks
+        const sortedItems = [...payload.items].sort((a, b) => a.productId.localeCompare(b.productId));
+        // Check available stock for EVERY item in deterministic order
+        for (const item of sortedItems) {
             // Acquire FOR UPDATE row lock on inventory_stocks if record exists
             await tx.$executeRaw `
                     SELECT id FROM inventory_stocks 
@@ -260,6 +262,9 @@ const cancelSalesOrder = async (id, payload) => {
     }
     if (salesOrder.status === SalesOrderStatus.CANCELLED) {
         throw new AppError(httpStatus.BAD_REQUEST, "Sales order is already cancelled.");
+    }
+    if (salesOrder.status !== SalesOrderStatus.CONFIRMED) {
+        throw new AppError(httpStatus.BAD_REQUEST, "Only confirmed sales orders can be cancelled.");
     }
     return await prisma.$transaction(async (tx) => {
         // 1. Change reservation status to RELEASED

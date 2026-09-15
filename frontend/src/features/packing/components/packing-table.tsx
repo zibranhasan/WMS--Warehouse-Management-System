@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { PackageCheck, Eye, UserPlus, Play, Ban, PackagePlus } from "lucide-react";
+import { PackageCheck, Eye, Package, UserPlus, Play, Ban } from "lucide-react";
 import { PackingTask } from "../packing.types";
 import { PackingStatusBadge } from "./packing-status-badge";
 import { DataTable } from "@/components/shared/data-table";
@@ -32,10 +32,10 @@ interface PackingTableProps {
   userRole?: string;
   currentUserId?: string;
   onView?: (task: PackingTask) => void;
+  onPackages?: (task: PackingTask) => void;
   onAssign?: (task: PackingTask) => void;
   onStart?: (task: PackingTask) => void;
   onCancel?: (task: PackingTask) => void;
-  onCreatePackage?: (task: PackingTask) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -47,10 +47,10 @@ export function PackingTable({
   userRole,
   currentUserId,
   onView,
+  onPackages,
   onAssign,
   onStart,
   onCancel,
-  onCreatePackage,
 }: PackingTableProps) {
   const canAssign =
     userRole === "SUPER_ADMIN" ||
@@ -125,26 +125,6 @@ export function PackingTable({
         },
       },
       {
-        accessorKey: "progress",
-        header: "Progress",
-        cell: ({ row }) => {
-          const items = row.original.items ?? [];
-          const totalRequired = items.reduce(
-            (sum, item) => sum + item.requiredQuantity,
-            0
-          );
-          const totalPacked = items.reduce(
-            (sum, item) => sum + item.packedQuantity,
-            0
-          );
-          return (
-            <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
-              {totalPacked} / {totalRequired}
-            </span>
-          );
-        },
-      },
-      {
         accessorKey: "createdAt",
         header: "Created At",
         cell: ({ row }) => (
@@ -187,6 +167,22 @@ export function PackingTable({
                 >
                   <Eye className="h-4 w-4" />
                   <span className="sr-only">View Details</span>
+                </Button>
+              )}
+              {onPackages && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  title="View Packages"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onPackages(task);
+                  }}
+                  className="text-slate-600 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
+                >
+                  <Package className="h-4 w-4" />
+                  <span className="sr-only">View Packages</span>
                 </Button>
               )}
               {canAssign && canAssignThis && onAssign && (
@@ -237,37 +233,12 @@ export function PackingTable({
                   <span className="sr-only">Cancel Packing</span>
                 </Button>
               )}
-              {(() => {
-                const canCreatePackage =
-                  !isPacked &&
-                  !isCancelled &&
-                  (userRole === "SUPER_ADMIN" ||
-                    userRole === "ADMIN" ||
-                    userRole === "WAREHOUSE_MANAGER" ||
-                    (userRole === "STAFF" && isAssignedToMe));
-                return canCreatePackage && onCreatePackage ? (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    title="Create Package"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onCreatePackage(task);
-                    }}
-                    className="text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
-                  >
-                    <PackagePlus className="h-4 w-4" />
-                    <span className="sr-only">Create Package</span>
-                  </Button>
-                ) : null;
-              })()}
             </div>
           );
         },
       },
     ],
-    [onView, onAssign, onStart, onCancel, onCreatePackage, canAssign, canStart, canCancel, currentUserId]
+    [onView, onPackages, onAssign, onStart, onCancel, canAssign, canStart, canCancel, currentUserId]
   );
 
   return (

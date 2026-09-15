@@ -94,7 +94,7 @@ export const productApi = {
     }
 
     if (payload.brandId !== undefined) {
-      formData.append("brandId", payload.brandId || "");
+      formData.append("brandId", payload.brandId ?? "");
     }
 
     if (payload.unit !== undefined && payload.unit.trim()) {

@@ -1,14 +1,40 @@
 import httpStatus from "http-status";
+import { Prisma } from "../../../generated/prisma/index.js";
 import AppError from "../../errorHelpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { QueryBuilder } from "../../utils/QueryBuilder";
 import { brandFilterableFields, brandSearchableFields, } from "./brand.constant";
+const MAX_SLUG_RETRIES = 10;
 const generateSlug = (text) => {
     return text
         .toLowerCase()
         .trim()
         .replace(/[\s\W-]+/g, "-")
         .replace(/^-+|-+$/g, "");
+};
+const findUniqueSlug = async (baseSlug, excludeId) => {
+    let candidate = baseSlug;
+    let counter = 2;
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const existing = await prisma.brand.findFirst({
+            where: {
+                slug: candidate,
+                ...(excludeId ? { id: { not: excludeId } } : {}),
+            },
+        });
+        if (!existing) {
+            return candidate;
+        }
+        candidate = `${baseSlug}-${counter}`;
+        counter++;
+    }
+};
+const isSlugConstraintViolation = (error) => {
+    return (error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2002" &&
+        Array.isArray(error.meta?.target) &&
+        error.meta.target.includes("slug"));
 };
 const createBrand = async (payload) => {
     const existingName = await prisma.brand.findFirst({
@@ -20,25 +46,29 @@ const createBrand = async (payload) => {
     if (existingName) {
         throw new AppError(httpStatus.CONFLICT, "Brand with this name already exists.");
     }
-    const slug = payload.slug
-        ? generateSlug(payload.slug)
-        : generateSlug(payload.name);
-    const existingSlug = await prisma.brand.findFirst({
-        where: {
-            slug,
-            isDeleted: false,
-        },
-    });
-    if (existingSlug) {
-        throw new AppError(httpStatus.CONFLICT, "Brand with this slug already exists.");
+    const baseSlug = generateSlug(payload.name);
+    let candidate = await findUniqueSlug(baseSlug);
+    let counter = candidate === baseSlug ? 2 : parseInt(candidate.slice(baseSlug.length + 1), 10) + 1;
+    for (let attempt = 0; attempt < MAX_SLUG_RETRIES; attempt++) {
+        try {
+            const result = await prisma.brand.create({
+                data: {
+                    ...payload,
+                    slug: candidate,
+                },
+            });
+            return result;
+        }
+        catch (error) {
+            if (isSlugConstraintViolation(error)) {
+                candidate = `${baseSlug}-${counter}`;
+                counter++;
+                continue;
+            }
+            throw error;
+        }
     }
-    const result = await prisma.brand.create({
-        data: {
-            ...payload,
-            slug,
-        },
-    });
-    return result;
+    throw new AppError(httpStatus.CONFLICT, "Unable to generate a unique slug. Please try again.");
 };
 const getAllBrands = async (query) => {
     const queryBuilder = new QueryBuilder(prisma.brand, query, {
@@ -76,11 +106,6 @@ const updateBrand = async (id, payload) => {
     if (!existingBrand) {
         throw new AppError(httpStatus.NOT_FOUND, "Brand not found.");
     }
-    let slug = payload.slug
-        ? generateSlug(payload.slug)
-        : payload.name
-            ? generateSlug(payload.name)
-            : undefined;
     if (payload.name && payload.name !== existingBrand.name) {
         const duplicateName = await prisma.brand.findFirst({
             where: {
@@ -93,23 +118,37 @@ const updateBrand = async (id, payload) => {
             throw new AppError(httpStatus.CONFLICT, "Brand with this name already exists.");
         }
     }
-    if (slug && slug !== existingBrand.slug) {
-        const duplicateSlug = await prisma.brand.findFirst({
-            where: {
-                slug,
-                id: { not: id },
-                isDeleted: false,
-            },
-        });
-        if (duplicateSlug) {
-            throw new AppError(httpStatus.CONFLICT, "Brand with this slug already exists.");
+    let slug;
+    if (payload.name && payload.name !== existingBrand.name) {
+        const baseSlug = generateSlug(payload.name);
+        let candidate = await findUniqueSlug(baseSlug, id);
+        let counter = candidate === baseSlug ? 2 : parseInt(candidate.slice(baseSlug.length + 1), 10) + 1;
+        for (let attempt = 0; attempt < MAX_SLUG_RETRIES; attempt++) {
+            try {
+                const updatedBrand = await prisma.brand.update({
+                    where: { id },
+                    data: {
+                        ...payload,
+                        slug: candidate,
+                    },
+                });
+                return updatedBrand;
+            }
+            catch (error) {
+                if (isSlugConstraintViolation(error)) {
+                    candidate = `${baseSlug}-${counter}`;
+                    counter++;
+                    continue;
+                }
+                throw error;
+            }
         }
+        throw new AppError(httpStatus.CONFLICT, "Unable to generate a unique slug. Please try again.");
     }
     const updatedBrand = await prisma.brand.update({
         where: { id },
         data: {
             ...payload,
-            ...(slug && { slug }),
         },
     });
     return updatedBrand;

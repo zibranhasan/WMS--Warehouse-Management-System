@@ -58,7 +58,8 @@ const approvePurchaseOrder = catchAsync(async (req, res) => {
 });
 const rejectPurchaseOrder = catchAsync(async (req, res) => {
     const id = req.params.id;
-    const result = await PurchaseOrderService.rejectPurchaseOrder(id, req.body);
+    const userId = req.user.userId;
+    const result = await PurchaseOrderService.rejectPurchaseOrder(id, req.body, userId);
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
         success: true,

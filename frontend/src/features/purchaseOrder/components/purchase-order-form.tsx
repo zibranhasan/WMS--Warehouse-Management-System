@@ -111,14 +111,6 @@ export function PurchaseOrderForm({
   });
   const products = productsData?.data || [];
 
-  const calculatedTotal = useMemo(() => {
-    if (!watchedItems) return 0;
-    return watchedItems.reduce(
-      (sum, item) => sum + (Number(item.orderedQuantity) || 0) * (Number(item.unitPrice) || 0),
-      0
-    );
-  }, [watchedItems]);
-
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -400,16 +392,6 @@ export function PurchaseOrderForm({
             ))}
           </div>
         )}
-      </div>
-
-      {/* Grand Total */}
-      <div className="flex items-center justify-end rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
-        <span className="text-xs text-slate-500 dark:text-slate-400 mr-3">
-          Estimated Total:
-        </span>
-        <span className="text-lg font-bold text-slate-900 dark:text-white">
-          {formatCurrency(calculatedTotal)}
-        </span>
       </div>
 
       {/* Buttons */}

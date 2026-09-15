@@ -55,7 +55,6 @@ export function ProductForm({
     defaultValues: {
       sku: initialData?.sku || "",
       name: initialData?.name || "",
-      slug: initialData?.slug || "",
       description: initialData?.description || "",
       categoryId: initialData?.categoryId || "",
       brandId: initialData?.brandId || "",
@@ -71,7 +70,6 @@ export function ProductForm({
         const updatePayload: UpdateProductPayload = {
           sku: values.sku.trim(),
           name: values.name.trim(),
-          ...(values.slug?.trim() ? { slug: values.slug.trim() } : {}),
           description: values.description?.trim() || null,
           categoryId: values.categoryId,
           brandId: values.brandId ? values.brandId : null,
@@ -85,7 +83,6 @@ export function ProductForm({
         const createPayload: CreateProductPayload = {
           sku: values.sku.trim(),
           name: values.name.trim(),
-          ...(values.slug?.trim() ? { slug: values.slug.trim() } : {}),
           ...(values.description?.trim()
             ? { description: values.description.trim() }
             : {}),
@@ -268,32 +265,6 @@ export function ProductForm({
           {errors.unit && (
             <p className="text-xs text-red-600 dark:text-red-400">
               {errors.unit.message}
-            </p>
-          )}
-        </div>
-
-        {/* Slug */}
-        <div className="space-y-1.5">
-          <label
-            htmlFor="slug"
-            className="block text-xs font-semibold text-slate-700 dark:text-slate-300"
-          >
-            Slug <span className="font-normal text-slate-500">(Optional)</span>
-          </label>
-          <input
-            id="slug"
-            type="text"
-            placeholder="e.g. wireless-mouse"
-            disabled={isPending}
-            {...register("slug")}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-          />
-          <p className="text-[11px] text-slate-500 dark:text-slate-400">
-            Leave blank to generate automatically.
-          </p>
-          {errors.slug && (
-            <p className="text-xs text-red-600 dark:text-red-400">
-              {errors.slug.message}
             </p>
           )}
         </div>

@@ -12,10 +12,10 @@ router.post("/", checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT), chec
 router.get("/", checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.WAREHOUSE_MANAGER, Role.PROCUREMENT, Role.FINANCE, Role.STAFF), PurchaseOrderController.getAllPurchaseOrders);
 // Update Purchase Order (SUPER_ADMIN, ADMIN, PROCUREMENT)
 router.patch("/:id", checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT), checkPoWarehouseAccess, validateRequest(PurchaseOrderValidation.updatePurchaseOrderValidationSchema), PurchaseOrderController.updatePurchaseOrder);
-// Approve Purchase Order (SUPER_ADMIN, ADMIN, PROCUREMENT)
-router.patch("/:id/approve", checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT), checkPoWarehouseAccess, PurchaseOrderController.approvePurchaseOrder);
-// Reject Purchase Order (SUPER_ADMIN, ADMIN, PROCUREMENT)
-router.patch("/:id/reject", checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT), checkPoWarehouseAccess, validateRequest(PurchaseOrderValidation.rejectPurchaseOrderValidationSchema), PurchaseOrderController.rejectPurchaseOrder);
+// Approve Purchase Order (SUPER_ADMIN, ADMIN, WAREHOUSE_MANAGER)
+router.patch("/:id/approve", checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.WAREHOUSE_MANAGER), checkPoWarehouseAccess, PurchaseOrderController.approvePurchaseOrder);
+// Reject Purchase Order (SUPER_ADMIN, ADMIN, WAREHOUSE_MANAGER)
+router.patch("/:id/reject", checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.WAREHOUSE_MANAGER), checkPoWarehouseAccess, validateRequest(PurchaseOrderValidation.rejectPurchaseOrderValidationSchema), PurchaseOrderController.rejectPurchaseOrder);
 // Cancel Purchase Order (SUPER_ADMIN, ADMIN, PROCUREMENT)
 router.patch("/:id/cancel", checkAuth(Role.SUPER_ADMIN, Role.ADMIN, Role.PROCUREMENT), checkPoWarehouseAccess, validateRequest(PurchaseOrderValidation.cancelPurchaseOrderValidationSchema), PurchaseOrderController.cancelPurchaseOrder);
 // Goods Receiving for Purchase Order (SUPER_ADMIN, ADMIN, WAREHOUSE_MANAGER, PROCUREMENT)

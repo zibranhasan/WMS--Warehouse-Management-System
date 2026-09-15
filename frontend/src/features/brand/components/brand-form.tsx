@@ -35,7 +35,6 @@ export function BrandForm({
     resolver: zodResolver(createBrandSchema),
     defaultValues: {
       name: initialData?.name || "",
-      slug: initialData?.slug || "",
       description: initialData?.description || "",
     },
   });
@@ -43,10 +42,8 @@ export function BrandForm({
   const handleFormSubmit = async (values: CreateBrandFormValues) => {
     setErrorMessage(null);
     try {
-      // Omit empty optional strings so backend auto-generates slug if left empty
       const payload: CreateBrandFormValues = {
         name: values.name.trim(),
-        ...(values.slug?.trim() ? { slug: values.slug.trim() } : {}),
         ...(values.description?.trim()
           ? { description: values.description.trim() }
           : {}),
@@ -92,32 +89,6 @@ export function BrandForm({
         {errors.name && (
           <p className="text-xs text-red-600 dark:text-red-400">
             {errors.name.message}
-          </p>
-        )}
-      </div>
-
-      {/* Brand Slug */}
-      <div className="space-y-1.5">
-        <label
-          htmlFor="slug"
-          className="block text-xs font-semibold text-slate-700 dark:text-slate-300"
-        >
-          Slug <span className="font-normal text-slate-500">(Optional)</span>
-        </label>
-        <input
-          id="slug"
-          type="text"
-          placeholder="e.g. nike"
-          disabled={isPending}
-          {...register("slug")}
-          className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-        />
-        <p className="text-[11px] text-slate-500 dark:text-slate-400">
-          Leave blank to generate automatically.
-        </p>
-        {errors.slug && (
-          <p className="text-xs text-red-600 dark:text-red-400">
-            {errors.slug.message}
           </p>
         )}
       </div>

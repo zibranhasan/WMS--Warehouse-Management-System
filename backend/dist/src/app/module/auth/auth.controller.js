@@ -83,10 +83,20 @@ const verifyEmail = catchAsync(async (req, res) => {
         message: result.message,
     });
 });
+const updateMyProfile = catchAsync(async (req, res) => {
+    const result = await AuthService.updateMyProfile(req);
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        success: true,
+        message: "Profile updated successfully.",
+        data: result,
+    });
+});
 export const AuthController = {
     loginUser,
     logoutUser,
     getMe,
+    updateMyProfile,
     forgetPassword,
     resetPassword,
     changePassword,

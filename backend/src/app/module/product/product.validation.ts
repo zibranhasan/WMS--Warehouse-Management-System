@@ -45,7 +45,7 @@ const updateProductValidationSchema = z.object({
         .min(1, "Category ID must not be empty.")
         .optional(),
 
-    brandId: z.string().optional().nullable(),
+    brandId: z.string().optional().nullable().transform((val) => val === "" ? null : val),
 
     unit: z
         .string()

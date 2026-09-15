@@ -11,11 +11,11 @@ import type { PackingTask } from "@/features/packing/packing.types";
 import type { StatusTabOption } from "@/components/shared/status-tab-filter";
 import { PackingTable } from "@/features/packing/components/packing-table";
 import { PackingDetailsDialog } from "@/features/packing/components/packing-details-dialog";
+import { PackingPackagesDialog } from "@/features/packing/components/packing-packages-dialog";
 import { CreatePackingDialog } from "@/features/packing/components/create-packing-dialog";
 import { AssignPackerDialog } from "@/features/packing/components/assign-packer-dialog";
 import { StartPackingDialog } from "@/features/packing/components/start-packing-dialog";
 import { CancelPackingDialog } from "@/features/packing/components/cancel-packing-dialog";
-import { CreatePackageDialog } from "@/features/packing/components/create-package-dialog";
 import { SearchInput } from "@/components/shared/search-input";
 import { StatusTabFilter } from "@/components/shared/status-tab-filter";
 import { DataTablePagination } from "@/components/shared/data-table-pagination";
@@ -81,6 +81,8 @@ export default function PackingPage() {
 
   const [viewingTaskId, setViewingTaskId] = useState<string | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [packagesTaskId, setPackagesTaskId] = useState<string | null>(null);
+  const [isPackagesDialogOpen, setIsPackagesDialogOpen] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [assigningTaskId, setAssigningTaskId] = useState<string | null>(null);
   const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false);
@@ -88,8 +90,6 @@ export default function PackingPage() {
   const [isStartDialogOpen, setIsStartDialogOpen] = useState(false);
   const [cancellingTaskId, setCancellingTaskId] = useState<string | null>(null);
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
-  const [createPackageTaskId, setCreatePackageTaskId] = useState<string | null>(null);
-  const [isCreatePackageDialogOpen, setIsCreatePackageDialogOpen] = useState(false);
 
   const userCanCreate =
     user?.role === "SUPER_ADMIN" ||
@@ -181,6 +181,10 @@ export default function PackingPage() {
           setViewingTaskId(task.id);
           setIsDetailsOpen(true);
         }}
+        onPackages={(task) => {
+          setPackagesTaskId(task.id);
+          setIsPackagesDialogOpen(true);
+        }}
         onAssign={(task) => {
           setAssigningTaskId(task.id);
           setIsAssignDialogOpen(true);
@@ -192,10 +196,6 @@ export default function PackingPage() {
         onCancel={(task) => {
           setCancellingTaskId(task.id);
           setIsCancelDialogOpen(true);
-        }}
-        onCreatePackage={(task) => {
-          setCreatePackageTaskId(task.id);
-          setIsCreatePackageDialogOpen(true);
         }}
       />
 
@@ -216,6 +216,15 @@ export default function PackingPage() {
         onOpenChange={(open) => {
           setIsDetailsOpen(open);
           if (!open) setViewingTaskId(null);
+        }}
+      />
+
+      <PackingPackagesDialog
+        packingTaskId={packagesTaskId}
+        isOpen={isPackagesDialogOpen}
+        onOpenChange={(open) => {
+          setIsPackagesDialogOpen(open);
+          if (!open) setPackagesTaskId(null);
         }}
       />
 
@@ -270,20 +279,6 @@ export default function PackingPage() {
         onOpenChange={(open) => {
           setIsCancelDialogOpen(open);
           if (!open) setCancellingTaskId(null);
-        }}
-      />
-
-      {/* Create Package Dialog */}
-      <CreatePackageDialog
-        packingTask={
-          createPackageTaskId
-            ? packingTasks.find((t) => t.id === createPackageTaskId) ?? null
-            : null
-        }
-        isOpen={isCreatePackageDialogOpen}
-        onOpenChange={(open) => {
-          setIsCreatePackageDialogOpen(open);
-          if (!open) setCreatePackageTaskId(null);
         }}
       />
     </div>

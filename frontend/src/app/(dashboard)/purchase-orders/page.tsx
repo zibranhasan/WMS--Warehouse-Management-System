@@ -50,7 +50,7 @@ export default function PurchaseOrdersPage() {
   const canManage =
     user?.role === "SUPER_ADMIN" ||
     user?.role === "ADMIN" ||
-    user?.role === "PROCUREMENT";
+    user?.role === "WAREHOUSE_MANAGER";
   const canReceive =
     user?.role === "SUPER_ADMIN" ||
     user?.role === "ADMIN" ||
