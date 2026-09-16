@@ -67,6 +67,14 @@ app.use(cookieParser());
 
 app.use("/api/v1", IndexRoutes);
 
+// OpenAPI spec serving (proof of concept)
+app.get("/api/v1/docs/openapi.json", (_req, res) => {
+    import("./app/openapi/index").then(({ generateOpenApiDocument }) => {
+        const spec = generateOpenApiDocument();
+        res.json(spec);
+    });
+});
+
 // // Basic route
 // app.get("/", async (req: Request, res: Response) => {
 //     const specialty = await prisma.specialty.create({
