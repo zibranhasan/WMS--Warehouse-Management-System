@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { catchAsync } from "../../shared/catchAsync";
-import { sendResponse } from "../../shared/sendResponse";
-import { ProductService } from "./product.service";
+import { catchAsync } from "../../shared/catchAsync.js";
+import { sendResponse } from "../../shared/sendResponse.js";
+import { ProductService } from "./product.service.js";
 
 const createProduct = catchAsync(async (req: Request, res: Response) => {
     const imageUrl = req.file?.path;

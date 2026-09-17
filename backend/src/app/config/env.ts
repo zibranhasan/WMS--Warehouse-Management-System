@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import AppError from "../errorHelpers/AppError";
+import AppError from "../errorHelpers/AppError.js";
 import status from "http-status";
 
 // import status from "http-status";

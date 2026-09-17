@@ -1,5 +1,5 @@
 import { ServerOptions } from "socket.io";
-import { envVars } from "../config/env";
+import { envVars } from "../config/env.js";
 
 export const socketServerOptions: Partial<ServerOptions> = {
     cors: {

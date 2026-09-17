@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import { PaginatedResponse, SuccessResponse, ErrorResponse } from "../components/responses";
+import { PaginatedResponse, SuccessResponse, ErrorResponse } from "../components/responses.js";
 
 // ─── Response schemas ─────────────────────────────────────────────────
 

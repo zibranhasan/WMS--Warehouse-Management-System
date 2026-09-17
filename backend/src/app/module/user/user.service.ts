@@ -1,23 +1,23 @@
 import httpStatus from "http-status";
 import { User, UserStatus } from "../../../generated/prisma/index.js";
-import { deleteFileFromCloudinary } from "../../config/cloudinary.config";
-import AppError from "../../errorHelpers/AppError";
-import { IQueryParams } from "../../interfaces/query.interface";
-import { auth } from "../../lib/auth";
-import { prisma } from "../../lib/prisma";
-import { QueryBuilder } from "../../utils/QueryBuilder";
-import { generateTemporaryPassword } from "../../utils/password";
-import { sendEmail } from "../../utils/email";
+import { deleteFileFromCloudinary } from "../../config/cloudinary.config.js";
+import AppError from "../../errorHelpers/AppError.js";
+import { IQueryParams } from "../../interfaces/query.interface.js";
+import { auth } from "../../lib/auth.js";
+import { prisma } from "../../lib/prisma.js";
+import { QueryBuilder } from "../../utils/QueryBuilder.js";
+import { generateTemporaryPassword } from "../../utils/password.js";
+import { sendEmail } from "../../utils/email.js";
 import {
     userFilterableFields,
     userSearchableFields,
-} from "./user.constant";
+} from "./user.constant.js";
 import {
     IAssignRole,
     IAssignWarehouse,
     ICreateUser,
     IUpdateUser,
-} from "./user.interface";
+} from "./user.interface.js";
 
 const createUser = async (payload: ICreateUser, file?: Express.Multer.File) => {
     const { name, email, role } = payload;

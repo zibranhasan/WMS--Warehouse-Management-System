@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import { PaginatedResponse, SuccessResponse, ErrorResponse } from "../components/responses";
-import { SupplierResponse } from "../components/schemas";
+import { PaginatedResponse, SuccessResponse, ErrorResponse } from "../components/responses.js";
+import { SupplierResponse } from "../components/schemas.js";
 
 const CreateSupplierRequest = z
     .object({

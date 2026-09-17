@@ -1,9 +1,9 @@
 import { Socket } from "socket.io";
 import { fromNodeHeaders } from "better-auth/node";
 import { Role, UserStatus } from "../../generated/prisma/index.js";
-import { auth } from "../lib/auth";
-import { prisma } from "../lib/prisma";
-import { AuthenticatedSocket, ISocketUser } from "./socket.types";
+import { auth } from "../lib/auth.js";
+import { prisma } from "../lib/prisma.js";
+import { AuthenticatedSocket, ISocketUser } from "./socket.types.js";
 
 /**
  * Socket.IO handshake authentication middleware.

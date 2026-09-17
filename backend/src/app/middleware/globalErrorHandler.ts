@@ -2,22 +2,22 @@
 import { NextFunction, Request, Response } from "express";
 import status from "http-status";
 import z from "zod";
-import { envVars } from "../config/env";
+import { envVars } from "../config/env.js";
 
-import { handleZodError } from "../errorHelpers/handleZodError";
-import AppError from "../errorHelpers/AppError";
-import { deleteFileFromCloudinary } from "../config/cloudinary.config";
+import { handleZodError } from "../errorHelpers/handleZodError.js";
+import AppError from "../errorHelpers/AppError.js";
+import { deleteFileFromCloudinary } from "../config/cloudinary.config.js";
 
-import { Prisma } from "../../generated/prisma/client";
+import { Prisma } from "../../generated/prisma/index.js";
 import {
     handlePrismaClientKnownRequestError,
     handlePrismaClientUnknownError,
     handlePrismaClientValidationError,
     handlerPrismaClientInitializationError,
     handlerPrismaClientRustPanicError,
-} from "../errorHelpers/handlePrismaErrors";
-import { deleteUploadedFilesFromGlobalErrorHandler } from "../utils/deleteUploadedFilesFromGlobalErrorHandler";
-import { TErrorResponse, TErrorSources } from "../interfaces/error.interfrace";
+} from "../errorHelpers/handlePrismaErrors.js";
+import { deleteUploadedFilesFromGlobalErrorHandler } from "../utils/deleteUploadedFilesFromGlobalErrorHandler.js";
+import { TErrorResponse, TErrorSources } from "../interfaces/error.interfrace.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const globalErrorHandler = async (

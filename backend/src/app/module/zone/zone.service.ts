@@ -1,15 +1,15 @@
 import httpStatus from "http-status";
 import { LocationStatus, WarehouseStatus, Zone } from "../../../generated/prisma/index.js";
-import AppError from "../../errorHelpers/AppError";
-import { IQueryParams } from "../../interfaces/query.interface";
-import { prisma } from "../../lib/prisma";
-import { QueryBuilder } from "../../utils/QueryBuilder";
-import { zoneFilterableFields, zoneSearchableFields } from "./zone.constant";
+import AppError from "../../errorHelpers/AppError.js";
+import { IQueryParams } from "../../interfaces/query.interface.js";
+import { prisma } from "../../lib/prisma.js";
+import { QueryBuilder } from "../../utils/QueryBuilder.js";
+import { zoneFilterableFields, zoneSearchableFields } from "./zone.constant.js";
 import {
     ICreateZone,
     IUpdateZone,
     IUpdateZoneStatus,
-} from "./zone.interface";
+} from "./zone.interface.js";
 
 const createZone = async (payload: ICreateZone) => {
     // 1. Validate warehouse exists and is ACTIVE

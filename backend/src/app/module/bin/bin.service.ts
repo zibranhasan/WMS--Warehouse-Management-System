@@ -1,15 +1,15 @@
 import httpStatus from "http-status";
 import { Bin, LocationStatus } from "../../../generated/prisma/index.js";
-import AppError from "../../errorHelpers/AppError";
-import { IQueryParams } from "../../interfaces/query.interface";
-import { prisma } from "../../lib/prisma";
-import { QueryBuilder } from "../../utils/QueryBuilder";
-import { binFilterableFields, binSearchableFields } from "./bin.constant";
+import AppError from "../../errorHelpers/AppError.js";
+import { IQueryParams } from "../../interfaces/query.interface.js";
+import { prisma } from "../../lib/prisma.js";
+import { QueryBuilder } from "../../utils/QueryBuilder.js";
+import { binFilterableFields, binSearchableFields } from "./bin.constant.js";
 import {
     ICreateBin,
     IUpdateBin,
     IUpdateBinStatus,
-} from "./bin.interface";
+} from "./bin.interface.js";
 
 const createBin = async (payload: ICreateBin) => {
     // 1. Validate parent shelf exists, is active, and is not deleted

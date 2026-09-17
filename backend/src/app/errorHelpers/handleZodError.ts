@@ -1,6 +1,6 @@
 import status from "http-status";
 import z from "zod";
-import { TErrorResponse, TErrorSources } from "../interfaces/error.interfrace";
+import { TErrorResponse, TErrorSources } from "../interfaces/error.interfrace.js";
 
 
 export const handleZodError = (err: z.ZodError): TErrorResponse => {

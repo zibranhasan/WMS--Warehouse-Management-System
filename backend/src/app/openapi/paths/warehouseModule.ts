@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import { PaginatedResponse, SuccessResponse, ErrorResponse } from "../components/responses";
-import { WarehouseResponse, UserResponse } from "../components/schemas";
+import { PaginatedResponse, SuccessResponse, ErrorResponse } from "../components/responses.js";
+import { WarehouseResponse, UserResponse } from "../components/schemas.js";
 
 // Re-export the existing WarehouseListItem for the list endpoint
 const WarehouseListItem = z

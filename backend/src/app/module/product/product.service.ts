@@ -5,20 +5,20 @@ import {
     Prisma,
     Product,
 } from "../../../generated/prisma/index.js";
-import { deleteFileFromCloudinary } from "../../config/cloudinary.config";
-import AppError from "../../errorHelpers/AppError";
-import { IQueryParams } from "../../interfaces/query.interface";
-import { prisma } from "../../lib/prisma";
-import { QueryBuilder } from "../../utils/QueryBuilder";
+import { deleteFileFromCloudinary } from "../../config/cloudinary.config.js";
+import AppError from "../../errorHelpers/AppError.js";
+import { IQueryParams } from "../../interfaces/query.interface.js";
+import { prisma } from "../../lib/prisma.js";
+import { QueryBuilder } from "../../utils/QueryBuilder.js";
 import {
     productFilterableFields,
     productSearchableFields,
-} from "./product.constant";
+} from "./product.constant.js";
 import {
     ICreateProduct,
     IUpdateProduct,
     IUpdateProductStatus,
-} from "./product.interface";
+} from "./product.interface.js";
 
 const MAX_SLUG_RETRIES = 10;
 

@@ -3,16 +3,16 @@ import {
     Notification,
     NotificationType,
 } from "../../../generated/prisma/index.js";
-import AppError from "../../errorHelpers/AppError";
-import { IQueryParams } from "../../interfaces/query.interface";
-import { prisma } from "../../lib/prisma";
-import { QueryBuilder } from "../../utils/QueryBuilder";
+import AppError from "../../errorHelpers/AppError.js";
+import { IQueryParams } from "../../interfaces/query.interface.js";
+import { prisma } from "../../lib/prisma.js";
+import { QueryBuilder } from "../../utils/QueryBuilder.js";
 import {
     notificationFilterableFields,
     notificationSearchableFields,
-} from "./notification.constant";
-import { emitNotificationCreated } from "../../socket";
-import { ICreateNotificationPayload } from "./notification.interface";
+} from "./notification.constant.js";
+import { emitNotificationCreated } from "../../socket/index.js";
+import { ICreateNotificationPayload } from "./notification.interface.js";
 
 /**
  * Internal service method for future business events to create notifications.

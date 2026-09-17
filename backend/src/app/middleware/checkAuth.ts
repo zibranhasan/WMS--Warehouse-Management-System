@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import status from "http-status";
 import { fromNodeHeaders } from "better-auth/node";
 
-import { Role, UserStatus } from "../../generated/prisma/enums";
-import AppError from "../errorHelpers/AppError";
-import { auth } from "../lib/auth";
-import { prisma } from "../lib/prisma";
+import { Role, UserStatus } from "../../generated/prisma/enums.js";
+import AppError from "../errorHelpers/AppError.js";
+import { auth } from "../lib/auth.js";
+import { prisma } from "../lib/prisma.js";
 
 export const checkAuth =
     (...authRoles: Role[]) =>

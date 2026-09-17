@@ -1,5 +1,5 @@
 import { Notification } from "../../generated/prisma/index.js";
-import { getIO } from "./index";
+import { getIO } from "./index.js";
 
 /**
  * Emits a newly created notification in real-time to the recipient user's private room.

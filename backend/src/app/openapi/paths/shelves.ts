@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import { PaginatedResponse, SuccessResponse, ErrorResponse } from "../components/responses";
-import { ShelfResponse, BinResponse } from "../components/schemas";
+import { PaginatedResponse, SuccessResponse, ErrorResponse } from "../components/responses.js";
+import { ShelfResponse, BinResponse } from "../components/schemas.js";
 
 const CreateShelfRequest = z
     .object({

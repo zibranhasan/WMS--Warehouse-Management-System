@@ -1,18 +1,18 @@
 import httpStatus from "http-status";
 import { Category } from "../../../generated/prisma/index.js";
-import AppError from "../../errorHelpers/AppError";
-import { IQueryParams } from "../../interfaces/query.interface";
-import { prisma } from "../../lib/prisma";
-import { QueryBuilder } from "../../utils/QueryBuilder";
+import AppError from "../../errorHelpers/AppError.js";
+import { IQueryParams } from "../../interfaces/query.interface.js";
+import { prisma } from "../../lib/prisma.js";
+import { QueryBuilder } from "../../utils/QueryBuilder.js";
 import {
     categoryFilterableFields,
     categorySearchableFields,
-} from "./category.constant";
+} from "./category.constant.js";
 import {
     ICreateCategory,
     IUpdateCategory,
     IUpdateCategoryStatus,
-} from "./category.interface";
+} from "./category.interface.js";
 
 const generateSlug = (text: string): string => {
     return text

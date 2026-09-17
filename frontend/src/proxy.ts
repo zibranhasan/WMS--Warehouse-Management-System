@@ -2,9 +2,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { isPublicRoute, isRoleAllowedForRoute } from "@/lib/routes";
 
-const AUTH_ME_URL = process.env.NEXT_PUBLIC_API_URL
-  ? `${process.env.NEXT_PUBLIC_API_URL}/auth/me`
-  : "http://localhost:5000/api/v1/auth/me";
+const API_BASE_URL =
+  process.env.INTERNAL_API_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:5000/api/v1";
+
+const AUTH_ME_URL = `${API_BASE_URL.replace(/\/+$/, "")}/auth/me`;
 
 /**
  * Validates the session with the backend by forwarding request cookies.

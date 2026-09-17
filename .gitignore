@@ -1,0 +1,5 @@
+# Backend compiled build artifacts
+backend/dist/
+
+# Prisma generated client
+backend/src/generated/prisma/
