@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { Role } from "../../../generated/prisma/index.js";
-import { multerUpload } from "../../config/multer.config";
-import { checkAuth } from "../../middleware/checkAuth";
-import { validateRequest } from "../../middleware/validateRequest";
-import { UserController } from "./user.controller";
-import { UserValidation } from "./user.validation";
+import { multerUpload } from "../../config/multer.config.js";
+import { checkAuth } from "../../middleware/checkAuth.js";
+import { validateRequest } from "../../middleware/validateRequest.js";
+import { UserController } from "./user.controller.js";
+import { UserValidation } from "./user.validation.js";
 
 const router = Router();
 

@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { Role } from "../../../generated/prisma/index.js";
-import { checkAuth } from "../../middleware/checkAuth";
-import { validateRequest } from "../../middleware/validateRequest";
-import { BinController } from "./bin.controller";
-import { BinValidation } from "./bin.validation";
+import { checkAuth } from "../../middleware/checkAuth.js";
+import { validateRequest } from "../../middleware/validateRequest.js";
+import { BinController } from "./bin.controller.js";
+import { BinValidation } from "./bin.validation.js";
 
 const router = Router();
 

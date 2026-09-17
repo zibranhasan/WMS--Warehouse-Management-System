@@ -1,23 +1,23 @@
 import { Router } from "express";
 
-import { AisleRoutes } from "../module/aisle/aisle.route";
-import { AuthRoutes } from "../module/auth/auth.route";
-import { BinRoutes } from "../module/bin/bin.route";
-import { BrandRoutes } from "../module/brand/brand.route";
-import { CategoryRoutes } from "../module/category/category.route";
-import { InventoryRoutes } from "../module/inventory/inventory.route";
-import { NotificationRoutes } from "../module/notification/notification.route";
-import { PackingRoutes } from "../module/packing/packing.route";
-import { PickingRoutes } from "../module/picking/picking.route";
-import { ProductRoutes } from "../module/product/product.route";
-import { PurchaseOrderRoutes } from "../module/purchaseOrder/purchaseOrder.route";
-import { SalesOrderRoutes } from "../module/salesOrder/salesOrder.route";
-import { ShelfRoutes } from "../module/shelf/shelf.route";
-import { ShippingRoutes } from "../module/shipping/shipping.route";
-import { SupplierRoutes } from "../module/supplier/supplier.route";
-import { UserRoutes } from "../module/user/user.route";
-import { WarehouseRoutes } from "../module/warehouse/warehouse.route";
-import { ZoneRoutes } from "../module/zone/zone.route";
+import { AisleRoutes } from "../module/aisle/aisle.route.js";
+import { AuthRoutes } from "../module/auth/auth.route.js";
+import { BinRoutes } from "../module/bin/bin.route.js";
+import { BrandRoutes } from "../module/brand/brand.route.js";
+import { CategoryRoutes } from "../module/category/category.route.js";
+import { InventoryRoutes } from "../module/inventory/inventory.route.js";
+import { NotificationRoutes } from "../module/notification/notification.route.js";
+import { PackingRoutes } from "../module/packing/packing.route.js";
+import { PickingRoutes } from "../module/picking/picking.route.js";
+import { ProductRoutes } from "../module/product/product.route.js";
+import { PurchaseOrderRoutes } from "../module/purchaseOrder/purchaseOrder.route.js";
+import { SalesOrderRoutes } from "../module/salesOrder/salesOrder.route.js";
+import { ShelfRoutes } from "../module/shelf/shelf.route.js";
+import { ShippingRoutes } from "../module/shipping/shipping.route.js";
+import { SupplierRoutes } from "../module/supplier/supplier.route.js";
+import { UserRoutes } from "../module/user/user.route.js";
+import { WarehouseRoutes } from "../module/warehouse/warehouse.route.js";
+import { ZoneRoutes } from "../module/zone/zone.route.js";
 
 const router = Router();
 router.use("/auth", AuthRoutes);
@@ -40,5 +40,3 @@ router.use("/shipping", ShippingRoutes);
 router.use("/notifications", NotificationRoutes);
 
 export const IndexRoutes = router;
-
-

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { catchAsync } from "../../shared/catchAsync";
-import { sendResponse } from "../../shared/sendResponse";
-import { getWarehouseScope } from "../../utils/warehouseScope";
-import { ZoneService } from "./zone.service";
+import { catchAsync } from "../../shared/catchAsync.js";
+import { sendResponse } from "../../shared/sendResponse.js";
+import { getWarehouseScope } from "../../utils/warehouseScope.js";
+import { ZoneService } from "./zone.service.js";
 
 const createZone = catchAsync(async (req: Request, res: Response) => {
     const result = await ZoneService.createZone(req.body);

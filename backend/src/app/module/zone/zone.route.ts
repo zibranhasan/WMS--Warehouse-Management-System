@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { Role } from "../../../generated/prisma/index.js";
-import { checkAuth } from "../../middleware/checkAuth";
-import { checkWarehouseAccess } from "../../middleware/checkWarehouseAccess";
-import { validateRequest } from "../../middleware/validateRequest";
-import { ZoneController } from "./zone.controller";
-import { ZoneValidation } from "./zone.validation";
+import { checkAuth } from "../../middleware/checkAuth.js";
+import { checkWarehouseAccess } from "../../middleware/checkWarehouseAccess.js";
+import { validateRequest } from "../../middleware/validateRequest.js";
+import { ZoneController } from "./zone.controller.js";
+import { ZoneValidation } from "./zone.validation.js";
 
 const router = Router();
 

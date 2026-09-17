@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import { PaginatedResponse, SuccessResponse, ErrorResponse } from "../components/responses";
-import { UserProfileResponse } from "../components/schemas";
+import { PaginatedResponse, SuccessResponse, ErrorResponse } from "../components/responses.js";
+import { UserProfileResponse } from "../components/schemas.js";
 
 const LoginRequest = z
     .object({

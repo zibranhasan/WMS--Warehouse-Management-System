@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import status from "http-status";
 
-import { Role } from "../../generated/prisma/enums";
-import AppError from "../errorHelpers/AppError";
-import { prisma } from "../lib/prisma";
+import { Role } from "../../generated/prisma/enums.js";
+import AppError from "../errorHelpers/AppError.js";
+import { prisma } from "../lib/prisma.js";
 
 // ---------------------------------------------------------------------------
 // INTERNAL: Extract warehouseId from request sources (params → body → query)

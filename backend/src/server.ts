@@ -1,7 +1,7 @@
 import http from "node:http";
-import app from "./app";
-import { envVars } from "./app/config/env";
-import { initializeSocketServer } from "./app/socket";
+import app from "./app.js";
+import { envVars } from "./app/config/env.js";
+import { initializeSocketServer } from "./app/socket/index.js";
 
 const bootstrap = () => {
     try {

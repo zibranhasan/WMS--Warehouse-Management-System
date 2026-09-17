@@ -1,22 +1,22 @@
 import httpStatus from "http-status";
 import { User, UserStatus, Warehouse, WarehouseStatus } from "../../../generated/prisma/index.js";
-import AppError from "../../errorHelpers/AppError";
-import { IQueryParams } from "../../interfaces/query.interface";
-import { prisma } from "../../lib/prisma";
-import { QueryBuilder } from "../../utils/QueryBuilder";
+import AppError from "../../errorHelpers/AppError.js";
+import { IQueryParams } from "../../interfaces/query.interface.js";
+import { prisma } from "../../lib/prisma.js";
+import { QueryBuilder } from "../../utils/QueryBuilder.js";
 import {
     userFilterableFields,
     userSearchableFields,
-} from "../user/user.constant";
+} from "../user/user.constant.js";
 import {
     warehouseFilterableFields,
     warehouseSearchableFields,
-} from "./warehouse.constant";
+} from "./warehouse.constant.js";
 import {
     ICreateWarehouse,
     IUpdateWarehouse,
     IUpdateWarehouseStatus,
-} from "./warehouse.interface";
+} from "./warehouse.interface.js";
 
 const createWarehouse = async (payload: ICreateWarehouse) => {
     const existingWarehouse = await prisma.warehouse.findUnique({

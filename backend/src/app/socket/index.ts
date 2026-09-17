@@ -1,9 +1,9 @@
 import { Server as HttpServer } from "node:http";
 import { Server as SocketIOServer } from "socket.io";
-import { socketServerOptions } from "./socket.config";
+import { socketServerOptions } from "./socket.config.js";
 
-import { AuthenticatedSocket } from "./socket.types";
-import { socketAuthMiddleware } from "./socket.middleware";
+import { AuthenticatedSocket } from "./socket.types.js";
+import { socketAuthMiddleware } from "./socket.middleware.js";
 
 let io: SocketIOServer | null = null;
 
@@ -55,6 +55,6 @@ export const getIO = (): SocketIOServer => {
     return io;
 };
 
-export * from "./socket.types";
-export * from "./socket.events";
+export * from "./socket.types.js";
+export * from "./socket.events.js";
 

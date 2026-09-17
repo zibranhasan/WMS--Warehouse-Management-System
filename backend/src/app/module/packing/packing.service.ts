@@ -12,22 +12,22 @@ import {
     SalesOrderStatus,
     UserStatus,
 } from "../../../generated/prisma/index.js";
-import AppError from "../../errorHelpers/AppError";
-import { IQueryParams } from "../../interfaces/query.interface";
-import { prisma } from "../../lib/prisma";
-import { QueryBuilder } from "../../utils/QueryBuilder";
-import { NotificationService } from "../notification/notification.service";
+import AppError from "../../errorHelpers/AppError.js";
+import { IQueryParams } from "../../interfaces/query.interface.js";
+import { prisma } from "../../lib/prisma.js";
+import { QueryBuilder } from "../../utils/QueryBuilder.js";
+import { NotificationService } from "../notification/notification.service.js";
 import {
     packingFilterableFields,
     packingSearchableFields,
-} from "./packing.constant";
+} from "./packing.constant.js";
 import {
     IAddPackageItems,
     IAssignPacker,
     ICancelPackingTask,
     ICreatePackage,
     ICreatePackingTask,
-} from "./packing.interface";
+} from "./packing.interface.js";
 
 // ---------------------------------------------------------------------------
 // Helper: Safe notification dispatcher (non-fatal side effect)

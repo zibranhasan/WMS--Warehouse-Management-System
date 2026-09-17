@@ -1,15 +1,15 @@
 import httpStatus from "http-status";
 import { LocationStatus, Shelf } from "../../../generated/prisma/index.js";
-import AppError from "../../errorHelpers/AppError";
-import { IQueryParams } from "../../interfaces/query.interface";
-import { prisma } from "../../lib/prisma";
-import { QueryBuilder } from "../../utils/QueryBuilder";
-import { shelfFilterableFields, shelfSearchableFields } from "./shelf.constant";
+import AppError from "../../errorHelpers/AppError.js";
+import { IQueryParams } from "../../interfaces/query.interface.js";
+import { prisma } from "../../lib/prisma.js";
+import { QueryBuilder } from "../../utils/QueryBuilder.js";
+import { shelfFilterableFields, shelfSearchableFields } from "./shelf.constant.js";
 import {
     ICreateShelf,
     IUpdateShelf,
     IUpdateShelfStatus,
-} from "./shelf.interface";
+} from "./shelf.interface.js";
 
 const createShelf = async (payload: ICreateShelf) => {
     // 1. Validate parent aisle exists, is active, and is not deleted

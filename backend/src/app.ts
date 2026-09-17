@@ -1,19 +1,19 @@
 import express, { Application } from "express";
 
 
-import { IndexRoutes } from "./app/routes";
+import { IndexRoutes } from "./app/routes/index.js";
 
 
-import { notFound } from "./app/middleware/notFound";
+import { notFound } from "./app/middleware/notFound.js";
 import cookieParser from "cookie-parser";
 import { toNodeHandler } from "better-auth/node";
-import { auth } from "./app/lib/auth";
+import { auth } from "./app/lib/auth.js";
 import path from "node:path";
 import cors from "cors";
 import qs from "qs";
 
-import { envVars } from "./app/config/env";
-import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
+import { envVars } from "./app/config/env.js";
+import { globalErrorHandler } from "./app/middleware/globalErrorHandler.js";
 
 
 const app: Application = express();
@@ -69,7 +69,7 @@ app.use("/api/v1", IndexRoutes);
 
 // OpenAPI spec serving (proof of concept)
 app.get("/api/v1/docs/openapi.json", (_req, res) => {
-    import("./app/openapi/index").then(({ generateOpenApiDocument }) => {
+    import("./app/openapi/index.js").then(({ generateOpenApiDocument }) => {
         const spec = generateOpenApiDocument();
         res.json(spec);
     });

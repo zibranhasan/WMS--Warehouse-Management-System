@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { catchAsync } from "../../shared/catchAsync";
-import { sendResponse } from "../../shared/sendResponse";
-import { getWarehouseScope } from "../../utils/warehouseScope";
-import { InventoryLocationService } from "./inventory-location.service";
-import { InventoryService } from "./inventory.service";
+import { catchAsync } from "../../shared/catchAsync.js";
+import { sendResponse } from "../../shared/sendResponse.js";
+import { getWarehouseScope } from "../../utils/warehouseScope.js";
+import { InventoryLocationService } from "./inventory-location.service.js";
+import { InventoryService } from "./inventory.service.js";
 
 // ---------------------------------------------------------------------------
 // getStockByWarehouse — GET /inventory/warehouse/:warehouseId

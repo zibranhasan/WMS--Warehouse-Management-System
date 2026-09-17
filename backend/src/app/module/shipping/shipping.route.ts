@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { Role } from "../../../generated/prisma/index.js";
-import { checkAuth } from "../../middleware/checkAuth";
+import { checkAuth } from "../../middleware/checkAuth.js";
 import {
     checkSoBodyWarehouseAccess,
     checkSoParamsWarehouseAccess,
     checkShipmentWarehouseAccess,
-} from "../../middleware/checkWarehouseAccess";
-import { validateRequest } from "../../middleware/validateRequest";
-import { ShippingController } from "./shipping.controller";
-import { ShippingValidation } from "./shipping.validation";
+} from "../../middleware/checkWarehouseAccess.js";
+import { validateRequest } from "../../middleware/validateRequest.js";
+import { ShippingController } from "./shipping.controller.js";
+import { ShippingValidation } from "./shipping.validation.js";
 
 const router = Router();
 

@@ -2,11 +2,11 @@ import { Request } from "express";
 import status from "http-status";
 import { fromNodeHeaders } from "better-auth/node";
 
-import { UserStatus } from "../../../generated/prisma/enums";
-import AppError from "../../errorHelpers/AppError";
-import { deleteFileFromCloudinary } from "../../config/cloudinary.config";
-import { auth } from "../../lib/auth";
-import { prisma } from "../../lib/prisma";
+import { UserStatus } from "../../../generated/prisma/enums.js";
+import AppError from "../../errorHelpers/AppError.js";
+import { deleteFileFromCloudinary } from "../../config/cloudinary.config.js";
+import { auth } from "../../lib/auth.js";
+import { prisma } from "../../lib/prisma.js";
 
 const loginUser = async (req: Request) => {
     const { email, password } = req.body;

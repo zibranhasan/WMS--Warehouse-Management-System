@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { catchAsync } from "../../shared/catchAsync";
-import { sendResponse } from "../../shared/sendResponse";
-import { getWarehouseScope } from "../../utils/warehouseScope";
-import { PurchaseOrderService } from "./purchaseOrder.service";
+import { catchAsync } from "../../shared/catchAsync.js";
+import { sendResponse } from "../../shared/sendResponse.js";
+import { getWarehouseScope } from "../../utils/warehouseScope.js";
+import { PurchaseOrderService } from "./purchaseOrder.service.js";
 
 const createPurchaseOrder = catchAsync(async (req: Request, res: Response) => {
     const userId = req.user.userId;

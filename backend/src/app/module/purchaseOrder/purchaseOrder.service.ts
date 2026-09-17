@@ -10,23 +10,23 @@ import {
     UserStatus,
     WarehouseStatus,
 } from "../../../generated/prisma/index.js";
-import AppError from "../../errorHelpers/AppError";
-import { IQueryParams } from "../../interfaces/query.interface";
-import { prisma } from "../../lib/prisma";
-import { QueryBuilder } from "../../utils/QueryBuilder";
-import { InventoryService } from "../inventory/inventory.service";
-import { NotificationService } from "../notification/notification.service";
+import AppError from "../../errorHelpers/AppError.js";
+import { IQueryParams } from "../../interfaces/query.interface.js";
+import { prisma } from "../../lib/prisma.js";
+import { QueryBuilder } from "../../utils/QueryBuilder.js";
+import { InventoryService } from "../inventory/inventory.service.js";
+import { NotificationService } from "../notification/notification.service.js";
 import {
     purchaseOrderFilterableFields,
     purchaseOrderSearchableFields,
-} from "./purchaseOrder.constant";
+} from "./purchaseOrder.constant.js";
 import {
     ICancelPurchaseOrder,
     ICreatePurchaseOrder,
     IReceiveGoods,
     IRejectPurchaseOrder,
     IUpdatePurchaseOrder,
-} from "./purchaseOrder.interface";
+} from "./purchaseOrder.interface.js";
 
 // ---------------------------------------------------------------------------
 // Helper: Safe notification dispatcher (non-fatal side effect)
