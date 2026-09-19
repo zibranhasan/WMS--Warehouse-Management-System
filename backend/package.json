@@ -17,7 +17,9 @@
     "push": "prisma db push",
     "pull": "prisma db pull",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate:openapi": "tsx src/generate-openapi.ts"
+    "generate:openapi": "tsx src/generate-openapi.ts",
+    "seed": "node dist/app/utils/seed-runner.js",
+    "seed:dev": "tsx src/app/utils/seed-runner.ts"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^9.1.0",
