@@ -28,9 +28,13 @@ export function useLogin() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: LoginPayload) => authApi.login(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: authKeys.currentUser() });
+    mutationFn: async (payload: LoginPayload) => {
+      const result = await authApi.login(payload);
+      await queryClient.fetchQuery({
+        queryKey: authKeys.currentUser(),
+        queryFn: authApi.getCurrentUser,
+      });
+      return result;
     },
   });
 }

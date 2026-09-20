@@ -1,14 +1,8 @@
 import { ApiError, ErrorSource } from "./api-error";
 
-const getBaseUrl = (): string => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  if (!baseUrl) {
-    throw new Error(
-      "NEXT_PUBLIC_API_URL environment variable is missing. Please check frontend/.env.local."
-    );
-  }
-  return baseUrl.replace(/\/+$/, "");
-};
+const PROXY_BASE = "/api/proxy";
+
+const getBaseUrl = (): string => PROXY_BASE;
 
 export type QueryParamValue =
   | string
