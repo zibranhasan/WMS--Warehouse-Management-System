@@ -60,7 +60,7 @@ export function ImageUpload({
   return (
     <div className="space-y-2">
       <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
-        Product Image <span className="font-normal text-slate-500">(Optional)</span>
+        Image <span className="font-normal text-slate-500">(Optional)</span>
       </label>
 
       <input

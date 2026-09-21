@@ -18,11 +18,14 @@ interface EnvConfig {
     REFRESH_TOKEN_EXPIRES_IN: string;
     // BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN: string;
     // BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE: string;
+    EMAIL_PROVIDER: "smtp" | "brevo";
+    BREVO_API_KEY?: string;
     EMAIL_SENDER: {
-        SMTP_USER: string;
-        SMTP_PASS: string;
-        SMTP_HOST: string;
-        SMTP_PORT: string;
+        EMAIL_FROM: string;
+        SMTP_USER?: string;
+        SMTP_PASS?: string;
+        SMTP_HOST?: string;
+        SMTP_PORT?: string;
         SMTP_FROM: string;
     };
     // GOOGLE_CLIENT_ID: string;
@@ -43,7 +46,7 @@ interface EnvConfig {
 }
 
 const loadEnvVariables = (): EnvConfig => {
-    const requireEnvVariable = [
+    const baseRequiredVariables = [
         "NODE_ENV",
         "PORT",
         "DATABASE_URL",
@@ -55,11 +58,6 @@ const loadEnvVariables = (): EnvConfig => {
         "REFRESH_TOKEN_EXPIRES_IN",
         // "BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN",
         // "BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE",
-        "EMAIL_SENDER_SMTP_USER",
-        "EMAIL_SENDER_SMTP_PASS",
-        "EMAIL_SENDER_SMTP_HOST",
-        "EMAIL_SENDER_SMTP_PORT",
-        "EMAIL_SENDER_SMTP_FROM",
         // "GOOGLE_CLIENT_ID",
         // "GOOGLE_CLIENT_SECRET",
         // "GOOGLE_CALLBACK_URL",
@@ -73,7 +71,7 @@ const loadEnvVariables = (): EnvConfig => {
         "SUPER_ADMIN_PASSWORD",
     ];
 
-    requireEnvVariable.forEach((variable) => {
+    baseRequiredVariables.forEach((variable) => {
         if (!process.env[variable]) {
             throw new AppError(
                 status.INTERNAL_SERVER_ERROR,
@@ -81,6 +79,51 @@ const loadEnvVariables = (): EnvConfig => {
             );
         }
     });
+
+    const emailProvider = (process.env.EMAIL_PROVIDER || "smtp").toLowerCase();
+    if (emailProvider !== "smtp" && emailProvider !== "brevo") {
+        throw new AppError(
+            status.INTERNAL_SERVER_ERROR,
+            `Invalid EMAIL_PROVIDER: "${process.env.EMAIL_PROVIDER}". Supported providers are "smtp" or "brevo".`,
+        );
+    }
+
+    if (emailProvider === "smtp") {
+        const smtpRequiredVariables = [
+            "EMAIL_SENDER_SMTP_USER",
+            "EMAIL_SENDER_SMTP_PASS",
+            "EMAIL_SENDER_SMTP_HOST",
+            "EMAIL_SENDER_SMTP_PORT",
+            "EMAIL_SENDER_SMTP_FROM",
+        ];
+
+        smtpRequiredVariables.forEach((variable) => {
+            if (!process.env[variable]) {
+                throw new AppError(
+                    status.INTERNAL_SERVER_ERROR,
+                    `Environment variable ${variable} is required when EMAIL_PROVIDER=smtp.`,
+                );
+            }
+        });
+    } else if (emailProvider === "brevo") {
+        if (!process.env.BREVO_API_KEY) {
+            throw new AppError(
+                status.INTERNAL_SERVER_ERROR,
+                "Environment variable BREVO_API_KEY is required when EMAIL_PROVIDER=brevo.",
+            );
+        }
+
+        const emailFrom = process.env.EMAIL_FROM || process.env.EMAIL_SENDER_SMTP_FROM;
+        if (!emailFrom) {
+            throw new AppError(
+                status.INTERNAL_SERVER_ERROR,
+                "Environment variable EMAIL_FROM or EMAIL_SENDER_SMTP_FROM is required when EMAIL_PROVIDER=brevo.",
+            );
+        }
+    }
+
+    const emailFrom =
+        process.env.EMAIL_FROM || process.env.EMAIL_SENDER_SMTP_FROM || "";
 
     return {
         NODE_ENV: process.env.NODE_ENV as string,
@@ -96,12 +139,15 @@ const loadEnvVariables = (): EnvConfig => {
         //         .BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN as string,
         //     BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE: process.env
         //         .BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE as string,
+        EMAIL_PROVIDER: emailProvider as "smtp" | "brevo",
+        BREVO_API_KEY: process.env.BREVO_API_KEY,
         EMAIL_SENDER: {
-            SMTP_USER: process.env.EMAIL_SENDER_SMTP_USER as string,
-            SMTP_PASS: process.env.EMAIL_SENDER_SMTP_PASS as string,
-            SMTP_HOST: process.env.EMAIL_SENDER_SMTP_HOST as string,
-            SMTP_PORT: process.env.EMAIL_SENDER_SMTP_PORT as string,
-            SMTP_FROM: process.env.EMAIL_SENDER_SMTP_FROM as string,
+            EMAIL_FROM: emailFrom,
+            SMTP_USER: process.env.EMAIL_SENDER_SMTP_USER,
+            SMTP_PASS: process.env.EMAIL_SENDER_SMTP_PASS,
+            SMTP_HOST: process.env.EMAIL_SENDER_SMTP_HOST,
+            SMTP_PORT: process.env.EMAIL_SENDER_SMTP_PORT,
+            SMTP_FROM: process.env.EMAIL_SENDER_SMTP_FROM || emailFrom,
         },
         //     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,
         //     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
