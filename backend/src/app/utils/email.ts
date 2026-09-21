@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import dns from "node:dns";
 import ejs from "ejs";
 import status from "http-status";
 import nodemailer from "nodemailer";
 import path from "path";
 import { envVars } from "../config/env.js";
 import AppError from "../errorHelpers/AppError.js";
+
+// Explicitly configure DNS resolution to prefer IPv4 addresses over IPv6
+dns.setDefaultResultOrder("ipv4first");
 
 const transporter = nodemailer.createTransport({
     host: envVars.EMAIL_SENDER.SMTP_HOST,
@@ -14,6 +18,9 @@ const transporter = nodemailer.createTransport({
         pass: envVars.EMAIL_SENDER.SMTP_PASS,
     },
     port: Number(envVars.EMAIL_SENDER.SMTP_PORT),
+    tls: {
+        servername: envVars.EMAIL_SENDER.SMTP_HOST,
+    },
 });
 
 interface SendEmailOptions {
