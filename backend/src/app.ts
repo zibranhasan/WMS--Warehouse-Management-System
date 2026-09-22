@@ -75,6 +75,11 @@ app.get("/api/v1/docs/openapi.json", (_req, res) => {
     });
 });
 
+// Health check endpoint for uptime monitoring
+app.get("/health", (_req, res) => {
+    res.status(200).json({ status: "ok" });
+});
+
 // // Basic route
 // app.get("/", async (req: Request, res: Response) => {
 //     const specialty = await prisma.specialty.create({
