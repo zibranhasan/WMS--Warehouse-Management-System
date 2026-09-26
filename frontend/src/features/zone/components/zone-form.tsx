@@ -10,6 +10,14 @@ import {
 import { CreateZonePayload, UpdateZonePayload, Zone } from "../zone.types";
 import { useWarehouses } from "@/features/warehouse/warehouse.hooks";
 import { useCurrentUser } from "@/features/auth/auth.hooks";
+import { Controller } from "react-hook-form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
@@ -54,10 +62,24 @@ export function ZoneForm({
     defaultWarehouseId ||
     (!isGlobalUser && user?.warehouseId ? user.warehouseId : "");
 
+  const warehouseOptions = useMemo(() => {
+    const list: { value: string; label: string }[] = [];
+    if (isGlobalUser) {
+      list.push({ value: "", label: "-- Select Parent Warehouse --" });
+    } else if (warehouses.length === 0) {
+      list.push({ value: "", label: "No warehouse assigned" });
+    }
+    warehouses.forEach((wh) => {
+      list.push({ value: wh.id, label: `${wh.name} (${wh.code})` });
+    });
+    return list;
+  }, [isGlobalUser, warehouses]);
+
   const {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
   } = useForm<CreateZoneFormValues>({
     resolver: zodResolver(createZoneSchema),
@@ -103,22 +125,40 @@ export function ZoneForm({
               <span>Loading active warehouses...</span>
             </div>
           ) : (
-            <select
-              {...register("warehouseId")}
-              disabled={isPending}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white"
-            >
-              {isGlobalUser ? (
-                <option value="">-- Select Parent Warehouse --</option>
-              ) : warehouses.length === 0 ? (
-                <option value="">No warehouse assigned</option>
-              ) : null}
-              {warehouses.map((wh) => (
-                <option key={wh.id} value={wh.id}>
-                  {wh.name} ({wh.code})
-                </option>
-              ))}
-            </select>
+            <Controller
+              control={control}
+              name="warehouseId"
+              render={({ field }) => (
+                <Select
+                  value={field.value || ""}
+                  onValueChange={(val) => field.onChange(val ?? "")}
+                  disabled={isPending}
+                  items={warehouseOptions}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue
+                      placeholder={
+                        isGlobalUser
+                          ? "-- Select Parent Warehouse --"
+                          : "No warehouse assigned"
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {isGlobalUser ? (
+                      <SelectItem value="">-- Select Parent Warehouse --</SelectItem>
+                    ) : warehouses.length === 0 ? (
+                      <SelectItem value="">No warehouse assigned</SelectItem>
+                    ) : null}
+                    {warehouses.map((wh) => (
+                      <SelectItem key={wh.id} value={wh.id}>
+                        {wh.name} ({wh.code})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           )}
           {errors.warehouseId && (
             <p className="mt-1 text-[11px] text-red-500">{errors.warehouseId.message}</p>

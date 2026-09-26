@@ -34,7 +34,7 @@ export default function DashboardPage() {
   const role = user?.role;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header Banner */}
       <DashboardHeader userName={user?.name} userRole={role} />
 

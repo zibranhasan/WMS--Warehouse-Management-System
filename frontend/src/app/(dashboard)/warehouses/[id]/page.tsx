@@ -38,7 +38,7 @@ export default function WarehouseDetailPage({ params }: WarehouseDetailPageProps
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Back button */}
       <div>
         <Link href="/warehouses">
@@ -56,7 +56,7 @@ export default function WarehouseDetailPage({ params }: WarehouseDetailPageProps
 
       {/* Loading Skeleton */}
       {isLoading && (
-        <div className="animate-pulse space-y-6">
+        <div className="animate-pulse space-y-4">
           <div className="h-24 rounded-xl bg-slate-200 dark:bg-slate-800" />
           <div className="h-64 rounded-xl bg-slate-200 dark:bg-slate-800" />
         </div>
@@ -75,7 +75,7 @@ export default function WarehouseDetailPage({ params }: WarehouseDetailPageProps
 
       {/* Detail Content */}
       {!isLoading && !isError && warehouse && (
-        <div className="space-y-6">
+<div className="space-y-4">
           {/* Header Card */}
           <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-950">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

@@ -9,6 +9,13 @@ import { PageErrorAlert } from "@/components/shared/page-error-alert";
 import { PickingStatusBadge } from "./picking-status-badge";
 import { Button } from "@/components/ui/button";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Loader2,
   PackageCheck,
   MapPin,
@@ -80,6 +87,17 @@ function PickItemRow({
     );
     return warehouseGroup?.locations ?? [];
   }, [locationsData, warehouseId]);
+
+  const locationOptions = useMemo(
+    () => [
+      { value: "", label: "Choose a location..." },
+      ...availableLocations.map((loc) => ({
+        value: loc.id,
+        label: `${buildLocationPath(loc.bin, loc.shelf, loc.aisle, loc.zone)} — Available: ${loc.quantity}`,
+      })),
+    ],
+    [availableLocations]
+  );
 
   // Pick mutation
   const pickMutation = usePickItems();
@@ -199,22 +217,27 @@ function PickItemRow({
             <label className="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-300">
               Select Location
             </label>
-            <select
+            <Select
               value={selectedLocationStockId}
-              onChange={(e) => {
-                setSelectedLocationStockId(e.target.value);
+              onValueChange={(val) => {
+                setSelectedLocationStockId(val ?? "");
                 setQuantity("");
               }}
-              className="w-full rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+              items={locationOptions}
             >
-              <option value="">Choose a location...</option>
-              {availableLocations.map((loc) => (
-                <option key={loc.id} value={loc.id}>
-                  {buildLocationPath(loc.bin, loc.shelf, loc.aisle, loc.zone)} —{" "}
-                  Available: {loc.quantity}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Choose a location..." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Choose a location...</SelectItem>
+                {availableLocations.map((loc) => (
+                  <SelectItem key={loc.id} value={loc.id}>
+                    {buildLocationPath(loc.bin, loc.shelf, loc.aisle, loc.zone)} —{" "}
+                    Available: {loc.quantity}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Quantity Input */}

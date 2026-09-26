@@ -15,6 +15,13 @@ import { UpdateShipmentStatusDialog } from "@/features/shipping/components/updat
 import type { ShipmentStatus } from "@/features/shipping/shipping.types";
 import { SearchInput } from "@/components/shared/search-input";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Plus } from "lucide-react";
 import { StatusTabFilter } from "@/components/shared/status-tab-filter";
 import { DataTablePagination } from "@/components/shared/data-table-pagination";
@@ -56,6 +63,17 @@ export default function ShippingPage() {
     status: "ACTIVE",
   });
   const warehouses = warehousesData?.data || [];
+
+  const warehouseSelectOptions = useMemo(
+    () => [
+      { value: "", label: "All Warehouses" },
+      ...warehouses.map((wh) => ({
+        value: wh.id,
+        label: `${wh.name} (${wh.code})`,
+      })),
+    ],
+    [warehouses]
+  );
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -105,7 +123,7 @@ export default function ShippingPage() {
     user?.role === "WAREHOUSE_MANAGER";
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
@@ -140,21 +158,26 @@ export default function ShippingPage() {
             <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
               Warehouse:
             </label>
-            <select
+            <Select
               value={selectedWarehouseId}
-              onChange={(e) => {
-                setSelectedWarehouseId(e.target.value);
+              onValueChange={(val) => {
+                setSelectedWarehouseId(val ?? "");
                 setCurrentPage(1);
               }}
-              className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+              items={warehouseSelectOptions}
             >
-              <option value="">All Warehouses</option>
-              {warehouses.map((wh) => (
-                <option key={wh.id} value={wh.id}>
-                  {wh.name} ({wh.code})
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="All Warehouses" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">All Warehouses</SelectItem>
+                {warehouses.map((wh) => (
+                  <SelectItem key={wh.id} value={wh.id}>
+                    {wh.name} ({wh.code})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         )}
       </div>
@@ -172,20 +195,27 @@ export default function ShippingPage() {
           <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">
             Method:
           </label>
-          <select
+          <Select
             value={activeShippingMethod}
-            onChange={(e) => {
-              setActiveShippingMethod(e.target.value);
-              setCurrentPage(1);
+            onValueChange={(val) => {
+              if (val !== null) {
+                setActiveShippingMethod(val);
+                setCurrentPage(1);
+              }
             }}
-            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+            items={SHIPPING_METHOD_OPTIONS}
           >
-            {SHIPPING_METHOD_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-40">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {SHIPPING_METHOD_OPTIONS.map((opt) => (
+                <SelectItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

@@ -6,7 +6,7 @@ import { Shelf } from "../shelf.types";
 import { LocationStatusBadge } from "@/features/zone/components/location-status-badge";
 import { DataTable } from "@/components/shared/data-table";
 import { Button } from "@/components/ui/button";
-import { Edit2, Trash2, Grid, Columns, Layers, Building2 } from "lucide-react";
+import { Edit2, Trash2, Grid, Columns, Layers, Building2, RefreshCw } from "lucide-react";
 
 interface ShelfTableProps {
   shelves: Shelf[];
@@ -126,15 +126,7 @@ export function ShelfTable({
           <LocationStatusBadge status={row.original.status} />
         ),
       },
-      {
-        accessorKey: "createdAt",
-        header: "Created At",
-        cell: ({ row }) => (
-          <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
-            {formatDate(row.original.createdAt)}
-          </span>
-        ),
-      },
+
       {
         id: "actions",
         header: () => <div className="text-right">Actions</div>,
@@ -149,12 +141,12 @@ export function ShelfTable({
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
+                size="icon"
                 onClick={() => onStatusChange(shelf)}
                 title="Change Shelf Status"
                 className="text-xs text-slate-600 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
               >
-                Change Status
+                <RefreshCw className="h-4 w-4" />
               </Button>
 
               {/* Edit */}

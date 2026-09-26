@@ -31,6 +31,13 @@ import { DataTablePagination } from "@/components/shared/data-table-pagination";
 import { PageErrorAlert } from "@/components/shared/page-error-alert";
 import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Building2, Plus, X } from "lucide-react";
 
 type StatusFilterType = LocationStatus | "ALL";
@@ -70,6 +77,27 @@ export default function GlobalZonesPage() {
     }
     return filtered;
   }, [isGlobalUser, allWarehouses, user?.warehouseId, user?.warehouse]);
+
+  const warehouseSelectOptions = useMemo(
+    () => [
+      { value: "ALL", label: "All Warehouses" },
+      ...warehousesList.map((wh) => ({
+        value: wh.id,
+        label: `${wh.name} (${wh.code})`,
+      })),
+    ],
+    [warehousesList]
+  );
+
+  const scopedWarehouseOptions = useMemo(() => {
+    if (warehousesList.length === 0) {
+      return [{ value: "", label: "No warehouse assigned" }];
+    }
+    return warehousesList.map((wh) => ({
+      value: wh.id,
+      label: `${wh.name} (${wh.code})`,
+    }));
+  }, [warehousesList]);
 
   // Filter & Query States
   const [page, setPage] = useState(1);
@@ -201,7 +229,7 @@ export default function GlobalZonesPage() {
   const meta = data?.meta;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Feedback Toast Banner */}
       {feedback && (
         <div
@@ -258,35 +286,47 @@ export default function GlobalZonesPage() {
           <div className="flex items-center gap-2 shrink-0">
             <Building2 className="h-4 w-4 text-slate-400 hidden sm:inline-block" />
             {isGlobalUser ? (
-              <select
+              <Select
                 value={warehouseFilter}
-                onChange={(e) => handleWarehouseFilterChange(e.target.value)}
+                onValueChange={(val) => {
+                  if (val !== null) handleWarehouseFilterChange(val);
+                }}
                 disabled={isLoadingWarehouses}
-                className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-700 outline-none focus:border-blue-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+                items={warehouseSelectOptions}
               >
-                <option value="ALL">All Warehouses</option>
-                {warehousesList.map((wh) => (
-                  <option key={wh.id} value={wh.id}>
-                    {wh.name} ({wh.code})
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="All Warehouses" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">All Warehouses</SelectItem>
+                  {warehousesList.map((wh) => (
+                    <SelectItem key={wh.id} value={wh.id}>
+                      {wh.name} ({wh.code})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             ) : (
-              <select
+              <Select
                 value={user?.warehouseId ?? ""}
                 disabled={true}
-                className="rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-xs text-slate-700 outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 cursor-not-allowed"
+                items={scopedWarehouseOptions}
               >
-                {warehousesList.length === 0 ? (
-                  <option value="">No warehouse assigned</option>
-                ) : (
-                  warehousesList.map((wh) => (
-                    <option key={wh.id} value={wh.id}>
-                      {wh.name} ({wh.code})
-                    </option>
-                  ))
-                )}
-              </select>
+                <SelectTrigger className="w-48 bg-slate-50 dark:bg-slate-900 cursor-not-allowed">
+                  <SelectValue placeholder="No warehouse assigned" />
+                </SelectTrigger>
+                <SelectContent>
+                  {warehousesList.length === 0 ? (
+                    <SelectItem value="">No warehouse assigned</SelectItem>
+                  ) : (
+                    warehousesList.map((wh) => (
+                      <SelectItem key={wh.id} value={wh.id}>
+                        {wh.name} ({wh.code})
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
             )}
           </div>
         </div>

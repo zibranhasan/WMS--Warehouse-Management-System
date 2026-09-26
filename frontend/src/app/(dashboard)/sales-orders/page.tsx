@@ -16,6 +16,13 @@ import { StatusTabFilter } from "@/components/shared/status-tab-filter";
 import { DataTablePagination } from "@/components/shared/data-table-pagination";
 import { PageErrorAlert } from "@/components/shared/page-error-alert";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Package, Plus } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -53,6 +60,17 @@ export default function SalesOrdersPage() {
     status: "ACTIVE",
   });
   const warehouses = warehousesData?.data || [];
+
+  const warehouseSelectOptions = useMemo(
+    () => [
+      { value: "", label: "All Warehouses" },
+      ...warehouses.map((wh) => ({
+        value: wh.id,
+        label: `${wh.name} (${wh.code})`,
+      })),
+    ],
+    [warehouses]
+  );
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -102,7 +120,7 @@ export default function SalesOrdersPage() {
   const userCanCancel = userCanCreate;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -116,23 +134,6 @@ export default function SalesOrdersPage() {
             </p>
           </div>
         </div>
-
-        {/* 
-        {canCreate && (
-          <Button
-            type="button"
-            onClick={() => setIsCreateOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 shrink-0 self-start sm:self-auto"
-          >
-            <Plus className="h-4 w-4" />
-            Create Purchase Order
-          </Button>
-        )} */}
-
-
-
-
-
         {userCanCreate && (
           <Button
             type="button"
@@ -157,21 +158,26 @@ export default function SalesOrdersPage() {
             <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
               Warehouse:
             </label>
-            <select
+            <Select
               value={selectedWarehouseId}
-              onChange={(e) => {
-                setSelectedWarehouseId(e.target.value);
+              onValueChange={(val) => {
+                setSelectedWarehouseId(val ?? "");
                 setCurrentPage(1);
               }}
-              className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+              items={warehouseSelectOptions}
             >
-              <option value="">All Warehouses</option>
-              {warehouses.map((wh) => (
-                <option key={wh.id} value={wh.id}>
-                  {wh.name} ({wh.code})
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="All Warehouses" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">All Warehouses</SelectItem>
+                {warehouses.map((wh) => (
+                  <SelectItem key={wh.id} value={wh.id}>
+                    {wh.name} ({wh.code})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         )}
       </div>

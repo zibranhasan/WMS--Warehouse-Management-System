@@ -1,6 +1,7 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useMemo } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createAisleSchema,
@@ -8,6 +9,13 @@ import {
 } from "../aisle.schema";
 import { CreateAislePayload, UpdateAislePayload, Aisle } from "../aisle.types";
 import { useZones } from "@/features/zone/zone.hooks";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
@@ -28,16 +36,27 @@ export function AisleForm({
 }: AisleFormProps) {
   const isEditing = Boolean(initialData);
 
-  // Fetch active zones for global creation / edit
   const { data: zonesData, isLoading: isLoadingZones } = useZones({
     limit: 200,
     status: "ACTIVE",
   });
   const zones = zonesData?.data || [];
 
+  const zoneOptions = useMemo(
+    () => [
+      { value: "", label: "-- Select Storage Zone --" },
+      ...zones.map((z) => ({
+        value: z.id,
+        label: `${z.name} (${z.code}) ${z.warehouse ? `[${z.warehouse.name}]` : ""}`,
+      })),
+    ],
+    [zones]
+  );
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<CreateAisleFormValues>({
     resolver: zodResolver(createAisleSchema),
@@ -74,18 +93,30 @@ export function AisleForm({
               <span>Loading active zones...</span>
             </div>
           ) : (
-            <select
-              {...register("zoneId")}
-              disabled={isPending}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white"
-            >
-              <option value="">-- Select Storage Zone --</option>
-              {zones.map((z) => (
-                <option key={z.id} value={z.id}>
-                  {z.name} ({z.code}) {z.warehouse ? `[${z.warehouse.name}]` : ""}
-                </option>
-              ))}
-            </select>
+            <Controller
+              control={control}
+              name="zoneId"
+              render={({ field }) => (
+                <Select
+                  value={field.value || ""}
+                  onValueChange={(val) => field.onChange(val ?? "")}
+                  disabled={isPending}
+                  items={zoneOptions}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="-- Select Storage Zone --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">-- Select Storage Zone --</SelectItem>
+                    {zones.map((z) => (
+                      <SelectItem key={z.id} value={z.id}>
+                        {z.name} ({z.code}) {z.warehouse ? `[${z.warehouse.name}]` : ""}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           )}
           {errors.zoneId && (
             <p className="mt-1 text-[11px] text-red-500">{errors.zoneId.message}</p>

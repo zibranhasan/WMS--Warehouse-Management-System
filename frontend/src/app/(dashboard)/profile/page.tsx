@@ -57,7 +57,7 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-2xl mx-auto space-y-6 pt-4">
+      <div className="max-w-2xl mx-auto space-y-4 pt-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
@@ -82,7 +82,7 @@ export default function ProfilePage() {
 
   if (error || !user) {
     return (
-      <div className="max-w-2xl mx-auto space-y-6 pt-4">
+      <div className="max-w-2xl mx-auto space-y-4 pt-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
@@ -111,7 +111,7 @@ export default function ProfilePage() {
     : "U";
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 pt-4">
+    <div className="max-w-2xl mx-auto space-y-4 pt-4">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="space-y-1">

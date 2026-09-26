@@ -6,7 +6,7 @@ import { Bin } from "../bin.types";
 import { LocationStatusBadge } from "@/features/zone/components/location-status-badge";
 import { DataTable } from "@/components/shared/data-table";
 import { Button } from "@/components/ui/button";
-import { Edit2, Trash2, Box, Grid, Columns, Layers, Building2 } from "lucide-react";
+import { Edit2, Trash2, Box, Grid, Columns, Layers, Building2, RefreshCw } from "lucide-react";
 
 interface BinTableProps {
   bins: Bin[];
@@ -48,17 +48,20 @@ export function BinTable({
           </span>
         ),
       },
+
       {
         accessorKey: "name",
         header: "Name",
+        size: 180,
         cell: ({ row }) => (
-          <div className="flex flex-col">
-            <span className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
-              <Box className="h-3.5 w-3.5 text-emerald-500" />
-              {row.original.name}
+          <div className="flex flex-col max-w-[180px]">
+            <span className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5 truncate">
+              <Box className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+              <span className="truncate">{row.original.name}</span>
             </span>
+
             {row.original.description && (
-              <span className="text-xs text-slate-500 truncate max-w-xs dark:text-slate-400">
+              <span className="text-xs text-slate-500 truncate dark:text-slate-400">
                 {row.original.description}
               </span>
             )}
@@ -141,15 +144,7 @@ export function BinTable({
           <LocationStatusBadge status={row.original.status} />
         ),
       },
-      {
-        accessorKey: "createdAt",
-        header: "Created At",
-        cell: ({ row }) => (
-          <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
-            {formatDate(row.original.createdAt)}
-          </span>
-        ),
-      },
+
       {
         id: "actions",
         header: () => <div className="text-right">Actions</div>,
@@ -169,7 +164,7 @@ export function BinTable({
                 title="Change Bin Status"
                 className="text-xs text-slate-600 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
               >
-                Change Status
+                <RefreshCw className="h-4 w-4" />
               </Button>
 
               {/* Edit */}

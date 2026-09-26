@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useMemo } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Product, CreateProductPayload, UpdateProductPayload } from "../product.types";
 import {
@@ -12,6 +12,13 @@ import { useCategories } from "@/features/category/category.hooks";
 import { useBrands } from "@/features/brand/brand.hooks";
 import { ImageUpload } from "@/components/shared/image-upload";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ApiError } from "@/lib/api/api-error";
 import { AlertCircle, Loader2 } from "lucide-react";
 
@@ -46,9 +53,54 @@ export function ProductForm({
   const categories = categoriesData?.data || [];
   const brands = brandsData?.data || [];
 
+  const categoryOptions = useMemo(() => {
+    const list: { value: string; label: string }[] = [
+      {
+        value: "",
+        label: isCategoriesLoading ? "Loading categories..." : "Select Category",
+      },
+    ];
+    if (
+      initialData?.category &&
+      !categories.some((c) => c.id === initialData.categoryId)
+    ) {
+      list.push({
+        value: initialData.categoryId,
+        label: `${initialData.category.name} (Inactive)`,
+      });
+    }
+    categories.forEach((cat) => {
+      list.push({ value: cat.id, label: cat.name });
+    });
+    return list;
+  }, [categories, initialData?.category, initialData?.categoryId, isCategoriesLoading]);
+
+  const brandOptions = useMemo(() => {
+    const list: { value: string; label: string }[] = [
+      {
+        value: "",
+        label: isBrandsLoading ? "Loading brands..." : "No Brand",
+      },
+    ];
+    if (
+      initialData?.brand &&
+      !brands.some((b) => b.id === initialData.brandId)
+    ) {
+      list.push({
+        value: initialData.brandId!,
+        label: `${initialData.brand.name} (Inactive)`,
+      });
+    }
+    brands.forEach((b) => {
+      list.push({ value: b.id, label: b.name });
+    });
+    return list;
+  }, [brands, initialData?.brand, initialData?.brandId, isBrandsLoading]);
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<CreateProductFormValues>({
     resolver: zodResolver(createProductSchema),
@@ -105,7 +157,7 @@ export function ProductForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 max-h-[80vh] overflow-y-auto pr-1">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-2 max-h-[70vh] overflow-y-auto pr-1">
       {errorMessage && (
         <div className="flex items-start gap-2.5 rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300">
           <AlertCircle className="h-4 w-4 shrink-0 text-red-600 dark:text-red-400 mt-0.5" />
@@ -178,28 +230,46 @@ export function ProductForm({
           >
             Category <span className="text-red-500">*</span>
           </label>
-          <select
-            id="categoryId"
-            disabled={isPending || isCategoriesLoading}
-            {...register("categoryId")}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-          >
-            <option value="">
-              {isCategoriesLoading ? "Loading categories..." : "Select Category"}
-            </option>
-            {/* If initial category is inactive, include it in dropdown so user sees current selection */}
-            {initialData?.category &&
-              !categories.some((c) => c.id === initialData.categoryId) && (
-                <option value={initialData.categoryId}>
-                  {initialData.category.name} (Inactive)
-                </option>
-              )}
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
+          <Controller
+            control={control}
+            name="categoryId"
+            render={({ field }) => (
+              <Select
+                value={field.value || ""}
+                onValueChange={(val) => field.onChange(val ?? "")}
+                disabled={isPending || isCategoriesLoading}
+                items={categoryOptions}
+              >
+                <SelectTrigger id="categoryId" className="w-full">
+                  <SelectValue
+                    placeholder={
+                      isCategoriesLoading
+                        ? "Loading categories..."
+                        : "Select Category"
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">
+                    {isCategoriesLoading
+                      ? "Loading categories..."
+                      : "Select Category"}
+                  </SelectItem>
+                  {initialData?.category &&
+                    !categories.some((c) => c.id === initialData.categoryId) && (
+                      <SelectItem value={initialData.categoryId}>
+                        {initialData.category.name} (Inactive)
+                      </SelectItem>
+                    )}
+                  {categories.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
           {errors.categoryId && (
             <p className="text-xs text-red-600 dark:text-red-400">
               {errors.categoryId.message}
@@ -215,28 +285,42 @@ export function ProductForm({
           >
             Brand <span className="font-normal text-slate-500">(Optional)</span>
           </label>
-          <select
-            id="brandId"
-            disabled={isPending || isBrandsLoading}
-            {...register("brandId")}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-          >
-            <option value="">
-              {isBrandsLoading ? "Loading brands..." : "No Brand"}
-            </option>
-            {/* If initial brand is inactive, include it in dropdown */}
-            {initialData?.brand &&
-              !brands.some((b) => b.id === initialData.brandId) && (
-                <option value={initialData.brandId!}>
-                  {initialData.brand.name} (Inactive)
-                </option>
-              )}
-            {brands.map((b) => (
-              <option key={b.id} value={b.id}>
-                {b.name}
-              </option>
-            ))}
-          </select>
+          <Controller
+            control={control}
+            name="brandId"
+            render={({ field }) => (
+              <Select
+                value={field.value || ""}
+                onValueChange={(val) => field.onChange(val ?? "")}
+                disabled={isPending || isBrandsLoading}
+                items={brandOptions}
+              >
+                <SelectTrigger id="brandId" className="w-full">
+                  <SelectValue
+                    placeholder={
+                      isBrandsLoading ? "Loading brands..." : "No Brand"
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">
+                    {isBrandsLoading ? "Loading brands..." : "No Brand"}
+                  </SelectItem>
+                  {initialData?.brand &&
+                    !brands.some((b) => b.id === initialData.brandId) && (
+                      <SelectItem value={initialData.brandId!}>
+                        {initialData.brand.name} (Inactive)
+                      </SelectItem>
+                    )}
+                  {brands.map((b) => (
+                    <SelectItem key={b.id} value={b.id}>
+                      {b.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
           {errors.brandId && (
             <p className="text-xs text-red-600 dark:text-red-400">
               {errors.brandId.message}

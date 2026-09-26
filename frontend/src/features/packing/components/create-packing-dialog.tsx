@@ -6,6 +6,13 @@ import { usePickings } from "@/features/picking/picking.hooks";
 import { useCreatePackingTask, usePackingTasks } from "../packing.hooks";
 import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ApiError } from "@/lib/api/api-error";
 import { AlertCircle, Loader2 } from "lucide-react";
 
@@ -110,6 +117,15 @@ export function CreatePackingDialog({
       currency: "USD",
     }).format(amount);
 
+  const soItems = useMemo(
+    () =>
+      eligibleSalesOrders.map((so) => ({
+        label: `${so.orderNumber} (${so.warehouse?.name ?? "N/A"}) — ${formatCurrency(so.totalAmount)}`,
+        value: so.id,
+      })),
+    [eligibleSalesOrders]
+  );
+
   return (
     <Modal
       isOpen={isOpen}
@@ -137,20 +153,24 @@ export function CreatePackingDialog({
               <span>Loading eligible sales orders...</span>
             </div>
           ) : (
-            <select
+            <Select
+              items={soItems}
               value={selectedSalesOrderId}
-              onChange={(e) => setSelectedSalesOrderId(e.target.value)}
+              onValueChange={(val) => setSelectedSalesOrderId(val ?? "")}
               disabled={createMutation.isPending}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-60"
             >
-              <option value="">-- Select Sales Order --</option>
-              {eligibleSalesOrders.map((so) => (
-                <option key={so.id} value={so.id}>
-                  {so.orderNumber} ({so.warehouse?.name ?? "N/A"}) —{" "}
-                  {formatCurrency(so.totalAmount)}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full text-xs">
+                <SelectValue placeholder="-- Select Sales Order --" />
+              </SelectTrigger>
+              <SelectContent>
+                {eligibleSalesOrders.map((so) => (
+                  <SelectItem key={so.id} value={so.id}>
+                    {so.orderNumber} ({so.warehouse?.name ?? "N/A"}) —{" "}
+                    {formatCurrency(so.totalAmount)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           )}
           {eligibleSalesOrders.length === 0 && !isLoading && (
             <p className="text-[11px] text-slate-500 dark:text-slate-400">
@@ -178,7 +198,7 @@ export function CreatePackingDialog({
                   Warehouse
                 </span>
                 <p className="font-medium text-slate-900 dark:text-white">
-                  {selectedSO.warehouse?.name ?? "\u2014"}
+                  {selectedSO.warehouse?.name ?? "—"}
                 </p>
               </div>
               <div>

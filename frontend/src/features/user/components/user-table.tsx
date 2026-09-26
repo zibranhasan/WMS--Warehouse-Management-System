@@ -153,15 +153,7 @@ export function UserTable({
           return <span className="text-xs text-slate-400 dark:text-slate-500">—</span>;
         },
       },
-      {
-        accessorKey: "createdAt",
-        header: "Created At",
-        cell: ({ row }) => (
-          <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
-            {formatDate(row.original.createdAt)}
-          </span>
-        ),
-      },
+
       {
         id: "actions",
         header: () => <div className="text-right">Actions</div>,
@@ -216,8 +208,8 @@ export function UserTable({
                     isSelf
                       ? "You cannot block yourself"
                       : user.status === "BLOCKED"
-                      ? "Unblock User"
-                      : "Block User"
+                        ? "Unblock User"
+                        : "Block User"
                   }
                   className="text-slate-600 hover:text-amber-600 dark:text-slate-400 dark:hover:text-amber-400 disabled:opacity-40"
                 >

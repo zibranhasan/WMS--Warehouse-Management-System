@@ -173,7 +173,7 @@ export default function WarehouseZonesPage({ params }: WarehouseZonesPageProps) 
   const meta = data?.meta;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Back to Warehouse Detail */}
       <div>
         <Link href={`/warehouses/${warehouseId}`}>

@@ -636,6 +636,23 @@ const getWarehouseLocationStock = async (
             filterableFields: inventoryLocationStockFilterableFields,
         },
     )
+        .include({
+            warehouse: true,
+            product: true,
+            bin: {
+                include: {
+                    shelf: {
+                        include: {
+                            aisle: {
+                                include: {
+                                    zone: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        })
         .search()
         .filter()
         .sort()
@@ -667,6 +684,20 @@ const getLocationMovements = async (
         },
     )
         .where(where)
+        .include({
+            warehouse: true,
+            product: true,
+            fromBin: true,
+            toBin: true,
+            createdBy: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    role: true,
+                },
+            },
+        })
         .search()
         .filter()
         .sort()

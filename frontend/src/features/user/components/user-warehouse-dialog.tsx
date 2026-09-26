@@ -1,10 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { User } from "../user.types";
 import { useWarehouses, useAssignUser, useUnassignUser } from "@/features/warehouse/warehouse.hooks";
 import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ApiError } from "@/lib/api/api-error";
 import { AlertCircle, Building2, Loader2, Unlink } from "lucide-react";
 
@@ -45,12 +52,21 @@ export function UserWarehouseDialog({
     setErrorMessage(null);
   }
 
-  if (!user) return null;
-
   const warehouses = warehouseData?.data || [];
-  const currentWarehouseName = user.warehouse
+  const currentWarehouseName = user?.warehouse
     ? `${user.warehouse.name} (${user.warehouse.code})`
-    : user.warehouseId;
+    : user?.warehouseId;
+
+  const warehouseItems = useMemo(
+    () =>
+      warehouses.map((wh) => ({
+        label: `${wh.name} (${wh.code})`,
+        value: wh.id,
+      })),
+    [warehouses]
+  );
+
+  if (!user) return null;
 
   const handleAssign = async () => {
     if (!selectedWarehouseId) {
@@ -173,20 +189,23 @@ export function UserWarehouseDialog({
               No active warehouses available. Please create or activate a warehouse first.
             </div>
           ) : (
-            <select
-              id="warehouse-select"
+            <Select
+              items={warehouseItems}
               value={selectedWarehouseId}
-              onChange={(e) => setSelectedWarehouseId(e.target.value)}
+              onValueChange={(val) => setSelectedWarehouseId(val ?? "")}
               disabled={isPending}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
             >
-              <option value="">-- Select a Warehouse --</option>
-              {warehouses.map((wh) => (
-                <option key={wh.id} value={wh.id}>
-                  {wh.name} ({wh.code})
-                </option>
-              ))}
-            </select>
+              <SelectTrigger id="warehouse-select" className="w-full text-sm">
+                <SelectValue placeholder="-- Select a Warehouse --" />
+              </SelectTrigger>
+              <SelectContent>
+                {warehouses.map((wh) => (
+                  <SelectItem key={wh.id} value={wh.id}>
+                    {wh.name} ({wh.code})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           )}
         </div>
 

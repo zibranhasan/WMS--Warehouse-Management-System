@@ -1,13 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useEffect, useMemo } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useUpdateShipment } from "../shipping.hooks";
 import { Shipment } from "../shipping.types";
 import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ApiError } from "@/lib/api/api-error";
 import { AlertCircle, Loader2, Truck } from "lucide-react";
 
@@ -73,6 +80,7 @@ export function UpdateShipmentDialog({
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -106,6 +114,15 @@ export function UpdateShipmentDialog({
       setErrorMessage(null);
     }
   }, [isOpen, shipment, reset]);
+
+  const methodItems = useMemo(
+    () =>
+      SHIPPING_METHOD_OPTIONS.map((opt) => ({
+        label: opt.label,
+        value: opt.value,
+      })),
+    []
+  );
 
   // ---------------------------------------------------------------------------
   // Submit
@@ -199,7 +216,7 @@ export function UpdateShipmentDialog({
                   Warehouse
                 </span>
                 <p className="font-medium text-slate-900 dark:text-white">
-                  {shipment.warehouse?.name ?? "\u2014"}
+                  {shipment.warehouse?.name ?? "—"}
                 </p>
               </div>
               <div>
@@ -222,18 +239,29 @@ export function UpdateShipmentDialog({
           >
             Shipping Method <span className="text-red-500">*</span>
           </label>
-          <select
-            id="shippingMethod"
-            {...register("shippingMethod")}
-            disabled={updateMutation.isPending}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-60"
-          >
-            {SHIPPING_METHOD_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+          <Controller
+            control={control}
+            name="shippingMethod"
+            render={({ field }) => (
+              <Select
+                items={methodItems}
+                value={field.value || ""}
+                onValueChange={(val) => field.onChange(val ?? "")}
+                disabled={updateMutation.isPending}
+              >
+                <SelectTrigger id="shippingMethod" className="w-full text-xs">
+                  <SelectValue placeholder="-- Select Method --" />
+                </SelectTrigger>
+                <SelectContent>
+                  {SHIPPING_METHOD_OPTIONS.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
           {errors.shippingMethod && (
             <p className="text-xs text-red-600 dark:text-red-400">
               {errors.shippingMethod.message}

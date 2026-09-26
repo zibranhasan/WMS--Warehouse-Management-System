@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useMemo } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   User,
@@ -18,6 +18,13 @@ import {
 } from "../user.schema";
 import { ImageUpload } from "@/components/shared/image-upload";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ApiError } from "@/lib/api/api-error";
 import { AlertCircle, Loader2 } from "lucide-react";
 
@@ -39,6 +46,7 @@ export function UserForm({
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<CreateUserFormValues>({
@@ -53,6 +61,24 @@ export function UserForm({
   // State for status edit in update mode
   const [editStatus, setEditStatus] = useState<UserStatus>(
     initialData?.status || "ACTIVE"
+  );
+
+  const roleItems = useMemo(
+    () =>
+      ROLE_VALUES.map((r) => ({
+        label: r.replace("_", " "),
+        value: r,
+      })),
+    []
+  );
+
+  const statusItems = useMemo(
+    () =>
+      USER_STATUS_VALUES.map((s) => ({
+        label: s,
+        value: s,
+      })),
+    []
   );
 
   const handleFormSubmit = async (values: CreateUserFormValues) => {
@@ -87,7 +113,6 @@ export function UserForm({
       }
     }
   };
-
 
   return (
     <form
@@ -162,8 +187,6 @@ export function UserForm({
         </div>
       </div>
 
-
-
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {/* Role Field */}
         <div className="space-y-1.5">
@@ -173,18 +196,29 @@ export function UserForm({
           >
             Assigned Role <span className="text-red-500">*</span>
           </label>
-          <select
-            id="role"
-            disabled={isPending}
-            {...register("role")}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-          >
-            {ROLE_VALUES.map((r) => (
-              <option key={r} value={r}>
-                {r.replace("_", " ")}
-              </option>
-            ))}
-          </select>
+          <Controller
+            name="role"
+            control={control}
+            render={({ field }) => (
+              <Select
+                items={roleItems}
+                value={field.value || ""}
+                onValueChange={(val) => field.onChange(val ?? "")}
+                disabled={isPending}
+              >
+                <SelectTrigger id="role" className="w-full text-sm">
+                  <SelectValue placeholder="Select Role" />
+                </SelectTrigger>
+                <SelectContent>
+                  {ROLE_VALUES.map((r) => (
+                    <SelectItem key={r} value={r}>
+                      {r.replace("_", " ")}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
           {errors.role && (
             <p className="text-xs text-red-600 dark:text-red-400">
               {errors.role.message}
@@ -201,19 +235,23 @@ export function UserForm({
             >
               Account Status <span className="text-red-500">*</span>
             </label>
-            <select
-              id="status"
+            <Select
+              items={statusItems}
               value={editStatus}
-              onChange={(e) => setEditStatus(e.target.value as UserStatus)}
+              onValueChange={(val) => setEditStatus((val ?? "ACTIVE") as UserStatus)}
               disabled={isPending}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
             >
-              {USER_STATUS_VALUES.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger id="status" className="w-full text-sm">
+                <SelectValue placeholder="Select Status" />
+              </SelectTrigger>
+              <SelectContent>
+                {USER_STATUS_VALUES.map((s) => (
+                  <SelectItem key={s} value={s}>
+                    {s}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         )}
       </div>

@@ -1,10 +1,18 @@
 "use client";
 
+import { useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useBins } from "@/features/bin/bin.hooks";
 import { InventoryLocationStock, TransferStockPayload } from "../inventory.types";
 import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Loader2, ArrowRightLeft } from "lucide-react";
 
 interface StockTransferDialogProps {
@@ -35,7 +43,33 @@ export function StockTransferDialog({
   );
   const bins = binsData?.data || [];
   // Exclude source bin from destination options
-  const destinationBins = bins.filter((b) => b.id !== locationStock?.binId);
+  const destinationBins = useMemo(
+    () => bins.filter((b) => b.id !== locationStock?.binId),
+    [bins, locationStock?.binId]
+  );
+
+  const binItems = useMemo(
+    () =>
+      destinationBins.map((b) => {
+        const shelf = b.shelf;
+        const aisle = shelf?.aisle;
+        const zone = aisle?.zone;
+        const label = [
+          `Bin: ${b.name} (${b.code})`,
+          shelf ? `Shelf: ${shelf.name}` : null,
+          aisle ? `Aisle: ${aisle.name}` : null,
+          zone ? `Zone: ${zone.name}` : null,
+        ]
+          .filter(Boolean)
+          .join(" — ");
+
+        return {
+          label: `${label} (Cap: ${b.capacity})`,
+          value: b.id,
+        };
+      }),
+    [destinationBins]
+  );
 
   const {
     register,
@@ -111,32 +145,23 @@ export function StockTransferDialog({
                 validate: (val) => val !== locationStock.binId || "Source and destination bin must be different.",
               }}
               render={({ field }) => (
-                <select
-                  {...field}
+                <Select
+                  items={binItems}
+                  value={field.value || ""}
+                  onValueChange={(val) => field.onChange(val ?? "")}
                   disabled={isPending}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white"
                 >
-                  <option value="">-- Select Destination Storage Bin --</option>
-                  {destinationBins.map((b) => {
-                    const shelf = b.shelf;
-                    const aisle = shelf?.aisle;
-                    const zone = aisle?.zone;
-                    const label = [
-                      `Bin: ${b.name} (${b.code})`,
-                      shelf ? `Shelf: ${shelf.name}` : null,
-                      aisle ? `Aisle: ${aisle.name}` : null,
-                      zone ? `Zone: ${zone.name}` : null,
-                    ]
-                      .filter(Boolean)
-                      .join(" — ");
-
-                    return (
-                      <option key={b.id} value={b.id}>
-                        {label} (Cap: {b.capacity})
-                      </option>
-                    );
-                  })}
-                </select>
+                  <SelectTrigger className="w-full text-xs">
+                    <SelectValue placeholder="-- Select Destination Storage Bin --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {binItems.map((item) => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
             />
           )}
