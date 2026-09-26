@@ -6,7 +6,8 @@ import { Aisle } from "../aisle.types";
 import { LocationStatusBadge } from "@/features/zone/components/location-status-badge";
 import { DataTable } from "@/components/shared/data-table";
 import { Button } from "@/components/ui/button";
-import { Edit2, Trash2, Columns, Layers, Building2 } from "lucide-react";
+import { Edit2, Trash2, Columns, Layers, Building2, RefreshCw } from "lucide-react";
+
 
 interface AisleTableProps {
   aisles: Aisle[];
@@ -111,15 +112,7 @@ export function AisleTable({
           <LocationStatusBadge status={row.original.status} />
         ),
       },
-      {
-        accessorKey: "createdAt",
-        header: "Created At",
-        cell: ({ row }) => (
-          <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
-            {formatDate(row.original.createdAt)}
-          </span>
-        ),
-      },
+
       {
         id: "actions",
         header: () => <div className="text-right">Actions</div>,
@@ -134,12 +127,13 @@ export function AisleTable({
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
+                size="icon"
                 onClick={() => onStatusChange(aisle)}
                 title="Change Aisle Status"
-                className="text-xs text-slate-600 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
+                aria-label="Change Aisle Status"
+                className="text-slate-600 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
               >
-                Change Status
+                <RefreshCw className="h-4 w-4" />
               </Button>
 
               {/* Edit */}

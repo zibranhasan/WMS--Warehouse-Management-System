@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useCurrentUser } from "@/features/auth/auth.hooks";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { useWarehouses } from "@/features/warehouse/warehouse.hooks";
@@ -35,6 +35,13 @@ import { DataTablePagination } from "@/components/shared/data-table-pagination";
 import { PageErrorAlert } from "@/components/shared/page-error-alert";
 import { TableEmptyState } from "@/components/shared/table-empty-state";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Building2, Boxes, Box, History, Plus, RefreshCw, X, AlertTriangle } from "lucide-react";
 
 type InventoryTab = "warehouse" | "location" | "movements";
@@ -64,6 +71,22 @@ export default function InventoryDashboardPage() {
 
   const isWarehouseLocked = !isGlobalUser;
   const hasNoAssignedWarehouse = !isGlobalUser && !user?.warehouseId;
+
+  const warehouseSelectOptions = useMemo(() => {
+    if (isWarehouseLocked) {
+      return warehouses.map((wh) => ({
+        value: wh.id,
+        label: `${wh.name} (${wh.code})`,
+      }));
+    }
+    return [
+      { value: "", label: "-- Select Warehouse Facility --" },
+      ...warehouses.map((wh) => ({
+        value: wh.id,
+        label: `${wh.name} (${wh.code})`,
+      })),
+    ];
+  }, [warehouses, isWarehouseLocked]);
 
   // Active state
   const [selectedWarehouseId, setSelectedWarehouseId] = useState<string>("");
@@ -202,7 +225,7 @@ export default function InventoryDashboardPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Toast Feedback Banner */}
       {feedback && (
         <div
@@ -284,29 +307,26 @@ export default function InventoryDashboardPage() {
               {isLoadingWarehouses ? (
                 <div className="h-8 w-48 animate-pulse rounded bg-slate-100 dark:bg-slate-900" />
               ) : (
-                <select
+                <Select
                   value={selectedWarehouseId}
-                  onChange={(e) => handleWarehouseChange(e.target.value)}
+                  onValueChange={(val) => handleWarehouseChange(val ?? "")}
                   disabled={isWarehouseLocked || hasNoAssignedWarehouse}
-                  className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white disabled:opacity-75"
+                  items={warehouseSelectOptions}
                 >
-                  {isWarehouseLocked ? (
-                    warehouses.map((wh) => (
-                      <option key={wh.id} value={wh.id}>
+                  <SelectTrigger className="w-56 font-semibold">
+                    <SelectValue placeholder="-- Select Warehouse Facility --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {!isWarehouseLocked && (
+                      <SelectItem value="">-- Select Warehouse Facility --</SelectItem>
+                    )}
+                    {warehouses.map((wh) => (
+                      <SelectItem key={wh.id} value={wh.id}>
                         {wh.name} ({wh.code})
-                      </option>
-                    ))
-                  ) : (
-                    <>
-                      <option value="">-- Select Warehouse Facility --</option>
-                      {warehouses.map((wh) => (
-                        <option key={wh.id} value={wh.id}>
-                          {wh.name} ({wh.code})
-                        </option>
-                      ))}
-                    </>
-                  )}
-                </select>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
             </div>
           </div>

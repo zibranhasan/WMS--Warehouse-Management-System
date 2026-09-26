@@ -94,15 +94,6 @@ export function WarehouseTable({
         ),
       },
       {
-        accessorKey: "createdAt",
-        header: "Created At",
-        cell: ({ row }) => (
-          <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
-            {formatDate(row.original.createdAt)}
-          </span>
-        ),
-      },
-      {
         id: "actions",
         header: () => <div className="text-right">Actions</div>,
         cell: ({ row }) => {

@@ -176,7 +176,7 @@ export default function AisleShelvesPage({ params }: AisleShelvesPageProps) {
   const meta = data?.meta;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Back Navigation */}
       <div>
         <Link href={`/warehouses/${warehouseId}/zones/${zoneId}/aisles`}>

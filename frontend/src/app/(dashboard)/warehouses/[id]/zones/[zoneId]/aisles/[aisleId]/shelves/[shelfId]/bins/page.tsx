@@ -181,7 +181,7 @@ export default function ShelfBinsPage({ params }: ShelfBinsPageProps) {
   const meta = data?.meta;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Back Navigation */}
       <div>
         <Link href={`/warehouses/${warehouseId}/zones/${zoneId}/aisles/${aisleId}/shelves`}>

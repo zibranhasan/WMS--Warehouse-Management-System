@@ -33,7 +33,7 @@ export function FinanceDashboard({ metrics, isLoading }: FinanceDashboardProps) 
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {cards.map((card, idx) => {
           const Icon = card.icon;

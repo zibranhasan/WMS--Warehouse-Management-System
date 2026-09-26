@@ -124,16 +124,7 @@ export function ProductTable({
         cell: ({ row }) => (
           <ProductStatusBadge status={row.original.status} />
         ),
-      },
-      {
-        accessorKey: "createdAt",
-        header: "Created At",
-        cell: ({ row }) => (
-          <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
-            {formatDate(row.original.createdAt)}
-          </span>
-        ),
-      },
+      }
     ];
 
     if (canMutate) {
@@ -153,9 +144,8 @@ export function ProductTable({
                 size="sm"
                 onClick={() => onStatusToggle(product.id, product.status)}
                 disabled={isPending}
-                title={`Switch status to ${
-                  product.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
-                }`}
+                title={`Switch status to ${product.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
+                  }`}
                 className="text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
               >
                 {isPending ? (

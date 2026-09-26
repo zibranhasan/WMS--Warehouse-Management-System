@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useProducts } from "@/features/product/product.hooks";
 import { useWarehouses } from "@/features/warehouse/warehouse.hooks";
@@ -17,6 +17,13 @@ import {
   CreatePurchaseOrderFormValues,
 } from "../purchase-order.schema";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ApiError } from "@/lib/api/api-error";
 import { AlertCircle, Loader2, Plus, Trash2 } from "lucide-react";
 
@@ -53,21 +60,21 @@ export function PurchaseOrderForm({
     defaultValues:
       mode === "edit" && initialData
         ? {
-            supplierId: initialData.supplierId,
-            warehouseId: initialData.warehouseId,
-            notes: initialData.notes || "",
-            items: initialData.items.map((item) => ({
-              productId: item.productId,
-              orderedQuantity: Number(item.orderedQuantity),
-              unitPrice: Number(item.unitPrice),
-            })),
-          }
+          supplierId: initialData.supplierId,
+          warehouseId: initialData.warehouseId,
+          notes: initialData.notes || "",
+          items: initialData.items.map((item) => ({
+            productId: item.productId,
+            orderedQuantity: Number(item.orderedQuantity),
+            unitPrice: Number(item.unitPrice),
+          })),
+        }
         : {
-            supplierId: "",
-            warehouseId: "",
-            notes: "",
-            items: [{ productId: "", orderedQuantity: 1, unitPrice: 0 }],
-          },
+          supplierId: "",
+          warehouseId: "",
+          notes: "",
+          items: [{ productId: "", orderedQuantity: 1, unitPrice: 0 }],
+        },
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -110,6 +117,39 @@ export function PurchaseOrderForm({
     status: "ACTIVE",
   });
   const products = productsData?.data || [];
+
+  const supplierOptions = useMemo(
+    () => [
+      { value: "", label: "-- Select Supplier --" },
+      ...suppliers.map((s) => ({
+        value: s.id,
+        label: `${s.name} (${s.code})`,
+      })),
+    ],
+    [suppliers]
+  );
+
+  const warehouseOptions = useMemo(
+    () => [
+      { value: "", label: "-- Select Warehouse --" },
+      ...warehouses.map((wh) => ({
+        value: wh.id,
+        label: `${wh.name} (${wh.code})`,
+      })),
+    ],
+    [warehouses]
+  );
+
+  const productOptions = useMemo(
+    () => [
+      { value: "", label: "-- Select Product --" },
+      ...products.map((p) => ({
+        value: p.id,
+        label: `${p.name} (${p.sku})`,
+      })),
+    ],
+    [products]
+  );
 
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat("en-US", {
@@ -181,20 +221,31 @@ export function PurchaseOrderForm({
               <span>Loading suppliers...</span>
             </div>
           ) : (
-            <select
-              {...register("supplierId", {
-                required: "Supplier is required.",
-              })}
-              disabled={isPending}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-60"
-            >
-              <option value="">-- Select Supplier --</option>
-              {suppliers.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name} ({s.code})
-                </option>
-              ))}
-            </select>
+            <Controller
+              control={control}
+              name="supplierId"
+              rules={{ required: "Supplier is required." }}
+              render={({ field }) => (
+                <Select
+                  value={field.value || ""}
+                  onValueChange={(val) => field.onChange(val ?? "")}
+                  disabled={isPending}
+                  items={supplierOptions}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="-- Select Supplier --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">-- Select Supplier --</SelectItem>
+                    {suppliers.map((s) => (
+                      <SelectItem key={s.id} value={s.id}>
+                        {s.name} ({s.code})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           )}
           {errors.supplierId && (
             <p className="text-[11px] text-red-500">
@@ -214,20 +265,31 @@ export function PurchaseOrderForm({
               <span>Loading warehouses...</span>
             </div>
           ) : (
-            <select
-              {...register("warehouseId", {
-                required: "Warehouse is required.",
-              })}
-              disabled={isPending}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-60"
-            >
-              <option value="">-- Select Warehouse --</option>
-              {warehouses.map((wh) => (
-                <option key={wh.id} value={wh.id}>
-                  {wh.name} ({wh.code})
-                </option>
-              ))}
-            </select>
+            <Controller
+              control={control}
+              name="warehouseId"
+              rules={{ required: "Warehouse is required." }}
+              render={({ field }) => (
+                <Select
+                  value={field.value || ""}
+                  onValueChange={(val) => field.onChange(val ?? "")}
+                  disabled={isPending}
+                  items={warehouseOptions}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="-- Select Warehouse --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">-- Select Warehouse --</SelectItem>
+                    {warehouses.map((wh) => (
+                      <SelectItem key={wh.id} value={wh.id}>
+                        {wh.name} ({wh.code})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           )}
           {errors.warehouseId && (
             <p className="text-[11px] text-red-500">
@@ -298,20 +360,31 @@ export function PurchaseOrderForm({
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_100px_100px_36px]">
                   {/* Product */}
                   <div className="space-y-1">
-                    <select
-                      {...register(`items.${index}.productId`, {
-                        required: "Product is required.",
-                      })}
-                      disabled={isPending}
-                      className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white disabled:opacity-60"
-                    >
-                      <option value="">-- Select Product --</option>
-                      {products.map((p) => (
-                        <option key={p.id} value={p.id}>
-                          {p.name} ({p.sku})
-                        </option>
-                      ))}
-                    </select>
+                    <Controller
+                      control={control}
+                      name={`items.${index}.productId`}
+                      rules={{ required: "Product is required." }}
+                      render={({ field: pField }) => (
+                        <Select
+                          value={pField.value || ""}
+                          onValueChange={(val) => pField.onChange(val ?? "")}
+                          disabled={isPending}
+                          items={productOptions}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="-- Select Product --" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="">-- Select Product --</SelectItem>
+                            {products.map((p) => (
+                              <SelectItem key={p.id} value={p.id}>
+                                {p.name} ({p.sku})
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                     {errors.items?.[index]?.productId && (
                       <p className="text-[11px] text-red-500">
                         {errors.items[index]?.productId?.message}
@@ -383,7 +456,7 @@ export function PurchaseOrderForm({
                     <span className="font-semibold text-slate-700 dark:text-slate-300">
                       {formatCurrency(
                         (Number(watchedItems?.[index]?.orderedQuantity) || 0) *
-                          (Number(watchedItems?.[index]?.unitPrice) || 0)
+                        (Number(watchedItems?.[index]?.unitPrice) || 0)
                       )}
                     </span>
                   </span>

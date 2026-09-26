@@ -33,6 +33,13 @@ import { DataTablePagination } from "@/components/shared/data-table-pagination";
 import { PageErrorAlert } from "@/components/shared/page-error-alert";
 import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Building2, Layers, Columns, Plus, X } from "lucide-react";
 
 type StatusFilterType = LocationStatus | "ALL";
@@ -73,6 +80,27 @@ export default function GlobalShelvesPage() {
     return filtered;
   }, [isGlobalUser, allWarehouses, user?.warehouseId, user?.warehouse]);
 
+  const warehouseSelectOptions = useMemo(
+    () => [
+      { value: "ALL", label: "All Warehouses" },
+      ...warehousesList.map((wh) => ({
+        value: wh.id,
+        label: `${wh.name} (${wh.code})`,
+      })),
+    ],
+    [warehousesList]
+  );
+
+  const scopedWarehouseOptions = useMemo(() => {
+    if (warehousesList.length === 0) {
+      return [{ value: "", label: "No warehouse assigned" }];
+    }
+    return warehousesList.map((wh) => ({
+      value: wh.id,
+      label: `${wh.name} (${wh.code})`,
+    }));
+  }, [warehousesList]);
+
   // Filter & Query States
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
@@ -105,6 +133,17 @@ export default function GlobalShelvesPage() {
   });
   const zonesList = zonesData?.data || [];
 
+  const zoneSelectOptions = useMemo(
+    () => [
+      { value: "ALL", label: "All Zones" },
+      ...zonesList.map((z) => ({
+        value: z.id,
+        label: `${z.name} (${z.code})`,
+      })),
+    ],
+    [zonesList]
+  );
+
   // Fetch aisles for aisle filter dropdown (scoped to warehouse and zone)
   const { data: aislesData, isLoading: isLoadingAisles } = useAisles({
     limit: 200,
@@ -112,6 +151,17 @@ export default function GlobalShelvesPage() {
     ...(zoneFilter !== "ALL" ? { zoneId: zoneFilter } : {}),
   });
   const aislesList = aislesData?.data || [];
+
+  const aisleSelectOptions = useMemo(
+    () => [
+      { value: "ALL", label: "All Aisles" },
+      ...aislesList.map((a) => ({
+        value: a.id,
+        label: `${a.name} (${a.code})`,
+      })),
+    ],
+    [aislesList]
+  );
 
   const handleSearchChange = (value: string) => {
     setSearchInput(value);
@@ -242,15 +292,14 @@ export default function GlobalShelvesPage() {
   const meta = data?.meta;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Feedback Toast Banner */}
       {feedback && (
         <div
-          className={`flex items-center justify-between rounded-lg border p-4 text-xs font-medium ${
-            feedback.type === "success"
+          className={`flex items-center justify-between rounded-lg border p-4 text-xs font-medium ${feedback.type === "success"
               ? "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300"
               : "border-red-200 bg-red-50 text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300"
-          }`}
+            }`}
         >
           <span>{feedback.message}</span>
           <button
@@ -287,8 +336,8 @@ export default function GlobalShelvesPage() {
       </div>
 
       {/* Filter Controls (Search, Warehouse, Zone, Aisle & Status) */}
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 flex-wrap">
+      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
           <SearchInput
             value={searchInput}
             onChange={handleSearchChange}
@@ -299,72 +348,98 @@ export default function GlobalShelvesPage() {
           <div className="flex items-center gap-2 shrink-0">
             <Building2 className="h-4 w-4 text-slate-400 hidden sm:inline-block" />
             {isGlobalUser ? (
-              <select
+              <Select
                 value={warehouseFilter}
-                onChange={(e) => handleWarehouseFilterChange(e.target.value)}
+                onValueChange={(val) => {
+                  if (val !== null) handleWarehouseFilterChange(val);
+                }}
                 disabled={isLoadingWarehouses}
-                className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-700 outline-none focus:border-blue-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+                items={warehouseSelectOptions}
               >
-                <option value="ALL">All Warehouses</option>
-                {warehousesList.map((wh) => (
-                  <option key={wh.id} value={wh.id}>
-                    {wh.name} ({wh.code})
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="All Warehouses" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">All Warehouses</SelectItem>
+                  {warehousesList.map((wh) => (
+                    <SelectItem key={wh.id} value={wh.id}>
+                      {wh.name} ({wh.code})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             ) : (
-              <select
+              <Select
                 value={user?.warehouseId ?? ""}
                 disabled={true}
-                className="rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-xs text-slate-700 outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 cursor-not-allowed"
+                items={scopedWarehouseOptions}
               >
-                {warehousesList.length === 0 ? (
-                  <option value="">No warehouse assigned</option>
-                ) : (
-                  warehousesList.map((wh) => (
-                    <option key={wh.id} value={wh.id}>
-                      {wh.name} ({wh.code})
-                    </option>
-                  ))
-                )}
-              </select>
+                <SelectTrigger className="w-48 bg-slate-50 dark:bg-slate-900 cursor-not-allowed">
+                  <SelectValue placeholder="No warehouse assigned" />
+                </SelectTrigger>
+                <SelectContent>
+                  {warehousesList.length === 0 ? (
+                    <SelectItem value="">No warehouse assigned</SelectItem>
+                  ) : (
+                    warehousesList.map((wh) => (
+                      <SelectItem key={wh.id} value={wh.id}>
+                        {wh.name} ({wh.code})
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
             )}
           </div>
 
           {/* Zone Dropdown Filter */}
           <div className="flex items-center gap-2 shrink-0">
             <Layers className="h-4 w-4 text-slate-400 hidden sm:inline-block" />
-            <select
+            <Select
               value={zoneFilter}
-              onChange={(e) => handleZoneFilterChange(e.target.value)}
+              onValueChange={(val) => {
+                if (val !== null) handleZoneFilterChange(val);
+              }}
               disabled={isLoadingZones}
-              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-700 outline-none focus:border-blue-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+              items={zoneSelectOptions}
             >
-              <option value="ALL">All Zones</option>
-              {zonesList.map((z) => (
-                <option key={z.id} value={z.id}>
-                  {z.name} ({z.code})
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="All Zones" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">All Zones</SelectItem>
+                {zonesList.map((z) => (
+                  <SelectItem key={z.id} value={z.id}>
+                    {z.name} ({z.code})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Aisle Dropdown Filter */}
           <div className="flex items-center gap-2 shrink-0">
             <Columns className="h-4 w-4 text-slate-400 hidden sm:inline-block" />
-            <select
+            <Select
               value={aisleFilter}
-              onChange={(e) => handleAisleFilterChange(e.target.value)}
+              onValueChange={(val) => {
+                if (val !== null) handleAisleFilterChange(val);
+              }}
               disabled={isLoadingAisles}
-              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-700 outline-none focus:border-blue-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+              items={aisleSelectOptions}
             >
-              <option value="ALL">All Aisles</option>
-              {aislesList.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name} ({a.code})
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="All Aisles" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">All Aisles</SelectItem>
+                {aislesList.map((a) => (
+                  <SelectItem key={a.id} value={a.id}>
+                    {a.name} ({a.code})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 

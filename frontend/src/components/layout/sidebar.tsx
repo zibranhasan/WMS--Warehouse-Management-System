@@ -19,7 +19,7 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
   return (
     <aside
       className={`hidden lg:flex flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950 transition-all duration-300 z-20 shrink-0 min-h-0 ${
-        isCollapsed ? "w-16" : "w-64"
+        isCollapsed ? "w-16" : "w-56"
       }`}
     >
       {/* Navigation Links Area */}

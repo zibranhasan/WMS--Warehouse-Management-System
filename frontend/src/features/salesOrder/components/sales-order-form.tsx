@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useProducts } from "@/features/product/product.hooks";
 import { useWarehouses } from "@/features/warehouse/warehouse.hooks";
@@ -12,6 +12,13 @@ import {
   CreateSalesOrderFormValues,
 } from "../sales-order.schema";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ApiError } from "@/lib/api/api-error";
 import { AlertCircle, Loader2, Plus, Trash2 } from "lucide-react";
 
@@ -67,6 +74,17 @@ export function SalesOrderForm({
     if (isGlobalUser) return allWarehouses;
     return allWarehouses.filter((wh) => wh.id === user?.warehouseId);
   }, [isGlobalUser, allWarehouses, user?.warehouseId]);
+
+  const warehouseOptions = useMemo(
+    () => [
+      { value: "", label: "-- Select Warehouse --" },
+      ...warehouses.map((wh) => ({
+        value: wh.id,
+        label: `${wh.name} (${wh.code})`,
+      })),
+    ],
+    [warehouses]
+  );
 
   useEffect(() => {
     if (!isGlobalUser && user?.warehouseId && warehouses.length === 1) {
@@ -129,7 +147,7 @@ export function SalesOrderForm({
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit as any)}
-      className="space-y-5 max-h-[80vh] overflow-y-auto pr-1"
+      className="space-y-2 max-h-[60vh] overflow-y-auto pr-1"
     >
       {errorMessage && (
         <div className="flex items-start gap-2.5 rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300">
@@ -149,20 +167,31 @@ export function SalesOrderForm({
             <span>Loading warehouses...</span>
           </div>
         ) : (
-          <select
-            {...register("warehouseId", {
-              required: "Warehouse is required.",
-            })}
-            disabled={isPending || (!isGlobalUser && warehouses.length === 1)}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-60"
-          >
-            <option value="">-- Select Warehouse --</option>
-            {warehouses.map((wh) => (
-              <option key={wh.id} value={wh.id}>
-                {wh.name} ({wh.code})
-              </option>
-            ))}
-          </select>
+          <Controller
+            control={control}
+            name="warehouseId"
+            rules={{ required: "Warehouse is required." }}
+            render={({ field }) => (
+              <Select
+                value={field.value || ""}
+                onValueChange={(val) => field.onChange(val ?? "")}
+                disabled={isPending || (!isGlobalUser && warehouses.length === 1)}
+                items={warehouseOptions}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="-- Select Warehouse --" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">-- Select Warehouse --</SelectItem>
+                  {warehouses.map((wh) => (
+                    <SelectItem key={wh.id} value={wh.id}>
+                      {wh.name} ({wh.code})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
         )}
         {errors.warehouseId && (
           <p className="text-[11px] text-red-500">
@@ -232,27 +261,41 @@ export function SalesOrderForm({
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_100px_100px_36px]">
                   {/* Product */}
                   <div className="space-y-1">
-                    <select
-                      {...register(`items.${index}.productId`, {
-                        required: "Product is required.",
-                      })}
-                      disabled={isPending}
-                      className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white disabled:opacity-60"
-                    >
-                      <option value="">-- Select Product --</option>
-                      {products.map((p) => (
-                        <option
-                          key={p.id}
-                          value={p.id}
-                          disabled={
-                            selectedProductIds.has(p.id) &&
-                            watchedItems?.[index]?.productId !== p.id
-                          }
+                    <Controller
+                      control={control}
+                      name={`items.${index}.productId`}
+                      rules={{ required: "Product is required." }}
+                      render={({ field: pField }) => (
+                        <Select
+                          value={pField.value || ""}
+                          onValueChange={(val) => pField.onChange(val ?? "")}
+                          disabled={isPending}
+                          items={products.map((p) => ({
+                            value: p.id,
+                            label: `${p.name} (${p.sku})`,
+                          }))}
                         >
-                          {p.name} ({p.sku})
-                        </option>
-                      ))}
-                    </select>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="-- Select Product --" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="">-- Select Product --</SelectItem>
+                            {products.map((p) => (
+                              <SelectItem
+                                key={p.id}
+                                value={p.id}
+                                disabled={
+                                  selectedProductIds.has(p.id) &&
+                                  watchedItems?.[index]?.productId !== p.id
+                                }
+                              >
+                                {p.name} ({p.sku})
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                     {errors.items?.[index]?.productId && (
                       <p className="text-[11px] text-red-500">
                         {errors.items[index]?.productId?.message}
@@ -324,7 +367,7 @@ export function SalesOrderForm({
                     <span className="font-semibold text-slate-700 dark:text-slate-300">
                       {formatCurrency(
                         (Number(watchedItems?.[index]?.quantity) || 0) *
-                          (Number(watchedItems?.[index]?.unitPrice) || 0)
+                        (Number(watchedItems?.[index]?.unitPrice) || 0)
                       )}
                     </span>
                   </span>
@@ -333,16 +376,6 @@ export function SalesOrderForm({
             ))}
           </div>
         )}
-      </div>
-
-      {/* Grand Total */}
-      <div className="flex items-center justify-end rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
-        <span className="text-xs text-slate-500 dark:text-slate-400 mr-3">
-          Estimated Total:
-        </span>
-        <span className="text-lg font-bold text-slate-900 dark:text-white">
-          {formatCurrency(calculatedTotal)}
-        </span>
       </div>
 
       {/* Buttons */}

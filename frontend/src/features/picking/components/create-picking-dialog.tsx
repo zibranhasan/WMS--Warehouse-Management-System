@@ -5,6 +5,13 @@ import { useSalesOrders } from "@/features/salesOrder/sales-order.hooks";
 import { useCreatePicking, usePickings } from "../picking.hooks";
 import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ApiError } from "@/lib/api/api-error";
 import { AlertCircle, Loader2 } from "lucide-react";
 
@@ -54,6 +61,29 @@ export function CreatePickingDialog({
     [eligibleSalesOrders, selectedSalesOrderId]
   );
 
+
+  const formatCurrency = (amount: number) =>
+    new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
+
+
+
+
+
+  const salesOrderOptions = useMemo(
+    () => [
+      { value: "", label: "-- Select Sales Order --" },
+      ...eligibleSalesOrders.map((so) => ({
+        value: so.id,
+        label: `${so.orderNumber} (${so.warehouse?.name ?? "N/A"}) — ${so.totalAmount != null ? formatCurrency(Number(so.totalAmount)) : "—"
+          }`,
+      })),
+    ],
+    [eligibleSalesOrders]
+  );
+
   const handleSubmit = async () => {
     if (!selectedSalesOrderId) return;
 
@@ -82,11 +112,7 @@ export function CreatePickingDialog({
     onClose();
   };
 
-  const formatCurrency = (amount: number) =>
-    new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount);
+
 
   return (
     <Modal
@@ -115,20 +141,25 @@ export function CreatePickingDialog({
               <span>Loading confirmed sales orders...</span>
             </div>
           ) : (
-            <select
+            <Select
               value={selectedSalesOrderId}
-              onChange={(e) => setSelectedSalesOrderId(e.target.value)}
+              onValueChange={(val) => setSelectedSalesOrderId(val ?? "")}
               disabled={createMutation.isPending}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-60"
+              items={salesOrderOptions}
             >
-              <option value="">-- Select Sales Order --</option>
-              {eligibleSalesOrders.map((so) => (
-                <option key={so.id} value={so.id}>
-                  {so.orderNumber} ({so.warehouse?.name ?? "N/A"}) —{" "}
-                  {formatCurrency(so.totalAmount)}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="-- Select Sales Order --" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">-- Select Sales Order --</SelectItem>
+                {eligibleSalesOrders.map((so) => (
+                  <SelectItem key={so.id} value={so.id}>
+                    {so.orderNumber} ({so.warehouse?.name ?? "N/A"}) —{" "}
+                    {formatCurrency(so.totalAmount)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           )}
           {eligibleSalesOrders.length === 0 && !isLoading && (
             <p className="text-[11px] text-slate-500 dark:text-slate-400">
@@ -164,7 +195,9 @@ export function CreatePickingDialog({
                   Total Amount
                 </span>
                 <p className="font-medium text-slate-900 dark:text-white">
-                  {formatCurrency(selectedSO.totalAmount)}
+                  {selectedSO?.totalAmount != null
+                    ? formatCurrency(Number(selectedSO.totalAmount))
+                    : "—"}
                 </p>
               </div>
               <div>

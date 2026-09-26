@@ -8,6 +8,13 @@ import { useWarehouses } from "@/features/warehouse/warehouse.hooks";
 import { StockAdjustmentPayload } from "../inventory.types";
 import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Loader2, ArrowDownLeft, ArrowUpRight, RefreshCw } from "lucide-react";
 
 const GLOBAL_ROLES = ["SUPER_ADMIN", "ADMIN"];
@@ -88,6 +95,24 @@ export function StockAdjustDialog({
 
   const selectedType = watch("type");
 
+  const warehouseItems = useMemo(
+    () =>
+      warehouses.map((wh) => ({
+        label: `${wh.name} (${wh.code})`,
+        value: wh.id,
+      })),
+    [warehouses]
+  );
+
+  const productItems = useMemo(
+    () =>
+      products.map((p) => ({
+        label: `${p.name} (SKU: ${p.sku}) [${p.unit}]`,
+        value: p.id,
+      })),
+    [products]
+  );
+
   const onFormSubmit = async (values: StockAdjustmentPayload) => {
     await onSubmit({
       warehouseId: values.warehouseId,
@@ -107,7 +132,7 @@ export function StockAdjustDialog({
       title="Warehouse Stock Adjustment"
       description="Record stock intake (IN), issue (OUT), or manual inventory count adjustment."
     >
-      <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-1">
         {/* Warehouse Selection */}
         <div>
           <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
@@ -119,28 +144,30 @@ export function StockAdjustDialog({
               <span>Loading active warehouses...</span>
             </div>
           ) : (
-            <select
-              {...register("warehouseId", { required: "Warehouse selection is required." })}
-              disabled={isPending || isWarehouseLocked}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-75"
-            >
-              {isWarehouseLocked ? (
-                warehouses.map((wh) => (
-                  <option key={wh.id} value={wh.id}>
-                    {wh.name} ({wh.code})
-                  </option>
-                ))
-              ) : (
-                <>
-                  <option value="">-- Select Target Warehouse --</option>
-                  {warehouses.map((wh) => (
-                    <option key={wh.id} value={wh.id}>
-                      {wh.name} ({wh.code})
-                    </option>
-                  ))}
-                </>
+            <Controller
+              control={control}
+              name="warehouseId"
+              rules={{ required: "Warehouse selection is required." }}
+              render={({ field }) => (
+                <Select
+                  items={warehouseItems}
+                  value={field.value || ""}
+                  onValueChange={(val) => field.onChange(val ?? "")}
+                  disabled={isPending || isWarehouseLocked}
+                >
+                  <SelectTrigger className="w-full text-xs">
+                    <SelectValue placeholder="-- Select Target Warehouse --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {warehouses.map((wh) => (
+                      <SelectItem key={wh.id} value={wh.id}>
+                        {wh.name} ({wh.code})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
-            </select>
+            />
           )}
           {errors.warehouseId && (
             <p className="mt-1 text-[11px] text-red-500">{errors.warehouseId.message}</p>
@@ -158,18 +185,30 @@ export function StockAdjustDialog({
               <span>Loading active products...</span>
             </div>
           ) : (
-            <select
-              {...register("productId", { required: "Product selection is required." })}
-              disabled={isPending || isProductLocked}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-75"
-            >
-              <option value="">-- Select Product --</option>
-              {products.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name} (SKU: {p.sku}) [{p.unit}]
-                </option>
-              ))}
-            </select>
+            <Controller
+              control={control}
+              name="productId"
+              rules={{ required: "Product selection is required." }}
+              render={({ field }) => (
+                <Select
+                  items={productItems}
+                  value={field.value || ""}
+                  onValueChange={(val) => field.onChange(val ?? "")}
+                  disabled={isPending || isProductLocked}
+                >
+                  <SelectTrigger className="w-full text-xs">
+                    <SelectValue placeholder="-- Select Product --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {products.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        {p.name} (SKU: {p.sku}) [{p.unit}]
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           )}
           {errors.productId && (
             <p className="mt-1 text-[11px] text-red-500">{errors.productId.message}</p>
@@ -190,11 +229,10 @@ export function StockAdjustDialog({
                 <button
                   type="button"
                   onClick={() => field.onChange("IN")}
-                  className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs font-semibold transition ${
-                    field.value === "IN"
-                      ? "border-emerald-500 bg-emerald-50 text-emerald-900 dark:border-emerald-500 dark:bg-emerald-950/50 dark:text-emerald-200"
-                      : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
-                  }`}
+                  className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs font-semibold transition ${field.value === "IN"
+                    ? "border-emerald-500 bg-emerald-50 text-emerald-900 dark:border-emerald-500 dark:bg-emerald-950/50 dark:text-emerald-200"
+                    : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+                    }`}
                 >
                   <ArrowDownLeft className="h-4 w-4 text-emerald-600 mb-1" />
                   <span>Stock IN</span>
@@ -203,11 +241,10 @@ export function StockAdjustDialog({
                 <button
                   type="button"
                   onClick={() => field.onChange("OUT")}
-                  className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs font-semibold transition ${
-                    field.value === "OUT"
-                      ? "border-red-500 bg-red-50 text-red-900 dark:border-red-500 dark:bg-red-950/50 dark:text-red-200"
-                      : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
-                  }`}
+                  className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs font-semibold transition ${field.value === "OUT"
+                    ? "border-red-500 bg-red-50 text-red-900 dark:border-red-500 dark:bg-red-950/50 dark:text-red-200"
+                    : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+                    }`}
                 >
                   <ArrowUpRight className="h-4 w-4 text-red-600 mb-1" />
                   <span>Stock OUT</span>
@@ -216,11 +253,10 @@ export function StockAdjustDialog({
                 <button
                   type="button"
                   onClick={() => field.onChange("ADJUSTMENT")}
-                  className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs font-semibold transition ${
-                    field.value === "ADJUSTMENT"
-                      ? "border-amber-500 bg-amber-50 text-amber-900 dark:border-amber-500 dark:bg-amber-950/50 dark:text-amber-200"
-                      : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
-                  }`}
+                  className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs font-semibold transition ${field.value === "ADJUSTMENT"
+                    ? "border-amber-500 bg-amber-50 text-amber-900 dark:border-amber-500 dark:bg-amber-950/50 dark:text-amber-200"
+                    : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+                    }`}
                 >
                   <RefreshCw className="h-4 w-4 text-amber-600 mb-1" />
                   <span>ADJUST</span>

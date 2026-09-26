@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useSalesOrders } from "@/features/salesOrder/sales-order.hooks";
@@ -9,6 +9,13 @@ import { usePackingTasks } from "@/features/packing/packing.hooks";
 import { useShipments, useCreateShipment } from "../shipping.hooks";
 import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ApiError } from "@/lib/api/api-error";
 import { AlertCircle, Loader2 } from "lucide-react";
 
@@ -118,6 +125,7 @@ export function CreateShipmentDialog({
   // ---------------------------------------------------------------------------
   const {
     register,
+    control,
     handleSubmit,
     watch,
     reset,
@@ -149,6 +157,24 @@ export function CreateShipmentDialog({
       style: "currency",
       currency: "USD",
     }).format(amount);
+
+  const soItems = useMemo(
+    () =>
+      eligibleSalesOrders.map((so) => ({
+        label: `${so.orderNumber} (${so.warehouse?.name ?? "N/A"}) — ${formatCurrency(so.totalAmount)}`,
+        value: so.id,
+      })),
+    [eligibleSalesOrders]
+  );
+
+  const methodItems = useMemo(
+    () =>
+      SHIPPING_METHOD_OPTIONS.map((opt) => ({
+        label: opt.label,
+        value: opt.value,
+      })),
+    []
+  );
 
   // ---------------------------------------------------------------------------
   // Submit
@@ -201,7 +227,7 @@ export function CreateShipmentDialog({
       description="Create a new shipment from a fully packed sales order."
       maxWidthClass="max-w-lg"
     >
-      <div className="space-y-5 max-h-[80vh] overflow-y-auto pr-1">
+      <div className="space-y-1 max-h-[60vh] overflow-y-auto pr-1">
         {errorMessage && (
           <div className="flex items-start gap-2.5 rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300">
             <AlertCircle className="h-4 w-4 shrink-0 text-red-600 dark:text-red-400 mt-0.5" />
@@ -220,19 +246,30 @@ export function CreateShipmentDialog({
               <span>Loading eligible sales orders...</span>
             </div>
           ) : (
-            <select
-              {...register("salesOrderId")}
-              disabled={createMutation.isPending}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-60"
-            >
-              <option value="">-- Select Sales Order --</option>
-              {eligibleSalesOrders.map((so) => (
-                <option key={so.id} value={so.id}>
-                  {so.orderNumber} ({so.warehouse?.name ?? "N/A"}) —{" "}
-                  {formatCurrency(so.totalAmount)}
-                </option>
-              ))}
-            </select>
+            <Controller
+              control={control}
+              name="salesOrderId"
+              render={({ field }) => (
+                <Select
+                  items={soItems}
+                  value={field.value || ""}
+                  onValueChange={(val) => field.onChange(val ?? "")}
+                  disabled={createMutation.isPending}
+                >
+                  <SelectTrigger className="w-full text-xs">
+                    <SelectValue placeholder="-- Select Sales Order --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {eligibleSalesOrders.map((so) => (
+                      <SelectItem key={so.id} value={so.id}>
+                        {so.orderNumber} ({so.warehouse?.name ?? "N/A"}) —{" "}
+                        {formatCurrency(so.totalAmount)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           )}
           {errors.salesOrderId && (
             <p className="text-xs text-red-600 dark:text-red-400">
@@ -265,7 +302,7 @@ export function CreateShipmentDialog({
                   Warehouse
                 </span>
                 <p className="font-medium text-slate-900 dark:text-white">
-                  {selectedSO.warehouse?.name ?? "\u2014"}
+                  {selectedSO.warehouse?.name ?? "—"}
                 </p>
               </div>
               <div>
@@ -297,19 +334,29 @@ export function CreateShipmentDialog({
           >
             Shipping Method <span className="text-red-500">*</span>
           </label>
-          <select
-            id="shippingMethod"
-            {...register("shippingMethod")}
-            disabled={createMutation.isPending}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-60"
-          >
-            <option value="">-- Select Method --</option>
-            {SHIPPING_METHOD_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+          <Controller
+            control={control}
+            name="shippingMethod"
+            render={({ field }) => (
+              <Select
+                items={methodItems}
+                value={field.value || ""}
+                onValueChange={(val) => field.onChange(val ?? "")}
+                disabled={createMutation.isPending}
+              >
+                <SelectTrigger id="shippingMethod" className="w-full text-xs">
+                  <SelectValue placeholder="-- Select Method --" />
+                </SelectTrigger>
+                <SelectContent>
+                  {SHIPPING_METHOD_OPTIONS.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
           {errors.shippingMethod && (
             <p className="text-xs text-red-600 dark:text-red-400">
               {errors.shippingMethod.message}

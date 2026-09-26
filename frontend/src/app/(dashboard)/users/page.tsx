@@ -179,7 +179,7 @@ export default function UsersPage() {
   const meta = data?.meta;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Toast feedback banner */}
       {feedback && (
         <div

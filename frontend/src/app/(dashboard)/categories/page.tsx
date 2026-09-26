@@ -140,7 +140,7 @@ export default function CategoriesPage() {
   const meta = data?.meta;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Feedback Alert Toast */}
       {feedback && (
         <div

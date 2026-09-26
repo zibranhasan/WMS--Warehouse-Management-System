@@ -9,6 +9,13 @@ import { useBins } from "@/features/bin/bin.hooks";
 import { AllocateStockPayload } from "../inventory.types";
 import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 
 const GLOBAL_ROLES = ["SUPER_ADMIN", "ADMIN"];
@@ -99,6 +106,53 @@ export function StockAllocateDialog({
   );
   const bins = binsData?.data || [];
 
+  const warehouseItems = useMemo(
+    () =>
+      warehouses.map((wh) => ({
+        label: `${wh.name} (${wh.code})`,
+        value: wh.id,
+      })),
+    [warehouses]
+  );
+
+  const productItems = useMemo(
+    () =>
+      products.map((p) => ({
+        label: `${p.name} (SKU: ${p.sku}) [${p.unit}]`,
+        value: p.id,
+      })),
+    [products]
+  );
+
+  const binItems = useMemo(
+    () =>
+      bins.map((b) => {
+        const shelf = b.shelf;
+        const aisle = shelf?.aisle;
+        const zone = aisle?.zone;
+        const isFull = b.availableCapacity === 0;
+        const capacityText = isFull
+          ? `FULL — Cap: ${b.capacity} | Used: ${b.usedCapacity} | Avail: 0`
+          : `Cap: ${b.capacity} | Used: ${b.usedCapacity} | Avail: ${b.availableCapacity}`;
+
+        const label = [
+          `Bin: ${b.name} (${b.code})`,
+          shelf ? `Shelf: ${shelf.name}` : null,
+          aisle ? `Aisle: ${aisle.name}` : null,
+          zone ? `Zone: ${zone.name}` : null,
+          capacityText,
+        ]
+          .filter(Boolean)
+          .join(" — ");
+
+        return {
+          label,
+          value: b.id,
+        };
+      }),
+    [bins]
+  );
+
   const onFormSubmit = async (values: AllocateStockPayload) => {
     await onSubmit({
       warehouseId: values.warehouseId,
@@ -130,28 +184,30 @@ export function StockAllocateDialog({
               <span>Loading active warehouses...</span>
             </div>
           ) : (
-            <select
-              {...register("warehouseId", { required: "Warehouse selection is required." })}
-              disabled={isPending || isWarehouseLocked}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-75"
-            >
-              {isWarehouseLocked ? (
-                warehouses.map((wh) => (
-                  <option key={wh.id} value={wh.id}>
-                    {wh.name} ({wh.code})
-                  </option>
-                ))
-              ) : (
-                <>
-                  <option value="">-- Select Target Warehouse --</option>
-                  {warehouses.map((wh) => (
-                    <option key={wh.id} value={wh.id}>
-                      {wh.name} ({wh.code})
-                    </option>
-                  ))}
-                </>
+            <Controller
+              control={control}
+              name="warehouseId"
+              rules={{ required: "Warehouse selection is required." }}
+              render={({ field }) => (
+                <Select
+                  items={warehouseItems}
+                  value={field.value || ""}
+                  onValueChange={(val) => field.onChange(val ?? "")}
+                  disabled={isPending || isWarehouseLocked}
+                >
+                  <SelectTrigger className="w-full text-xs">
+                    <SelectValue placeholder="-- Select Target Warehouse --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {warehouses.map((wh) => (
+                      <SelectItem key={wh.id} value={wh.id}>
+                        {wh.name} ({wh.code})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
-            </select>
+            />
           )}
           {errors.warehouseId && (
             <p className="mt-1 text-[11px] text-red-500">{errors.warehouseId.message}</p>
@@ -169,18 +225,30 @@ export function StockAllocateDialog({
               <span>Loading active products...</span>
             </div>
           ) : (
-            <select
-              {...register("productId", { required: "Product selection is required." })}
-              disabled={isPending || isProductLocked}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-75"
-            >
-              <option value="">-- Select Product --</option>
-              {products.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name} (SKU: {p.sku}) [{p.unit}]
-                </option>
-              ))}
-            </select>
+            <Controller
+              control={control}
+              name="productId"
+              rules={{ required: "Product selection is required." }}
+              render={({ field }) => (
+                <Select
+                  items={productItems}
+                  value={field.value || ""}
+                  onValueChange={(val) => field.onChange(val ?? "")}
+                  disabled={isPending || isProductLocked}
+                >
+                  <SelectTrigger className="w-full text-xs">
+                    <SelectValue placeholder="-- Select Product --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {products.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        {p.name} (SKU: {p.sku}) [{p.unit}]
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           )}
           {errors.productId && (
             <p className="mt-1 text-[11px] text-red-500">{errors.productId.message}</p>
@@ -205,36 +273,23 @@ export function StockAllocateDialog({
               control={control}
               rules={{ required: "Destination bin selection is required." }}
               render={({ field }) => (
-                <select
-                  {...field}
+                <Select
+                  items={binItems}
+                  value={field.value || ""}
+                  onValueChange={(val) => field.onChange(val ?? "")}
                   disabled={isPending || isBinLocked}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-white disabled:opacity-75"
                 >
-                  <option value="">-- Select Destination Storage Bin --</option>
-                  {bins.map((b) => {
-                    const shelf = b.shelf;
-                    const aisle = shelf?.aisle;
-                    const zone = aisle?.zone;
-                    const isFull = b.availableCapacity === 0;
-                    const capacityText = isFull
-                      ? `FULL — Cap: ${b.capacity} | Used: ${b.usedCapacity} | Avail: 0`
-                      : `Cap: ${b.capacity} | Used: ${b.usedCapacity} | Avail: ${b.availableCapacity}`;
-
-                    return (
-                      <option key={b.id} value={b.id}>
-                        {[
-                          `Bin: ${b.name} (${b.code})`,
-                          shelf ? `Shelf: ${shelf.name}` : null,
-                          aisle ? `Aisle: ${aisle.name}` : null,
-                          zone ? `Zone: ${zone.name}` : null,
-                          capacityText,
-                        ]
-                          .filter(Boolean)
-                          .join(" — ")}
-                      </option>
-                    );
-                  })}
-                </select>
+                  <SelectTrigger className="w-full text-xs">
+                    <SelectValue placeholder="-- Select Destination Storage Bin --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {binItems.map((item) => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
             />
           )}

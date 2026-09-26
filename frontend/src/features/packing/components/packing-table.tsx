@@ -124,15 +124,7 @@ export function PackingTable({
           );
         },
       },
-      {
-        accessorKey: "createdAt",
-        header: "Created At",
-        cell: ({ row }) => (
-          <span className="text-sm text-slate-500 dark:text-slate-400">
-            {formatDate(row.original.createdAt)}
-          </span>
-        ),
-      },
+
       {
         id: "actions",
         header: "Actions",
