@@ -199,7 +199,7 @@ export function PurchaseOrderForm({
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit as any)}
-      className="space-y-5 max-h-[80vh] overflow-y-auto pr-1"
+      className="space-y-3 max-h-[60vh] overflow-y-auto pr-1"
     >
       {errorMessage && (
         <div className="flex items-start gap-2.5 rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300">
@@ -474,6 +474,7 @@ export function PurchaseOrderForm({
           variant="outline"
           onClick={onCancel}
           disabled={isPending}
+
         >
           Cancel
         </Button>
