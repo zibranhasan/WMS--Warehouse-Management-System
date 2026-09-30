@@ -39,8 +39,12 @@ const STATUS_OPTIONS: StatusTabOption<StatusFilterType>[] = [
 export default function WarehousesPage() {
   const { data: meData } = useCurrentUser();
   const user = meData?.data?.user;
-  const canMutate =
+
+  const isGlobalUser =
     user?.role === "SUPER_ADMIN" || user?.role === "ADMIN";
+
+  const userWarehouseId = user?.warehouseId;
+  const canMutate = isGlobalUser;
 
   // Filter & Query States
   const [page, setPage] = useState(1);
@@ -148,11 +152,10 @@ export default function WarehousesPage() {
       {/* Feedback Alert Toast */}
       {feedback && (
         <div
-          className={`flex items-center justify-between rounded-lg border p-4 text-xs font-medium ${
-            feedback.type === "success"
-              ? "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300"
-              : "border-red-200 bg-red-50 text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300"
-          }`}
+          className={`flex items-center justify-between rounded-lg border p-4 text-xs font-medium ${feedback.type === "success"
+            ? "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300"
+            : "border-red-200 bg-red-50 text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300"
+            }`}
         >
           <span>{feedback.message}</span>
           <button
@@ -223,6 +226,8 @@ export default function WarehousesPage() {
           warehouses={warehouses}
           isLoading={isLoading}
           canMutate={canMutate}
+          userWarehouseId={userWarehouseId}
+          isGlobalUser={isGlobalUser}
           onEdit={(wh) => setEditingWarehouse(wh)}
           onStatusToggle={handleStatusToggle}
           statusTogglePendingId={statusTogglePendingId}

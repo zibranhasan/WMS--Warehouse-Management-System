@@ -13,6 +13,8 @@ interface WarehouseTableProps {
   warehouses: Warehouse[];
   isLoading: boolean;
   canMutate: boolean;
+  userWarehouseId?: string | null;
+  isGlobalUser: boolean;
   onEdit: (warehouse: Warehouse) => void;
   onStatusToggle: (id: string, currentStatus: WarehouseStatus) => void;
   statusTogglePendingId?: string | null;
@@ -22,6 +24,8 @@ export function WarehouseTable({
   warehouses,
   isLoading,
   canMutate,
+  userWarehouseId,
+  isGlobalUser,
   onEdit,
   onStatusToggle,
   statusTogglePendingId,
@@ -99,22 +103,26 @@ export function WarehouseTable({
         cell: ({ row }) => {
           const warehouse = row.original;
           const isPending = statusTogglePendingId === warehouse.id;
+          const canViewDetails =
+            isGlobalUser || warehouse.id === userWarehouseId;
 
           return (
             <div className="flex items-center justify-end gap-1.5 whitespace-nowrap">
               {/* View Detail Link */}
-              <Link href={`/warehouses/${warehouse.id}`}>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  title="View Warehouse Detail"
-                  className="text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
-                >
-                  <Eye className="h-4 w-4" />
-                  <span className="sr-only">View</span>
-                </Button>
-              </Link>
+              {canViewDetails && (
+                <Link href={`/warehouses/${warehouse.id}`}>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    title="View Warehouse Detail"
+                    className="text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
+                  >
+                    <Eye className="h-4 w-4" />
+                    <span className="sr-only">View</span>
+                  </Button>
+                </Link>
+              )}
 
               {/* Toggle Status (SUPER_ADMIN / ADMIN only) */}
               {canMutate && (
@@ -124,9 +132,8 @@ export function WarehouseTable({
                   size="sm"
                   onClick={() => onStatusToggle(warehouse.id, warehouse.status)}
                   disabled={isPending}
-                  title={`Switch status to ${
-                    warehouse.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
-                  }`}
+                  title={`Switch status to ${warehouse.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
+                    }`}
                   className="text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
                 >
                   {isPending ? (
