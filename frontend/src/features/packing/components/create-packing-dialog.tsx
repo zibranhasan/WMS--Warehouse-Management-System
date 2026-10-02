@@ -134,7 +134,7 @@ export function CreatePackingDialog({
       description="Create a new packing task from a fully picked sales order."
       maxWidthClass="max-w-lg"
     >
-      <div className="space-y-5 max-h-[80vh] overflow-y-auto pr-1">
+      <div className="space-y-5 max-h-[80vh] overflow-y-auto pr-1 [scrollbar-gutter:stable]">
         {errorMessage && (
           <div className="flex items-start gap-2.5 rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300">
             <AlertCircle className="h-4 w-4 shrink-0 text-red-600 dark:text-red-400 mt-0.5" />

@@ -21,6 +21,7 @@ import {
   DeallocateStockPayload,
   TransferStockPayload,
 } from "@/features/inventory/inventory.types";
+import { Product } from "@/features/product/product.types";
 import { InventoryStockTable } from "@/features/inventory/components/inventory-stock-table";
 import { InventoryLocationTable } from "@/features/inventory/components/inventory-location-table";
 import { StockMovementTable } from "@/features/inventory/components/stock-movement-table";
@@ -125,12 +126,17 @@ export default function InventoryDashboardPage() {
     }
   );
 
-  const locationQuery = useWarehouseLocationStock(
+  const allWarehouseStockQuery = useWarehouseInventory(
     activeTab === "location" && selectedWarehouseId ? selectedWarehouseId : undefined,
     {
-      page,
-      limit,
-      searchTerm: debouncedSearch || undefined,
+      limit: 500,
+    }
+  );
+
+  const allLocationStockQuery = useWarehouseLocationStock(
+    activeTab === "location" && selectedWarehouseId ? selectedWarehouseId : undefined,
+    {
+      limit: 500,
     }
   );
 
@@ -165,6 +171,7 @@ export default function InventoryDashboardPage() {
   // Dialog States
   const [isAdjustOpen, setIsAdjustOpen] = useState(false);
   const [isAllocateOpen, setIsAllocateOpen] = useState(false);
+  const [allocatingStock, setAllocatingStock] = useState<InventoryLocationStock | null>(null);
   const [deallocatingStock, setDeallocatingStock] = useState<InventoryLocationStock | null>(null);
   const [transferringStock, setTransferringStock] = useState<InventoryLocationStock | null>(null);
 
@@ -178,10 +185,144 @@ export default function InventoryDashboardPage() {
     message: string;
   } | null>(null);
 
+  const handleOpenAllocate = (stock?: InventoryLocationStock) => {
+    setAllocatingStock(stock || null);
+    setIsAllocateOpen(true);
+  };
+
   const showFeedback = (type: "success" | "error", message: string) => {
     setFeedback({ type, message });
     setTimeout(() => setFeedback(null), 4000);
   };
+
+  // Memoized Combined Rows for Bin Allocation (Allocated Bins + Unallocated Stock)
+  const combinedLocationRows = useMemo(() => {
+    if (!selectedWarehouseId) return [];
+
+    const warehouseStocks = allWarehouseStockQuery.data?.data || [];
+    const locationStocks = allLocationStockQuery.data?.data || [];
+
+    // Map of total allocated stock per product
+    const allocatedMap = new Map<string, number>();
+    for (const loc of locationStocks) {
+      const current = allocatedMap.get(loc.productId) || 0;
+      allocatedMap.set(loc.productId, current + Number(loc.quantity));
+    }
+
+    // Calculate unallocated stock per product
+    const unallocatedMap = new Map<
+      string,
+      { unallocatedQty: number; product: Product | undefined; warehouseId: string }
+    >();
+    for (const stock of warehouseStocks) {
+      if (!stock.productId) continue;
+      const total = Number(stock.quantity) || 0;
+      const allocated = allocatedMap.get(stock.productId) || 0;
+      const unallocated = Math.max(0, total - allocated);
+      if (unallocated > 0) {
+        unallocatedMap.set(stock.productId, {
+          unallocatedQty: unallocated,
+          product: stock.product,
+          warehouseId: stock.warehouseId,
+        });
+      }
+    }
+
+    // Group locationStocks by product
+    const locationStocksByProduct = new Map<string, InventoryLocationStock[]>();
+    for (const loc of locationStocks) {
+      if (!locationStocksByProduct.has(loc.productId)) {
+        locationStocksByProduct.set(loc.productId, []);
+      }
+      locationStocksByProduct.get(loc.productId)!.push(loc);
+    }
+
+    const rows: InventoryLocationStock[] = [];
+    const processedProducts = new Set<string>();
+
+    // 1. First iterate products that have warehouse inventory stock
+    for (const stock of warehouseStocks) {
+      const prodId = stock.productId;
+      if (processedProducts.has(prodId)) continue;
+      processedProducts.add(prodId);
+
+      // Add all physical bin allocations for this product
+      const prodLocs = locationStocksByProduct.get(prodId) || [];
+      for (const loc of prodLocs) {
+        rows.push(loc);
+      }
+
+      // Add unallocated row if remaining unallocated stock > 0
+      const unalloc = unallocatedMap.get(prodId);
+      if (unalloc && unalloc.unallocatedQty > 0) {
+        rows.push({
+          id: `unallocated-${prodId}`,
+          warehouseId: unalloc.warehouseId || selectedWarehouseId,
+          binId: "",
+          productId: prodId,
+          quantity: unalloc.unallocatedQty,
+          createdAt: new Date().toISOString(),
+          updatedAt: "",
+          product: unalloc.product,
+          isUnallocated: true,
+        });
+      }
+    }
+
+    // 2. Add any location stocks for products not present in warehouseStocks
+    for (const [prodId, locs] of locationStocksByProduct.entries()) {
+      if (!processedProducts.has(prodId)) {
+        processedProducts.add(prodId);
+        for (const loc of locs) {
+          rows.push(loc);
+        }
+      }
+    }
+
+    // 3. Search filtering
+    if (!debouncedSearch) {
+      return rows;
+    }
+
+    const query = debouncedSearch.toLowerCase();
+    return rows.filter((r) => {
+      const prodName = r.product?.name?.toLowerCase() || "";
+      const prodSku = r.product?.sku?.toLowerCase() || "";
+      const binCode = r.bin?.code?.toLowerCase() || "";
+      const binName = r.bin?.name?.toLowerCase() || "";
+      const isUnallocMatch = r.isUnallocated && "unallocated stock".includes(query);
+
+      return (
+        prodName.includes(query) ||
+        prodSku.includes(query) ||
+        binCode.includes(query) ||
+        binName.includes(query) ||
+        isUnallocMatch
+      );
+    });
+  }, [
+    selectedWarehouseId,
+    allWarehouseStockQuery.data?.data,
+    allLocationStockQuery.data?.data,
+    debouncedSearch,
+  ]);
+
+  const paginatedLocationStocks = useMemo(() => {
+    const startIndex = (page - 1) * limit;
+    return combinedLocationRows.slice(startIndex, startIndex + limit);
+  }, [combinedLocationRows, page, limit]);
+
+  const isLocationLoading = allWarehouseStockQuery.isLoading || allLocationStockQuery.isLoading;
+  const isLocationError = allWarehouseStockQuery.isError || allLocationStockQuery.isError;
+  const locationErrorMessage =
+    (allWarehouseStockQuery.error instanceof Error
+      ? allWarehouseStockQuery.error.message
+      : null) ||
+    (allLocationStockQuery.error instanceof Error
+      ? allLocationStockQuery.error.message
+      : "Failed to fetch bin allocation stock.");
+
+  const locationTotalPages = Math.max(1, Math.ceil(combinedLocationRows.length / limit));
 
   // Mutation Handlers
   const handleAdjustSubmit = async (payload: StockAdjustmentPayload) => {
@@ -198,6 +339,7 @@ export default function InventoryDashboardPage() {
     try {
       await allocateMutation.mutateAsync(payload);
       setIsAllocateOpen(false);
+      setAllocatingStock(null);
       showFeedback("success", "Stock allocated to bin successfully.");
     } catch (err) {
       showFeedback("error", err instanceof Error ? err.message : "Failed to allocate stock.");
@@ -284,7 +426,7 @@ export default function InventoryDashboardPage() {
             </Button>
             <Button
               type="button"
-              onClick={() => setIsAllocateOpen(true)}
+              onClick={() => handleOpenAllocate()}
               className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs flex items-center gap-1.5"
             >
               <Plus className="h-4 w-4" />
@@ -448,35 +590,34 @@ export default function InventoryDashboardPage() {
               title="No Warehouse Selected"
               description="Please select a warehouse facility above to view bin allocations."
             />
-          ) : locationQuery.isError ? (
+          ) : isLocationError ? (
             <PageErrorAlert
               title="Error loading bin allocations"
-              message={
-                locationQuery.error instanceof Error
-                  ? locationQuery.error.message
-                  : "Failed to fetch location stock."
-              }
-              onRetry={locationQuery.refetch}
+              message={locationErrorMessage}
+              onRetry={() => {
+                allWarehouseStockQuery.refetch();
+                allLocationStockQuery.refetch();
+              }}
             />
           ) : (
             <>
               <InventoryLocationTable
-                locationStocks={locationQuery.data?.data || []}
-                isLoading={locationQuery.isLoading}
+                locationStocks={paginatedLocationStocks}
+                isLoading={isLocationLoading}
                 canMutate={canMutate}
-                onAllocate={() => setIsAllocateOpen(true)}
+                onAllocate={(loc) => handleOpenAllocate(loc)}
                 onDeallocate={(loc) => setDeallocatingStock(loc)}
                 onTransfer={(loc) => setTransferringStock(loc)}
                 onViewBinDetails={(binId) => setDetailsBinId(binId)}
               />
 
-              {locationQuery.data?.meta && (
+              {combinedLocationRows.length > 0 && (
                 <DataTablePagination
-                  page={locationQuery.data.meta.page}
-                  limit={locationQuery.data.meta.limit}
-                  total={locationQuery.data.meta.total}
-                  totalPages={locationQuery.data.meta.totalPages}
-                  isLoading={locationQuery.isLoading}
+                  page={page}
+                  limit={limit}
+                  total={combinedLocationRows.length}
+                  totalPages={locationTotalPages}
+                  isLoading={isLocationLoading}
                   onPageChange={(newPage) => setPage(newPage)}
                   entityName="bin allocation records"
                 />
@@ -535,9 +676,14 @@ export default function InventoryDashboardPage() {
       {/* Dialog: Allocate Stock */}
       <StockAllocateDialog
         isOpen={isAllocateOpen}
-        defaultWarehouseId={selectedWarehouseId || undefined}
+        defaultWarehouseId={allocatingStock?.warehouseId || selectedWarehouseId || undefined}
+        defaultProductId={allocatingStock?.productId || undefined}
+        defaultBinId={allocatingStock?.isUnallocated ? undefined : allocatingStock?.binId || undefined}
         isWarehouseLocked={isWarehouseLocked}
-        onClose={() => setIsAllocateOpen(false)}
+        onClose={() => {
+          setIsAllocateOpen(false);
+          setAllocatingStock(null);
+        }}
         onSubmit={handleAllocateSubmit}
         isPending={allocateMutation.isPending}
       />

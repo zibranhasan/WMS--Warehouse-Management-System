@@ -49,6 +49,7 @@ export interface InventoryLocationStock {
   warehouse?: Warehouse;
   bin?: Bin;
   product?: Product;
+  isUnallocated?: boolean;
 }
 
 export interface InventoryLocationMovement {

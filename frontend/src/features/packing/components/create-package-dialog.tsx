@@ -74,7 +74,7 @@ export function CreatePackageDialog({
       description={packingTask?.packingNumber}
       maxWidthClass="max-w-md"
     >
-      <div className="space-y-4">
+      <div className="space-y-2">
         {/* Header */}
         <div className="flex items-center gap-3 text-blue-600 dark:text-blue-400">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-950/60">

@@ -57,7 +57,6 @@ export const inventoryLocationStockFilterableFields: string[] = [
 export const inventoryLocationMovementSearchableFields: string[] = [
     "productId",
     "warehouseId",
-    "binId",
     "fromBinId",
     "toBinId",
     "reason",

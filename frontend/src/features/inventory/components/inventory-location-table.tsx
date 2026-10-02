@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { InventoryLocationStock } from "../inventory.types";
 import { DataTable } from "@/components/shared/data-table";
 import { Button } from "@/components/ui/button";
-import { Box, Grid, Columns, Layers, ArrowRightLeft, MinusCircle, PlusCircle, Info } from "lucide-react";
+import { Box, Grid, Columns, Layers, ArrowRightLeft, MinusCircle, PlusCircle, Info, PackageOpen } from "lucide-react";
 
 interface InventoryLocationTableProps {
   locationStocks: InventoryLocationStock[];
@@ -26,7 +26,8 @@ export function InventoryLocationTable({
   onTransfer,
   onViewBinDetails,
 }: InventoryLocationTableProps) {
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "—";
     try {
       return new Date(dateString).toLocaleDateString(undefined, {
         year: "numeric",
@@ -61,7 +62,26 @@ export function InventoryLocationTable({
         accessorKey: "bin",
         header: "Storage Location (Hierarchy)",
         cell: ({ row }) => {
-          const bin = row.original.bin;
+          const loc = row.original;
+
+          if (loc.isUnallocated) {
+            return (
+              <div className="flex flex-col gap-0.5 text-xs">
+                <div className="flex items-center gap-1.5 font-semibold text-amber-700 dark:text-amber-400">
+                  <PackageOpen className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                  <span>Unallocated Stock</span>
+                  <span className="inline-flex items-center rounded bg-amber-100 dark:bg-amber-950/60 px-1.5 py-0.5 text-[10px] font-medium text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                    Awaiting Bin
+                  </span>
+                </div>
+                <div className="text-[11px] text-slate-400 dark:text-slate-500 pl-5">
+                  Not assigned to any physical storage bin
+                </div>
+              </div>
+            );
+          }
+
+          const bin = loc.bin;
           const shelf = bin?.shelf;
           const aisle = shelf?.aisle;
           const zone = aisle?.zone;
@@ -109,8 +129,16 @@ export function InventoryLocationTable({
         header: "Allocated Qty",
         cell: ({ row }) => {
           const qty = Number(row.original.quantity);
+          const isUnallocated = row.original.isUnallocated;
+
           return (
-            <span className="font-mono text-xs font-bold text-slate-900 dark:text-white">
+            <span
+              className={`font-mono text-xs font-bold ${
+                isUnallocated
+                  ? "text-amber-700 dark:text-amber-400"
+                  : "text-slate-900 dark:text-white"
+              }`}
+            >
               {qty} {row.original.product?.unit || ""}
             </span>
           );
@@ -119,11 +147,20 @@ export function InventoryLocationTable({
       {
         accessorKey: "updatedAt",
         header: "Allocated At",
-        cell: ({ row }) => (
-          <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
-            {formatDate(row.original.updatedAt)}
-          </span>
-        ),
+        cell: ({ row }) => {
+          if (row.original.isUnallocated) {
+            return (
+              <span className="text-xs text-slate-400 dark:text-slate-500 font-medium">
+                —
+              </span>
+            );
+          }
+          return (
+            <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
+              {formatDate(row.original.updatedAt)}
+            </span>
+          );
+        },
       },
       {
         id: "actions",
@@ -131,6 +168,24 @@ export function InventoryLocationTable({
         cell: ({ row }) => {
           const loc = row.original;
           if (!canMutate) return null;
+
+          if (loc.isUnallocated) {
+            return (
+              <div className="flex items-center justify-end gap-1.5 whitespace-nowrap">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onAllocate(loc)}
+                  title="Allocate Stock to Bin"
+                  className="text-xs text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-950/50 flex items-center gap-1 px-2 h-7"
+                >
+                  <PlusCircle className="h-3.5 w-3.5" />
+                  Allocate
+                </Button>
+              </div>
+            );
+          }
 
           return (
             <div className="flex items-center justify-end gap-1.5 whitespace-nowrap">
